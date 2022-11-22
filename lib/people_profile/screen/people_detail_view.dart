@@ -393,24 +393,22 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                               backgroundImage:
                                                   NetworkImage(list.image!),
                                             )),
-
+                            
                                         Container(
                                           margin: const EdgeInsets.only(
                                               left: 16.0, top: 10.0),
-                                          child: Flexible(
-                                            child: Text(
-                                              list.name.toString(),
-                                              style: const TextStyle(
-                                                  color:
-                                                      ColorSelect.white_color,
-                                                  fontSize: 22.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w700),
-                                            ),
+                                          child: Text(
+                                            list.name.toString(),
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorSelect.white_color,
+                                                fontSize: 22.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700),
                                           ),
                                         ),
                                         //  "$name\n$designation,$associate",
-
+                            
                                         Row(
                                           children: [
                                             Container(
@@ -543,7 +541,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                             ),
                                           ],
                                         ),
-
+                            
                                         Row(
                                           children: [
                                             Container(
