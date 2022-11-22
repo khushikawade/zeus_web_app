@@ -1,0 +1,1363 @@
+import 'dart:convert';
+import 'dart:html';
+import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zeus/helper_widget/delete_dialog.dart';
+import 'package:zeus/helper_widget/responsive.dart';
+import 'package:zeus/navigation/navigation.dart';
+import 'package:zeus/people_profile/editpage/edit_profile_model.dart';
+import 'package:zeus/utility/app_url.dart';
+import 'package:zeus/utility/colors.dart';
+import 'package:http/http.dart' as http;
+// import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/utility/constant.dart';
+import '../../utility/upertextformate.dart';
+
+class EditPage extends StatefulWidget {
+  GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
+  EditPage({Key? key, this.formKey}) : super(key: key);
+
+  @override
+  State<EditPage> createState() => _EditPageState();
+}
+
+class _EditPageState extends State<EditPage> {
+  bool loadingdata = false;
+  String dropdownvalue = 'Item 1';
+  String? _depat, _account, _custome, _curren, _status, _time, _tag;
+  DateTime selectedDate = DateTime.now();
+  var items = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
+  String name_ = '';
+
+  //creatrptoject
+  TextEditingController _projecttitle = TextEditingController();
+  final TextEditingController _crmtask = TextEditingController();
+  final TextEditingController _warkfolderId = TextEditingController();
+  final TextEditingController _budget = TextEditingController();
+  final TextEditingController _estimatehours = TextEditingController();
+  bool _submitted = false;
+  bool _addSubmitted = false;
+  List _accountableId = [];
+  List _customerName = [];
+  List _currencyName = [];
+  List _statusList = [];
+  List _timeline = [];
+  List addTag = [];
+  List<String> _tag1 = [];
+  GlobalKey<ScaffoldState>? _key;
+  bool? _isSelected;
+  List<String>? _filters1 = [
+    'User interface',
+    'User interface',
+    'User interface',
+    'User interface',
+    'User interface'
+  ];
+  List<String>? addTag1 = ['Laravel'];
+  List<int> add1 = [1];
+  bool imageavail = false;
+  // XFile? webImage;
+  var isIndex = 0;
+  var isLoading = false;
+  Future<void> _selectDate(setState) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now());
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  Future<String?> getSelectStatus() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("${AppUrl.baseUrl}/status"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          _statusList = mdata;
+        });
+        //var res = response.body;
+        //  print('helloDepartment' + res);
+        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
+        // return peopleList;
+
+        // final stringRes = JsonEncoder.withIndent('').convert(res);
+        //  print(stringRes);
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+  }
+
+  Future<String?> getAccountable() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse(AppUrl.accountable_person),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          _accountableId = mdata;
+        });
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+  }
+
+  Future<String?> getCustomer() async {
+    String? value;
+    if (value == null) {
+      //    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOWVlM2EwY2E0NmYyNmI1NzZkZDY0MTRhZDY0NTFlNjFjNjVlNTY2NzgxYjE1OWYxMzY5NDFmMjMwYmI5ZDVhODlhOGI4Y2QzMzBiNDg0NzMiLCJpYXQiOjE2NjM5NDMxMzUuNjY1NzY2LCJuYmYiOjE2NjM5NDMxMzUuNjY1NzY5LCJleHAiOjE2OTU0NzkxMzUuNjEyNTQ2LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.MQDtmzlqx5LkruPq7TwzFcPD2sClWNSioqOdZ4fnp3CoRL7gsELEv_nGZNR0ZjqcYCzQI0abz9PCVXQ6StgYNdN4ceGVTC2G004kaWj4edXGchTPQLLHnKQ73L47WZuqhwEOQ-0D6TITRczOScTuHuUC7VEwmQTsohzd3EAswGHSBBOiauRmgXiDEOTR9SPNvzH0b11AFcHeFjkPFG82LIJHI3h18ScWF2C4nKy2qnFgweCFhr7NwhYj1sNJKRqee-sa1BATvvkpXf7h4IQ5CEVIqrLEVoXviD958Nty1MC-gYsinaEQTWiyN-a6bb4o0RrHys8KPgVeSS4Ihe_FitaVjm7KPrV4LrEmvUhn2Fu_NJsV6n5toBJgHQ4_W6aR4fxMGMfmmx4mSfr7HdrDQNFeJ5BKhD88WYFuJPP3QyKuj6ps9w7wLK2DHHJ2VVKL06I8SIJq4R_-QNhT9_xSNKBWRWwbs4-Kp6xYtC0jSAcGhAIMmiEMxkt3cyCBwO9OcZEowWd7499nlTSMwSwYt8rwiX32ACBp3h2Sr8SdkBpBmuWQcAQEYPYteSWgV0OZkyAacHUg94xjDxF8dbNLEXab6ZNoL-uFmdzHXJxXENdAW6Gux_XejDgd4PgG6nD84nQIJPvhkDeIs5u_UZ3VUs8dO36FByLcKQNWNOUd15s'
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("${AppUrl.baseUrl}/customer"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          _customerName = mdata;
+        });
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+  }
+
+  @override
+  void initState() {
+    getSelectStatus();
+    getAccountable();
+    getCustomer();
+    getCurrency();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.40,
+          height: 620, //MediaQuery.of(context).size.height * 0.75,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 0.0, left: 10.0),
+                      child: const Text(
+                        'Create Project',
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 18.0,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700),
+                      )),
+                  GestureDetector(
+                    onTap: () {
+                      //createProject();
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 0.0, right: 10.0),
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xff1E293B),
+                        border:
+                            Border.all(color: Color(0xff334155), width: 0.6),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SvgPicture.asset(
+                          'images/cross.svg',
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    margin: const EdgeInsets.only(
+                        top: 15.0, left: 10.0, right: 10.0),
+                    height: 56.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff334155),
+                      //border: Border.all(color:  const Color(0xff1E293B)),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xff475569),
+                          offset: Offset(
+                            0.0,
+                            2.0,
+                          ),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0,
+                        ), //BoxShadow
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 24.0, left: 26.0),
+                          child: const Text(
+                            "Project title",
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                color: Color(0xff64748B),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          )),
+                    ],
+                  ),
+                  TextFormField(
+                    controller: _projecttitle,
+                    inputFormatters: [UpperCaseTextFormatter()],
+                    textCapitalization: TextCapitalization.characters,
+                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                    cursorColor: const Color(0xffFFFFFF),
+                    style: const TextStyle(color: Color(0xffFFFFFF)),
+                    textAlignVertical: TextAlignVertical.bottom,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          bottom: 16.0,
+                          top: 54.0,
+                          right: 10,
+                          left: 26.0,
+                        ),
+                        errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
+                        border: InputBorder.none,
+                        // hintText: 'Project title',
+                        hintStyle: TextStyle(
+                            fontSize: 15.0,
+                            color: Color(0xffFFFFFF),
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500)),
+                    //  autovalidate: _autoValidate ,
+                    autovalidateMode: _submitted
+                        ? AutovalidateMode.onUserInteraction
+                        : AutovalidateMode.disabled,
+
+                    validator: (value) {
+                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      if (value!.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChanged: (text) => setState(() => name_ = text),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                // mainAxisSize: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * 0.19,
+                        margin: const EdgeInsets.only(top: 15.0, left: 10.0),
+                        height: 56.0,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff334155),
+                          //border: Border.all(color:  const Color(0xff1E293B)),
+                          borderRadius: BorderRadius.circular(
+                            8.0,
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xff475569),
+                              offset: Offset(
+                                0.0,
+                                2.0,
+                              ),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ), //BoxShadow
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin:
+                                    const EdgeInsets.only(top: 6.0, left: 16.0),
+                                child: const Text(
+                                  "AP",
+                                  style: TextStyle(
+                                      fontSize: 13.0,
+                                      color: Color(0xff64748B),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(top: 5.0, left: 0.0),
+                              height: 20.0,
+                              child: Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 15.0, right: 20.0),
+                                  child: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSettersetState) {
+                                      return DropdownButtonHideUnderline(
+                                        child: DropdownButton(
+                                          dropdownColor:
+                                              ColorSelect.class_color,
+                                          value: _account,
+                                          underline: Container(),
+                                          hint: const Text(
+                                            "Select Accountable Persons",
+                                            style: TextStyle(
+                                                fontSize: 15.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          isExpanded: true,
+                                          icon: const Icon(
+                                            // Add this
+                                            Icons.arrow_drop_down, // Add this
+                                            color: Color(0xff64748B),
+
+                                            // Add this
+                                          ),
+                                          /* icon: Image.asset(
+                                                          "images/dropdown.jpg",
+                                                        //  color: const Color(0xff64748B),
+                                                          width: 8.0,
+                                                          height: 8.0,
+                                                        ),*/
+                                          items: _accountableId.map((items) {
+                                            return DropdownMenuItem(
+                                              value: items['id'].toString(),
+                                              child: Text(
+                                                items['name'],
+                                                style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    color: Color(0xffFFFFFF),
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              /*  validator: (value) => value == null ? 'field required' : null,
+                                                            onSaved: (value) => name = value,*/
+                                              _account = newValue;
+                                              print("account:$_account");
+                                            });
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  )),
+                            ),
+                          ],
+                        )),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      margin: const EdgeInsets.only(top: 15.0, right: 10.0),
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xff475569),
+                            offset: Offset(
+                              0.0,
+                              2.0,
+                            ),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ), //BoxShadow
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Container(
+                                margin:
+                                    const EdgeInsets.only(top: 6.0, left: 16.0),
+                                child: const Text(
+                                  "Customer",
+                                  style: TextStyle(
+                                      fontSize: 13.0,
+                                      color: Color(0xff64748B),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ),
+                          Flexible(
+                            child: Container(
+                                margin: const EdgeInsets.only(
+                                    top: 5.0, right: 18.0, left: 15.0),
+                                height: 20.0,
+                                child: StatefulBuilder(
+                                  builder: (BuildContext context,
+                                      StateSettersetState) {
+                                    return DropdownButtonHideUnderline(
+                                      child: DropdownButton(
+                                        dropdownColor: ColorSelect.class_color,
+                                        value: _custome,
+                                        underline: Container(),
+                                        hint: const Text(
+                                          "Select Customer",
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Color(0xffFFFFFF),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        isExpanded: true,
+                                        icon: const Icon(
+                                          // Add this
+                                          Icons.arrow_drop_down, // Add this
+                                          color: Color(0xff64748B),
+
+                                          // Add this
+                                        ),
+                                        items: _customerName.map((items) {
+                                          return DropdownMenuItem(
+                                            value: items['id'].toString(),
+                                            child: Text(
+                                              items['name'],
+                                              style: const TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: Color(0xffFFFFFF),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            _custome = newValue;
+                                            print("account:$_custome");
+                                          });
+                                        },
+                                      ),
+                                    );
+                                  },
+                                )),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+              Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    margin: const EdgeInsets.only(
+                        top: 24.0, left: 10.0, right: 10.0),
+                    height: 56.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff334155),
+                      //border: Border.all(color:  const Color(0xff1E293B)),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xff475569),
+                          offset: Offset(
+                            0.0,
+                            2.0,
+                          ),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0,
+                        ), //BoxShadow
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 33.0, left: 26.0),
+                          child: const Text(
+                            "CRM task ID",
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                color: Color(0xff64748B),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          )),
+                    ],
+                  ),
+                  TextFormField(
+                    controller: _crmtask,
+                    cursorColor: const Color(0xffFFFFFF),
+                    style: const TextStyle(color: Color(0xffFFFFFF)),
+                    textAlignVertical: TextAlignVertical.bottom,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
+                        contentPadding: EdgeInsets.only(
+                          bottom: 16.0,
+                          top: 63.0,
+                          right: 0,
+                          left: 26.0,
+                        ),
+                        border: InputBorder.none,
+                        // hintText: 'Project title',
+                        hintStyle: TextStyle(
+                            fontSize: 15.0,
+                            color: Color(0xffFFFFFF),
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500)),
+                    autovalidateMode: _submitted
+                        ? AutovalidateMode.onUserInteraction
+                        : AutovalidateMode.disabled,
+                    validator: (value) {
+                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      if (value!.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChanged: (text) => setState(() => name_ = text),
+                  ),
+                ],
+              ),
+              Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    margin: const EdgeInsets.only(
+                        top: 15.0, left: 10.0, right: 10.0),
+                    height: 56.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff334155),
+                      //border: Border.all(color:  const Color(0xff1E293B)),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xff475569),
+                          offset: Offset(
+                            0.0,
+                            2.0,
+                          ),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0,
+                        ), //BoxShadow
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 26.0, left: 26.0),
+                          child: const Text(
+                            "Work Folder ID:",
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                color: Color(0xff64748B),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          )),
+                    ],
+                  ),
+                  TextFormField(
+                    controller: _warkfolderId,
+                    cursorColor: const Color(0xffFFFFFF),
+                    style: const TextStyle(color: Color(0xffFFFFFF)),
+                    textAlignVertical: TextAlignVertical.bottom,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
+                        contentPadding: EdgeInsets.only(
+                          bottom: 16.0,
+                          top: 55.0,
+                          right: 0,
+                          left: 26.0,
+                        ),
+                        border: InputBorder.none,
+                        //  hintText: 'Project title',
+                        hintStyle: TextStyle(
+                            fontSize: 15.0,
+                            color: Color(0xffFFFFFF),
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500)),
+                    autovalidateMode: _submitted
+                        ? AutovalidateMode.onUserInteraction
+                        : AutovalidateMode.disabled,
+                    validator: (value) {
+                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      if (value!.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChanged: (text) => setState(() => name_ = text),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.10,
+                          margin: const EdgeInsets.only(top: 15.0, left: 10.0),
+                          height: 56.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            //border: Border.all(color:  const Color(0xff1E293B)),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
+                                ),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ), //BoxShadow
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.only(
+                                    top: 26.0, left: 26.0),
+                                child: const Text(
+                                  "Budget",
+                                  style: TextStyle(
+                                      fontSize: 13.0,
+                                      color: Color(0xff64748B),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ],
+                        ),
+                        TextFormField(
+                          controller: _budget,
+                          cursorColor: const Color(0xffFFFFFF),
+                          style: const TextStyle(color: Color(0xffFFFFFF)),
+                          textAlignVertical: TextAlignVertical.bottom,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              errorStyle:
+                                  TextStyle(fontSize: 15.0, height: 0.20),
+                              contentPadding: EdgeInsets.only(
+                                bottom: 18.0,
+                                top: 55.0,
+                                right: 0,
+                                left: 26.0,
+                              ),
+                              border: InputBorder.none,
+                              //hintText: 'Project title',
+                              hintStyle: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Color(0xffFFFFFF),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500)),
+                          autovalidateMode: _submitted
+                              ? AutovalidateMode.onUserInteraction
+                              : AutovalidateMode.disabled,
+                          validator: (value) {
+                            //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            if (value!.isEmpty) {
+                              return 'Please enter';
+                            }
+                            return null;
+                          },
+                          onChanged: (text) => setState(() => name_ = text),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.07,
+                      margin: const EdgeInsets.only(top: 3.0),
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                      ),
+                      child: Container(
+                          margin:
+                              const EdgeInsets.only(left: 13.0, right: 18.0),
+                          // padding: const EdgeInsets.all(2.0),
+                          child: StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSettersetState) {
+                              return DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  dropdownColor: ColorSelect.class_color,
+                                  value: _curren,
+                                  underline: Container(),
+                                  hint: const Flexible(
+                                    child: Text(
+                                      "€",
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          // ScreenUtil()
+                                          //     .setSp(ScreenUtil().setSp(18.0)),
+                                          color: Color(0xffFFFFFF),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  icon: const Flexible(
+                                    child: Icon(
+                                      // Add this
+                                      Icons.arrow_drop_down, // Add this
+                                      color: Color(0xff64748B),
+
+                                      // Add this
+                                    ),
+                                  ),
+                                  items: _currencyName.map((items) {
+                                    return DropdownMenuItem(
+                                      value: items['id'].toString(),
+                                      child: Text(
+                                        items['currency']['symbol'],
+                                        style: const TextStyle(
+                                            fontSize: 14.0,
+                                            //  ScreenUtil()
+                                            //     .setSp(ScreenUtil().setSp(14.0)),
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _curren = newValue;
+                                    });
+                                  },
+                                ),
+                              );
+                            },
+                          )),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 18,
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.19,
+                          margin: const EdgeInsets.only(top: 15.0, right: 10.0),
+                          height: 56.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            //border: Border.all(color:  const Color(0xff1E293B)),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
+                                ),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ), //BoxShadow
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.only(
+                                    top: 26.0, left: 16.0),
+                                child: const Text(
+                                  "Estimated hours",
+                                  style: TextStyle(
+                                      fontSize: 13.0,
+                                      color: Color(0xff64748B),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ],
+                        ),
+                        TextFormField(
+                          controller: _estimatehours,
+                          cursorColor: const Color(0xffFFFFFF),
+                          style: const TextStyle(color: Color(0xffFFFFFF)),
+                          textAlignVertical: TextAlignVertical.bottom,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontSize: 14.0,
+                                  // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                                  height: 0.20),
+                              contentPadding: const EdgeInsets.only(
+                                bottom: 18.0,
+                                top: 55.0,
+                                right: 0,
+                                left: 17.0,
+                              ),
+                              border: InputBorder.none,
+                              //   hintText: 'Project title',
+                              hintStyle: TextStyle(
+                                  fontSize: 14.0,
+                                  // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                                  color: Color(0xffFFFFFF),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500)),
+                          autovalidateMode: _submitted
+                              ? AutovalidateMode.onUserInteraction
+                              : AutovalidateMode.disabled,
+                          validator: (value) {
+                            //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            if (value!.isEmpty) {
+                              return 'Please enter';
+                            }
+                            return null;
+                          },
+                          onChanged: (text) => setState(() => name_ = text),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      margin: const EdgeInsets.only(top: 15.0, left: 10.0),
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                      ),
+                      child: Container(
+                          margin:
+                              const EdgeInsets.only(left: 16.0, right: 20.0),
+                          // padding: const EdgeInsets.all(2.0),
+                          child: StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSettersetState) {
+                              return DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  dropdownColor: ColorSelect.class_color,
+                                  value: _status,
+                                  underline: Container(),
+                                  hint: const Text(
+                                    "Select Status",
+                                    style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: Color(0xffFFFFFF),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  isExpanded: true,
+                                  icon: const Icon(
+                                    // Add this
+                                    Icons.arrow_drop_down, // Add this
+                                    color: Color(0xff64748B),
+
+                                    // Add this
+                                  ),
+                                  items: _statusList.map((items) {
+                                    return DropdownMenuItem(
+                                      value: items['id'].toString(),
+                                      child: Text(
+                                        items['title'],
+                                        style: const TextStyle(
+                                            fontSize: 15.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _status = newValue;
+                                      print('value of status' + _status!);
+                                    });
+                                  },
+                                ),
+                              );
+                            },
+                          )),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.19,
+                      margin: const EdgeInsets.only(top: 15.0, right: 10.0),
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xff475569),
+                            offset: Offset(
+                              0.0,
+                              2.0,
+                            ),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ), //BoxShadow
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _selectDate(setState);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 13.0),
+                              // height: 22.0,
+                              // width: 20.0,
+                              child: Image.asset(
+                                'images/date.png',
+                              ),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            //mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  margin: const EdgeInsets.only(
+                                    top: 8.0,
+                                    left: 20.0,
+                                  ),
+                                  child: const Text(
+                                    "Delivery Date",
+                                    style: TextStyle(
+                                        fontSize: 15, //18.w,
+                                        overflow: TextOverflow.fade,
+                                        color: Color(0xff64748B),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                              GestureDetector(
+                                onTap: () async {
+                                  _selectDate(setState);
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                      top: 3.0,
+                                      left: 20.0,
+                                    ),
+                                    child: Text(
+                                      '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          overflow: TextOverflow.fade,
+                                          color: Color(0xffFFFFFF),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          /* Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 5.0, right: 10.0),
+                                            height: 20.0,
+                                            child: Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: SvgPicture.asset(
+                                                    'images/cross.svg')),
+                                          ),*/
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        width: 97, //MediaQuery.of(context).size.width * 0.22,
+                        margin: const EdgeInsets.only(
+                          top: 16.0,
+                        ),
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff334155),
+                          //border: Border.all(color:  const Color(0xff1E293B)),
+                          borderRadius: BorderRadius.circular(
+                            40.0,
+                          ),
+                        ),
+
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                color: ColorSelect.white_color,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _submit(context);
+                        loadingdata
+                            ? showDailogfPopup(context,
+                                "Your request is in progress please wait for a while...")
+                            : Container();
+                      },
+                      child: Container(
+                        width: 97.0, //MediaQuery.of(context).size.width * 0.22,
+                        margin: const EdgeInsets.only(
+                          top: 16.0,
+                          //bottom: 10.0,
+                          right: 10.0,
+                        ),
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff7DD3FC),
+                          //border: Border.all(color:  const Color(0xff1E293B)),
+                          borderRadius: BorderRadius.circular(
+                            40.0,
+                          ),
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Create",
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                color: ColorSelect.black_color,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _submit(context) {
+    setState(() => _submitted = true);
+    if (widget.formKey!.currentState!.validate()) {
+      //widget.onSubmit(name_);
+      createProject(context);
+    }
+  }
+
+  //Create project Api
+  createProject(BuildContext context) async {
+    var responseJson;
+    setState(() {
+      loadingdata = true;
+    });
+    var token = 'Bearer ' + storage.read("token");
+    try {
+      var response = await http.post(
+        Uri.parse(AppUrl.create_project),
+        body: jsonEncode({
+          "title": _projecttitle.text.toString(),
+          // "accountable_person_id": _account,
+          "accountable_person_id": _account,
+          "customer_id": _custome,
+          "crm_task_id": _crmtask.text.toString(),
+          "work_folder_id": _warkfolderId.text.toString(),
+          "budget": _budget.text.toString(),
+          "currency": _curren,
+          "estimation_hours": _estimatehours.text.toString(),
+          "status": _status,
+          "delivery_date": selectedDate.toString()
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token,
+        },
+      );
+      // ignore: unrelated_type_equality_checks
+      if (response.statusCode == 200) {
+        responseJson =
+            jsonDecode(response.body.toString()) as Map<String, dynamic>;
+        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
+        setState(() {
+          loadingdata = false;
+        });
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                      onSubmit: (String value) {},
+                      adOnSubmit: (String value) {},
+                    )));
+      } else {
+        print("failuree");
+        setState(() {
+          loadingdata = false;
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil("/home", (route) => false);
+        });
+        Fluttertoast.showToast(
+          msg: 'Something Went Wrong',
+          backgroundColor: Colors.grey,
+        );
+      }
+    } catch (e) {
+      // print('error caught: $e');
+    }
+  }
+
+  getCurrency() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          _currencyName = mdata;
+        });
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+  }
+
+  Future<String?> getTagpeople() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills?search=lara"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          // addSkills = mdata;
+          // _addtag = addSkills;
+          // print('ghjhjhjh' + _addtag.length.toString());
+        });
+        print("yes to much");
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+  }
+
+  // Future<String?> getSelectStatus() async {
+  //   String? value;
+  //   if (value == null) {
+  //     var token = 'Bearer ' + storage.read("token");
+  //     var response = await http.get(
+  //       Uri.parse("https://zeus-api.zehntech.net/api/v1/status"),
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Authorization": token,
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
+  //       List<dynamic> mdata = map["data"];
+  //       setState(() {
+  //         _statusList = mdata;
+  //       });
+  //     } else {
+  //       print("failed to much");
+  //     }
+  //     return value;
+  //   }
+  // }
+
+  // Future<String?> getAccountable() async {
+  //   String? value;
+  //   if (value == null) {
+  //     var token = 'Bearer ' + storage.read("token");
+  //     var response = await http.get(
+  //       Uri.parse(AppUrl.accountable_person),
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Authorization": token,
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
+  //       List<dynamic> mdata = map["data"];
+  //       setState(() {
+  //         _accountableId = mdata;
+  //       });
+  //     } else {
+  //       print("failed to much");
+  //     }
+  //     return value;
+  //   }
+  // }
+
+  Future<String?> getAddpeople() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("https://zeus-api.zehntech.net/api/v1/tags"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          addTag = mdata;
+        });
+        //var res = response.body;
+        //  print('helloDepartment' + res);
+        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
+        // return peopleList;
+
+        // final stringRes = JsonEncoder.withIndent('').convert(res);
+        //  print(stringRes);
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+  }
+}
