@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
             //   builder: FlutterSmartDialog.init(),
             // )
             MaterialApp(
+          debugShowCheckedModeBanner: false,
           builder: FlutterSmartDialog.init(),
           home: MaterialApp(
             builder: (context, child) => ResponsiveWrapper.builder(
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
             // builder: FlutterSmartDialog.init(),
             onGenerateRoute: generateRoute,
             debugShowCheckedModeBanner: false,
+
             // onGenerateRoute: (RouteSettings settings) {
             //   return Routes.fadeThrough(settings, (context) {
             //     // switch (settings.name) {

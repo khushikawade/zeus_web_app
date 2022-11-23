@@ -317,7 +317,7 @@ class _IdleState extends State<Idle> {
               _projectData.deadlineDate!.isNotEmpty) {
             deadlineDate = AppUtil.formattedDate(_projectData.deadlineDate!);
           } else {
-            deadlineDate = "TBD";
+            deadlineDate = "N/A";
           }
 
           // if (_projectData != null &&
@@ -721,122 +721,130 @@ class _IdleState extends State<Idle> {
                     scrollDirection: Axis.vertical,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                          showCheckboxColumn: false,
-                          dataRowHeight: 60,
-                          columns: const [
-                            DataColumn(
-                              label: Text(
-                                "AP",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Project name",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Current phase",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Status",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "SPI",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Potential roadblocks",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Last\nupdate",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Next\nmilestone",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Delivery\ndate",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Deadline",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Resources",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ],
-                          rows: rows),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(dividerColor: Color(0xff525f72)),
+                          child: DataTable(
+                              showCheckboxColumn: false,
+                              dataRowHeight: 60,
+                              dividerThickness: 0.5,
+                              columns: const [
+                                DataColumn(
+                                  label: Text(
+                                    "AP",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Project name",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Current phase",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Status",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "SPI",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Potential roadblocks",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Last\nupdate",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Next\nmilestone",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Delivery\ndate",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Deadline",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Resources",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                              rows: rows),
+                        ),
+                      ),
                     ),
                   ),
                 ),

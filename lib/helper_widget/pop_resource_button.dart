@@ -40,7 +40,6 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -88,6 +87,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   var startTime;
   var endTime;
   var finalTime;
+  var startTime2;
+  var Time1;
+  var Time2;
 
   var startTime1;
   var endTime2;
@@ -223,6 +225,26 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   widget.data!.resource!.availibiltyTime != null
                       ? finalTime = widget.data!.resource!.availibiltyTime!
                       : " ";
+
+                  var names;
+                  var Time1;
+                  var Time2;
+                  print("--------------------------");
+
+                  if (finalTime.contains(" - ")) {
+                    print("here");
+                    List<String> splitedList = finalTime!.split(" - ");
+
+                    Time1 = splitedList[0];
+                    Time2 = splitedList[1];
+                    print(Time1);
+                    print(Time2);
+
+                    // fullName = firstName.substring(0, 1).toUpperCase() +
+                    //     lastName.substring(0, 1).toUpperCase();
+                  } else {
+                    // fullName = _peopleList.name!.substring(0, 1).toUpperCase();
+                  }
 
                   _name.text =
                       widget.data!.name != null && widget.data!.name!.isNotEmpty
@@ -1626,11 +1648,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             left: 45.0,
                           ),
                           child: Text(
-                            // startTime1 != null &&
-                            //         endTime2 != null
-                            //     ? '$startTime1 ' '  $endTime2'
-                            //     : '',
-                            finalTime != null ? finalTime : " ",
+                            startTime1 != null && endTime2 != null
+                                ? '$startTime1 ' '  $endTime2'
+                                : '',
+                            // finalTime != null ? finalTime : " ",
                             style: TextStyle(
                                 fontSize: 11.0,
                                 color: Colors.white,
@@ -1705,12 +1726,19 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       onRangeCompleted: (range) => setState(() {
                         print("time-------------------------------------");
                         setState(() {
-                          startTime = range!.start;
-                          endTime = range.end;
-                          startTime1 = getformattedTime(startTime);
-                          endTime2 = getformattedTime(endTime);
+                          // startTime = range!.start;
+                          // endTime = range.end;
+                          // startTime1 = getformattedTime(startTime);
+                          // endTime2 = getformattedTime(endTime);
 
-                          finalTime = '$startTime1 - $endTime2';
+                          // finalTime = '$startTime1 - $endTime2';
+                          // print(Time1);
+
+                          // print("Time1 ----------------------${Time1}");
+                          // startTime1 = Time1;
+                          // print("Time2 ----------------------${Time2}");
+                          // endTime2 = Time2;
+                          // print(Time2);
 
                           // DateTime now = startTime;
                           // String formattedDate = DateFormat()
@@ -1814,6 +1842,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           itemSorter: (a, b) {
                             return a.title!.compareTo(b.title!);
                           },
+
                           itemSubmitted: (item) {
                             setState(() {
                               //print(item.title);
@@ -1829,6 +1858,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               }
                             });
                           },
+
                           itemBuilder: (context, item) {
                             // ui for the autocompelete row
                             return row(item);
@@ -3374,15 +3404,19 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   lastTime: TimeOfDay(hour: 20, minute: 00),
                   timeStep: 10,
                   timeBlock: 30,
+                  initialRange: Time1 != null && Time2 != null
+                      ? TimeRangeResult(
+                          getformattedTime(Time1), getformattedTime(Time2))
+                      : null,
                   onRangeCompleted: (range) => setState(() {
                     print("time-------------------------------------");
                     setState(() {
-                      startTime = range!.start;
-                      endTime = range.end;
-                      startTime1 = getformattedTime(startTime);
-                      endTime2 = getformattedTime(endTime);
+                      // startTime = range!.start;
+                      // endTime = range.end;
+                      // startTime1 = getformattedTime(startTime);
+                      // endTime2 = getformattedTime(endTime);
 
-                      finalTime = '$startTime1 - $endTime2';
+                      // finalTime = '$startTime1 - $endTime2';
 
                       // DateTime now = startTime;
                       // String formattedDate = DateFormat()
@@ -4074,16 +4108,27 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           contentType: MediaType('application', 'octet-stream'),
           filename: "file_up"));
     }
-    if (widget.data!.resource != null) {
-      for (int i = 0; i < widget.data!.resource!.skills!.length; i++) {
-        request.fields['skills[$i]'] =
-            '${widget.data!.resource!.skills![i].title}';
-      }
-    } else {
-      for (int i = 0; i < abc.length; i++) {
-        request.fields['skills[$i]'] = '${abc[i]}';
-      }
+
+
+    // ignore: todo
+    // TODO:SAYYAM :- add this code and comment below codeq {23/11/2022}
+    for (int i = 0; i < abc.length; i++) {
+      request.fields['skills[$i]'] = '${abc[i]}';
     }
+
+    // ignore: todo
+    // TODO:SAYYAM :- comment for remove updated skills {23/11/2022}
+    // if (widget.data!.resource != null) {
+    //   for (int i = 0; i < widget.data!.resource!.skills!.length; i++) {
+    //     request.fields['skills[$i]'] =
+    //         '${widget.data!.resource!.skills![i].title}';
+    //   }
+    // }
+    // else {
+    //   for (int i = 0; i < abc.length; i++) {
+    //     request.fields['skills[$i]'] = '${abc[i]}';
+    //   }
+    // }
 
     print(
         "Request Data ------------------------------------------------ ${request.fields}");

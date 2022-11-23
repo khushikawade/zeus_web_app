@@ -51,7 +51,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
   List<int>? _selectedFile;
   Image? image;
   Uint8List? webImage;
-  List<String> abc = ['Laravel'];
+  List<String> abc = [];
   bool imageavail = false;
   bool? _isSelected;
   bool loading = true;
@@ -59,7 +59,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
   final ScrollController verticalScroll = ScrollController();
   final double width = 20;
 
-  List<int> daysCountList = [1,2,3,4,5,6,7];
+  List<int> daysCountList = [1, 2, 3, 4, 5, 6, 7];
 
   final ScrollController editPeoplehorizontalScroll = ScrollController();
 
@@ -259,8 +259,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
     List<String> commaSepratedList = [];
 
-    if(list.resource != null && list.resource!.availibiltyDay != null && list.resource!.availibiltyDay!.isNotEmpty) {
-        commaSepratedList = list.resource!.availibiltyDay!.split(", ");
+    if (list.resource != null &&
+        list.resource!.availibiltyDay != null &&
+        list.resource!.availibiltyDay!.isNotEmpty) {
+      commaSepratedList = list.resource!.availibiltyDay!.split(", ");
     }
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
@@ -393,22 +395,21 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                               backgroundImage:
                                                   NetworkImage(list.image!),
                                             )),
-                            
+
                                         Container(
                                           margin: const EdgeInsets.only(
                                               left: 16.0, top: 10.0),
                                           child: Text(
                                             list.name.toString(),
                                             style: const TextStyle(
-                                                color:
-                                                    ColorSelect.white_color,
+                                                color: ColorSelect.white_color,
                                                 fontSize: 22.0,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w700),
                                           ),
                                         ),
                                         //  "$name\n$designation,$associate",
-                            
+
                                         Row(
                                           children: [
                                             Container(
@@ -541,7 +542,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                             ),
                                           ],
                                         ),
-                            
+
                                         Row(
                                           children: [
                                             Container(
@@ -768,7 +769,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                       left: 120.0, top: 40.0),
                                   child: Text(
                                     // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
-                                    
+
                                     list.resource != null
                                         ? "${list.resource!.availibiltyDay} | ${list.resource!.availibiltyTime} | $timezome$timeoffset/$city"
                                         : 'TBD',

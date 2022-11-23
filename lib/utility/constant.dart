@@ -24,8 +24,11 @@ const invalidEmail = "Invalid Email";
 const enterEmail = "Enter your email";
 // project Status
 const String onTrack = "On track";
-const String updateRequested = "Update requested";
 const String potentialRisk = "Potential risk";
 const String risk = "Risk";
+const String updateRequested = "Update requested";
+const String designSentForApproval = "Design sent for approval";
 const String sentForApproval = "Sent for approval";
 const String live = "Live";
+const String newFeatureRequest = "New features request";
+const String onHold = "On hold";

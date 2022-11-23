@@ -19,15 +19,12 @@ import 'package:zeus/utility/dropdrowndata.dart';
 
 import 'package:provider/provider.dart';
 import 'dart:convert';
-
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
-
 import 'package:flutter/material.dart';
 import '../../../utility/colors.dart';
 import '../../../people_profile/screen/people_detail_view.dart';
@@ -799,7 +796,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                         ),
                         Expanded(
                           child: Container(
-                            margin: const EdgeInsets.only(left: 16.0, top: 5.5),
+                            margin: const EdgeInsets.only(left: 16.0, top: 0),
                             child: Text(
                               "$designation,$associate",
                               style: const TextStyle(
@@ -948,82 +945,91 @@ class _PeopleIdleState extends State<PeopleIdle> {
                     scrollDirection: Axis.vertical,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                          showCheckboxColumn: false,
-                          dataRowHeight: 60,
-                          columns: const [
-                            DataColumn(
-                              label: Text(
-                                "Name",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Nickname",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Capacity",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Occupied till",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Scheduled on",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Skills",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "",
-                                style: TextStyle(
-                                    color: ColorSelect.text_color,
-                                    fontSize: 14.0,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ],
-                          rows: rows),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(dividerColor: Color(0xff525f72)),
+                          child: DataTable(
+                              showBottomBorder: true,
+                              showCheckboxColumn: false,
+                              dataRowHeight: 60,
+                              dividerThickness: 0.5,
+                              columns: const [
+                                DataColumn(
+                                  label: Text(
+                                    "Name",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Nickname",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Capacity",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Occupied till",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Scheduled on",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Skills",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    "Action",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                              rows: rows),
+                        ),
+                      ),
                     ),
                   ),
                 ),

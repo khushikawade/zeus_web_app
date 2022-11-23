@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
   String? title;
@@ -16,9 +17,15 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
+  ValueNotifier<DateTime> _dateTimeNotifier =
+      ValueNotifier<DateTime>(DateTime.now());
+
+  DateTime startDate = DateTime.now().subtract(Duration(days: 40));
+  DateTime endDate = DateTime.now().add(Duration(days: 40));
+
   DateTime selectedDate = DateTime.now();
-  DateTime? startDate;
-  DateTime? endDate;
+  // DateTime? startDate;
+  // DateTime? endDate;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,12 @@ class _DatePickerState extends State<DatePicker> {
             children: [
               GestureDetector(
                 onTap: () {
-                  _selectDate();
+                  widget.title == "Start date"
+                      ? startDateF()
+                      : widget.title == "End date"
+                          ? endDateF()
+                          : Container();
+                  // : _selectDate();
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 13.0),
@@ -76,13 +88,23 @@ class _DatePickerState extends State<DatePicker> {
                       )),
                   GestureDetector(
                     onTap: () async {
-                      _selectDate();
+                      widget.title == "Start date"
+                          ? startDateF()
+                          : widget.title == "End date"
+                              ? endDateF()
+                              : Container();
+                      // _selectDate();
                     },
                     child: Container(
                         margin: const EdgeInsets.only(top: 3.0, left: 20.0),
                         child: Text(
                           // '',
-                          '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
+                          widget.title == "Start date"
+                              ? '${startDate.day} / ${startDate.month} / ${startDate.year}'
+                              : widget.title == "End date"
+                                  ? '${endDate.day} / ${endDate.month} / ${endDate.year}'
+                                  : '',
+                          // : '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
                           style: const TextStyle(
                               fontSize: 14.0,
                               color: Color(0xffFFFFFF),
@@ -105,64 +127,85 @@ class _DatePickerState extends State<DatePicker> {
     );
   }
 
-  Future<void> _selectDate() async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            primaryColor: const Color(0xff0F172A),
-            accentColor: const Color(0xff0F172A),
-            colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-          ),
-          child: child!,
-        );
-      },
-      initialDate: selectedDate,
-      // firstDate: new DateTime.now().subtract(new Duration(days: 0)),
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      firstDate: DateTime.now(),
-      // .subtract(Duration(days: 0)),
-      lastDate: DateTime(2100),
-      // lastDate: DateTime(2101)
-    );
+  // Future<void> _selectDate() async {
+  //   // widget.title == "start date"
+  //   //     ? _buildContractBeginDate(context, _dateTimeNotifier)
+  //   //     : widget.title == "end date"
+  //   //         ? _buildContractEndDate(context, _dateTimeNotifier)
+  //   //         : Container();
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     builder: (BuildContext context, Widget? child) {
+  //       return Theme(
+  //         data: ThemeData.light().copyWith(
+  //           primaryColor: const Color(0xff0F172A),
+  //           accentColor: const Color(0xff0F172A),
+  //           colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)),
+  //           buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //     initialDate: selectedDate,
+  //     // firstDate: new DateTime.now().subtract(new Duration(days: 0)),
+  //     initialEntryMode: DatePickerEntryMode.calendarOnly,
+  //     firstDate: DateTime.now(),
+  //     // .subtract(Duration(days: 0)),
+  //     lastDate: DateTime(2100),
+  //     // lastDate: DateTime(2101)
+  //   );
 
-    if (picked != null && picked != selectedDate) {
+  //   if (picked != null && picked != selectedDate) {
+  //     setState(() {
+  //       print("----------------------------------------");
+  //       print(selectedDate);
+  //       selectedDate = picked;
+  //     });
+  //   }
+  // }
 
-
-
+  startDateF() async {
+    DateTime? startPickedDate = await showDatePicker(
+        context: context,
+        fieldLabelText: "Start Date",
+        // initialDate: startDate,
+        // firstDate: startDate,
+        // lastDate: endDate
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2100));
+    if (startPickedDate != null) {
+      String formattedDate = DateFormat('dd-MM-yyyy').format(startPickedDate);
       setState(() {
+        startDate = startPickedDate;
+        print("-------------start date------------------");
+        print(startDate);
 
-
-       
-        print("----------------------------------------");
-        print(selectedDate);
-        if (widget.title! == "Start date") {
-           selectedDate = picked;
-          startDate = picked;
-          
-        }else{
-          if(startDate!.isAfter(selectedDate)){
-             selectedDate = picked;
-          
-
-          }
-          
-
-        }
+        // startDateController.text =
+        //     formattedDate; //set output date to TextField value.
       });
     }
+  }
 
-    // print("startDate-------------------${startDate}");
-
-    // if (widget.title! == "End date") {
-    //   //endDate = selectedDate;
-    //   print("endDate-------------------${endDate}");
-    //   if () {
-    //     endDate = selectedDate;
-    //     print("endDate-------------------${endDate}");
-    //   }
-    // }
+  endDateF() async {
+    DateTime? endPickedDate = await showDatePicker(
+      context: context,
+      fieldLabelText: "End Date",
+      // initialDate: startDate,
+      // firstDate: startDate,
+      // lastDate: endDate,
+      initialDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
+      lastDate: DateTime(2100),
+    );
+    if (endPickedDate != null) {
+      String formattedDate = DateFormat('dd-MM-yyyy').format(endPickedDate);
+      setState(() {
+        endDate = endPickedDate;
+        print("-------------end date------------------");
+        print(endDate);
+        // endDateController.text = formattedDate;
+      });
+    }
   }
 }

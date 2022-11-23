@@ -68,7 +68,7 @@ class _EditPageState extends State<EditPage> {
     'User interface',
     'User interface'
   ];
-  List<String>? addTag1 = ['Laravel'];
+  List<String>? addTag1 = [];
   List<int> add1 = [1];
   bool imageavail = false;
   // XFile? webImage;
@@ -1322,7 +1322,7 @@ class _EditPageState extends State<EditPage> {
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills?search=lara"),
+        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,

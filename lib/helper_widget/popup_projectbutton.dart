@@ -41,7 +41,6 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:zeus/utility/app_url.dart';
 
 class ProjectEdit extends StatefulWidget {

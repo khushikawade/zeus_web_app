@@ -39,6 +39,7 @@ class ProjectDetailData {
   String? status;
   String? reminderDate;
   String? deadlineDate;
+  String? startDate;
   String? workingDays;
   String? cost;
   String? createdAt;
@@ -63,6 +64,7 @@ class ProjectDetailData {
     this.deliveryDate,
     this.reminderDate,
     this.deadlineDate,
+    this.startDate,
     this.workingDays,
     this.cost,
     this.createdAt,
@@ -88,6 +90,7 @@ class ProjectDetailData {
     deliveryDate = json['delivery_date'];
     reminderDate = json['reminder_date'];
     deadlineDate = json['deadline_date'];
+    startDate = json['start_date'];
     workingDays = json['working_days'];
     cost = json['cost'];
     createdAt = json['created_at'];

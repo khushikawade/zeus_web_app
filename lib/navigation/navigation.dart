@@ -27,12 +27,8 @@ import '../utility/app_url.dart';
 import '../utility/colors.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'dart:async';
-import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
-
 import '../utility/constant.dart';
 import '../utility/upertextformate.dart';
 import 'package:responsive_table/responsive_table.dart';
@@ -390,7 +386,7 @@ class _NavigationRailState extends State<MyHomePage>
     'User interface',
     'User interface'
   ];
-  List<String>? addTag1 = ['Laravel'];
+  List<String>? addTag1 = [];
   List<int> add1 = [1];
   bool imageavail = false;
 
@@ -1136,6 +1132,158 @@ class _NavigationRailState extends State<MyHomePage>
                                       /* const SizedBox(
                                         width: 8.0,
                                       ),*/
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: Container(
+                                      //     width: MediaQuery.of(context)
+                                      //             .size
+                                      //             .width *
+                                      //         0.13,
+                                      //     margin: const EdgeInsets.only(
+                                      //         top: 10.0, right: 30),
+                                      //     height: 56.0,
+                                      //     decoration: BoxDecoration(
+                                      //       color: const Color(0xff334155),
+                                      //       //border: Border.all(color:  const Color(0xff1E293B)),
+                                      //       borderRadius: BorderRadius.circular(
+                                      //         8.0,
+                                      //       ),
+                                      //     ),
+                                      //     child: Column(
+                                      //       crossAxisAlignment:
+                                      //           CrossAxisAlignment.start,
+                                      //       children: [
+                                      //         Container(
+                                      //             margin: const EdgeInsets.only(
+                                      //                 top: 6.0, left: 16.0),
+                                      //             child: const Text(
+                                      //               "Department",
+                                      //               style: TextStyle(
+                                      //                   fontSize: 13.0,
+                                      //                   color:
+                                      //                       Color(0xff64748B),
+                                      //                   fontFamily: 'Inter',
+                                      //                   fontWeight:
+                                      //                       FontWeight.w500),
+                                      //             )),
+                                      //         Container(
+                                      //           margin: const EdgeInsets.only(
+                                      //               left: 16.0, right: 16.0),
+                                      //           height: 20.0,
+                                      //           child: Container(
+
+                                      //               // padding: const EdgeInsets.all(2.0),
+                                      //               child: StatefulBuilder(
+                                      //             builder:
+                                      //                 (BuildContext context,
+                                      //                     StateSettersetState) {
+                                      //               return DropdownButtonHideUnderline(
+                                      //                 child:
+                                      //                     DropdownButtonFormField(
+                                      //                   dropdownColor:
+                                      //                       ColorSelect
+                                      //                           .class_color,
+                                      //                   value: _depat,
+                                      //                   // underline: Container(),
+                                      //                   hint: const Text(
+                                      //                     "Select",
+                                      //                     style: TextStyle(
+                                      //                         fontSize: 14.0,
+                                      //                         color: Color(
+                                      //                             0xffFFFFFF),
+                                      //                         fontFamily:
+                                      //                             'Inter',
+                                      //                         fontWeight:
+                                      //                             FontWeight
+                                      //                                 .w500),
+                                      //                   ),
+                                      //                   isExpanded: true,
+                                      //                   icon: const Icon(
+                                      //                     // Add this
+                                      //                     Icons.arrow_drop_down,
+                                      //                     // Add this
+                                      //                     color:
+                                      //                         Color(0xff64748B),
+
+                                      //                     // Add this
+                                      //                   ),
+                                      //                   items: _department
+                                      //                       .map((items) {
+                                      //                     return DropdownMenuItem(
+                                      //                       value: items['id']
+                                      //                           .toString(),
+                                      //                       child: Text(
+                                      //                         items['name'],
+                                      //                         style: const TextStyle(
+                                      //                             fontSize:
+                                      //                                 14.0,
+                                      //                             color: Color(
+                                      //                                 0xffFFFFFF),
+                                      //                             fontFamily:
+                                      //                                 'Inter',
+                                      //                             fontWeight:
+                                      //                                 FontWeight
+                                      //                                     .w400),
+                                      //                       ),
+                                      //                     );
+                                      //                   }).toList(),
+
+                                      //                   onChanged:
+                                      //                       (String? newValue) {
+                                      //                     setState(() {
+                                      //                       print(
+                                      //                           "---------newValue--------------${newValue}");
+                                      //                       _depat = newValue;
+                                      //                       print(
+                                      //                           "---------newValue--------------${_depat}");
+
+                                      //                       print(_depat);
+                                      //                     });
+                                      //                   },
+                                      //                   validator: (value) {
+                                      //                     value = _depat;
+                                      //                     if (value == null)
+                                      //                       return "Please select this field";
+                                      //                     else {
+                                      //                       return null;
+                                      //                     }
+                                      //                   },
+
+                                      //                   /* selectedItemBuilder:
+                                      //                                           (BuildContext
+                                      //                                       context) {
+                                      //                                         return _department.map(
+                                      //                                                 (
+                                      //                                                 value) {
+                                      //                                               return Container(
+                                      //                                                 margin: const EdgeInsets
+                                      //                                                     .only(
+                                      //                                                     top:
+                                      //                                                     15.0),
+                                      //                                                 child: Text(
+                                      //                                                     _depat!,
+                                      //                                                     style: const TextStyle(
+                                      //                                                         color: Color(
+                                      //                                                             0xffFFFFFF),
+                                      //                                                         fontFamily:
+                                      //                                                         'Inter',
+                                      //                                                         fontWeight: FontWeight
+                                      //                                                             .w400,
+                                      //                                                         fontSize:
+                                      //                                                         14.0)),
+                                      //                                               );
+                                      //                                             }).toList();
+                                      //                                       },*/
+                                      //                 ),
+                                      //               );
+                                      //             },
+                                      //           )),
+                                      //         )
+                                      //       ],
+                                      //     ),
+                                      //   ),
+                                      // ),
+
                                       Expanded(
                                         flex: 1,
                                         child: Container(
@@ -1182,13 +1330,12 @@ class _NavigationRailState extends State<MyHomePage>
                                                       (BuildContext context,
                                                           StateSettersetState) {
                                                     return DropdownButtonHideUnderline(
-                                                      child:
-                                                          DropdownButtonFormField(
+                                                      child: DropdownButton(
                                                         dropdownColor:
                                                             ColorSelect
                                                                 .class_color,
                                                         value: _depat,
-                                                        // underline: Container(),
+                                                        underline: Container(),
                                                         hint: const Text(
                                                           "Select",
                                                           style: TextStyle(
@@ -1204,8 +1351,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                         isExpanded: true,
                                                         icon: const Icon(
                                                           // Add this
-                                                          Icons.arrow_drop_down,
-                                                          // Add this
+                                                          Icons
+                                                              .arrow_drop_down, // Add this
                                                           color:
                                                               Color(0xff64748B),
 
@@ -1231,53 +1378,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                             ),
                                                           );
                                                         }).toList(),
-
                                                         onChanged:
                                                             (String? newValue) {
                                                           setStateView(() {
                                                             print(
                                                                 "---------newValue--------------${newValue}");
                                                             _depat = newValue;
-                                                            print(
-                                                                "---------newValue--------------${_depat}");
-
-                                                            print(_depat);
                                                           });
                                                         },
-                                                        validator: (value) {
-                                                          value = _depat;
-                                                          if (value == null)
-                                                            return "Please select this field";
-                                                          else {
-                                                            return null;
-                                                          }
-                                                        },
-
-                                                        /* selectedItemBuilder:
-                                                                                (BuildContext
-                                                                            context) {
-                                                                              return _department.map(
-                                                                                      (
-                                                                                      value) {
-                                                                                    return Container(
-                                                                                      margin: const EdgeInsets
-                                                                                          .only(
-                                                                                          top:
-                                                                                          15.0),
-                                                                                      child: Text(
-                                                                                          _depat!,
-                                                                                          style: const TextStyle(
-                                                                                              color: Color(
-                                                                                                  0xffFFFFFF),
-                                                                                              fontFamily:
-                                                                                              'Inter',
-                                                                                              fontWeight: FontWeight
-                                                                                                  .w400,
-                                                                                              fontSize:
-                                                                                              14.0)),
-                                                                                    );
-                                                                                  }).toList();
-                                                                            },*/
                                                       ),
                                                     );
                                                   },
@@ -1416,7 +1524,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     value: _curren,
                                                     underline: Container(),
                                                     hint: const Text(
-                                                      "€",
+                                                      "Select",
                                                       style: TextStyle(
                                                           fontSize: 14.0,
                                                           color:
@@ -2838,8 +2946,32 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                               ),
                             ),
-                            label: const Text(''),
+                            label: const Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 25, top: 5),
+                                  child: Text(
+                                    'Projects',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                )),
                           ),
+
+                          // NavigationRailDestination(
+                          //     icon: Container(
+                          //       width: 20.0,
+                          //       height: 18.0,
+                          //       margin: const EdgeInsets.only(
+                          //         top: 0.0,
+                          //         left: 20.0,
+                          //         right: 0.0,
+                          //       ),
+                          //       child: SvgPicture.asset(
+                          //         "images/camera.svg",
+                          //       ),
+                          //     ),
+                          //     label: Text('')),
 
                           NavigationRailDestination(
                             icon: Container(
@@ -2877,7 +3009,16 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                               ),
                             ),
-                            label: const Text(''),
+                            label: const Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 25, top: 5),
+                                  child: Text(
+                                    'People',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                )),
                           ),
 
                           NavigationRailDestination(
@@ -3243,7 +3384,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills?search=lara"),
+        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,

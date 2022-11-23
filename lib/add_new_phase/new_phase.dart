@@ -8,6 +8,7 @@ import 'package:zeus/helper_widget/dropdown_textfield.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
+import 'package:zeus/helper_widget/subTaskList.dart';
 import 'package:zeus/helper_widget/textfield_milestone.dart';
 import 'package:zeus/helper_widget/textformfield.dart';
 import 'package:zeus/utility/validations.dart';
@@ -21,10 +22,14 @@ class NewPhase extends StatefulWidget {
 
 class _NewPhaseState extends State<NewPhase> {
   TextEditingController controller = TextEditingController();
+  DateTime startDate = DateTime.now().subtract(Duration(days: 40));
+  DateTime endDate = DateTime.now().add(Duration(days: 40));
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Type';
   bool clickedAddMileStone = false;
+  bool clickAddSubTask = false;
   bool saveButtonClick = false;
+  bool saveButtonClickForSubtask = false;
   var items = [
     'Type',
     'Item 1',
@@ -267,47 +272,49 @@ class _NewPhaseState extends State<NewPhase> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              clickedAddMileStone == false
-                                  ? titleHeadlineWidget("Milestones", 18.0)
-                                  : titleHeadlineWidget(
-                                      " Add Milestones", 18.0),
-                              InkWell(
-                                child: clickedAddMileStone == false
-                                    ? Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            const Icon(
-                                              Icons.add,
-                                              size: 20,
-                                              color: Color(0xff93C5FD),
-                                            ),
-                                            titleSubHeadlineWidget(
-                                                "Add Milestone", 14.0),
-                                          ],
-                                        ),
-                                      )
-                                    : clickAddMileStone(),
-                                onTap: () {
-                                  setState(() {
-                                    clickedAddMileStone = true;
-                                  });
-                                },
-                              )
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                clickedAddMileStone == false
+                                    ? titleHeadlineWidget("Milestones", 18.0)
+                                    : titleHeadlineWidget(
+                                        " Add Milestones", 18.0),
+                                InkWell(
+                                  child: clickedAddMileStone == false
+                                      ? Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              const Icon(
+                                                Icons.add,
+                                                size: 20,
+                                                color: Color(0xff93C5FD),
+                                              ),
+                                              titleSubHeadlineWidget(
+                                                  "Add Milestone", 14.0),
+                                            ],
+                                          ),
+                                        )
+                                      : clickAddMileStone(),
+                                  onTap: () {
+                                    setState(() {
+                                      clickedAddMileStone = true;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 8.0,
                           ),
                           clickedAddMileStone
                               ?
-
                               // milestoneList(context),
                               formFieldMilestone(
                                   labelText: "Milestone Title",
@@ -338,61 +345,88 @@ class _NewPhaseState extends State<NewPhase> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              titleHeadlineWidget("Subtasks", 18.0),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      const Icon(
-                                        Icons.add,
-                                        size: 26,
-                                        color: Color(0xff93C5FD),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 9, bottom: 0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                clickAddSubTask == false
+                                    ? titleHeadlineWidget("Subtasks", 18.0)
+                                    : titleHeadlineWidget(
+                                        " Add Subtasks", 18.0),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: InkWell(
+                                    child: Container(
+                                        child: clickAddSubTask == false
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.add,
+                                                    size: 20,
+                                                    color: Color(0xff93C5FD),
+                                                  ),
+                                                  titleSubHeadlineWidget(
+                                                      "Add Subtasks", 14.0),
+                                                ],
+                                              )
+                                            : clickAddSubtask()),
+                                    onTap: () {
+                                      setState(() {
+                                        clickAddSubTask = true;
+                                      });
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          clickAddSubTask
+                              ? DatePicker(title: "Start date")
+                              : Container(),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          clickAddSubTask
+                              ? DatePicker(title: "End date")
+                              : Container(),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          clickAddSubTask
+                              ? titleHeadlineWidget(
+                                  "Resources need for subtask", 16)
+                              : Container(),
+                          clickAddSubTask
+                              ? Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20.0, top: 7),
+                                      child: CircleAvatar(
+                                        backgroundColor: Color(0xff334155),
+                                        radius: 30,
+                                        child: SvgPicture.asset(
+                                          'images/photo.svg',
+                                          width: 24.0,
+                                          height: 24.0,
+                                        ),
                                       ),
-                                      titleSubHeadlineWidget(
-                                          "Add Subtasks", 14.0),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                          DatePicker(title: "Start date"),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                          DatePicker(title: "End date"),
-                          const SizedBox(
-                            height: 8.0,
-                          ),
-                          titleHeadlineWidget("Resources need for subtask", 16),
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20.0, top: 7),
-                                child: CircleAvatar(
-                                  backgroundColor: Color(0xff334155),
-                                  radius: 30,
-                                  child: SvgPicture.asset(
-                                    'images/photo.svg',
-                                    width: 24.0,
-                                    height: 24.0,
-                                  ),
-                                ),
-                              ),
-                              dropdownTexttfield(context, dropdownvalue, items),
-                            ],
-                          ),
+                                    ),
+                                    dropdownTexttfield(
+                                        context, dropdownvalue, items),
+                                  ],
+                                )
+                              : saveButtonClickForSubtask
+                                  ? subTaskList(context)
+                                  : Container(),
                         ],
                       ),
                     )
@@ -438,6 +472,49 @@ class _NewPhaseState extends State<NewPhase> {
               setState(() {
                 clickedAddMileStone = false;
                 saveButtonClick = true;
+                // clickedAddMileStone = ;
+              });
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  clickAddSubtask() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12, right: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InkWell(
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                  fontSize: 14.0,
+                  color: Color(0xffFFFFFF),
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w300),
+            ),
+            onTap: (() {}),
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          InkWell(
+            child: const Text(
+              "Save",
+              style: TextStyle(
+                  fontSize: 14.0,
+                  color: Color(0xff93C5FD),
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
+              setState(() {
+                clickAddSubTask = false;
+                saveButtonClickForSubtask = true;
                 // clickedAddMileStone = ;
               });
             },
