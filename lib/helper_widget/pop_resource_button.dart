@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
+import 'package:zeus/navigation/navigation.dart';
 import 'package:zeus/navigator_tabs/people_idle/model/model_class.dart';
 import 'package:zeus/people_profile/screen/people_detail_view.dart';
 import 'package:zeus/utility/colors.dart';
@@ -71,7 +73,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
   static List<Datum> users = <Datum>[];
-  bool updateLoading = false;
   List<String> selectedDaysList = List.empty(growable: true);
   List _timeline = [];
   String? _depat,
@@ -119,7 +120,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
   bool _addSubmitted = false;
   bool loading = true;
-  bool loadingdelete = false;
   bool? _isSelected;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _nickName = TextEditingController();
@@ -141,7 +141,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   void initState() {
     // _getTag = getProject();
     // change();
-    loadingdelete = false;
+
     _isSelected = false;
     getUsers();
     getDepartment();
@@ -421,97 +421,15 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          deletePeople(
-                                              widget.data!.id, context);
-                                          setState(() {
-                                            Navigator.pop(context);
-                                            loadingdelete == true
-                                                ? showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return StatefulBuilder(
-                                                        builder: (context,
-                                                                setState) =>
-                                                            AlertDialog(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        28.0),
-                                                          ),
-                                                          backgroundColor:
-                                                              ColorSelect
-                                                                  .peoplelistbackgroundcolor,
-                                                          content: Container(
-                                                            height: 70.0,
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                // Row(
-                                                                //   mainAxisAlignment:
-                                                                //       MainAxisAlignment
-                                                                //           .end,
-                                                                //   children: [
-                                                                //     InkWell(
-                                                                //       child:
-                                                                //           Padding(
-                                                                //         padding:
-                                                                //             EdgeInsets.all(10.0),
-                                                                //         child: SvgPicture
-                                                                //             .asset(
-                                                                //           'images/cross.svg',
-                                                                //         ),
-                                                                //       ),
-                                                                //       onTap:
-                                                                //           () {
-                                                                //         Navigator.of(context)
-                                                                //             .pop();
-                                                                //       },
-                                                                //     ),
-                                                                //   ],
-                                                                // ),
-                                                                const Center(
-                                                                  child: CircularProgressIndicator(
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          45,
-                                                                          72,
-                                                                          116)),
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      right:
-                                                                          20.0),
-                                                                  child:
-                                                                      const Text(
-                                                                    "Your request is in progress please wait for a while...",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        color: ColorSelect
-                                                                            .white_color),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            //MediaQueryx.of(context).size.height * 0.85,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    })
-                                                : Container();
+                                          Navigator.pop(context);
+                                          SmartDialog.showLoading(
+                                            msg:
+                                                "Your request is in progress please wait for a while...",
+                                          );
+                                          Future.delayed(
+                                              const Duration(seconds: 2), () {
+                                            deletePeople(
+                                                widget.data!.id, context);
                                           });
                                         },
                                         child: const Text(
@@ -643,17 +561,16 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    getUpdatePeople(
-                                        widget.data!.id.toString(), context);
-
-                                    setState(
-                                      () {
-                                        updateLoading
-                                            ? showDailogfPopup(context,
-                                                "Your request is in progress please wait for a while...")
-                                            : Container();
-                                      },
+                                    SmartDialog.showLoading(
+                                      msg:
+                                          "Your request is in progress please wait for a while...",
                                     );
+
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      getUpdatePeople(
+                                          widget.data!.id.toString(), context);
+                                    });
                                   },
                                   child: Container(
                                     width:
@@ -4116,9 +4033,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   getUpdatePeople(String userId, BuildContext context) async {
     var decodedMap;
     var responseString;
-    setState(() {
-      updateLoading = true;
-    });
+
     String commaSepratedString = selectedDaysList.join(", ");
     // var finalTime = startTime1 + endTime2;
 
@@ -4184,30 +4099,25 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       // final stringRes = JsonEncoder.withIndent('').convert(decodedMap);
       // print(stringRes);
-      setState(() {
-        updateLoading = false;
-      });
-      print("yes");
-      Navigator.pushNamed(context, '/home');
+      SmartDialog.dismiss();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    onSubmit: (String value) {},
+                    adOnSubmit: (String value) {},
+                  )));
     } else {
-      setState(() {
-        updateLoading = false;
-      });
-
-      print("failed");
+      SmartDialog.dismiss();
 
       Fluttertoast.showToast(
         msg: 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
-      return updateLoading;
     }
   }
 
   deletePeople(int? peopleId, BuildContext context) async {
-    setState(() {
-      loadingdelete = true;
-    });
     var url = '${AppUrl.delete}${peopleId}';
     var token = 'Bearer ' + storage.read("token");
 
@@ -4219,27 +4129,24 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
     if (response.statusCode == 200) {
       print("sucess");
-      // print(response.body);
-      // var user = userFromJson(response.body);
 
-      // users = user.data!;
+      SmartDialog.dismiss();
 
-      // print('Users: ${users.length}');
-
-      setState(() {
-        loadingdelete = false;
-        Navigator.pushNamed(context, "/home");
-      });
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    onSubmit: (String value) {},
+                    adOnSubmit: (String value) {},
+                  )));
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
-      setState(() {
-        loadingdelete = false;
-        Navigator.of(context).pop();
-      });
+      SmartDialog.dismiss();
     }
   }
 

@@ -61,6 +61,9 @@ class Service {
   Future<ProjectDetailResponse?> getIdelDetail(String id) async {
     var url = AppUrl.abc + id;
     var token = 'Bearer ' + storage.read("token");
+    
+    print("Token   ===   " + token);
+    print("Token END ");
     print("idd  urll   ===   " + url);
     var response = await http.get(
       Uri.parse(url),

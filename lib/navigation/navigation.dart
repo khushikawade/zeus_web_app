@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -41,6 +42,7 @@ import 'package:flutter/cupertino.dart' show ChangeNotifier;
 class MyHomePage extends StatefulWidget {
   final ValueChanged<String> onSubmit;
   final ValueChanged<String> adOnSubmit;
+
   const MyHomePage({Key? key, required this.onSubmit, required this.adOnSubmit})
       : super(key: key);
 
@@ -57,12 +59,11 @@ class _NavigationRailState extends State<MyHomePage>
   bool loading = true;
   List<int>? _selectedFile;
   Uint8List? _bytesData;
-  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   List<String> abc = [];
   List<String> selectedDaysList = List.empty(growable: true);
   TimeRangeResult? _timeRange;
-  bool loadingdata = false;
 
   var items = [
     'Item 1',
@@ -95,12 +96,14 @@ class _NavigationRailState extends State<MyHomePage>
   //          Text("24h: ${time.to24hours()}");  // 09:0
 
   var prefs;
+
   void change() async {
     prefs = await SharedPreferences.getInstance();
     prefs.setString('val', 'q');
   }
 
   Future? getList;
+
   Future getListData() {
     return Provider.of<ProjectDetail>(context, listen: true).changeProfile();
   }
@@ -119,31 +122,6 @@ class _NavigationRailState extends State<MyHomePage>
   String name_ = '';
   String name1 = '';
   bool _autoValidate = false;
-
-  _submit() {
-    setState(() => _submitted = true);
-    if (_formKey.currentState!.validate()) {
-      widget.onSubmit(name_);
-      createProject();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    onSubmit: (String value) {},
-                    adOnSubmit: (String value) {},
-                  )));
-    }
-  }
-
-  _editSubmit(BuildContext context) {
-    setState(() {
-      _addSubmitted = true;
-    });
-    if (_addFormKey.currentState!.validate()) {
-      widget.adOnSubmit(name1);
-      createPeople(context);
-    }
-  }
 
   String capitalize(String value) {
     var result = value[0].toUpperCase();
@@ -185,10 +163,7 @@ class _NavigationRailState extends State<MyHomePage>
   }
 
   //Add people Api
-  createPeople(BuildContext context) async {
-    setState(() {
-      loadingdata = true;
-    });
+  createPeople(BuildContext context, StateSetter setStateView) async {
     String commaSepratedString = selectedDaysList.join(", ");
 
     print("add People---------------------------------------------------");
@@ -244,24 +219,20 @@ class _NavigationRailState extends State<MyHomePage>
 
     var responseString = await response.stream.bytesToString();
     if (response.statusCode == 200) {
-      setState(() {
-        loadingdata = false;
-      });
+      SmartDialog.dismiss();
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, "/home");
-      // final decodedMap = json.decode(responseString);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    onSubmit: (String value) {},
+                    adOnSubmit: (String value) {},
+                  )));
 
-      // print(decodedMap);
-
-      // final stringRes = JsonEncoder.withIndent('').convert(decodedMap);
-      // print(stringRes);
       print("add people created");
     } else {
-      setState(() {
-        loadingdata = false;
-      });
-      print(responseString);
-      print("failed people");
+      SmartDialog.dismiss();
+
       Fluttertoast.showToast(
         msg: 'Something Went Wrong',
         backgroundColor: Colors.grey,
@@ -388,6 +359,7 @@ class _NavigationRailState extends State<MyHomePage>
   bool _submitted = false;
   bool _addSubmitted = false;
   String name = '';
+
   // var _formKey = GlobalKey<FormState>();
 
   List _department = [];
@@ -421,6 +393,7 @@ class _NavigationRailState extends State<MyHomePage>
   List<String>? addTag1 = ['Laravel'];
   List<int> add1 = [1];
   bool imageavail = false;
+
   // XFile? webImage;
   var isIndex = 0;
   var isLoading = false;
@@ -556,989 +529,10 @@ class _NavigationRailState extends State<MyHomePage>
               ),
               backgroundColor: const Color(0xff1E293B),
               content: Form(
-                  key: _formKey,
+                  key: _addFormKey,
                   child: EditPage(
-                    formKey: _formKey,
-                  )
-                  //      Container(
-                  //       width: MediaQuery.of(context).size.width * 0.40,
-                  //       height: MediaQuery.of(context).size.height * 0.75, //620
-                  //       child: Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Container(
-                  //                   margin:
-                  //                       const EdgeInsets.only(top: 0.0, left: 10.0),
-                  //                   child: const Text(
-                  //                     'Create Projects',
-                  //                     style: TextStyle(
-                  //                         color: Color(0xffFFFFFF),
-                  //                         fontSize: 18.0,
-                  //                         fontFamily: 'Inter',
-                  //                         fontWeight: FontWeight.w700),
-                  //                   )),
-                  //               GestureDetector(
-                  //                 onTap: () {
-                  //                   //createProject();
-                  //                   Navigator.of(context).pop();
-                  //                 },
-                  //                 child: Container(
-                  //                   margin:
-                  //                       const EdgeInsets.only(top: 0.0, right: 10.0),
-                  //                   width: 30,
-                  //                   height: 30,
-                  //                   decoration: BoxDecoration(
-                  //                     shape: BoxShape.circle,
-                  //                     color: const Color(0xff1E293B),
-                  //                     border: Border.all(
-                  //                         color: Color(0xff334155), width: 0.6),
-                  //                   ),
-                  //                   child: Padding(
-                  //                     padding: const EdgeInsets.all(10.0),
-                  //                     child: SvgPicture.asset(
-                  //                       'images/cross.svg',
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //           Stack(
-                  //             children: [
-                  //               Container(
-                  //                 width: MediaQuery.of(context).size.width * 0.99,
-                  //                 margin: const EdgeInsets.only(
-                  //                     top: 15.0, left: 10.0, right: 10.0),
-                  //                 height: 56.0,
-                  //                 decoration: BoxDecoration(
-                  //                   color: const Color(0xff334155),
-                  //                   //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                   borderRadius: BorderRadius.circular(
-                  //                     8.0,
-                  //                   ),
-                  //                   boxShadow: const [
-                  //                     BoxShadow(
-                  //                       color: Color(0xff475569),
-                  //                       offset: Offset(
-                  //                         0.0,
-                  //                         2.0,
-                  //                       ),
-                  //                       blurRadius: 0.0,
-                  //                       spreadRadius: 0.0,
-                  //                     ), //BoxShadow
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               Column(
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Container(
-                  //                       margin: const EdgeInsets.only(
-                  //                           top: 24.0, left: 26.0),
-                  //                       child: const Text(
-                  //                         "Project title",
-                  //                         style: TextStyle(
-                  //                             fontSize: 13.0,
-                  //                             color: Color(0xff64748B),
-                  //                             fontFamily: 'Inter',
-                  //                             fontWeight: FontWeight.w500),
-                  //                       )),
-                  //                 ],
-                  //               ),
-                  //               TextFormField(
-                  //                 controller: _projecttitle,
-                  //                 inputFormatters: [UpperCaseTextFormatter()],
-                  //                 textCapitalization: TextCapitalization.characters,
-                  //                 //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  //                 cursorColor: const Color(0xffFFFFFF),
-                  //                 style: const TextStyle(color: Color(0xffFFFFFF)),
-                  //                 textAlignVertical: TextAlignVertical.bottom,
-                  //                 keyboardType: TextInputType.text,
-                  //                 decoration: const InputDecoration(
-                  //                     contentPadding: EdgeInsets.only(
-                  //                       bottom: 16.0,
-                  //                       top: 54.0,
-                  //                       right: 10,
-                  //                       left: 26.0,
-                  //                     ),
-                  //                     errorStyle:
-                  //                         TextStyle(fontSize: 14, height: 0.20),
-                  //                     border: InputBorder.none,
-                  //                     // hintText: 'Project title',
-                  //                     hintStyle: TextStyle(
-                  //                         fontSize: 14.0,
-                  //                         color: Color(0xffFFFFFF),
-                  //                         fontFamily: 'Inter',
-                  //                         fontWeight: FontWeight.w500)),
-                  //                 //  autovalidate: _autoValidate ,
-                  //                 autovalidateMode: _submitted
-                  //                     ? AutovalidateMode.onUserInteraction
-                  //                     : AutovalidateMode.disabled,
-
-                  //                 validator: (value) {
-                  //                   //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                  //                   if (value!.isEmpty) {
-                  //                     return 'Please enter';
-                  //                   }
-                  //                   return null;
-                  //                 },
-                  //                 onChanged: (text) => setState(() => name_ = text),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //             // mainAxisSize: MainAxisAlignment.spaceEvenly,
-                  //             children: [
-                  //               Container(
-                  //                   width: MediaQuery.of(context).size.width * 0.19,
-                  //                   margin:
-                  //                       const EdgeInsets.only(top: 15.0, left: 10.0),
-                  //                   height: 56.0,
-                  //                   decoration: BoxDecoration(
-                  //                     color: const Color(0xff334155),
-                  //                     //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                     borderRadius: BorderRadius.circular(
-                  //                       8.0,
-                  //                     ),
-                  //                     boxShadow: const [
-                  //                       BoxShadow(
-                  //                         color: Color(0xff475569),
-                  //                         offset: Offset(
-                  //                           0.0,
-                  //                           2.0,
-                  //                         ),
-                  //                         blurRadius: 0.0,
-                  //                         spreadRadius: 0.0,
-                  //                       ), //BoxShadow
-                  //                     ],
-                  //                   ),
-                  //                   child: Column(
-                  //                     crossAxisAlignment: CrossAxisAlignment.start,
-                  //                     children: [
-                  //                       Container(
-                  //                           margin: const EdgeInsets.only(
-                  //                               top: 6.0, left: 16.0),
-                  //                           child: const Text(
-                  //                             "AP",
-                  //                             style: TextStyle(
-                  //                                 fontSize: 13.0,
-                  //                                 color: Color(0xff64748B),
-                  //                                 fontFamily: 'Inter',
-                  //                                 fontWeight: FontWeight.w500),
-                  //                           )),
-                  //                       Container(
-                  //                         margin: const EdgeInsets.only(
-                  //                             top: 5.0, left: 0.0),
-                  //                         height: 20.0,
-                  //                         child: Container(
-                  //                             margin: const EdgeInsets.only(
-                  //                                 left: 15.0, right: 20.0),
-                  //                             child: StatefulBuilder(
-                  //                               builder: (BuildContext context,
-                  //                                   StateSettersetState) {
-                  //                                 return DropdownButtonHideUnderline(
-                  //                                   child: DropdownButton(
-                  //                                     dropdownColor:
-                  //                                         ColorSelect.class_color,
-                  //                                     value: _account,
-                  //                                     underline: Container(),
-                  //                                     hint: const Text(
-                  //                                       "Select Accountable Persons",
-                  //                                       style: TextStyle(
-                  //                                           fontSize: 14.0,
-                  //                                           color: Color(0xffFFFFFF),
-                  //                                           fontFamily: 'Inter',
-                  //                                           fontWeight:
-                  //                                               FontWeight.w500),
-                  //                                     ),
-                  //                                     isExpanded: true,
-                  //                                     icon: Icon(
-                  //                                       // Add this
-                  //                                       Icons
-                  //                                           .arrow_drop_down, // Add this
-                  //                                       color: Color(0xff64748B),
-
-                  //                                       // Add this
-                  //                                     ),
-                  //                                     /* icon: Image.asset(
-                  //                                         "images/dropdown.jpg",
-                  //                                       //  color: const Color(0xff64748B),
-                  //                                         width: 8.0,
-                  //                                         height: 8.0,
-                  //                                       ),*/
-                  //                                     items:
-                  //                                         _accountableId.map((items) {
-                  //                                       return DropdownMenuItem(
-                  //                                         value:
-                  //                                             items['id'].toString(),
-                  //                                         child: Text(
-                  //                                           items['name'],
-                  //                                           style: const TextStyle(
-                  //                                               fontSize: 14.0,
-                  //                                               color:
-                  //                                                   Color(0xffFFFFFF),
-                  //                                               fontFamily: 'Inter',
-                  //                                               fontWeight:
-                  //                                                   FontWeight.w500),
-                  //                                         ),
-                  //                                       );
-                  //                                     }).toList(),
-                  //                                     onChanged: (String? newValue) {
-                  //                                       setState(() {
-                  //                                         /*  validator: (value) => value == null ? 'field required' : null,
-                  //                                           onSaved: (value) => name = value,*/
-                  //                                         _account = newValue;
-                  //                                         print("account:$_account");
-                  //                                       });
-                  //                                     },
-                  //                                   ),
-                  //                                 );
-                  //                               },
-                  //                             )),
-                  //                       ),
-                  //                     ],
-                  //                   )),
-                  //               // SizedBox(
-                  //               //   width:
-                  //               //       MediaQuery.of(context).size.width / 70, //16.0,
-                  //               // ),
-                  //               Container(
-                  //                   width: MediaQuery.of(context).size.width * 0.18,
-                  //                   margin:
-                  //                       const EdgeInsets.only(top: 15.0, right: 10.0),
-                  //                   height: 56.0,
-                  //                   decoration: BoxDecoration(
-                  //                     color: const Color(0xff334155),
-                  //                     //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                     borderRadius: BorderRadius.circular(
-                  //                       8.0,
-                  //                     ),
-                  //                     boxShadow: const [
-                  //                       BoxShadow(
-                  //                         color: Color(0xff475569),
-                  //                         offset: Offset(
-                  //                           0.0,
-                  //                           2.0,
-                  //                         ),
-                  //                         blurRadius: 0.0,
-                  //                         spreadRadius: 0.0,
-                  //                       ), //BoxShadow
-                  //                     ],
-                  //                   ),
-                  //                   child: Column(
-                  //                     crossAxisAlignment: CrossAxisAlignment.start,
-                  //                     children: [
-                  //                       Container(
-                  //                           margin: const EdgeInsets.only(
-                  //                               top: 6.0, left: 16.0),
-                  //                           child: const Text(
-                  //                             "Customer",
-                  //                             style: TextStyle(
-                  //                                 fontSize: 13.0,
-                  //                                 color: Color(0xff64748B),
-                  //                                 fontFamily: 'Inter',
-                  //                                 fontWeight: FontWeight.w500),
-                  //                           )),
-                  //                       Container(
-                  //                           margin: const EdgeInsets.only(
-                  //                               top: 5.0, right: 18.0, left: 15.0),
-                  //                           height: 20.0,
-                  //                           child: StatefulBuilder(
-                  //                             builder: (BuildContext context,
-                  //                                 StateSettersetState) {
-                  //                               return DropdownButtonHideUnderline(
-                  //                                 child: DropdownButton(
-                  //                                   dropdownColor:
-                  //                                       ColorSelect.class_color,
-                  //                                   value: _custome,
-                  //                                   underline: Container(),
-                  //                                   hint: const Text(
-                  //                                     "Select Customer",
-                  //                                     style: TextStyle(
-                  //                                         fontSize: 14.0,
-                  //                                         color: Color(0xffFFFFFF),
-                  //                                         fontFamily: 'Inter',
-                  //                                         fontWeight:
-                  //                                             FontWeight.w500),
-                  //                                   ),
-                  //                                   isExpanded: true,
-                  //                                   icon: Icon(
-                  //                                     // Add this
-                  //                                     Icons
-                  //                                         .arrow_drop_down, // Add this
-                  //                                     color: Color(0xff64748B),
-
-                  //                                     // Add this
-                  //                                   ),
-                  //                                   items: _customerName.map((items) {
-                  //                                     return DropdownMenuItem(
-                  //                                       value: items['id'].toString(),
-                  //                                       child: Text(
-                  //                                         items['name'],
-                  //                                         style: const TextStyle(
-                  //                                             fontSize: 14.0,
-                  //                                             color:
-                  //                                                 Color(0xffFFFFFF),
-                  //                                             fontFamily: 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight.w500),
-                  //                                       ),
-                  //                                     );
-                  //                                   }).toList(),
-                  //                                   onChanged: (String? newValue) {
-                  //                                     setState(() {
-                  //                                       _custome = newValue;
-                  //                                       print("account:$_custome");
-                  //                                     });
-                  //                                   },
-                  //                                 ),
-                  //                               );
-                  //                             },
-                  //                           )),
-                  //                     ],
-                  //                   )),
-                  //             ],
-                  //           ),
-                  //           Stack(
-                  //             children: [
-                  //               Container(
-                  //                 width: MediaQuery.of(context).size.width * 0.99,
-                  //                 margin: const EdgeInsets.only(
-                  //                     top: 24.0, left: 10.0, right: 10.0),
-                  //                 height: 56.0,
-                  //                 decoration: BoxDecoration(
-                  //                   color: const Color(0xff334155),
-                  //                   //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                   borderRadius: BorderRadius.circular(
-                  //                     8.0,
-                  //                   ),
-                  //                   boxShadow: const [
-                  //                     BoxShadow(
-                  //                       color: Color(0xff475569),
-                  //                       offset: Offset(
-                  //                         0.0,
-                  //                         2.0,
-                  //                       ),
-                  //                       blurRadius: 0.0,
-                  //                       spreadRadius: 0.0,
-                  //                     ), //BoxShadow
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               Column(
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Container(
-                  //                       margin: const EdgeInsets.only(
-                  //                           top: 33.0, left: 26.0),
-                  //                       child: const Text(
-                  //                         "CRM task ID",
-                  //                         style: TextStyle(
-                  //                             fontSize: 13.0,
-                  //                             color: Color(0xff64748B),
-                  //                             fontFamily: 'Inter',
-                  //                             fontWeight: FontWeight.w500),
-                  //                       )),
-                  //                 ],
-                  //               ),
-                  //               TextFormField(
-                  //                 controller: _crmtask,
-                  //                 cursorColor: const Color(0xffFFFFFF),
-                  //                 style: const TextStyle(color: Color(0xffFFFFFF)),
-                  //                 textAlignVertical: TextAlignVertical.bottom,
-                  //                 keyboardType: TextInputType.text,
-                  //                 decoration: const InputDecoration(
-                  //                     errorStyle:
-                  //                         TextStyle(fontSize: 14, height: 0.20),
-                  //                     contentPadding: EdgeInsets.only(
-                  //                       bottom: 16.0,
-                  //                       top: 63.0,
-                  //                       right: 0,
-                  //                       left: 26.0,
-                  //                     ),
-                  //                     border: InputBorder.none,
-                  //                     // hintText: 'Project title',
-                  //                     hintStyle: TextStyle(
-                  //                         fontSize: 14.0,
-                  //                         color: Color(0xffFFFFFF),
-                  //                         fontFamily: 'Inter',
-                  //                         fontWeight: FontWeight.w500)),
-                  //                 autovalidateMode: _submitted
-                  //                     ? AutovalidateMode.onUserInteraction
-                  //                     : AutovalidateMode.disabled,
-                  //                 validator: (value) {
-                  //                   //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                  //                   if (value!.isEmpty) {
-                  //                     return 'Please enter';
-                  //                   }
-                  //                   return null;
-                  //                 },
-                  //                 onChanged: (text) => setState(() => name_ = text),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Stack(
-                  //             children: [
-                  //               Container(
-                  //                 width: MediaQuery.of(context).size.width * 0.99,
-                  //                 margin: const EdgeInsets.only(
-                  //                     top: 15.0, left: 10.0, right: 10.0),
-                  //                 height: 56.0,
-                  //                 decoration: BoxDecoration(
-                  //                   color: const Color(0xff334155),
-                  //                   //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                   borderRadius: BorderRadius.circular(
-                  //                     8.0,
-                  //                   ),
-                  //                   boxShadow: const [
-                  //                     BoxShadow(
-                  //                       color: Color(0xff475569),
-                  //                       offset: Offset(
-                  //                         0.0,
-                  //                         2.0,
-                  //                       ),
-                  //                       blurRadius: 0.0,
-                  //                       spreadRadius: 0.0,
-                  //                     ), //BoxShadow
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               Column(
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Container(
-                  //                       margin: const EdgeInsets.only(
-                  //                           top: 26.0, left: 26.0),
-                  //                       child: const Text(
-                  //                         "Work Folder ID:",
-                  //                         style: TextStyle(
-                  //                             fontSize: 13.0,
-                  //                             color: Color(0xff64748B),
-                  //                             fontFamily: 'Inter',
-                  //                             fontWeight: FontWeight.w500),
-                  //                       )),
-                  //                 ],
-                  //               ),
-                  //               TextFormField(
-                  //                 controller: _warkfolderId,
-                  //                 cursorColor: const Color(0xffFFFFFF),
-                  //                 style: const TextStyle(color: Color(0xffFFFFFF)),
-                  //                 textAlignVertical: TextAlignVertical.bottom,
-                  //                 keyboardType: TextInputType.text,
-                  //                 decoration: const InputDecoration(
-                  //                     errorStyle:
-                  //                         TextStyle(fontSize: 14, height: 0.20),
-                  //                     contentPadding: EdgeInsets.only(
-                  //                       bottom: 16.0,
-                  //                       top: 55.0,
-                  //                       right: 0,
-                  //                       left: 26.0,
-                  //                     ),
-                  //                     border: InputBorder.none,
-                  //                     //  hintText: 'Project title',
-                  //                     hintStyle: TextStyle(
-                  //                         fontSize: 14.0,
-                  //                         color: Color(0xffFFFFFF),
-                  //                         fontFamily: 'Inter',
-                  //                         fontWeight: FontWeight.w500)),
-                  //                 autovalidateMode: _submitted
-                  //                     ? AutovalidateMode.onUserInteraction
-                  //                     : AutovalidateMode.disabled,
-                  //                 validator: (value) {
-                  //                   //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                  //                   if (value!.isEmpty) {
-                  //                     return 'Please enter';
-                  //                   }
-                  //                   return null;
-                  //                 },
-                  //                 onChanged: (text) => setState(() => name_ = text),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             children: [
-                  //               Expanded(
-                  //                 flex: 4,
-                  //                 child: Stack(
-                  //                   children: [
-                  //                     Container(
-                  //                       width:
-                  //                           MediaQuery.of(context).size.width * 0.10,
-                  //                       margin: const EdgeInsets.only(
-                  //                           top: 15.0, left: 10.0),
-                  //                       height: 56.0,
-                  //                       decoration: BoxDecoration(
-                  //                         color: const Color(0xff334155),
-                  //                         //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                         borderRadius: BorderRadius.circular(
-                  //                           8.0,
-                  //                         ),
-                  //                         boxShadow: const [
-                  //                           BoxShadow(
-                  //                             color: Color(0xff475569),
-                  //                             offset: Offset(
-                  //                               0.0,
-                  //                               2.0,
-                  //                             ),
-                  //                             blurRadius: 0.0,
-                  //                             spreadRadius: 0.0,
-                  //                           ), //BoxShadow
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                     Column(
-                  //                       children: [
-                  //                         Container(
-                  //                             margin: const EdgeInsets.only(
-                  //                                 top: 26.0, left: 26.0),
-                  //                             child: const Text(
-                  //                               "Budget",
-                  //                               style: TextStyle(
-                  //                                   fontSize: 13.0,
-                  //                                   color: Color(0xff64748B),
-                  //                                   fontFamily: 'Inter',
-                  //                                   fontWeight: FontWeight.w500),
-                  //                             )),
-                  //                       ],
-                  //                     ),
-                  //                     TextFormField(
-                  //                       controller: _budget,
-                  //                       cursorColor: const Color(0xffFFFFFF),
-                  //                       style:
-                  //                           const TextStyle(color: Color(0xffFFFFFF)),
-                  //                       textAlignVertical: TextAlignVertical.bottom,
-                  //                       keyboardType: TextInputType.text,
-                  //                       decoration: const InputDecoration(
-                  //                           errorStyle:
-                  //                               TextStyle(fontSize: 14, height: 0.20),
-                  //                           contentPadding: EdgeInsets.only(
-                  //                             bottom: 18.0,
-                  //                             top: 55.0,
-                  //                             right: 0,
-                  //                             left: 26.0,
-                  //                           ),
-                  //                           border: InputBorder.none,
-                  //                           //hintText: 'Project title',
-                  //                           hintStyle: TextStyle(
-                  //                               fontSize: 14.0,
-                  //                               color: Color(0xffFFFFFF),
-                  //                               fontFamily: 'Inter',
-                  //                               fontWeight: FontWeight.w500)),
-                  //                       autovalidateMode: _submitted
-                  //                           ? AutovalidateMode.onUserInteraction
-                  //                           : AutovalidateMode.disabled,
-                  //                       validator: (value) {
-                  //                         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                  //                         if (value!.isEmpty) {
-                  //                           return 'Please enter';
-                  //                         }
-                  //                         return null;
-                  //                       },
-                  //                       onChanged: (text) =>
-                  //                           setState(() => name_ = text),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 16.0,
-                  //               ),
-                  //               Expanded(
-                  //                 flex: 2,
-                  //                 child: Container(
-                  //                   width: MediaQuery.of(context).size.width * 0.07,
-                  //                   margin: const EdgeInsets.only(top: 3.0),
-                  //                   height: 56.0,
-                  //                   decoration: BoxDecoration(
-                  //                     color: const Color(0xff334155),
-                  //                     //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                     borderRadius: BorderRadius.circular(
-                  //                       8.0,
-                  //                     ),
-                  //                   ),
-                  //                   child: Container(
-                  //                       margin: const EdgeInsets.only(
-                  //                           left: 13.0, right: 18.0),
-                  //                       // padding: const EdgeInsets.all(2.0),
-                  //                       child: StatefulBuilder(
-                  //                         builder: (BuildContext context,
-                  //                             StateSettersetState) {
-                  //                           return DropdownButtonHideUnderline(
-                  //                             child: DropdownButton(
-                  //                               dropdownColor:
-                  //                                   ColorSelect.class_color,
-                  //                               value: _curren,
-                  //                               underline: Container(),
-                  //                               hint: const Text(
-                  //                                 "€",
-                  //                                 style: TextStyle(
-                  //                                     fontSize: 14.0,
-                  //                                     color: Color(0xffFFFFFF),
-                  //                                     fontFamily: 'Inter',
-                  //                                     fontWeight: FontWeight.w500),
-                  //                               ),
-                  //                               isExpanded: true,
-                  //                               icon: const Icon(
-                  //                                 // Add this
-                  //                                 Icons.arrow_drop_down, // Add this
-                  //                                 color: Color(0xff64748B),
-
-                  //                                 // Add this
-                  //                               ),
-                  //                               items: _currencyName.map((items) {
-                  //                                 return DropdownMenuItem(
-                  //                                   value: items['id'].toString(),
-                  //                                   child: Text(
-                  //                                     items['currency']['symbol'],
-                  //                                     style: const TextStyle(
-                  //                                         fontSize: 14.0,
-                  //                                         color: Color(0xffFFFFFF),
-                  //                                         fontFamily: 'Inter',
-                  //                                         fontWeight:
-                  //                                             FontWeight.w400),
-                  //                                   ),
-                  //                                 );
-                  //                               }).toList(),
-                  //                               onChanged: (String? newValue) {
-                  //                                 setState(() {
-                  //                                   _curren = newValue;
-                  //                                 });
-                  //                               },
-                  //                             ),
-                  //                           );
-                  //                         },
-                  //                       )),
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 18.0,
-                  //               ),
-                  //               Expanded(
-                  //                 flex: 7,
-                  //                 child: Stack(
-                  //                   children: [
-                  //                     Container(
-                  //                       width:
-                  //                           MediaQuery.of(context).size.width * 0.19,
-                  //                       margin: const EdgeInsets.only(
-                  //                           top: 15.0, right: 10.0),
-                  //                       height: 56.0,
-                  //                       decoration: BoxDecoration(
-                  //                         color: const Color(0xff334155),
-                  //                         //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                         borderRadius: BorderRadius.circular(
-                  //                           8.0,
-                  //                         ),
-                  //                         boxShadow: const [
-                  //                           BoxShadow(
-                  //                             color: Color(0xff475569),
-                  //                             offset: Offset(
-                  //                               0.0,
-                  //                               2.0,
-                  //                             ),
-                  //                             blurRadius: 0.0,
-                  //                             spreadRadius: 0.0,
-                  //                           ), //BoxShadow
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                     Column(
-                  //                       crossAxisAlignment: CrossAxisAlignment.start,
-                  //                       children: [
-                  //                         Container(
-                  //                             margin: const EdgeInsets.only(
-                  //                                 top: 26.0, left: 16.0),
-                  //                             child: const Text(
-                  //                               "Estimated hours",
-                  //                               style: TextStyle(
-                  //                                   fontSize: 13.0,
-                  //                                   color: Color(0xff64748B),
-                  //                                   fontFamily: 'Inter',
-                  //                                   fontWeight: FontWeight.w500),
-                  //                             )),
-                  //                       ],
-                  //                     ),
-                  //                     TextFormField(
-                  //                       controller: _estimatehours,
-                  //                       cursorColor: const Color(0xffFFFFFF),
-                  //                       style:
-                  //                           const TextStyle(color: Color(0xffFFFFFF)),
-                  //                       textAlignVertical: TextAlignVertical.bottom,
-                  //                       keyboardType: TextInputType.text,
-                  //                       decoration: const InputDecoration(
-                  //                           errorStyle:
-                  //                               TextStyle(fontSize: 14, height: 0.20),
-                  //                           contentPadding: EdgeInsets.only(
-                  //                             bottom: 18.0,
-                  //                             top: 55.0,
-                  //                             right: 0,
-                  //                             left: 17.0,
-                  //                           ),
-                  //                           border: InputBorder.none,
-                  //                           //   hintText: 'Project title',
-                  //                           hintStyle: TextStyle(
-                  //                               fontSize: 14.0,
-                  //                               color: Color(0xffFFFFFF),
-                  //                               fontFamily: 'Inter',
-                  //                               fontWeight: FontWeight.w500)),
-                  //                       autovalidateMode: _submitted
-                  //                           ? AutovalidateMode.onUserInteraction
-                  //                           : AutovalidateMode.disabled,
-                  //                       validator: (value) {
-                  //                         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                  //                         if (value!.isEmpty) {
-                  //                           return 'Please enter';
-                  //                         }
-                  //                         return null;
-                  //                       },
-                  //                       onChanged: (text) =>
-                  //                           setState(() => name_ = text),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             children: [
-                  //               Container(
-                  //                 width: MediaQuery.of(context).size.width * 0.18,
-                  //                 margin:
-                  //                     const EdgeInsets.only(top: 15.0, left: 10.0),
-                  //                 height: 56.0,
-                  //                 decoration: BoxDecoration(
-                  //                   color: const Color(0xff334155),
-                  //                   //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                   borderRadius: BorderRadius.circular(
-                  //                     8.0,
-                  //                   ),
-                  //                 ),
-                  //                 child: Container(
-                  //                     margin: const EdgeInsets.only(
-                  //                         left: 16.0, right: 20.0),
-                  //                     // padding: const EdgeInsets.all(2.0),
-                  //                     child: StatefulBuilder(
-                  //                       builder: (BuildContext context,
-                  //                           StateSettersetState) {
-                  //                         return DropdownButtonHideUnderline(
-                  //                           child: DropdownButton(
-                  //                             dropdownColor: ColorSelect.class_color,
-                  //                             value: _status,
-                  //                             underline: Container(),
-                  //                             hint: const Text(
-                  //                               "Select Status",
-                  //                               style: TextStyle(
-                  //                                   fontSize: 14.0,
-                  //                                   color: Color(0xffFFFFFF),
-                  //                                   fontFamily: 'Inter',
-                  //                                   fontWeight: FontWeight.w500),
-                  //                             ),
-                  //                             isExpanded: true,
-                  //                             icon: Icon(
-                  //                               // Add this
-                  //                               Icons.arrow_drop_down, // Add this
-                  //                               color: Color(0xff64748B),
-
-                  //                               // Add this
-                  //                             ),
-                  //                             items: _statusList.map((items) {
-                  //                               return DropdownMenuItem(
-                  //                                 value: items['id'].toString(),
-                  //                                 child: Text(
-                  //                                   items['title'],
-                  //                                   style: const TextStyle(
-                  //                                       fontSize: 14.0,
-                  //                                       color: Color(0xffFFFFFF),
-                  //                                       fontFamily: 'Inter',
-                  //                                       fontWeight: FontWeight.w500),
-                  //                                 ),
-                  //                               );
-                  //                             }).toList(),
-                  //                             onChanged: (String? newValue) {
-                  //                               setState(() {
-                  //                                 _status = newValue;
-                  //                                 print('value of status' + _status!);
-                  //                               });
-                  //                             },
-                  //                           ),
-                  //                         );
-                  //                       },
-                  //                     )),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 16.0,
-                  //               ),
-                  //               Container(
-                  //                   width: MediaQuery.of(context).size.width * 0.19,
-                  //                   margin:
-                  //                       const EdgeInsets.only(top: 15.0, right: 10.0),
-                  //                   height: 56.0,
-                  //                   decoration: BoxDecoration(
-                  //                     color: const Color(0xff334155),
-                  //                     //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                     borderRadius: BorderRadius.circular(
-                  //                       8.0,
-                  //                     ),
-                  //                     boxShadow: const [
-                  //                       BoxShadow(
-                  //                         color: Color(0xff475569),
-                  //                         offset: Offset(
-                  //                           0.0,
-                  //                           2.0,
-                  //                         ),
-                  //                         blurRadius: 0.0,
-                  //                         spreadRadius: 0.0,
-                  //                       ), //BoxShadow
-                  //                     ],
-                  //                   ),
-                  //                   child: Row(
-                  //                     mainAxisAlignment: MainAxisAlignment.start,
-                  //                     // crossAxisAlignment: CrossAxisAlignment.start,
-                  //                     children: [
-                  //                       GestureDetector(
-                  //                         onTap: () {
-                  //                           _selectDate(setState);
-                  //                         },
-                  //                         child: Container(
-                  //                           margin: const EdgeInsets.only(left: 13.0),
-                  //                           height: 22.0,
-                  //                           width: 20.0,
-                  //                           child: Image.asset('images/date.png'),
-                  //                         ),
-                  //                       ),
-                  //                       Column(
-                  //                         crossAxisAlignment:
-                  //                             CrossAxisAlignment.start,
-                  //                         children: [
-                  //                           Container(
-                  //                               margin: const EdgeInsets.only(
-                  //                                   top: 10.0, left: 20.0),
-                  //                               child: const Text(
-                  //                                 "Delivery Date",
-                  //                                 style: TextStyle(
-                  //                                     fontSize: 13.0,
-                  //                                     color: Color(0xff64748B),
-                  //                                     fontFamily: 'Inter',
-                  //                                     fontWeight: FontWeight.w500),
-                  //                               )),
-                  //                           GestureDetector(
-                  //                             onTap: () async {
-                  //                               _selectDate(setState);
-                  //                             },
-                  //                             child: Container(
-                  //                                 margin: const EdgeInsets.only(
-                  //                                     top: 3.0, left: 20.0),
-                  //                                 child: Text(
-                  //                                   '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
-                  //                                   style: const TextStyle(
-                  //                                       fontSize: 14.0,
-                  //                                       color: Color(0xffFFFFFF),
-                  //                                       fontFamily: 'Inter',
-                  //                                       fontWeight: FontWeight.w500),
-                  //                                 )),
-                  //                           ),
-                  //                         ],
-                  //                       ),
-                  //                       const Spacer(),
-                  //                       /* Container(
-                  //                           margin: const EdgeInsets.only(
-                  //                               top: 5.0, right: 10.0),
-                  //                           height: 20.0,
-                  //                           child: Padding(
-                  //                               padding: const EdgeInsets.all(4.0),
-                  //                               child: SvgPicture.asset(
-                  //                                   'images/cross.svg')),
-                  //                         ),*/
-                  //                     ],
-                  //                   )),
-                  //             ],
-                  //           ),
-                  //           Expanded(
-                  //             child: Row(
-                  //               mainAxisAlignment: MainAxisAlignment.end,
-                  //               children: [
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     Navigator.of(context).pop();
-                  //                   },
-                  //                   child: Container(
-                  //                     width:
-                  //                         97, //MediaQuery.of(context).size.width * 0.22,
-                  //                     margin: const EdgeInsets.only(
-                  //                       top: 16.0,
-                  //                     ),
-                  //                     height: 40.0,
-                  //                     decoration: BoxDecoration(
-                  //                       color: const Color(0xff334155),
-                  //                       //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                       borderRadius: BorderRadius.circular(
-                  //                         40.0,
-                  //                       ),
-                  //                     ),
-
-                  //                     child: const Align(
-                  //                       alignment: Alignment.center,
-                  //                       child: Text(
-                  //                         "Cancel",
-                  //                         style: TextStyle(
-                  //                             fontSize: 14.0,
-                  //                             color: ColorSelect.white_color,
-                  //                             fontFamily: 'Inter',
-                  //                             fontWeight: FontWeight.w700),
-                  //                       ),
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 const SizedBox(
-                  //                   width: 16,
-                  //                 ),
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     _submit();
-                  //                   },
-                  //                   child: Container(
-                  //                     width:
-                  //                         97.0, //MediaQuery.of(context).size.width * 0.22,
-                  //                     margin: const EdgeInsets.only(
-                  //                       top: 16.0,
-                  //                       //bottom: 10.0,
-                  //                       right: 10.0,
-                  //                     ),
-                  //                     height: 40.0,
-                  //                     decoration: BoxDecoration(
-                  //                       color: const Color(0xff7DD3FC),
-                  //                       //border: Border.all(color:  const Color(0xff1E293B)),
-                  //                       borderRadius: BorderRadius.circular(
-                  //                         40.0,
-                  //                       ),
-                  //                     ),
-                  //                     child: const Align(
-                  //                       alignment: Alignment.center,
-                  //                       child: Text(
-                  //                         "Create",
-                  //                         style: TextStyle(
-                  //                             fontSize: 14.0,
-                  //                             color: ColorSelect.black_color,
-                  //                             fontFamily: 'Inter',
-                  //                             fontWeight: FontWeight.w700),
-                  //                       ),
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //  //-----------------------
-                  ),
+                    formKey: _addFormKey,
+                  )),
             ),
           );
         });
@@ -1550,14 +544,14 @@ class _NavigationRailState extends State<MyHomePage>
         context: context,
         builder: (context) {
           return StatefulBuilder(
-            builder: (context, setState) => AlertDialog(
+            builder: (context, setStateView) => AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
               contentPadding: EdgeInsets.zero,
               backgroundColor: const Color(0xff1E293B),
               content: Form(
-                key: _addFormKey,
+                key: _formKey,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.99,
                   height: MediaQuery.of(context).size.height * 0.99,
@@ -1604,8 +598,8 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 Spacer(),
                                 Container(
-                                  width:
-                                      97.0, //MediaQuery.of(context).size.width * 0.22,
+                                  width: 97.0,
+                                  //MediaQuery.of(context).size.width * 0.22,
                                   margin: const EdgeInsets.only(
                                       top: 10.0, bottom: 10.0),
                                   height: 40.0,
@@ -1638,26 +632,21 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    _editSubmit(context);
+                                    if (_formKey.currentState!.validate()) {
+                                      SmartDialog.showLoading(
+                                        msg:
+                                            "Your request is in progress please wait for a while...",
+                                      );
 
-                                    setState(() {
-                                      loadingdata == true
-                                          ? showDailogfPopup(context,
-                                              "Your request is in progress please wait for a while...")
-                                          : Container();
-                                    });
-                                    // getAddPeople();
-                                    /* Navigator.pushNamed(
-                                                    context, "/home");*/
-
-                                    /* Navigator.push(
-                                                     context,
-                                                     MaterialPageRoute(builder: (context) =>
-                                                         PeopleIdle()));*/
+                                      Future.delayed(const Duration(seconds: 2),
+                                          () {
+                                        createPeople(context, setStateView);
+                                      });
+                                    }
                                   },
                                   child: Container(
-                                    width:
-                                        97, //MediaQuery.of(context).size.width * 0.22,
+                                    width: 97,
+                                    //MediaQuery.of(context).size.width * 0.22,
                                     margin: const EdgeInsets.only(
                                         top: 10.0, right: 20.0, bottom: 10.0),
                                     height: 40.0,
@@ -1728,7 +717,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         onTap: () async {
                                           final image = await ImagePickerWeb
                                               .getImageAsBytes();
-                                          setState(() {
+                                          setStateView(() {
                                             webImage = image!;
                                             imageavail = true;
                                           });
@@ -1876,7 +865,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -1959,7 +948,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -2041,7 +1030,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -2137,8 +1126,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                 }
                                                 return null;
                                               },
-                                              onChanged: (text) =>
-                                                  setState(() => name1 = text),
+                                              onChanged: (text) => setStateView(
+                                                  () => name1 = text),
                                             ),
                                           ],
                                         ),
@@ -2215,8 +1204,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                         isExpanded: true,
                                                         icon: const Icon(
                                                           // Add this
-                                                          Icons
-                                                              .arrow_drop_down, // Add this
+                                                          Icons.arrow_drop_down,
+                                                          // Add this
                                                           color:
                                                               Color(0xff64748B),
 
@@ -2245,7 +1234,7 @@ class _NavigationRailState extends State<MyHomePage>
 
                                                         onChanged:
                                                             (String? newValue) {
-                                                          setState(() {
+                                                          setStateView(() {
                                                             print(
                                                                 "---------newValue--------------${newValue}");
                                                             _depat = newValue;
@@ -2379,7 +1368,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -2439,8 +1428,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                     isExpanded: true,
                                                     icon: Icon(
                                                       // Add this
-                                                      Icons
-                                                          .arrow_drop_down, // Add this
+                                                      Icons.arrow_drop_down,
+                                                      // Add this
                                                       color: Color(0xff64748B),
 
                                                       // Add this
@@ -2467,7 +1456,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     }).toList(),
                                                     onChanged:
                                                         (String? newValue) {
-                                                      setState(() {
+                                                      setStateView(() {
                                                         _curren = newValue;
                                                       });
                                                     },
@@ -2561,8 +1550,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                 }
                                                 return null;
                                               },
-                                              onChanged: (text) =>
-                                                  setState(() => name1 = text),
+                                              onChanged: (text) => setStateView(
+                                                  () => name1 = text),
                                             ),
                                           ],
                                         ),
@@ -2672,8 +1661,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                   isExpanded: true,
                                                   icon: const Icon(
                                                     // Add this
-                                                    Icons
-                                                        .arrow_drop_down, // Add this
+                                                    Icons.arrow_drop_down,
+                                                    // Add this
                                                     color: Color(0xff64748B),
 
                                                     // Add this
@@ -2691,7 +1680,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   }).toList(),
                                                   onChanged:
                                                       (String? newValue) {
-                                                    setState(() {
+                                                    setStateView(() {
                                                       _day = newValue;
                                                       _shortday =
                                                           _day!.substring(0, 3);
@@ -2712,32 +1701,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                       }
                                                     });
                                                   },
-
-                                                  /* selectedItemBuilder:
-                                                                                  (BuildContext
-                                                                              context) {
-                                                                                return _department.map(
-                                                                                        (
-                                                                                        value) {
-                                                                                      return Container(
-                                                                                        margin: const EdgeInsets
-                                                                                            .only(
-                                                                                            top:
-                                                                                            15.0),
-                                                                                        child: Text(
-                                                                                            _depat!,
-                                                                                            style: const TextStyle(
-                                                                                                color: Color(
-                                                                                                    0xffFFFFFF),
-                                                                                                fontFamily:
-                                                                                                'Inter',
-                                                                                                fontWeight: FontWeight
-                                                                                                    .w400,
-                                                                                                fontSize:
-                                                                                                14.0)),
-                                                                                      );
-                                                                                    }).toList();
-                                                                              },*/
                                                 ),
                                               ),
                                             );
@@ -2746,6 +1709,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
+
                                   SizedBox(
                                     height: 55,
                                     child: Padding(
@@ -2785,14 +1749,14 @@ class _NavigationRailState extends State<MyHomePage>
 
                                               //  selectedColor: Color(0xff334155),
                                               onSelected: (bool selected) {
-                                                setState(() {
+                                                setStateView(() {
                                                   _isSelected = selected;
                                                   print(
                                                       "_isSelected--------------------------${_isSelected}");
                                                 });
                                               },
                                               onDeleted: () {
-                                                setState(() {
+                                                setStateView(() {
                                                   selectedDaysList
                                                       .removeAt(index);
                                                 });
@@ -2871,42 +1835,44 @@ class _NavigationRailState extends State<MyHomePage>
                                     padding: const EdgeInsets.only(
                                         left: 16, right: 16),
                                     child: TimeRange(
-                                      fromTitle: const Text(
-                                        'From',
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white),
-                                      ),
-                                      toTitle: const Text(
-                                        'To',
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white),
-                                      ),
-                                      titlePadding: 16,
-                                      textStyle: const TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.white),
-                                      activeTextStyle: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                      borderColor: Colors.white,
-                                      backgroundColor: Colors.transparent,
-                                      activeBackgroundColor: Colors.green,
-                                      firstTime: TimeOfDay(hour: 8, minute: 30),
-                                      lastTime: TimeOfDay(hour: 20, minute: 00),
-                                      timeStep: 10,
-                                      timeBlock: 30,
-                                      onRangeCompleted: (range) => setState(() {
-                                        print(
-                                            "time-------------------------------------");
-                                        setState(() {
-                                          startTime = range!.start;
-                                          endTime = range.end;
-                                          startTime1 =
-                                              getformattedTime(startTime);
-                                          endTime2 = getformattedTime(endTime);
-                                        });
-                                      }),
-                                    ),
+                                        fromTitle: const Text(
+                                          'From',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                        ),
+                                        toTitle: const Text(
+                                          'To',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                        ),
+                                        titlePadding: 16,
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.white),
+                                        activeTextStyle: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                        borderColor: Colors.white,
+                                        backgroundColor: Colors.transparent,
+                                        activeBackgroundColor: Colors.green,
+                                        firstTime:
+                                            TimeOfDay(hour: 8, minute: 30),
+                                        lastTime:
+                                            TimeOfDay(hour: 20, minute: 00),
+                                        timeStep: 10,
+                                        timeBlock: 30,
+                                        onRangeCompleted: (range) {
+                                          setStateView(() {
+                                            startTime = range!.start;
+                                            endTime = range.end;
+                                            startTime1 =
+                                                getformattedTime(startTime);
+                                            endTime2 =
+                                                getformattedTime(endTime);
+                                          });
+                                        }),
                                   ),
                                   const SizedBox(
                                     height: 25.0,
@@ -3022,7 +1988,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       .compareTo(b.title!);
                                                 },
                                                 itemSubmitted: (item) {
-                                                  setState(() {
+                                                  setStateView(() {
                                                     //print(item.title);
                                                     searchTextField!.textField!
                                                         .controller!.text = '';
@@ -3086,12 +2052,12 @@ class _NavigationRailState extends State<MyHomePage>
                                               selected: _isSelected!,
                                               //  selectedColor: Color(0xff334155),
                                               onSelected: (bool selected) {
-                                                setState(() {
+                                                setStateView(() {
                                                   _isSelected = selected;
                                                 });
                                               },
                                               onDeleted: () {
-                                                setState(() {
+                                                setStateView(() {
                                                   abc.removeAt(index);
                                                 });
                                               },
@@ -3208,7 +2174,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -3286,7 +2252,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -3364,7 +2330,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -3442,7 +2408,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           return null;
                                         },
                                         onChanged: (text) =>
-                                            setState(() => name1 = text),
+                                            setStateView(() => name1 = text),
                                       ),
                                     ],
                                   ),
@@ -3484,8 +2450,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                 isExpanded: true,
                                                 icon: Icon(
                                                   // Add this
-                                                  Icons
-                                                      .arrow_drop_down, // Add this
+                                                  Icons.arrow_drop_down,
+                                                  // Add this
                                                   color: Color(0xff64748B),
 
                                                   // Add this
@@ -3510,7 +2476,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   );
                                                 }).toList(),
                                                 onChanged: (String? newValue) {
-                                                  setState(() {
+                                                  setStateView(() {
                                                     _time = newValue;
                                                     print("account:$_time");
                                                   });
@@ -3691,7 +2657,7 @@ class _NavigationRailState extends State<MyHomePage>
                     TextField(
                       // controller: input_controller,
                       //   suggestions: input_list,
-                      key: key,
+                      //key: key,
 
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.only(top: 16.0),
@@ -3725,7 +2691,7 @@ class _NavigationRailState extends State<MyHomePage>
                     right: 12.0,
                     left: 10.0,
                   ),
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 20,
                     backgroundImage: AssetImage('images/images.jpeg'),
                     /*  const CircleAvatar(

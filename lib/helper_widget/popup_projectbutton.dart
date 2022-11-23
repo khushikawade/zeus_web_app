@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
@@ -79,9 +80,7 @@ class _ProjectEditState extends State<ProjectEdit>
   var _formKey = GlobalKey<FormState>();
   var isLoading = false;
   // var status = widget.response.data!.status; //response.data!.status;
-  bool loadingdelete = false;
   bool _submitted = false;
-  bool loadingEditeddata = false;
 
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -115,9 +114,6 @@ class _ProjectEditState extends State<ProjectEdit>
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes description");
-        print(response.body);
       } else {
         print("failuree");
       }
@@ -162,6 +158,10 @@ class _ProjectEditState extends State<ProjectEdit>
             ? widget.response.data!.customerId.toString()
             : '';
 
+    _description.text = widget.response.data != null &&
+            widget.response.data!.description != null
+        ? widget.response.data!.description.toString()
+        : '';
     // _status = response.data != null &&
     //         response.data!.status != null &&
     //         response.data!.status!.isNotEmpty
@@ -243,16 +243,6 @@ class _ProjectEditState extends State<ProjectEdit>
     return PopupMenuButton<int>(
       offset: widget.offset,
       color: Color(0xFF0F172A),
-      // icon: const Padding(
-      //   padding: EdgeInsets.only(bottom: 15.0),
-      //   child: Icon(
-      //     Icons.more_vert,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      // icon: SvgPicture.asset(
-      //   "images/edit.svg",
-      // ),
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 16.0),
         height: 30,
@@ -293,10 +283,11 @@ class _ProjectEditState extends State<ProjectEdit>
                           key: _formKey,
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.40,
-                            height:
-                                620.0, //MediaQuery.of(context).size.height * 0.85,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            // height:
+                            //     620.0, //MediaQuery.of(context).size.height * 0.85,
+                            child: ListView(
+                              shrinkWrap: true,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment:
@@ -1282,99 +1273,176 @@ class _ProjectEditState extends State<ProjectEdit>
                                         )),
                                   ],
                                 ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Container(
-                                          width:
-                                              97, //MediaQuery.of(context).size.width * 0.22,
-                                          margin: const EdgeInsets.only(
-                                              top: 15.0, bottom: 0.0),
-                                          height: 40.0,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff334155),
-                                            //border: Border.all(color:  const Color(0xff1E293B)),
-                                            borderRadius: BorderRadius.circular(
-                                              40.0,
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.99,
+                                      margin: const EdgeInsets.only(
+                                          top: 15.0, left: 10.0, right: 10.0),
+                                      height: 120.0,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        //border: Border.all(color:  const Color(0xff1E293B)),
+                                        borderRadius: BorderRadius.circular(
+                                          8.0,
+                                        ),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Color(0xff475569),
+                                            offset: Offset(
+                                              0.0,
+                                              2.0,
                                             ),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ), //BoxShadow
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 24.0, left: 26.0),
+                                            child: const Text(
+                                              "Description",
+                                              style: TextStyle(
+                                                  fontSize: 13.0,
+                                                  color: Color(0xff64748B),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500),
+                                            )),
+                                      ],
+                                    ),
+                                    TextFormField(
+                                      controller: _description,
+                                      maxLines: 5,
+                                      cursorColor: const Color(0xffFFFFFF),
+                                      style: const TextStyle(
+                                          color: Color(0xffFFFFFF)),
+                                      textAlignVertical:
+                                          TextAlignVertical.bottom,
+                                      keyboardType: TextInputType.text,
+                                      decoration: const InputDecoration(
+                                          errorStyle: TextStyle(
+                                              fontSize: 14.0,
+                                              // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                                              height: 0.20),
+                                          contentPadding: EdgeInsets.only(
+                                            bottom: 16.0,
+                                            top: 54.0,
+                                            right: 10,
+                                            left: 26.0,
                                           ),
+                                          border: InputBorder.none,
+                                          //   hintText: 'Project title',
+                                          hintStyle: TextStyle(
+                                              fontSize: 14.0,
+                                              // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                                              color: Color(0xffFFFFFF),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w500)),
+                                      autovalidateMode: _submitted
+                                          ? AutovalidateMode.onUserInteraction
+                                          : AutovalidateMode.disabled,
+                                      validator: (value) {
+                                        //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                        if (value!.isEmpty) {
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (text) => setState(() {}),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Container(
+                                        width:
+                                            97, //MediaQuery.of(context).size.width * 0.22,
+                                        margin: const EdgeInsets.only(
+                                            top: 15.0, bottom: 0.0),
+                                        height: 40.0,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          //border: Border.all(color:  const Color(0xff1E293B)),
+                                          borderRadius: BorderRadius.circular(
+                                            40.0,
+                                          ),
+                                        ),
 
-                                          child: const Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color:
-                                                      ColorSelect.white_color,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w700),
-                                            ),
+                                        child: const Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                color: ColorSelect.white_color,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700),
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print("Hello i am a create project");
-                                          final isValid =
-                                              _formKey.currentState!.validate();
-                                          setState(() => _submitted = true);
-                                          if (!isValid) {
-                                            return;
-                                          }
-                                          editProject(context);
-                                          _formKey.currentState!.save();
-                                          print(
-                                              "==============================================$loadingEditeddata");
-                                          setState(() {
-                                            Navigator.pushNamed(
-                                                context, "/home");
-                                            loadingEditeddata
-                                                ? showDailogfPopup(context,
-                                                    "Your request is in progress please wait for a while...")
-                                                : Container();
+                                    ),
+                                    const SizedBox(
+                                      width: 16,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          SmartDialog.showLoading(
+                                            msg:
+                                                "Your request is in progress please wait for a while...",
+                                          );
+
+                                          Future.delayed(
+                                              const Duration(seconds: 2), () {
+                                            editProject(context);
                                           });
-                                        },
-                                        child: Container(
-                                          width:
-                                              97.0, //MediaQuery.of(context).size.width * 0.22,
-                                          margin: const EdgeInsets.only(
-                                            top: 15.0,
-                                            bottom: 0.0,
-                                            right: 10.0,
+                                        }
+                                      },
+                                      child: Container(
+                                        width:
+                                            97.0, //MediaQuery.of(context).size.width * 0.22,
+                                        margin: const EdgeInsets.only(
+                                          top: 15.0,
+                                          bottom: 0.0,
+                                          right: 10.0,
+                                        ),
+                                        height: 40.0,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff7DD3FC),
+                                          //border: Border.all(color:  const Color(0xff1E293B)),
+                                          borderRadius: BorderRadius.circular(
+                                            40.0,
                                           ),
-                                          height: 40.0,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff7DD3FC),
-                                            //border: Border.all(color:  const Color(0xff1E293B)),
-                                            borderRadius: BorderRadius.circular(
-                                              40.0,
-                                            ),
-                                          ),
-                                          child: const Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "Edit",
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color:
-                                                      ColorSelect.black_color,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w700),
-                                            ),
+                                        ),
+                                        child: const Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Edit",
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                color: ColorSelect.black_color,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -1464,13 +1532,15 @@ class _ProjectEditState extends State<ProjectEdit>
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          deletePeople(widget.id, context);
-                                          setState(() {
-                                            Navigator.pop(context);
-                                            loadingdelete
-                                                ? showDailogfPopup(context,
-                                                    "Your request is in progress please wait for a while...")
-                                                : Container();
+                                          Navigator.pop(context);
+                                          SmartDialog.showLoading(
+                                            msg:
+                                                "Your request is in progress please wait for a while...",
+                                          );
+
+                                          Future.delayed(
+                                              const Duration(seconds: 2), () {
+                                            deletePeople(widget.id, context);
                                           });
                                         },
                                         child: const Text(
@@ -1511,9 +1581,6 @@ class _ProjectEditState extends State<ProjectEdit>
 
   deletePeople(String? peopleId, BuildContext context) async {
     var response;
-    setState(() {
-      loadingdelete = true;
-    });
     var url = '${AppUrl.deleteForProject}${peopleId}';
     var token = 'Bearer ' + storage.read("token");
 
@@ -1525,36 +1592,30 @@ class _ProjectEditState extends State<ProjectEdit>
 
     if (response.statusCode == 200) {
       print("sucess");
-      // print(response.body);
-      // var user = userFromJson(response.body);
 
-      // users = user.data!;
+      SmartDialog.dismiss();
 
-      // print('Users: ${users.length}');
-
-      setState(() {
-        loadingdelete = false;
-        Navigator.pushNamed(context, "/home");
-      });
+     // ignore: use_build_context_synchronously
+     Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage(
+                        onSubmit: (String value) {},
+                        adOnSubmit: (String value) {},
+                      )));
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
-      setState(() {
-        loadingdelete = false;
-        Navigator.of(context).pop();
-      });
+      SmartDialog.dismiss();
     }
   }
 
   //Edit project api
   editProject(BuildContext context) async {
     var response;
-    setState(() {
-      loadingEditeddata = true;
-    });
     var token = 'Bearer ' + storage.read("token");
     try {
       var map = new Map<String, dynamic>();
@@ -1568,23 +1629,12 @@ class _ProjectEditState extends State<ProjectEdit>
       map['currency'] = _curren;
       map['estimation_hours'] = _estimatehours.text.toString();
       map['status'] = _status;
+      map['description'] = _description.text.toString();
 
       try {
         var response = await http.post(
           Uri.parse('${AppUrl.baseUrl}/project/${widget.id}/update'),
           body: map,
-          // jsonEncode({
-          //   "title": _projecttitle.text.toString(),
-          //   // "accountable_person_id": _account,
-          //   "accountable_person_id": "1",
-          //   "customer_id": _custome,
-          //   "crm_task_id": _crmtask.text.toString(),
-          //   "work_folder_id": _warkfolderId.text.toString(),
-          //   "budget": _budget.text.toString(),
-          //   "currency": _curren,
-          //   "estimation_hours": _estimatehours.text.toString(),
-          //   "status": _status,
-          // }),
           headers: {
             "Accept": "application/json",
             "Authorization": token,
@@ -1596,18 +1646,8 @@ class _ProjectEditState extends State<ProjectEdit>
           var responseJson =
               jsonDecode(response.body.toString()) as Map<String, dynamic>;
           final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-          // ignore: use_build_context_synchronously
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => MyHomePage(
-          //               onSubmit: (String value) {},
-          //               adOnSubmit: (String value) {},
-          //             )));
 
-          setState(() {
-            loadingEditeddata = false;
-          });
+          SmartDialog.dismiss();
           // ignore: use_build_context_synchronously
           Navigator.push(
               context,
@@ -1617,39 +1657,31 @@ class _ProjectEditState extends State<ProjectEdit>
                         adOnSubmit: (String value) {},
                       )));
         } else {
-          setState(() {
-            loadingEditeddata = false;
-          });
-          print("failuree");
+          SmartDialog.dismiss();
+          Navigator.pop(context);
           Fluttertoast.showToast(
             msg: 'Something Went Wrong',
             backgroundColor: Colors.grey,
           );
         }
       } catch (e) {
-        setState(() {
-          loadingEditeddata = false;
-        });
+        SmartDialog.dismiss();
+        Navigator.pop(context);
         print('error caught: $e');
-
-        var user = userFromJson(response.body.toString());
         Fluttertoast.showToast(
-          msg: user.message ?? 'Something Went Wrong',
+          msg: 'Something Went Wrong',
           backgroundColor: Colors.grey,
         );
-        return loadingEditeddata;
       }
     } catch (e) {
-      setState(() {
-        loadingEditeddata = false;
-      });
+      SmartDialog.dismiss();
+      Navigator.pop(context);
       print('error caught: $e');
 
       Fluttertoast.showToast(
         msg: e.toString(),
         backgroundColor: Colors.grey,
       );
-      return loadingEditeddata;
     }
 
     // var response;

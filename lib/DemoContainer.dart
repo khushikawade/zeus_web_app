@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 
 class SearchTextClass extends StatefulWidget {
@@ -113,6 +114,29 @@ Widget row(Datum user) {
       children: <Widget>[
         Text(
           user!.title!,
+          style: TextStyle(fontSize: 16.0, color: Colors.white),
+        ),
+        SizedBox(
+          width: 9.0,
+        ),
+        /* Text(
+          user!.email!,
+        ),*/
+      ],
+    ),
+  );
+}
+
+Widget rowProject(SkillsData user) {
+  return Container(
+    padding: EdgeInsets.all(11.0),
+    decoration: BoxDecoration(
+      color: Color(0xff0F172A),
+    ),
+    child: Row(
+      children: <Widget>[
+        Text(
+          user.name.toString(),
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         SizedBox(

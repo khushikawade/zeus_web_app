@@ -25,6 +25,8 @@ class AppUrl {
   static const String abc = '$baseUrl/project/';
   static const String delete = '$baseUrl/resource/';
   static const String deleteForProject = '$baseUrl/project/';
+
+  static const String searchLanguage = "$baseUrl/tags";
 // static const String forgotPassword = baseUrl +
 
   // Future<String?> getAccountable() async {

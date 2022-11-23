@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:zeus/DemoClass.dart';
 import 'package:zeus/add_new_phase/new_phase.dart';
+import 'package:zeus/example.dart';
 import 'package:zeus/navigator_tabs/idle/data/DataClass.dart';
 import 'package:zeus/navigator_tabs/people_idle/data/getdata_provider.dart';
 import 'package:zeus/people_profile/editpage/edit_profile_model.dart';
@@ -46,45 +48,59 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => TagDetail()),
           ChangeNotifierProvider(create: (_) => EditPageModel())
         ],
-        child: MaterialApp(
-          builder: (context, child) => ResponsiveWrapper.builder(
-            BouncingScrollWrapper.builder(context, child!),
-            maxWidth: 2000,
-            minWidth: 1200,
-            defaultScale: true,
-            breakpoints: [
-              const ResponsiveBreakpoint.resize(450, name: MOBILE),
-              const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-              const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-              const ResponsiveBreakpoint.resize(1440, name: DESKTOP),
-              const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
-            ],
+        child:
+            // MaterialApp(
+            //   home: Example(),
+            //   navigatorObservers: [FlutterSmartDialog.observer],
+            //   builder: FlutterSmartDialog.init(),
+            // )
+            MaterialApp(
+          builder: FlutterSmartDialog.init(),
+          home: MaterialApp(
+            builder: (context, child) => ResponsiveWrapper.builder(
+              BouncingScrollWrapper.builder(context, child!),
+              maxWidth: 2000,
+              minWidth: 1200,
+              defaultScale: true,
+              breakpoints: [
+                const ResponsiveBreakpoint.resize(450, name: MOBILE),
+                const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+                const ResponsiveBreakpoint.resize(1440, name: DESKTOP),
+                const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+              ],
+            ),
+            home:
+                // const NewPhase(),
+                storage.read(isLogin) == null
+                    ? LoginScreen(
+                        onSubmit: (String value) {},
+                      )
+                    : MyHomePage(
+                        onSubmit: (String value) {},
+                        adOnSubmit: (String value) {},
+                      ),
+
+            navigatorObservers: [FlutterSmartDialog.observer],
+            // here
+            // builder: FlutterSmartDialog.init(),
+            onGenerateRoute: generateRoute,
+            debugShowCheckedModeBanner: false,
+            // onGenerateRoute: (RouteSettings settings) {
+            //   return Routes.fadeThrough(settings, (context) {
+            //     // switch (settings.name) {
+            //     //   case Routes.home:
+            //     //     return const ListPage();
+            //     //   case Routes.post:
+            //     //     return const PostPage();
+            //     //   case Routes.style:
+            //     //     return const TypographyPage();
+            //     //   default:
+            //     //     return const SizedBox.shrink();
+            //     // }
+            //   });
+            // },
           ),
-          home: //const NewPhase(),
-              storage.read(isLogin) == null
-                  ? LoginScreen(
-                      onSubmit: (String value) {},
-                    )
-                  : MyHomePage(
-                      onSubmit: (String value) {},
-                      adOnSubmit: (String value) {},
-                    ),
-          onGenerateRoute: generateRoute,
-          debugShowCheckedModeBanner: false,
-          // onGenerateRoute: (RouteSettings settings) {
-          //   return Routes.fadeThrough(settings, (context) {
-          //     // switch (settings.name) {
-          //     //   case Routes.home:
-          //     //     return const ListPage();
-          //     //   case Routes.post:
-          //     //     return const PostPage();
-          //     //   case Routes.style:
-          //     //     return const TypographyPage();
-          //     //   default:
-          //     //     return const SizedBox.shrink();
-          //     // }
-          //   });
-          // },
         ));
   }
   // return MultiProvider(

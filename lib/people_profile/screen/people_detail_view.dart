@@ -237,24 +237,24 @@ class _ProfileDetailState extends State<ProfileDetail> {
     if (list.resource != null) {
       timezome = list.resource!.timeZone!.name;
     } else {
-      timezome = 'N/A';
+      timezome = 'TBD';
     }
     if (list.resource != null) {
       timeoffset = list.resource!.timeZone!.offset;
     } else {
-      timeoffset = 'N/A';
+      timeoffset = 'TBD';
     }
     if (list.resource != null) {
       city = list.resource!.city != null && list.resource!.city!.isNotEmpty
           ? list.resource!.city
-          : 'N/A';
+          : 'TBD';
     } else {
-      city = 'N/A';
+      city = 'TBD';
     }
     if (list.resource != null) {
       salary = list.resource!.salary;
     } else {
-      salary = 'N/A';
+      salary = 'TBD';
     }
 
     List<String> commaSepratedList = [];
@@ -427,8 +427,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                         ? list.resource!
                                                             .designation
                                                             .toString()
-                                                        : 'N/A'
-                                                    : 'N/A',
+                                                        : 'TBD'
+                                                    : 'TBD',
                                                 style: const TextStyle(
                                                     color: ColorSelect
                                                         .profile_color,
@@ -470,8 +470,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                         ? list.resource!
                                                             .department!.name
                                                             .toString()
-                                                        : 'N/A'
-                                                    : 'N/A',
+                                                        : 'TBD'
+                                                    : 'TBD',
                                                 style: const TextStyle(
                                                     color: ColorSelect
                                                         .profile_color,
@@ -528,8 +528,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                         ? list
                                                             .resource!.associate
                                                             .toString()
-                                                        : 'N/A'
-                                                    : 'N/A',
+                                                        : 'TBD'
+                                                    : 'TBD',
                                                 style: const TextStyle(
                                                     color: ColorSelect
                                                         .profile_color,
@@ -569,8 +569,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                                 .isNotEmpty
                                                         ? list.resource!.country
                                                             .toString()
-                                                        : 'N/A'
-                                                    : 'N/A',
+                                                        : 'TBD'
+                                                    : 'TBD',
                                                 style: TextStyle(
                                                     color: ColorSelect
                                                         .profile_color,
@@ -605,8 +605,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                                 .isNotEmpty
                                                         ? list.resource!.city
                                                             .toString()
-                                                        : 'N/A'
-                                                    : 'N/A',
+                                                        : 'TBD'
+                                                    : 'TBD',
                                                 style: TextStyle(
                                                     color: ColorSelect
                                                         .profile_color,
@@ -651,8 +651,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                         ? list.resource!
                                                             .timeZone!.offset
                                                             .toString()
-                                                        : 'N/A'
-                                                    : 'N/A',
+                                                        : 'TBD'
+                                                    : 'TBD',
                                                 style: TextStyle(
                                                     color: ColorSelect
                                                         .profile_color,
@@ -709,8 +709,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                 list.resource!.nickname!
                                                     .isNotEmpty
                                             ? list.resource!.nickname.toString()
-                                            : 'N/A'
-                                        : 'N/A',
+                                            : 'TBD'
+                                        : 'TBD',
                                     style: TextStyle(
                                         color: ColorSelect.white_color,
                                         fontSize: 16.0,
@@ -730,8 +730,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                         ? list.resource!.bio != null &&
                                                 list.resource!.bio!.isNotEmpty
                                             ? list.resource!.bio.toString()
-                                            : 'N/A'
-                                        : 'N/A',
+                                            : 'TBD'
+                                        : 'TBD',
                                     style: TextStyle(
                                         color: ColorSelect.text_color,
                                         fontSize: 16.0,
@@ -771,7 +771,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     
                                     list.resource != null
                                         ? "${list.resource!.availibiltyDay} | ${list.resource!.availibiltyTime} | $timezome$timeoffset/$city"
-                                        : 'N/A',
+                                        : 'TBD',
                                     style: const TextStyle(
                                         color: ColorSelect.white_color,
                                         fontSize: 16.0,
@@ -860,7 +860,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                     skill != null &&
                                                             skill.isNotEmpty
                                                         ? '$skill'
-                                                        : 'N/A',
+                                                        : 'TBD',
                                                     style: const TextStyle(
                                                         color: ColorSelect
                                                             .white_color,
@@ -888,7 +888,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                       child: Container(
                                         margin: const EdgeInsets.only(
                                             left: 160.0, top: 35.0),
-                                        child: const Text('N/A',
+                                        child: const Text('TBD',
                                             style: TextStyle(
                                                 color: ColorSelect.white_color,
                                                 fontSize: 14.0,

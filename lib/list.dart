@@ -1449,7 +1449,7 @@ class _ListScreenState extends State<ListClass> {
                                         margin: const EdgeInsets.only(
                                             left: 128.0, top: 16.0),
                                         child: const Text(
-                                          "Current phase",
+                                          "Current phase ",
                                           style: TextStyle(
                                               color: Color(0xff94A3B8),
                                               fontSize: 14.0,

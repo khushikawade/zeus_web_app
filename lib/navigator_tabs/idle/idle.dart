@@ -8,11 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:zeus/helper_widget/scrollbar_helper_widget.dart';
+import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/navigator_tabs/idle/PopScreen.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import 'dart:convert';
+import '../../navigation/skills_model/skills_response.dart';
 import '../../utility/app_url.dart';
 import '../../popup/Popup.dart';
 import '../../widgets/custom_app_bar.dart';
@@ -39,9 +41,12 @@ class _IdleState extends State<Idle> {
   List _currencyName = [];
   List _accountableId = [];
   List _customerName = [];
+  List<SkillsData> skillsData = [];
   PopupScreen popupScreen = PopupScreen();
+
   //String? id = "";
   bool amIHovering = false;
+
   //Future? _getData;
   Future? _getProjectDetail;
   Offset exitFrom = const Offset(0, 0);
@@ -215,6 +220,7 @@ class _IdleState extends State<Idle> {
   }
 
   Future? getList;
+
   Future getListData1() {
     return Provider.of<ProjectDetail>(context, listen: false).changeProfile();
   }
@@ -243,6 +249,7 @@ class _IdleState extends State<Idle> {
     getAccountable();
     getCustomer();
     getCurrency();
+    getUsers();
     //  var abv=Provider.of<ProjectDetail>(context, listen: false).productData();
     // print('checkDate '+abv.data.toString());
     //var a=_getProjectDetail as ProjectDetailResponse;
@@ -278,7 +285,7 @@ class _IdleState extends State<Idle> {
               _projectData.title!.isNotEmpty) {
             projectName = _projectData.title!;
           } else {
-            projectName = "N/A";
+            projectName = "TBD";
           }
 
           if (_projectData != null &&
@@ -286,7 +293,7 @@ class _IdleState extends State<Idle> {
               _projectData.status!.isNotEmpty) {
             projectStatus = _projectData.status!;
           } else {
-            projectStatus = "N/A";
+            projectStatus = "TBD";
           }
 
           if (_projectData != null &&
@@ -310,7 +317,7 @@ class _IdleState extends State<Idle> {
               _projectData.deadlineDate!.isNotEmpty) {
             deadlineDate = AppUtil.formattedDate(_projectData.deadlineDate!);
           } else {
-            deadlineDate = "N/A";
+            deadlineDate = "TBD";
           }
 
           // if (_projectData != null &&
@@ -319,7 +326,7 @@ class _IdleState extends State<Idle> {
           //     _projectData.currentPhase!.title!.isNotEmpty) {
           //   currentPhase = _projectData.currentPhase!.title!;
           // } else {
-          //   currentPhase = "N/A";
+          //   currentPhase = "TBD";
           // }
 
           if (_projectData.currentPhase == null) {
@@ -354,13 +361,13 @@ class _IdleState extends State<Idle> {
           // if (_peopleList.resource != null) {
           //   nickname = _peopleList.resource!.nickname!;
           // } else {
-          //   nickname = 'N/A';
+          //   nickname = 'TBD';
           // }
 
           // if (_peopleList.resource != null) {
           //   capacity = _peopleList.resource!.capacity!;
           // } else {
-          //   capacity = 'N/A';
+          //   capacity = 'TBD';
           // }
 
           // var image = _peopleList.image;
@@ -400,7 +407,8 @@ class _IdleState extends State<Idle> {
                       _currencyName,
                       _accountableId,
                       _customerName,
-                      _projectData.id.toString());
+                      _projectData.id.toString(),
+                      skillsData);
                 });
                 // Navigator.push(
                 //     context,
@@ -466,7 +474,7 @@ class _IdleState extends State<Idle> {
                 ),
                 const DataCell(
                   Text(
-                    "N/A",
+                    "TBD",
                     style: TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,
@@ -476,7 +484,7 @@ class _IdleState extends State<Idle> {
                 ),
                 const DataCell(
                   Text(
-                    "N/A",
+                    "TBD",
                     style: TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,
@@ -525,99 +533,100 @@ class _IdleState extends State<Idle> {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                _projectData.customer!.image != null &&
-                        _projectData.customer!.image!.isNotEmpty
-                    ? DataCell(
-                        ConstrainedBox(
-                          constraints: BoxConstraints.tight(Size(200.0, 50.0)),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                showMenus(context, index);
-                              });
-                            },
-                            child: Container(
-                              width: 80,
-                              height: 32,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      top: 0,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          child: Image.network(
-                                            '${_projectData.customer!.image}',
-                                            width: 32,
-                                            height: 32,
-                                            fit: BoxFit.cover,
-                                          ))),
-                                  Positioned(
-                                    left: 16,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Image.network(
-                                        'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
-                                        width: 32,
-                                        height: 32,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   top: 0,
-                                  //   child: ClipRRect(
-                                  //     borderRadius: BorderRadius.circular(100),
-                                  //     child: Image.network(
-                                  //       'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                                  //       width: 32,
-                                  //       height: 32,
-                                  //       fit: BoxFit.cover,
-                                  //     ),
-                                  //   ),
-                                  // ),
+                // _projectData.customer!.image != null &&
+                //         _projectData.customer!.image!.isNotEmpty
+                //     ? DataCell(
+                //         ConstrainedBox(
+                //           constraints: BoxConstraints.tight(Size(200.0, 50.0)),
+                //           child: InkWell(
+                //             onTap: () {
+                //               setState(() {
+                //                 showMenus(context, index);
+                //               });
+                //             },
+                //             child: Container(
+                //               width: 80,
+                //               height: 32,
+                //               child: Stack(
+                //                 children: [
+                //                   Positioned(
+                //                       top: 0,
+                //                       child: ClipRRect(
+                //                           borderRadius:
+                //                               BorderRadius.circular(100),
+                //                           child: Image.network(
+                //                             '${_projectData.customer!.image}',
+                //                             width: 32,
+                //                             height: 32,
+                //                             fit: BoxFit.cover,
+                //                           ))),
+                //                   Positioned(
+                //                     left: 16,
+                //                     child: ClipRRect(
+                //                       borderRadius: BorderRadius.circular(100),
+                //                       child: Image.network(
+                //                         'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                //                         width: 32,
+                //                         height: 32,
+                //                         fit: BoxFit.cover,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                   // Positioned(
+                //                   //   top: 0,
+                //                   //   child: ClipRRect(
+                //                   //     borderRadius: BorderRadius.circular(100),
+                //                   //     child: Image.network(
+                //                   //       'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                //                   //       width: 32,
+                //                   //       height: 32,
+                //                   //       fit: BoxFit.cover,
+                //                   //     ),
+                //                   //   ),
+                //                   // ),
 
-                                  // image_count > 2 ?
+                //                   // image_count > 2 ?
 
-                                  Positioned(
-                                    left: 30,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Container(
-                                        width: 32,
-                                        height: 32,
-                                        color: Color(0xff334155),
-                                        child: const Center(
-                                            child: Text(
-                                          '+1',
-                                          style: TextStyle(
-                                              color: Color(0xffFFFFFF),
-                                              fontSize: 12.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                      ),
-                                    ),
-                                  )
-                                  // :
-                                  // Container()
-                                ],
-                              ),
-                            ),
-                          ),
-                          //  ),
-                        ),
-                      )
-                    : const DataCell(
-                        Text(
-                          "TBD",
-                          style: TextStyle(
-                              color: ColorSelect.white_color,
-                              fontSize: 14.0,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
+                //                   Positioned(
+                //                     left: 30,
+                //                     child: ClipRRect(
+                //                       borderRadius: BorderRadius.circular(100),
+                //                       child: Container(
+                //                         width: 32,
+                //                         height: 32,
+                //                         color: Color(0xff334155),
+                //                         child: const Center(
+                //                             child: Text(
+                //                           '+1',
+                //                           style: TextStyle(
+                //                               color: Color(0xffFFFFFF),
+                //                               fontSize: 12.0,
+                //                               fontFamily: 'Inter',
+                //                               fontWeight: FontWeight.w500),
+                //                         )),
+                //                       ),
+                //                     ),
+                //                   )
+                //                   // :
+                //                   // Container()
+                //                 ],
+                //               ),
+                //             ),
+                //           ),
+                //           //  ),
+                //         ),
+                //       )
+                //     :
+                const DataCell(
+                  Text(
+                    "TBD",
+                    style: TextStyle(
+                        color: ColorSelect.white_color,
+                        fontSize: 14.0,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
 
                 // DataCell(_peopleList.resource != null
                 //     ? Container(
@@ -666,7 +675,7 @@ class _IdleState extends State<Idle> {
                 //           },
                 //         ),
                 //       )
-                //     : const Text('N/A',
+                //     : const Text('TBD',
                 //         style: TextStyle(
                 //             color: ColorSelect.white_color,
                 //             fontSize: 14.0,
@@ -1305,7 +1314,7 @@ class _IdleState extends State<Idle> {
     //                                                                     name != null &&
     //                                                                             name.isNotEmpty
     //                                                                         ? name
-    //                                                                         : 'N/A',
+    //                                                                         : 'TBD',
     //                                                                     style: const TextStyle(
     //                                                                         color: Color(
     //                                                                             0xffFFFFFF),
@@ -2096,6 +2105,29 @@ class _IdleState extends State<Idle> {
         print("failed to much");
       }
       return value;
+    }
+  }
+
+  void getUsers() async {
+    skillsData.clear();
+    var token = 'Bearer ' + storage.read("token");
+    var response = await http.get(
+      Uri.parse(AppUrl.searchLanguage),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token,
+      },
+    );
+    if (response.statusCode == 200) {
+      print("skills sucess");
+      var skills = skillProjectFromJson(response.body);
+      print(skills);
+      print('Users: ${skills.data}');
+      skillsData.addAll(skills.data!);
+      print(skillsData);
+    } else {
+      print("Error getting users.");
+      // print(response.body);
     }
   }
 

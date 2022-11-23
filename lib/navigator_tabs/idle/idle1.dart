@@ -273,31 +273,31 @@
 //               _projectData.title!.isNotEmpty) {
 //             projectName = _projectData.title!;
 //           } else {
-//             projectName = "N/A";
+//             projectName = "TBD";
 //           }
 
 //           // if (_peopleList.resource != null) {
 //           //   designation = _peopleList.resource!.designation!;
 //           // } else {
-//           //   designation = 'N/A';
+//           //   designation = 'TBD';
 //           // }
 
 //           // if (_peopleList.resource != null) {
 //           //   associate = _peopleList.resource!.associate!;
 //           // } else {
-//           //   associate = 'N/A';
+//           //   associate = 'TBD';
 //           // }
 
 //           // if (_peopleList.resource != null) {
 //           //   nickname = _peopleList.resource!.nickname!;
 //           // } else {
-//           //   nickname = 'N/A';
+//           //   nickname = 'TBD';
 //           // }
 
 //           // if (_peopleList.resource != null) {
 //           //   capacity = _peopleList.resource!.capacity!;
 //           // } else {
-//           //   capacity = 'N/A';
+//           //   capacity = 'TBD';
 //           // }
 
 //           // var image = _peopleList.image;
@@ -496,7 +496,7 @@
 //                 //           },
 //                 //         ),
 //                 //       )
-//                 //     : const Text('N/A',
+//                 //     : const Text('TBD',
 //                 //         style: TextStyle(
 //                 //             color: ColorSelect.white_color,
 //                 //             fontSize: 14.0,
@@ -1135,7 +1135,7 @@
 //                                                                         name != null &&
 //                                                                                 name.isNotEmpty
 //                                                                             ? name
-//                                                                             : 'N/A',
+//                                                                             : 'TBD',
 //                                                                         style: const TextStyle(
 //                                                                             color: Color(
 //                                                                                 0xffFFFFFF),

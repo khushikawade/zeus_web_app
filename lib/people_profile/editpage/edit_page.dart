@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:html';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,7 +29,6 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  bool loadingdata = false;
   String dropdownvalue = 'Item 1';
   String? _depat, _account, _custome, _curren, _status, _time, _tag;
   DateTime selectedDate = DateTime.now();
@@ -47,6 +47,9 @@ class _EditPageState extends State<EditPage> {
   final TextEditingController _warkfolderId = TextEditingController();
   final TextEditingController _budget = TextEditingController();
   final TextEditingController _estimatehours = TextEditingController();
+
+  final TextEditingController descriptionController = TextEditingController();
+
   bool _submitted = false;
   bool _addSubmitted = false;
   List _accountableId = [];
@@ -180,9 +183,12 @@ class _EditPageState extends State<EditPage> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.40,
-          height: 620, //MediaQuery.of(context).size.height * 0.75,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          //height: 620, //MediaQuery.of(context).size.height * 0.75,
+          child: ListView(
+            shrinkWrap: true,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisSize: MainAxisSize.max,
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -441,72 +447,68 @@ class _EditPageState extends State<EditPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: Container(
-                                margin:
-                                    const EdgeInsets.only(top: 6.0, left: 16.0),
-                                child: const Text(
-                                  "Customer",
-                                  style: TextStyle(
-                                      fontSize: 13.0,
-                                      color: Color(0xff64748B),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: const EdgeInsets.only(
-                                    top: 5.0, right: 18.0, left: 15.0),
-                                height: 20.0,
-                                child: StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSettersetState) {
-                                    return DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                        dropdownColor: ColorSelect.class_color,
-                                        value: _custome,
-                                        underline: Container(),
-                                        hint: const Text(
-                                          "Select Customer",
-                                          style: TextStyle(
-                                              fontSize: 15.0,
-                                              color: Color(0xffFFFFFF),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        isExpanded: true,
-                                        icon: const Icon(
-                                          // Add this
-                                          Icons.arrow_drop_down, // Add this
-                                          color: Color(0xff64748B),
-
-                                          // Add this
-                                        ),
-                                        items: _customerName.map((items) {
-                                          return DropdownMenuItem(
-                                            value: items['id'].toString(),
-                                            child: Text(
-                                              items['name'],
-                                              style: const TextStyle(
-                                                  fontSize: 15.0,
-                                                  color: Color(0xffFFFFFF),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            _custome = newValue;
-                                            print("account:$_custome");
-                                          });
-                                        },
+                          Container(
+                              margin:
+                                  const EdgeInsets.only(top: 6.0, left: 16.0),
+                              child: const Text(
+                                "Customer",
+                                style: TextStyle(
+                                    fontSize: 13.0,
+                                    color: Color(0xff64748B),
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w500),
+                              )),
+                          Container(
+                              margin: const EdgeInsets.only(
+                                  top: 5.0, right: 18.0, left: 15.0),
+                              height: 20.0,
+                              child: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSettersetState) {
+                                  return DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      dropdownColor: ColorSelect.class_color,
+                                      value: _custome,
+                                      underline: Container(),
+                                      hint: const Text(
+                                        "Select Customer",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
                                       ),
-                                    );
-                                  },
-                                )),
-                          ),
+                                      isExpanded: true,
+                                      icon: const Icon(
+                                        // Add this
+                                        Icons.arrow_drop_down, // Add this
+                                        color: Color(0xff64748B),
+
+                                        // Add this
+                                      ),
+                                      items: _customerName.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items['id'].toString(),
+                                          child: Text(
+                                            items['name'],
+                                            style: const TextStyle(
+                                                fontSize: 15.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _custome = newValue;
+                                          print("account:$_custome");
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              )),
                         ],
                       )),
                 ],
@@ -773,27 +775,23 @@ class _EditPageState extends State<EditPage> {
                                   dropdownColor: ColorSelect.class_color,
                                   value: _curren,
                                   underline: Container(),
-                                  hint: const Flexible(
-                                    child: Text(
-                                      "€",
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          // ScreenUtil()
-                                          //     .setSp(ScreenUtil().setSp(18.0)),
-                                          color: Color(0xffFFFFFF),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
+                                  hint: const Text(
+                                    "€",
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        // ScreenUtil()
+                                        //     .setSp(ScreenUtil().setSp(18.0)),
+                                        color: Color(0xffFFFFFF),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   isExpanded: true,
-                                  icon: const Flexible(
-                                    child: Icon(
-                                      // Add this
-                                      Icons.arrow_drop_down, // Add this
-                                      color: Color(0xff64748B),
+                                  icon: const Icon(
+                                    // Add this
+                                    Icons.arrow_drop_down, // Add this
+                                    color: Color(0xff64748B),
 
-                                      // Add this
-                                    ),
+                                    // Add this
                                   ),
                                   items: _currencyName.map((items) {
                                     return DropdownMenuItem(
@@ -873,12 +871,12 @@ class _EditPageState extends State<EditPage> {
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               errorStyle: TextStyle(
                                   fontSize: 14.0,
                                   // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
                                   height: 0.20),
-                              contentPadding: const EdgeInsets.only(
+                              contentPadding: EdgeInsets.only(
                                 bottom: 18.0,
                                 top: 55.0,
                                 right: 0,
@@ -1063,97 +1061,175 @@ class _EditPageState extends State<EditPage> {
                             ],
                           ),
                           const Spacer(),
-                          /* Container(
-                                            margin: const EdgeInsets.only(
-                                                top: 5.0, right: 10.0),
-                                            height: 20.0,
-                                            child: Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: SvgPicture.asset(
-                                                    'images/cross.svg')),
-                                          ),*/
                         ],
                       ),
                     ),
                   ),
                 ],
               ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        width: 97, //MediaQuery.of(context).size.width * 0.22,
-                        margin: const EdgeInsets.only(
-                          top: 16.0,
-                        ),
-                        height: 40.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          //border: Border.all(color:  const Color(0xff1E293B)),
-                          borderRadius: BorderRadius.circular(
-                            40.0,
+              SizedBox(
+                height: 20,
+              ),
+              Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    margin: const EdgeInsets.only(
+                        top: 15.0, left: 10.0, right: 10.0),
+                    height: 120.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff334155),
+                      //border: Border.all(color:  const Color(0xff1E293B)),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xff475569),
+                          offset: Offset(
+                            0.0,
+                            2.0,
                           ),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0,
+                        ), //BoxShadow
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 24.0, left: 26.0),
+                          child: const Text(
+                            "Description",
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                color: Color(0xff64748B),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          )),
+                    ],
+                  ),
+                  TextFormField(
+                    controller: descriptionController,
+                    maxLines: 5,
+                    cursorColor: const Color(0xffFFFFFF),
+                    style: const TextStyle(color: Color(0xffFFFFFF)),
+                    textAlignVertical: TextAlignVertical.bottom,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        errorStyle: TextStyle(
+                            fontSize: 14.0,
+                            // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                            height: 0.20),
+                        contentPadding: EdgeInsets.only(
+                          bottom: 16.0,
+                          top: 54.0,
+                          right: 10,
+                          left: 26.0,
                         ),
+                        border: InputBorder.none,
+                        //   hintText: 'Project title',
+                        hintStyle: TextStyle(
+                            fontSize: 14.0,
+                            // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                            color: Color(0xffFFFFFF),
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500)),
+                    autovalidateMode: _submitted
+                        ? AutovalidateMode.onUserInteraction
+                        : AutovalidateMode.disabled,
+                    validator: (value) {
+                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      if (value!.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChanged: (text) => setState(() => name_ = text),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: 97, //MediaQuery.of(context).size.width * 0.22,
+                      margin: const EdgeInsets.only(
+                        top: 16.0,
+                      ),
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          40.0,
+                        ),
+                      ),
 
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                color: ColorSelect.white_color,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700),
-                          ),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: ColorSelect.white_color,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _submit(context);
-                        loadingdata
-                            ? showDailogfPopup(context,
-                                "Your request is in progress please wait for a while...")
-                            : Container();
-                      },
-                      child: Container(
-                        width: 97.0, //MediaQuery.of(context).size.width * 0.22,
-                        margin: const EdgeInsets.only(
-                          top: 16.0,
-                          //bottom: 10.0,
-                          right: 10.0,
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (widget.formKey!.currentState!.validate()) {
+                        SmartDialog.showLoading(
+                          msg:
+                              "Your request is in progress please wait for a while...",
+                        );
+
+                        Future.delayed(const Duration(seconds: 2), () {
+                          createProject(context);
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: 97.0, //MediaQuery.of(context).size.width * 0.22,
+                      margin: const EdgeInsets.only(
+                        top: 16.0,
+                        //bottom: 10.0,
+                        right: 10.0,
+                      ),
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff7DD3FC),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          40.0,
                         ),
-                        height: 40.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff7DD3FC),
-                          //border: Border.all(color:  const Color(0xff1E293B)),
-                          borderRadius: BorderRadius.circular(
-                            40.0,
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Create",
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                color: ColorSelect.black_color,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700),
-                          ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Create",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: ColorSelect.black_color,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -1162,20 +1238,9 @@ class _EditPageState extends State<EditPage> {
     );
   }
 
-  _submit(context) {
-    setState(() => _submitted = true);
-    if (widget.formKey!.currentState!.validate()) {
-      //widget.onSubmit(name_);
-      createProject(context);
-    }
-  }
-
   //Create project Api
   createProject(BuildContext context) async {
     var responseJson;
-    setState(() {
-      loadingdata = true;
-    });
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.post(
@@ -1191,7 +1256,8 @@ class _EditPageState extends State<EditPage> {
           "currency": _curren,
           "estimation_hours": _estimatehours.text.toString(),
           "status": _status,
-          "delivery_date": selectedDate.toString()
+          "delivery_date": selectedDate.toString(),
+          "description": descriptionController.text.toString()
         }),
         headers: {
           "Content-Type": "application/json",
@@ -1203,9 +1269,7 @@ class _EditPageState extends State<EditPage> {
         responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        setState(() {
-          loadingdata = false;
-        });
+        SmartDialog.dismiss();
         // ignore: use_build_context_synchronously
         Navigator.push(
             context,
@@ -1215,12 +1279,10 @@ class _EditPageState extends State<EditPage> {
                       adOnSubmit: (String value) {},
                     )));
       } else {
-        print("failuree");
-        setState(() {
-          loadingdata = false;
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil("/home", (route) => false);
-        });
+        SmartDialog.dismiss();
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/home", (route) => false);
+
         Fluttertoast.showToast(
           msg: 'Something Went Wrong',
           backgroundColor: Colors.grey,

@@ -1,0 +1,168 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:flutter/cupertino.dart';
+
+class DatePicker extends StatefulWidget {
+  String? title;
+
+  DatePicker({Key? key, this.title})
+      : super(
+          key: key,
+        );
+
+  @override
+  State<DatePicker> createState() => _DatePickerState();
+}
+
+class _DatePickerState extends State<DatePicker> {
+  DateTime selectedDate = DateTime.now();
+  DateTime? startDate;
+  DateTime? endDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30.0, bottom: 15),
+      child: Container(
+          width: MediaQuery.of(context).size.width * 0.30,
+          margin: const EdgeInsets.only(right: 30.0),
+          height: 56.0,
+          decoration: BoxDecoration(
+            color: const Color(0xff334155),
+            //border: Border.all(color:  const Color(0xff1E293B)),
+            borderRadius: BorderRadius.circular(
+              8.0,
+            ),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0xff475569),
+                offset: Offset(
+                  0.0,
+                  2.0,
+                ),
+                blurRadius: 0.0,
+                spreadRadius: 0.0,
+              ), //BoxShadow
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  _selectDate();
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(left: 13.0),
+                  height: 22.0,
+                  width: 20.0,
+                  child: Image.asset('images/date.png'),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 10.0, left: 20.0),
+                      child: Text(
+                        widget.title!,
+                        style: const TextStyle(
+                            fontSize: 13.0,
+                            color: Color(0xff64748B),
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500),
+                      )),
+                  GestureDetector(
+                    onTap: () async {
+                      _selectDate();
+                    },
+                    child: Container(
+                        margin: const EdgeInsets.only(top: 3.0, left: 20.0),
+                        child: Text(
+                          // '',
+                          '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
+                          style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xffFFFFFF),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w200),
+                        )),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0, right: 10.0),
+                height: 20.0,
+                child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: SvgPicture.asset('images/cross.svg')),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Future<void> _selectDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: const Color(0xff0F172A),
+            accentColor: const Color(0xff0F172A),
+            colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+      initialDate: selectedDate,
+      // firstDate: new DateTime.now().subtract(new Duration(days: 0)),
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+      firstDate: DateTime.now(),
+      // .subtract(Duration(days: 0)),
+      lastDate: DateTime(2100),
+      // lastDate: DateTime(2101)
+    );
+
+    if (picked != null && picked != selectedDate) {
+
+
+
+      setState(() {
+
+
+       
+        print("----------------------------------------");
+        print(selectedDate);
+        if (widget.title! == "Start date") {
+           selectedDate = picked;
+          startDate = picked;
+          
+        }else{
+          if(startDate!.isAfter(selectedDate)){
+             selectedDate = picked;
+          
+
+          }
+          
+
+        }
+      });
+    }
+
+    // print("startDate-------------------${startDate}");
+
+    // if (widget.title! == "End date") {
+    //   //endDate = selectedDate;
+    //   print("endDate-------------------${endDate}");
+    //   if () {
+    //     endDate = selectedDate;
+    //     print("endDate-------------------${endDate}");
+    //   }
+    // }
+  }
+}
