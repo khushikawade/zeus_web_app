@@ -55,11 +55,12 @@ class _PeopleIdleState extends State<PeopleIdle> {
   String token = "";
   var dataPeople = 'people_data';
   bool imageavail = false;
+
   //Future? _getList;
   var postion;
   SharedPreferences? sharedPreferences;
   //final ScrollController _horizontal_scrollcontroller = ScrollController();
-  final ScrollController vertical_scrollcontroller = ScrollController();
+  //final ScrollController vertical_scrollcontroller = ScrollController();
 
   final ScrollController horizontalScroll = ScrollController();
   final double width = 18;
@@ -129,7 +130,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
         child: Scaffold(
           backgroundColor: ColorSelect.class_color,
           body: SingleChildScrollView(
-            controller: vertical_scrollcontroller,
+            //controller: vertical_scrollcontroller,
             scrollDirection: Axis.vertical,
             child: SingleChildScrollView(
               controller: horizontalScroll,
@@ -161,7 +162,14 @@ class _PeopleIdleState extends State<PeopleIdle> {
                       return data.loading
                           ? const Expanded(
                               child: Center(child: CircularProgressIndicator()))
-                          : makePeopleList(data);
+                          : Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  makePeopleList(data),
+                                ],
+                              ),
+                            );
                       //return Container();
                     }),
                     //   FutureBuilder(
@@ -728,12 +736,17 @@ class _PeopleIdleState extends State<PeopleIdle> {
           }
 
           rows.add(DataRow(
-              onSelectChanged: (newValue) {
-                Navigator.push(
+              onSelectChanged: (newValue) async {
+                bool result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             ProfileDetail(list: _peopleList)));
+
+                if (result != null && result) {
+                  Provider.of<PeopleIdelClass>(context, listen: false)
+                      .getPeopleDataList();
+                }
               },
               cells: [
                 DataCell(Row(
@@ -909,9 +922,28 @@ class _PeopleIdleState extends State<PeopleIdle> {
                     padding: const EdgeInsets.only(left: 10.0, bottom: 12),
                     child: Stack(children: [
                       MyMenu(
-                          data: data.peopleList!.data![index],
-                          title: 'Menu at bottom',
-                          alignment: Alignment.bottomRight)
+                        peopleList: data.peopleList!.data,
+                        data: data.peopleList!.data![index],
+                        title: 'Menu at bottom',
+                        alignment: Alignment.bottomRight,
+                        buildContext: context,
+                        returnValue: () {
+                          print(
+                              "Value returned --------------------------------------");
+                          Provider.of<PeopleIdelClass>(context, listen: false)
+                              .getPeopleDataList();
+                          // setState(() {
+                          //   data.peopleList!.data!.forEach((element) {
+                          //     data.peopleList!.data!.removeAt(index);
+                          //     // if (element.id.toString() ==
+                          //     //     data.peopleList!.data![index].id.toString()) {
+
+                          //     //   data.peopleList!.data!.removeAt(index);
+                          //     // }
+                          //   });
+                          // });
+                        },
+                      )
                     ]),
                   ),
                 )

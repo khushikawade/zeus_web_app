@@ -32,12 +32,16 @@ class AppUtil {
   }
 
   static String formattedDateYear(String date) {
-    try {
-      DateTime dateTime = DateTime.parse(date);
-      DateFormat dateFormat = DateFormat('d MMM yyyy');
-      return dateFormat.format(dateTime).toString();
-    } catch (_) {
-      return '';
+    if (date != "0000-00-00 00:00:00") {
+      try {
+        DateTime dateTime = DateTime.parse(date);
+        DateFormat dateFormat = DateFormat('d MMM yyyy');
+        return dateFormat.format(dateTime).toString();
+      } catch (_) {
+        return 'N/A';
+      }
+    } else {
+      return 'N/A';
     }
   }
 }

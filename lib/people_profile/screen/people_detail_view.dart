@@ -673,7 +673,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                       child: MyMenu(
                                           data: list,
                                           title: 'Menu at bottom',
-                                          alignment: Alignment.topRight),
+                                          alignment: Alignment.topRight,
+                                          buildContext: context,
+                                          returnValue: () {
+                                            Navigator.pop(context, true);
+                                          }),
                                     ),
                                   ],
                                 ),

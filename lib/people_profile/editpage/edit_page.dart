@@ -78,8 +78,8 @@ class _EditPageState extends State<EditPage> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2000),
-        lastDate: DateTime.now());
+        lastDate: DateTime(5000),
+        firstDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -753,8 +753,9 @@ class _EditPageState extends State<EditPage> {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.07,
-                      margin: const EdgeInsets.only(top: 3.0),
+                      // width: MediaQuery.of(context).size.width * 0.07,
+                      margin: const EdgeInsets.only(
+                          left: 0.0, top: 16.0, bottom: 16.0),
                       height: 56.0,
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
@@ -764,8 +765,7 @@ class _EditPageState extends State<EditPage> {
                         ),
                       ),
                       child: Container(
-                          margin:
-                              const EdgeInsets.only(left: 13.0, right: 18.0),
+                          margin: const EdgeInsets.only(left: 5.0, right: 5.0),
                           // padding: const EdgeInsets.all(2.0),
                           child: StatefulBuilder(
                             builder:
@@ -776,19 +776,18 @@ class _EditPageState extends State<EditPage> {
                                   value: _curren,
                                   underline: Container(),
                                   hint: const Text(
-                                    "€",
+                                    "Select",
                                     style: TextStyle(
-                                        fontSize: 18.0,
-                                        // ScreenUtil()
-                                        //     .setSp(ScreenUtil().setSp(18.0)),
+                                        fontSize: 14.0,
                                         color: Color(0xffFFFFFF),
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w500),
                                   ),
                                   isExpanded: true,
-                                  icon: const Icon(
+                                  icon: Icon(
                                     // Add this
-                                    Icons.arrow_drop_down, // Add this
+                                    Icons.arrow_drop_down,
+                                    // Add this
                                     color: Color(0xff64748B),
 
                                     // Add this
@@ -800,8 +799,6 @@ class _EditPageState extends State<EditPage> {
                                         items['currency']['symbol'],
                                         style: const TextStyle(
                                             fontSize: 14.0,
-                                            //  ScreenUtil()
-                                            //     .setSp(ScreenUtil().setSp(14.0)),
                                             color: Color(0xffFFFFFF),
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w400),
@@ -809,7 +806,7 @@ class _EditPageState extends State<EditPage> {
                                     );
                                   }).toList(),
                                   onChanged: (String? newValue) {
-                                    setState(() {
+                                    StateSettersetState(() {
                                       _curren = newValue;
                                     });
                                   },
@@ -1271,13 +1268,13 @@ class _EditPageState extends State<EditPage> {
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
         SmartDialog.dismiss();
         // ignore: use_build_context_synchronously
-        Navigator.push(
-            context,
+        Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
                       onSubmit: (String value) {},
                       adOnSubmit: (String value) {},
-                    )));
+                    )),
+            (Route<dynamic> route) => false);
       } else {
         SmartDialog.dismiss();
         Navigator.of(context)

@@ -217,13 +217,13 @@ class _NavigationRailState extends State<MyHomePage>
     if (response.statusCode == 200) {
       SmartDialog.dismiss();
       // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
+      Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => MyHomePage(
                     onSubmit: (String value) {},
                     adOnSubmit: (String value) {},
-                  )));
+                  )),
+          (Route<dynamic> route) => false);
 
       print("add people created");
     } else {
@@ -2100,7 +2100,18 @@ class _NavigationRailState extends State<MyHomePage>
                                                     //print(item.title);
                                                     searchTextField!.textField!
                                                         .controller!.text = '';
-                                                    abc.add(item.title!);
+
+                                                    if (abc.isNotEmpty) {
+                                                      if (abc.contains(
+                                                          item.title!)) {
+                                                      } else {
+                                                        abc.add(item.title!
+                                                            .toString());
+                                                      }
+                                                    } else {
+                                                      abc.add(item.title!
+                                                          .toString());
+                                                    }
                                                   });
                                                 },
                                                 itemBuilder: (context, item) {

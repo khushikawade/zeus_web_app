@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:zeus/DemoContainer.dart';
+import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
@@ -29,10 +30,10 @@ showDailog(
     List<SkillsData> skills) {
   //print('listdata'+statusList.length.toString());
   //print('datacomefast'+response.data!.phase!.length.toString());
-  DateTime selectedDate = DateTime.now();
-  DateTime selectedDateReminder = DateTime.now();
-  DateTime selectedDateDevlivery = DateTime.now();
-  DateTime selectedDateDeadline = DateTime.now();
+  DateTime? selectedDate;
+  DateTime? selectedDateReminder;
+  DateTime? selectedDateDevlivery;
+  DateTime? selectedDateDeadline;
   String? _account, _custome, _curren, _status;
   List<String> abc = [];
   final ValueChanged<String> onSubmit;
@@ -86,13 +87,13 @@ showDailog(
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
         // ignore: use_build_context_synchronously
-        Navigator.push(
-            context,
+        Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
                       onSubmit: (String value) {},
                       adOnSubmit: (String value) {},
-                    )));
+                    )),
+            (Route<dynamic> route) => false);
       } else {
         print("failuree");
       }
@@ -116,10 +117,17 @@ showDailog(
               response.data != null && response.data!.workingDays != null
                   ? response.data!.workingDays.toString()
                   : '',
-          "start_date": myFormat.format(selectedDate),
-          "deadline_date": myFormat.format(selectedDateDeadline),
-          "reminder_date": myFormat.format(selectedDateReminder),
-          "delivery_date": myFormat.format(selectedDateDevlivery),
+          "start_date":
+              selectedDate != null ? myFormat.format(selectedDate!) : "",
+          "deadline_date": selectedDateDeadline != null
+              ? myFormat.format(selectedDateDeadline!)
+              : "",
+          "reminder_date": selectedDateReminder != null
+              ? myFormat.format(selectedDateReminder!)
+              : "",
+          "delivery_date": selectedDateDevlivery != null
+              ? myFormat.format(selectedDateDevlivery!)
+              : "",
         }),
         headers: {
           "Content-type": "application/json",
@@ -188,7 +196,8 @@ showDailog(
 
     if (response.data != null &&
         response.data!.reminderDate != null &&
-        response.data!.reminderDate!.isNotEmpty) {
+        response.data!.reminderDate!.isNotEmpty &&
+        response.data!.reminderDate != "0000-00-00 00:00:00") {
       selectedDateReminder =
           DateTime.parse(response.data!.reminderDate!.toString());
 
@@ -197,7 +206,8 @@ showDailog(
 
     if (response.data != null &&
         response.data!.deadlineDate != null &&
-        response.data!.deadlineDate!.isNotEmpty) {
+        response.data!.deadlineDate!.isNotEmpty &&
+        response.data!.deadlineDate != "0000-00-00 00:00:00") {
       selectedDateDeadline =
           DateTime.parse(response.data!.deadlineDate!.toString());
 
@@ -207,8 +217,9 @@ showDailog(
 
     if (response.data != null &&
         response.data!.deliveryDate != null &&
-        response.data!.deliveryDate!.isNotEmpty) {
-      selectedDateDevlivery = 
+        response.data!.deliveryDate!.isNotEmpty &&
+        response.data!.deliveryDate != "0000-00-00 00:00:00") {
+      selectedDateDevlivery =
           DateTime.parse(response.data!.deliveryDate!.toString());
 
       //selectedDateDevlivery = DateTime.parse("2022-11-29 00:00:00");
@@ -216,7 +227,8 @@ showDailog(
 
     if (response.data != null &&
         response.data!.startDate != null &&
-        response.data!.startDate!.isNotEmpty) {
+        response.data!.startDate!.isNotEmpty &&
+        response.data!.startDate != "0000-00-00 00:00:00") {
       // selectedDate = DateTime.parse("2022-11-29 00:00:00");
       selectedDate = DateTime.parse(response.data!.startDate!.toString());
     }
@@ -243,16 +255,17 @@ showDailog(
             child: child!,
           );
         },
-        initialDate: selectedDate,
+        // initialDate: selectedDate,
         // initialDate: setDate == "5"
-        //     ? selectedDateDeadline
+        //     ? selectedDateDeadline!
         //     : setDate == "4"
-        //         ? selectedDateDevlivery
+        //         ? selectedDateDevlivery!
         //         : setDate == "3"
-        //             ? selectedDateReminder
+        //             ? selectedDateReminder!
         //             : setDate == "2"
-        //                 ? selectedDate
-        //                 : selectedDate,
+        //                 ? selectedDate!
+        //                 : selectedDate!,
+        initialDate: DateTime.now(),
         firstDate: new DateTime.now().subtract(new Duration(days: 0)),
         lastDate: DateTime(2101));
 
@@ -914,981 +927,991 @@ showDailog(
                                             ),
                                           ],
                                         ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await showMenu(
-                                              context: context,
-                                              color: ColorSelect.class_color,
-                                              position:
-                                                  new RelativeRect.fromLTRB(
-                                                      500.0,
-                                                      90.0,
-                                                      500.0,
-                                                      200.0),
-                                              items: [
-                                                PopupMenuItem(
-                                                  value: 2,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return StatefulBuilder(
-                                                              builder: (context,
-                                                                      setState) =>
-                                                                  AlertDialog(
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              16),
-                                                                ),
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xff1E293B),
-                                                                content: Form(
-                                                                  key: _formKey,
-                                                                  child:
-                                                                      Container(
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.40,
-                                                                    height:
-                                                                        620.0, //MediaQuery.of(context).size.height * 0.85,
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                          children: [
-                                                                            Container(
-                                                                                margin: const EdgeInsets.only(top: 0.0, left: 10.0),
-                                                                                child: const Text(
-                                                                                  'Edit Project',
-                                                                                  style: TextStyle(color: Color(0xffFFFFFF), fontSize: 18.0, fontFamily: 'Inter', fontWeight: FontWeight.w700),
-                                                                                )),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                //createProject();
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Container(
-                                                                                margin: const EdgeInsets.only(top: 0.0, right: 10.0),
-                                                                                width: 30,
-                                                                                height: 30,
-                                                                                decoration: BoxDecoration(
-                                                                                  shape: BoxShape.circle,
-                                                                                  color: const Color(0xff1E293B),
-                                                                                  border: Border.all(color: Color(0xff334155), width: 0.6),
-                                                                                ),
-                                                                                child: Padding(
-                                                                                  padding: const EdgeInsets.all(10.0),
-                                                                                  child: SvgPicture.asset(
-                                                                                    'images/cross.svg',
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ],
-                                                                        ),
-                                                                        Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              width: MediaQuery.of(context).size.width * 0.99,
-                                                                              margin: const EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0),
-                                                                              height: 56.0,
-                                                                              decoration: BoxDecoration(
-                                                                                color: const Color(0xff334155),
-                                                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                  8.0,
-                                                                                ),
-                                                                                boxShadow: const [
-                                                                                  BoxShadow(
-                                                                                    color: Color(0xff475569),
-                                                                                    offset: Offset(
-                                                                                      0.0,
-                                                                                      2.0,
-                                                                                    ),
-                                                                                    blurRadius: 0.0,
-                                                                                    spreadRadius: 0.0,
-                                                                                  ), //BoxShadow
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Container(
-                                                                                    margin: const EdgeInsets.only(top: 30.0, left: 26.0),
-                                                                                    child: const Text(
-                                                                                      "Project title",
-                                                                                      style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                    )),
-                                                                              ],
-                                                                            ),
-                                                                            TextFormField(
-                                                                              controller: _projecttitle,
-                                                                              autocorrect: false,
-                                                                              cursorColor: const Color(0xffFFFFFF),
-                                                                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                                                                              textAlignVertical: TextAlignVertical.bottom,
-                                                                              keyboardType: TextInputType.text,
-                                                                              decoration: const InputDecoration(
-                                                                                  //counterText: '',
-                                                                                  // errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                                                                  contentPadding: EdgeInsets.only(
-                                                                                    bottom: 16.0,
-                                                                                    top: 57.0,
-                                                                                    right: 10,
-                                                                                    left: 26.0,
-                                                                                  ),
-                                                                                  border: InputBorder.none,
-                                                                                  hintText: '',
-                                                                                  hintStyle: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
-                                                                              autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                                                                              validator: (value) {
-                                                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                                                if (value!.isEmpty) {
-                                                                                  return 'Please enter';
-                                                                                }
-                                                                                return null;
-                                                                              },
-                                                                              //  onChanged: (text) => setState(() => name_ = text),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            Container(
-                                                                                width: 240.0,
-                                                                                margin: const EdgeInsets.only(top: 20.0, left: 10.0),
-                                                                                height: 56.0,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xff334155),
-                                                                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    8.0,
-                                                                                  ),
-                                                                                  boxShadow: const [
-                                                                                    BoxShadow(
-                                                                                      color: Color(0xff475569),
-                                                                                      offset: Offset(
-                                                                                        0.0,
-                                                                                        2.0,
-                                                                                      ),
-                                                                                      blurRadius: 0.0,
-                                                                                      spreadRadius: 0.0,
-                                                                                    ), //BoxShadow
-                                                                                  ],
-                                                                                ),
-                                                                                child: Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Container(
-                                                                                        margin: const EdgeInsets.only(top: 6.0, left: 16.0),
-                                                                                        child: const Text(
-                                                                                          "AP",
-                                                                                          style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                        )),
-                                                                                    Container(
-                                                                                      margin: const EdgeInsets.only(top: 5.0, left: 0.0),
-                                                                                      height: 20.0,
-                                                                                      child: Container(
-                                                                                          margin: const EdgeInsets.only(left: 15.0, right: 20.0),
-                                                                                          // padding: const EdgeInsets.all(2.0),
-                                                                                          child: StatefulBuilder(
-                                                                                            builder: (BuildContext context, StateSettersetState) {
-                                                                                              return DropdownButtonHideUnderline(
-                                                                                                child: DropdownButton(
-                                                                                                  dropdownColor: ColorSelect.class_color,
-                                                                                                  value: _account,
-                                                                                                  underline: Container(),
-                                                                                                  hint: const Text(
-                                                                                                    "Select Accountable Persons",
-                                                                                                    style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                                  ),
-                                                                                                  isExpanded: true,
-                                                                                                  icon: const Icon(
-                                                                                                    // Add this
-                                                                                                    Icons.arrow_drop_down, // Add this
-                                                                                                    color: Color(0xff64748B),
+                                        ProjectEdit(
+                                            accountableId: accountableId,
+                                            currencyList: currencyName,
+                                            customerName: customerName,
+                                            response: response,
+                                            buildContext: context,
+                                            id: id,
+                                            statusList: statusList,
+                                            title: 'Edit Project',
+                                            alignment: Alignment.center),
+                                        // GestureDetector(
+                                        //   onTap: () async {
+                                        //     await showMenu(
+                                        //       context: context,
+                                        //       color: ColorSelect.class_color,
+                                        //       position:
+                                        //           new RelativeRect.fromLTRB(
+                                        //               500.0,
+                                        //               90.0,
+                                        //               500.0,
+                                        //               200.0),
+                                        //       items: [
+                                        //         PopupMenuItem(
+                                        //           value: 2,
+                                        //           child: GestureDetector(
+                                        //             onTap: () {
+                                        //               Navigator.pop(context);
+                                        //               showDialog(
+                                        //                   context: context,
+                                        //                   builder: (context) {
+                                        //                     return StatefulBuilder(
+                                        //                       builder: (context,
+                                        //                               setState) =>
+                                        //                           AlertDialog(
+                                        //                         shape:
+                                        //                             RoundedRectangleBorder(
+                                        //                           borderRadius:
+                                        //                               BorderRadius
+                                        //                                   .circular(
+                                        //                                       16),
+                                        //                         ),
+                                        //                         backgroundColor:
+                                        //                             const Color(
+                                        //                                 0xff1E293B),
+                                        //                         content: Form(
+                                        //                           key: _formKey,
+                                        //                           child:
+                                        //                               Container(
+                                        //                             width: MediaQuery.of(context)
+                                        //                                     .size
+                                        //                                     .width *
+                                        //                                 0.40,
+                                        //                             height:
+                                        //                                 620.0, //MediaQuery.of(context).size.height * 0.85,
+                                        //                             child:
+                                        //                                 Column(
+                                        //                               crossAxisAlignment:
+                                        //                                   CrossAxisAlignment
+                                        //                                       .start,
+                                        //                               children: [
+                                        //                                 Row(
+                                        //                                   mainAxisAlignment:
+                                        //                                       MainAxisAlignment.spaceBetween,
+                                        //                                   children: [
+                                        //                                     Container(
+                                        //                                         margin: const EdgeInsets.only(top: 0.0, left: 10.0),
+                                        //                                         child: const Text(
+                                        //                                           'Edit Project',
+                                        //                                           style: TextStyle(color: Color(0xffFFFFFF), fontSize: 18.0, fontFamily: 'Inter', fontWeight: FontWeight.w700),
+                                        //                                         )),
+                                        //                                     GestureDetector(
+                                        //                                       onTap: () {
+                                        //                                         //createProject();
+                                        //                                         Navigator.of(context).pop();
+                                        //                                       },
+                                        //                                       child: Container(
+                                        //                                         margin: const EdgeInsets.only(top: 0.0, right: 10.0),
+                                        //                                         width: 30,
+                                        //                                         height: 30,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           shape: BoxShape.circle,
+                                        //                                           color: const Color(0xff1E293B),
+                                        //                                           border: Border.all(color: Color(0xff334155), width: 0.6),
+                                        //                                         ),
+                                        //                                         child: Padding(
+                                        //                                           padding: const EdgeInsets.all(10.0),
+                                        //                                           child: SvgPicture.asset(
+                                        //                                             'images/cross.svg',
+                                        //                                           ),
+                                        //                                         ),
+                                        //                                       ),
+                                        //                                     )
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Stack(
+                                        //                                   children: [
+                                        //                                     Container(
+                                        //                                       width: MediaQuery.of(context).size.width * 0.99,
+                                        //                                       margin: const EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0),
+                                        //                                       height: 56.0,
+                                        //                                       decoration: BoxDecoration(
+                                        //                                         color: const Color(0xff334155),
+                                        //                                         //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                         borderRadius: BorderRadius.circular(
+                                        //                                           8.0,
+                                        //                                         ),
+                                        //                                         boxShadow: const [
+                                        //                                           BoxShadow(
+                                        //                                             color: Color(0xff475569),
+                                        //                                             offset: Offset(
+                                        //                                               0.0,
+                                        //                                               2.0,
+                                        //                                             ),
+                                        //                                             blurRadius: 0.0,
+                                        //                                             spreadRadius: 0.0,
+                                        //                                           ), //BoxShadow
+                                        //                                         ],
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     Column(
+                                        //                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                       children: [
+                                        //                                         Container(
+                                        //                                             margin: const EdgeInsets.only(top: 30.0, left: 26.0),
+                                        //                                             child: const Text(
+                                        //                                               "Project title",
+                                        //                                               style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                             )),
+                                        //                                       ],
+                                        //                                     ),
+                                        //                                     TextFormField(
+                                        //                                       controller: _projecttitle,
+                                        //                                       autocorrect: false,
+                                        //                                       cursorColor: const Color(0xffFFFFFF),
+                                        //                                       style: const TextStyle(color: Color(0xffFFFFFF)),
+                                        //                                       textAlignVertical: TextAlignVertical.bottom,
+                                        //                                       keyboardType: TextInputType.text,
+                                        //                                       decoration: const InputDecoration(
+                                        //                                           //counterText: '',
+                                        //                                           // errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                        //                                           contentPadding: EdgeInsets.only(
+                                        //                                             bottom: 16.0,
+                                        //                                             top: 57.0,
+                                        //                                             right: 10,
+                                        //                                             left: 26.0,
+                                        //                                           ),
+                                        //                                           border: InputBorder.none,
+                                        //                                           hintText: '',
+                                        //                                           hintStyle: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
+                                        //                                       autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                                        //                                       validator: (value) {
+                                        //                                         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                        //                                         if (value!.isEmpty) {
+                                        //                                           return 'Please enter';
+                                        //                                         }
+                                        //                                         return null;
+                                        //                                       },
+                                        //                                       //  onChanged: (text) => setState(() => name_ = text),
+                                        //                                     ),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Row(
+                                        //                                   mainAxisAlignment:
+                                        //                                       MainAxisAlignment.start,
+                                        //                                   children: [
+                                        //                                     Container(
+                                        //                                         width: 240.0,
+                                        //                                         margin: const EdgeInsets.only(top: 20.0, left: 10.0),
+                                        //                                         height: 56.0,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           color: const Color(0xff334155),
+                                        //                                           //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                           borderRadius: BorderRadius.circular(
+                                        //                                             8.0,
+                                        //                                           ),
+                                        //                                           boxShadow: const [
+                                        //                                             BoxShadow(
+                                        //                                               color: Color(0xff475569),
+                                        //                                               offset: Offset(
+                                        //                                                 0.0,
+                                        //                                                 2.0,
+                                        //                                               ),
+                                        //                                               blurRadius: 0.0,
+                                        //                                               spreadRadius: 0.0,
+                                        //                                             ), //BoxShadow
+                                        //                                           ],
+                                        //                                         ),
+                                        //                                         child: Column(
+                                        //                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                           children: [
+                                        //                                             Container(
+                                        //                                                 margin: const EdgeInsets.only(top: 6.0, left: 16.0),
+                                        //                                                 child: const Text(
+                                        //                                                   "AP",
+                                        //                                                   style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                 )),
+                                        //                                             Container(
+                                        //                                               margin: const EdgeInsets.only(top: 5.0, left: 0.0),
+                                        //                                               height: 20.0,
+                                        //                                               child: Container(
+                                        //                                                   margin: const EdgeInsets.only(left: 15.0, right: 20.0),
+                                        //                                                   // padding: const EdgeInsets.all(2.0),
+                                        //                                                   child: StatefulBuilder(
+                                        //                                                     builder: (BuildContext context, StateSettersetState) {
+                                        //                                                       return DropdownButtonHideUnderline(
+                                        //                                                         child: DropdownButton(
+                                        //                                                           dropdownColor: ColorSelect.class_color,
+                                        //                                                           value: _account,
+                                        //                                                           underline: Container(),
+                                        //                                                           hint: const Text(
+                                        //                                                             "Select Accountable Persons",
+                                        //                                                             style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                           ),
+                                        //                                                           isExpanded: true,
+                                        //                                                           icon: const Icon(
+                                        //                                                             // Add this
+                                        //                                                             Icons.arrow_drop_down, // Add this
+                                        //                                                             color: Color(0xff64748B),
 
-                                                                                                    // Add this
-                                                                                                  ),
-                                                                                                  items: accountableId.map((items) {
-                                                                                                    return DropdownMenuItem(
-                                                                                                      value: items['id'].toString(),
-                                                                                                      child: Text(
-                                                                                                        items['name'],
-                                                                                                        style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                                      ),
-                                                                                                    );
-                                                                                                  }).toList(),
-                                                                                                  onChanged: (String? newValue) {
-                                                                                                    setState(() {
-                                                                                                      _account = newValue;
-                                                                                                      print("account:$_account");
-                                                                                                    });
-                                                                                                  },
-                                                                                                ),
-                                                                                              );
-                                                                                            },
-                                                                                          )),
-                                                                                    ),
-                                                                                  ],
-                                                                                )),
-                                                                            const SizedBox(
-                                                                              width: 12.0,
-                                                                            ),
-                                                                            Container(
-                                                                                width: 240,
-                                                                                margin: const EdgeInsets.only(top: 20.0, right: 10.0),
-                                                                                height: 56.0,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xff334155),
-                                                                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    8.0,
-                                                                                  ),
-                                                                                  boxShadow: const [
-                                                                                    BoxShadow(
-                                                                                      color: Color(0xff475569),
-                                                                                      offset: Offset(
-                                                                                        0.0,
-                                                                                        2.0,
-                                                                                      ),
-                                                                                      blurRadius: 0.0,
-                                                                                      spreadRadius: 0.0,
-                                                                                    ), //BoxShadow
-                                                                                  ],
-                                                                                ),
-                                                                                child: Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Container(
-                                                                                        margin: const EdgeInsets.only(top: 6.0, left: 16.0),
-                                                                                        child: const Text(
-                                                                                          "Customer",
-                                                                                          style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                        )),
-                                                                                    Container(
-                                                                                        margin: const EdgeInsets.only(top: 5.0, right: 18.0, left: 15.0),
-                                                                                        height: 20.0,
-                                                                                        child: StatefulBuilder(
-                                                                                          builder: (BuildContext context, StateSettersetState) {
-                                                                                            return DropdownButtonHideUnderline(
-                                                                                              child: DropdownButton(
-                                                                                                dropdownColor: ColorSelect.class_color,
-                                                                                                value: _custome,
-                                                                                                underline: Container(),
-                                                                                                hint: const Text(
-                                                                                                  "Select Customer",
-                                                                                                  style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                                ),
-                                                                                                isExpanded: true,
-                                                                                                icon: const Icon(
-                                                                                                  // Add this
-                                                                                                  Icons.arrow_drop_down, // Add this
-                                                                                                  color: Color(0xff64748B),
+                                        //                                                             // Add this
+                                        //                                                           ),
+                                        //                                                           items: accountableId.map((items) {
+                                        //                                                             return DropdownMenuItem(
+                                        //                                                               value: items['id'].toString(),
+                                        //                                                               child: Text(
+                                        //                                                                 items['name'],
+                                        //                                                                 style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                               ),
+                                        //                                                             );
+                                        //                                                           }).toList(),
+                                        //                                                           onChanged: (String? newValue) {
+                                        //                                                             setState(() {
+                                        //                                                               _account = newValue;
+                                        //                                                               print("account:$_account");
+                                        //                                                             });
+                                        //                                                           },
+                                        //                                                         ),
+                                        //                                                       );
+                                        //                                                     },
+                                        //                                                   )),
+                                        //                                             ),
+                                        //                                           ],
+                                        //                                         )),
+                                        //                                     const SizedBox(
+                                        //                                       width: 12.0,
+                                        //                                     ),
+                                        //                                     Container(
+                                        //                                         width: 240,
+                                        //                                         margin: const EdgeInsets.only(top: 20.0, right: 10.0),
+                                        //                                         height: 56.0,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           color: const Color(0xff334155),
+                                        //                                           //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                           borderRadius: BorderRadius.circular(
+                                        //                                             8.0,
+                                        //                                           ),
+                                        //                                           boxShadow: const [
+                                        //                                             BoxShadow(
+                                        //                                               color: Color(0xff475569),
+                                        //                                               offset: Offset(
+                                        //                                                 0.0,
+                                        //                                                 2.0,
+                                        //                                               ),
+                                        //                                               blurRadius: 0.0,
+                                        //                                               spreadRadius: 0.0,
+                                        //                                             ), //BoxShadow
+                                        //                                           ],
+                                        //                                         ),
+                                        //                                         child: Column(
+                                        //                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                           children: [
+                                        //                                             Container(
+                                        //                                                 margin: const EdgeInsets.only(top: 6.0, left: 16.0),
+                                        //                                                 child: const Text(
+                                        //                                                   "Customer",
+                                        //                                                   style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                 )),
+                                        //                                             Container(
+                                        //                                                 margin: const EdgeInsets.only(top: 5.0, right: 18.0, left: 15.0),
+                                        //                                                 height: 20.0,
+                                        //                                                 child: StatefulBuilder(
+                                        //                                                   builder: (BuildContext context, StateSettersetState) {
+                                        //                                                     return DropdownButtonHideUnderline(
+                                        //                                                       child: DropdownButton(
+                                        //                                                         dropdownColor: ColorSelect.class_color,
+                                        //                                                         value: _custome,
+                                        //                                                         underline: Container(),
+                                        //                                                         hint: const Text(
+                                        //                                                           "Select Customer",
+                                        //                                                           style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                         ),
+                                        //                                                         isExpanded: true,
+                                        //                                                         icon: const Icon(
+                                        //                                                           // Add this
+                                        //                                                           Icons.arrow_drop_down, // Add this
+                                        //                                                           color: Color(0xff64748B),
 
-                                                                                                  // Add this
-                                                                                                ),
-                                                                                                items: customerName.map((items) {
-                                                                                                  return DropdownMenuItem(
-                                                                                                    value: items['id'].toString(),
-                                                                                                    child: Text(
-                                                                                                      items['name'],
-                                                                                                      style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                                    ),
-                                                                                                  );
-                                                                                                }).toList(),
-                                                                                                onChanged: (String? newValue) {
-                                                                                                  setState(() {
-                                                                                                    _custome = newValue;
-                                                                                                    print("account:$_custome");
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                            );
-                                                                                          },
-                                                                                        )),
-                                                                                  ],
-                                                                                )),
-                                                                          ],
-                                                                        ),
-                                                                        Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              width: MediaQuery.of(context).size.width * 0.99,
-                                                                              margin: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                                                                              height: 56.0,
-                                                                              decoration: BoxDecoration(
-                                                                                color: const Color(0xff334155),
-                                                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                  8.0,
-                                                                                ),
-                                                                                boxShadow: const [
-                                                                                  BoxShadow(
-                                                                                    color: Color(0xff475569),
-                                                                                    offset: Offset(
-                                                                                      0.0,
-                                                                                      2.0,
-                                                                                    ),
-                                                                                    blurRadius: 0.0,
-                                                                                    spreadRadius: 0.0,
-                                                                                  ), //BoxShadow
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Container(
-                                                                                    margin: const EdgeInsets.only(top: 30.0, left: 26.0),
-                                                                                    child: const Text(
-                                                                                      "CRM task ID",
-                                                                                      style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                    )),
-                                                                              ],
-                                                                            ),
-                                                                            TextFormField(
-                                                                              controller: _crmtask,
-                                                                              cursorColor: const Color(0xffFFFFFF),
-                                                                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                                                                              textAlignVertical: TextAlignVertical.bottom,
-                                                                              keyboardType: TextInputType.text,
-                                                                              decoration: InputDecoration(
-                                                                                  errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                                                                  contentPadding: const EdgeInsets.only(
-                                                                                    bottom: 16.0,
-                                                                                    top: 57.0,
-                                                                                    right: 16,
-                                                                                    left: 26.0,
-                                                                                  ),
-                                                                                  border: InputBorder.none,
-                                                                                  hintText: '',
-                                                                                  hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
-                                                                              autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                                        //                                                           // Add this
+                                        //                                                         ),
+                                        //                                                         items: customerName.map((items) {
+                                        //                                                           return DropdownMenuItem(
+                                        //                                                             value: items['id'].toString(),
+                                        //                                                             child: Text(
+                                        //                                                               items['name'],
+                                        //                                                               style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                             ),
+                                        //                                                           );
+                                        //                                                         }).toList(),
+                                        //                                                         onChanged: (String? newValue) {
+                                        //                                                           setState(() {
+                                        //                                                             _custome = newValue;
+                                        //                                                             print("account:$_custome");
+                                        //                                                           });
+                                        //                                                         },
+                                        //                                                       ),
+                                        //                                                     );
+                                        //                                                   },
+                                        //                                                 )),
+                                        //                                           ],
+                                        //                                         )),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Stack(
+                                        //                                   children: [
+                                        //                                     Container(
+                                        //                                       width: MediaQuery.of(context).size.width * 0.99,
+                                        //                                       margin: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
+                                        //                                       height: 56.0,
+                                        //                                       decoration: BoxDecoration(
+                                        //                                         color: const Color(0xff334155),
+                                        //                                         //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                         borderRadius: BorderRadius.circular(
+                                        //                                           8.0,
+                                        //                                         ),
+                                        //                                         boxShadow: const [
+                                        //                                           BoxShadow(
+                                        //                                             color: Color(0xff475569),
+                                        //                                             offset: Offset(
+                                        //                                               0.0,
+                                        //                                               2.0,
+                                        //                                             ),
+                                        //                                             blurRadius: 0.0,
+                                        //                                             spreadRadius: 0.0,
+                                        //                                           ), //BoxShadow
+                                        //                                         ],
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     Column(
+                                        //                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                       children: [
+                                        //                                         Container(
+                                        //                                             margin: const EdgeInsets.only(top: 30.0, left: 26.0),
+                                        //                                             child: const Text(
+                                        //                                               "CRM task ID",
+                                        //                                               style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                             )),
+                                        //                                       ],
+                                        //                                     ),
+                                        //                                     TextFormField(
+                                        //                                       controller: _crmtask,
+                                        //                                       cursorColor: const Color(0xffFFFFFF),
+                                        //                                       style: const TextStyle(color: Color(0xffFFFFFF)),
+                                        //                                       textAlignVertical: TextAlignVertical.bottom,
+                                        //                                       keyboardType: TextInputType.text,
+                                        //                                       decoration: InputDecoration(
+                                        //                                           errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                        //                                           contentPadding: const EdgeInsets.only(
+                                        //                                             bottom: 16.0,
+                                        //                                             top: 57.0,
+                                        //                                             right: 16,
+                                        //                                             left: 26.0,
+                                        //                                           ),
+                                        //                                           border: InputBorder.none,
+                                        //                                           hintText: '',
+                                        //                                           hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
+                                        //                                       autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
 
-                                                                              validator: (value) {
-                                                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                                                if (value!.isEmpty) {
-                                                                                  return 'Please enter';
-                                                                                }
-                                                                                return null;
-                                                                              },
-                                                                              //  onChanged: (text) => setState(() => name_ = text),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              width: MediaQuery.of(context).size.width * 0.99,
-                                                                              margin: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                                                                              height: 56.0,
-                                                                              decoration: BoxDecoration(
-                                                                                color: const Color(0xff334155),
-                                                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                  8.0,
-                                                                                ),
-                                                                                boxShadow: const [
-                                                                                  BoxShadow(
-                                                                                    color: Color(0xff475569),
-                                                                                    offset: Offset(
-                                                                                      0.0,
-                                                                                      2.0,
-                                                                                    ),
-                                                                                    blurRadius: 0.0,
-                                                                                    spreadRadius: 0.0,
-                                                                                  ), //BoxShadow
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Container(
-                                                                                    margin: const EdgeInsets.only(top: 30.0, left: 26.0),
-                                                                                    child: const Text(
-                                                                                      "Work Folder ID:",
-                                                                                      style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                    )),
-                                                                              ],
-                                                                            ),
-                                                                            TextFormField(
-                                                                              controller: _warkfolderId,
-                                                                              cursorColor: const Color(0xffFFFFFF),
-                                                                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                                                                              textAlignVertical: TextAlignVertical.bottom,
-                                                                              keyboardType: TextInputType.text,
-                                                                              decoration: InputDecoration(
-                                                                                  errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                                                                  contentPadding: const EdgeInsets.only(
-                                                                                    bottom: 16.0,
-                                                                                    top: 57.0,
-                                                                                    right: 10,
-                                                                                    left: 26.0,
-                                                                                  ),
-                                                                                  border: InputBorder.none,
-                                                                                  hintText: '',
-                                                                                  hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
-                                                                              autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                                                                              validator: (value) {
-                                                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                                                if (value!.isEmpty) {
-                                                                                  return 'Please enter';
-                                                                                }
-                                                                                return null;
-                                                                              },
-                                                                              // onChanged: (text) => setState(() => name_ = text),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            Expanded(
-                                                                              flex: 4,
-                                                                              child: Stack(
-                                                                                children: [
-                                                                                  Container(
-                                                                                    width: MediaQuery.of(context).size.width * 0.10,
-                                                                                    margin: const EdgeInsets.only(top: 20.0, left: 10.0),
-                                                                                    height: 56.0,
-                                                                                    decoration: BoxDecoration(
-                                                                                      color: const Color(0xff334155),
-                                                                                      //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        8.0,
-                                                                                      ),
-                                                                                      boxShadow: const [
-                                                                                        BoxShadow(
-                                                                                          color: Color(0xff475569),
-                                                                                          offset: Offset(
-                                                                                            0.0,
-                                                                                            2.0,
-                                                                                          ),
-                                                                                          blurRadius: 0.0,
-                                                                                          spreadRadius: 0.0,
-                                                                                        ), //BoxShadow
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                  Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      Container(
-                                                                                          margin: const EdgeInsets.only(top: 30.0, left: 26.0),
-                                                                                          child: const Text(
-                                                                                            "Budget",
-                                                                                            style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                          )),
-                                                                                    ],
-                                                                                  ),
-                                                                                  TextFormField(
-                                                                                    controller: _budget,
-                                                                                    cursorColor: const Color(0xffFFFFFF),
-                                                                                    style: const TextStyle(color: Color(0xffFFFFFF)),
-                                                                                    textAlignVertical: TextAlignVertical.bottom,
-                                                                                    keyboardType: TextInputType.text,
-                                                                                    decoration: InputDecoration(
-                                                                                        errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                                                                        contentPadding: const EdgeInsets.only(
-                                                                                          bottom: 16.0,
-                                                                                          top: 57.0,
-                                                                                          right: 10,
-                                                                                          left: 26.0,
-                                                                                        ),
-                                                                                        border: InputBorder.none,
-                                                                                        hintText: '',
-                                                                                        hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
-                                                                                    autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                                                                                    validator: (value) {
-                                                                                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                                                      if (value!.isEmpty) {
-                                                                                        return 'Please enter';
-                                                                                      }
-                                                                                      return null;
-                                                                                    },
-                                                                                    // onChanged: (text) => setState(() => name_ = text),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 16.0,
-                                                                            ),
-                                                                            Expanded(
-                                                                              flex: 2,
-                                                                              child: Container(
-                                                                                width: MediaQuery.of(context).size.width * 0.08,
-                                                                                margin: const EdgeInsets.only(top: 13.0),
-                                                                                height: 56.0,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xff334155),
-                                                                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    8.0,
-                                                                                  ),
-                                                                                ),
-                                                                                child: Container(
-                                                                                    margin: const EdgeInsets.only(left: 13.0, right: 18.0),
-                                                                                    // padding: const EdgeInsets.all(2.0),
-                                                                                    child: StatefulBuilder(
-                                                                                      builder: (BuildContext context, StateSettersetState) {
-                                                                                        return DropdownButtonHideUnderline(
-                                                                                          child: DropdownButton(
-                                                                                            dropdownColor: ColorSelect.class_color,
-                                                                                            value: _curren,
-                                                                                            underline: Container(),
-                                                                                            hint: const Text(
-                                                                                              "€",
-                                                                                              style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                            ),
-                                                                                            isExpanded: true,
-                                                                                            icon: const Icon(
-                                                                                              // Add this
-                                                                                              Icons.arrow_drop_down, // Add this
-                                                                                              color: Color(0xff64748B),
+                                        //                                       validator: (value) {
+                                        //                                         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                        //                                         if (value!.isEmpty) {
+                                        //                                           return 'Please enter';
+                                        //                                         }
+                                        //                                         return null;
+                                        //                                       },
+                                        //                                       //  onChanged: (text) => setState(() => name_ = text),
+                                        //                                     ),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Stack(
+                                        //                                   children: [
+                                        //                                     Container(
+                                        //                                       width: MediaQuery.of(context).size.width * 0.99,
+                                        //                                       margin: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
+                                        //                                       height: 56.0,
+                                        //                                       decoration: BoxDecoration(
+                                        //                                         color: const Color(0xff334155),
+                                        //                                         //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                         borderRadius: BorderRadius.circular(
+                                        //                                           8.0,
+                                        //                                         ),
+                                        //                                         boxShadow: const [
+                                        //                                           BoxShadow(
+                                        //                                             color: Color(0xff475569),
+                                        //                                             offset: Offset(
+                                        //                                               0.0,
+                                        //                                               2.0,
+                                        //                                             ),
+                                        //                                             blurRadius: 0.0,
+                                        //                                             spreadRadius: 0.0,
+                                        //                                           ), //BoxShadow
+                                        //                                         ],
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     Column(
+                                        //                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                       children: [
+                                        //                                         Container(
+                                        //                                             margin: const EdgeInsets.only(top: 30.0, left: 26.0),
+                                        //                                             child: const Text(
+                                        //                                               "Work Folder ID:",
+                                        //                                               style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                             )),
+                                        //                                       ],
+                                        //                                     ),
+                                        //                                     TextFormField(
+                                        //                                       controller: _warkfolderId,
+                                        //                                       cursorColor: const Color(0xffFFFFFF),
+                                        //                                       style: const TextStyle(color: Color(0xffFFFFFF)),
+                                        //                                       textAlignVertical: TextAlignVertical.bottom,
+                                        //                                       keyboardType: TextInputType.text,
+                                        //                                       decoration: InputDecoration(
+                                        //                                           errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                        //                                           contentPadding: const EdgeInsets.only(
+                                        //                                             bottom: 16.0,
+                                        //                                             top: 57.0,
+                                        //                                             right: 10,
+                                        //                                             left: 26.0,
+                                        //                                           ),
+                                        //                                           border: InputBorder.none,
+                                        //                                           hintText: '',
+                                        //                                           hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
+                                        //                                       autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                                        //                                       validator: (value) {
+                                        //                                         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                        //                                         if (value!.isEmpty) {
+                                        //                                           return 'Please enter';
+                                        //                                         }
+                                        //                                         return null;
+                                        //                                       },
+                                        //                                       // onChanged: (text) => setState(() => name_ = text),
+                                        //                                     ),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Row(
+                                        //                                   mainAxisAlignment:
+                                        //                                       MainAxisAlignment.start,
+                                        //                                   children: [
+                                        //                                     Expanded(
+                                        //                                       flex: 4,
+                                        //                                       child: Stack(
+                                        //                                         children: [
+                                        //                                           Container(
+                                        //                                             width: MediaQuery.of(context).size.width * 0.10,
+                                        //                                             margin: const EdgeInsets.only(top: 20.0, left: 10.0),
+                                        //                                             height: 56.0,
+                                        //                                             decoration: BoxDecoration(
+                                        //                                               color: const Color(0xff334155),
+                                        //                                               //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                               borderRadius: BorderRadius.circular(
+                                        //                                                 8.0,
+                                        //                                               ),
+                                        //                                               boxShadow: const [
+                                        //                                                 BoxShadow(
+                                        //                                                   color: Color(0xff475569),
+                                        //                                                   offset: Offset(
+                                        //                                                     0.0,
+                                        //                                                     2.0,
+                                        //                                                   ),
+                                        //                                                   blurRadius: 0.0,
+                                        //                                                   spreadRadius: 0.0,
+                                        //                                                 ), //BoxShadow
+                                        //                                               ],
+                                        //                                             ),
+                                        //                                           ),
+                                        //                                           Column(
+                                        //                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                             children: [
+                                        //                                               Container(
+                                        //                                                   margin: const EdgeInsets.only(top: 30.0, left: 26.0),
+                                        //                                                   child: const Text(
+                                        //                                                     "Budget",
+                                        //                                                     style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                   )),
+                                        //                                             ],
+                                        //                                           ),
+                                        //                                           TextFormField(
+                                        //                                             controller: _budget,
+                                        //                                             cursorColor: const Color(0xffFFFFFF),
+                                        //                                             style: const TextStyle(color: Color(0xffFFFFFF)),
+                                        //                                             textAlignVertical: TextAlignVertical.bottom,
+                                        //                                             keyboardType: TextInputType.text,
+                                        //                                             decoration: InputDecoration(
+                                        //                                                 errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                        //                                                 contentPadding: const EdgeInsets.only(
+                                        //                                                   bottom: 16.0,
+                                        //                                                   top: 57.0,
+                                        //                                                   right: 10,
+                                        //                                                   left: 26.0,
+                                        //                                                 ),
+                                        //                                                 border: InputBorder.none,
+                                        //                                                 hintText: '',
+                                        //                                                 hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
+                                        //                                             autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                                        //                                             validator: (value) {
+                                        //                                               //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                        //                                               if (value!.isEmpty) {
+                                        //                                                 return 'Please enter';
+                                        //                                               }
+                                        //                                               return null;
+                                        //                                             },
+                                        //                                             // onChanged: (text) => setState(() => name_ = text),
+                                        //                                           ),
+                                        //                                         ],
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     const SizedBox(
+                                        //                                       width: 16.0,
+                                        //                                     ),
+                                        //                                     Expanded(
+                                        //                                       flex: 2,
+                                        //                                       child: Container(
+                                        //                                         width: MediaQuery.of(context).size.width * 0.08,
+                                        //                                         margin: const EdgeInsets.only(top: 13.0),
+                                        //                                         height: 56.0,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           color: const Color(0xff334155),
+                                        //                                           //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                           borderRadius: BorderRadius.circular(
+                                        //                                             8.0,
+                                        //                                           ),
+                                        //                                         ),
+                                        //                                         child: Container(
+                                        //                                             margin: const EdgeInsets.only(left: 13.0, right: 18.0),
+                                        //                                             // padding: const EdgeInsets.all(2.0),
+                                        //                                             child: StatefulBuilder(
+                                        //                                               builder: (BuildContext context, StateSettersetState) {
+                                        //                                                 return DropdownButtonHideUnderline(
+                                        //                                                   child: DropdownButton(
+                                        //                                                     dropdownColor: ColorSelect.class_color,
+                                        //                                                     value: _curren,
+                                        //                                                     underline: Container(),
+                                        //                                                     hint: const Text(
+                                        //                                                       "€",
+                                        //                                                       style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                     ),
+                                        //                                                     isExpanded: true,
+                                        //                                                     icon: const Icon(
+                                        //                                                       // Add this
+                                        //                                                       Icons.arrow_drop_down, // Add this
+                                        //                                                       color: Color(0xff64748B),
 
-                                                                                              // Add this
-                                                                                            ),
-                                                                                            items: currencyName.map((items) {
-                                                                                              return DropdownMenuItem(
-                                                                                                value: items['id'].toString(),
-                                                                                                child: Text(
-                                                                                                  items['currency']['symbol'],
-                                                                                                  style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w400),
-                                                                                                ),
-                                                                                              );
-                                                                                            }).toList(),
-                                                                                            onChanged: (String? newValue) {
-                                                                                              setState(() {
-                                                                                                _curren = newValue;
-                                                                                              });
-                                                                                            },
-                                                                                          ),
-                                                                                        );
-                                                                                      },
-                                                                                    )),
-                                                                              ),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 18.0,
-                                                                            ),
-                                                                            Expanded(
-                                                                              flex: 7,
-                                                                              child: Stack(
-                                                                                children: [
-                                                                                  Container(
-                                                                                    width: 235,
-                                                                                    margin: const EdgeInsets.only(top: 20.0, right: 10.0),
-                                                                                    height: 56.0,
-                                                                                    decoration: BoxDecoration(
-                                                                                      color: const Color(0xff334155),
-                                                                                      //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        8.0,
-                                                                                      ),
-                                                                                      boxShadow: const [
-                                                                                        BoxShadow(
-                                                                                          color: Color(0xff475569),
-                                                                                          offset: Offset(
-                                                                                            0.0,
-                                                                                            2.0,
-                                                                                          ),
-                                                                                          blurRadius: 0.0,
-                                                                                          spreadRadius: 0.0,
-                                                                                        ), //BoxShadow
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                  Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      Container(
-                                                                                          margin: const EdgeInsets.only(top: 30.0, left: 26.0),
-                                                                                          child: const Text(
-                                                                                            "Estimated hours",
-                                                                                            style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                          )),
-                                                                                    ],
-                                                                                  ),
-                                                                                  TextFormField(
-                                                                                    controller: _estimatehours,
-                                                                                    cursorColor: const Color(0xffFFFFFF),
-                                                                                    style: const TextStyle(color: Color(0xffFFFFFF)),
-                                                                                    textAlignVertical: TextAlignVertical.bottom,
-                                                                                    keyboardType: TextInputType.text,
-                                                                                    decoration: InputDecoration(
-                                                                                        errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                                                                        contentPadding: const EdgeInsets.only(
-                                                                                          bottom: 16.0,
-                                                                                          top: 57.0,
-                                                                                          right: 10,
-                                                                                          left: 26.0,
-                                                                                        ),
-                                                                                        border: InputBorder.none,
-                                                                                        hintText: '',
-                                                                                        hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
-                                                                                    autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                                                                                    validator: (value) {
-                                                                                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                                                      if (value!.isEmpty) {
-                                                                                        return 'Please enter';
-                                                                                      }
-                                                                                      return null;
-                                                                                    },
-                                                                                    // onChanged: (text) => setState(() => name_ = text),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            Container(
-                                                                              width: 240,
-                                                                              margin: const EdgeInsets.only(top: 20.0, left: 10.0),
-                                                                              height: 56.0,
-                                                                              decoration: BoxDecoration(
-                                                                                color: const Color(0xff334155),
-                                                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                  8.0,
-                                                                                ),
-                                                                              ),
-                                                                              child: Container(
-                                                                                  margin: const EdgeInsets.only(left: 16.0, right: 20.0),
-                                                                                  // padding: const EdgeInsets.all(2.0),
-                                                                                  child: StatefulBuilder(
-                                                                                    builder: (BuildContext context, StateSettersetState) {
-                                                                                      return DropdownButtonHideUnderline(
-                                                                                        child: DropdownButton(
-                                                                                          dropdownColor: ColorSelect.class_color,
-                                                                                          value: _status,
-                                                                                          underline: Container(),
-                                                                                          hint: const Text(
-                                                                                            "Select Status",
-                                                                                            style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                          ),
-                                                                                          isExpanded: true,
-                                                                                          icon: const Icon(
-                                                                                            // Add this
-                                                                                            Icons.arrow_drop_down, // Add this
-                                                                                            color: Color(0xff64748B),
+                                        //                                                       // Add this
+                                        //                                                     ),
+                                        //                                                     items: currencyName.map((items) {
+                                        //                                                       return DropdownMenuItem(
+                                        //                                                         value: items['id'].toString(),
+                                        //                                                         child: Text(
+                                        //                                                           items['currency']['symbol'],
+                                        //                                                           style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w400),
+                                        //                                                         ),
+                                        //                                                       );
+                                        //                                                     }).toList(),
+                                        //                                                     onChanged: (String? newValue) {
+                                        //                                                       setState(() {
+                                        //                                                         _curren = newValue;
+                                        //                                                       });
+                                        //                                                     },
+                                        //                                                   ),
+                                        //                                                 );
+                                        //                                               },
+                                        //                                             )),
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     const SizedBox(
+                                        //                                       width: 18.0,
+                                        //                                     ),
+                                        //                                     Expanded(
+                                        //                                       flex: 7,
+                                        //                                       child: Stack(
+                                        //                                         children: [
+                                        //                                           Container(
+                                        //                                             width: 235,
+                                        //                                             margin: const EdgeInsets.only(top: 20.0, right: 10.0),
+                                        //                                             height: 56.0,
+                                        //                                             decoration: BoxDecoration(
+                                        //                                               color: const Color(0xff334155),
+                                        //                                               //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                               borderRadius: BorderRadius.circular(
+                                        //                                                 8.0,
+                                        //                                               ),
+                                        //                                               boxShadow: const [
+                                        //                                                 BoxShadow(
+                                        //                                                   color: Color(0xff475569),
+                                        //                                                   offset: Offset(
+                                        //                                                     0.0,
+                                        //                                                     2.0,
+                                        //                                                   ),
+                                        //                                                   blurRadius: 0.0,
+                                        //                                                   spreadRadius: 0.0,
+                                        //                                                 ), //BoxShadow
+                                        //                                               ],
+                                        //                                             ),
+                                        //                                           ),
+                                        //                                           Column(
+                                        //                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                             children: [
+                                        //                                               Container(
+                                        //                                                   margin: const EdgeInsets.only(top: 30.0, left: 26.0),
+                                        //                                                   child: const Text(
+                                        //                                                     "Estimated hours",
+                                        //                                                     style: TextStyle(fontSize: 13.0, color: Color(0xff64748B), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                   )),
+                                        //                                             ],
+                                        //                                           ),
+                                        //                                           TextFormField(
+                                        //                                             controller: _estimatehours,
+                                        //                                             cursorColor: const Color(0xffFFFFFF),
+                                        //                                             style: const TextStyle(color: Color(0xffFFFFFF)),
+                                        //                                             textAlignVertical: TextAlignVertical.bottom,
+                                        //                                             keyboardType: TextInputType.text,
+                                        //                                             decoration: InputDecoration(
+                                        //                                                 errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                        //                                                 contentPadding: const EdgeInsets.only(
+                                        //                                                   bottom: 16.0,
+                                        //                                                   top: 57.0,
+                                        //                                                   right: 10,
+                                        //                                                   left: 26.0,
+                                        //                                                 ),
+                                        //                                                 border: InputBorder.none,
+                                        //                                                 hintText: '',
+                                        //                                                 hintStyle: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500)),
+                                        //                                             autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                                        //                                             validator: (value) {
+                                        //                                               //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                        //                                               if (value!.isEmpty) {
+                                        //                                                 return 'Please enter';
+                                        //                                               }
+                                        //                                               return null;
+                                        //                                             },
+                                        //                                             // onChanged: (text) => setState(() => name_ = text),
+                                        //                                           ),
+                                        //                                         ],
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Row(
+                                        //                                   mainAxisAlignment:
+                                        //                                       MainAxisAlignment.start,
+                                        //                                   children: [
+                                        //                                     Container(
+                                        //                                       width: 240,
+                                        //                                       margin: const EdgeInsets.only(top: 20.0, left: 10.0),
+                                        //                                       height: 56.0,
+                                        //                                       decoration: BoxDecoration(
+                                        //                                         color: const Color(0xff334155),
+                                        //                                         //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                         borderRadius: BorderRadius.circular(
+                                        //                                           8.0,
+                                        //                                         ),
+                                        //                                       ),
+                                        //                                       child: Container(
+                                        //                                           margin: const EdgeInsets.only(left: 16.0, right: 20.0),
+                                        //                                           // padding: const EdgeInsets.all(2.0),
+                                        //                                           child: StatefulBuilder(
+                                        //                                             builder: (BuildContext context, StateSettersetState) {
+                                        //                                               return DropdownButtonHideUnderline(
+                                        //                                                 child: DropdownButton(
+                                        //                                                   dropdownColor: ColorSelect.class_color,
+                                        //                                                   value: _status,
+                                        //                                                   underline: Container(),
+                                        //                                                   hint: const Text(
+                                        //                                                     "Select Status",
+                                        //                                                     style: TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                   ),
+                                        //                                                   isExpanded: true,
+                                        //                                                   icon: const Icon(
+                                        //                                                     // Add this
+                                        //                                                     Icons.arrow_drop_down, // Add this
+                                        //                                                     color: Color(0xff64748B),
 
-                                                                                            // Add this
-                                                                                          ),
-                                                                                          items: statusList.map((items) {
-                                                                                            return DropdownMenuItem(
-                                                                                              value: items['id'].toString(),
-                                                                                              child: Text(
-                                                                                                items['title'],
-                                                                                                style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
-                                                                                              ),
-                                                                                            );
-                                                                                          }).toList(),
-                                                                                          onChanged: (String? newValue) {
-                                                                                            setState(() {
-                                                                                              _status = newValue;
-                                                                                            });
-                                                                                          },
-                                                                                        ),
-                                                                                      );
-                                                                                    },
-                                                                                  )),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 12.0,
-                                                                            ),
-                                                                            Container(
-                                                                                width: 240.0,
-                                                                                margin: const EdgeInsets.only(top: 20.0, right: 10.0),
-                                                                                height: 56.0,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xff334155),
-                                                                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    8.0,
-                                                                                  ),
-                                                                                  boxShadow: const [
-                                                                                    BoxShadow(
-                                                                                      color: Color(0xff475569),
-                                                                                      offset: Offset(
-                                                                                        0.0,
-                                                                                        2.0,
-                                                                                      ),
-                                                                                      blurRadius: 0.0,
-                                                                                      spreadRadius: 0.0,
-                                                                                    ), //BoxShadow
-                                                                                  ],
-                                                                                ),
-                                                                                child: Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    const Spacer(),
-                                                                                    Container(
-                                                                                      margin: const EdgeInsets.only(top: 5.0, right: 10.0),
-                                                                                      height: 20.0,
-                                                                                      child: Padding(padding: const EdgeInsets.all(4.0), child: SvgPicture.asset('images/cross.svg')),
-                                                                                    ),
-                                                                                  ],
-                                                                                )),
-                                                                          ],
-                                                                        ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.end,
-                                                                          children: [
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Container(
-                                                                                width: 97, //MediaQuery.of(context).size.width * 0.22,
-                                                                                margin: const EdgeInsets.only(top: 15.0, bottom: 0.0),
-                                                                                height: 40.0,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xff334155),
-                                                                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    40.0,
-                                                                                  ),
-                                                                                ),
+                                        //                                                     // Add this
+                                        //                                                   ),
+                                        //                                                   items: statusList.map((items) {
+                                        //                                                     return DropdownMenuItem(
+                                        //                                                       value: items['id'].toString(),
+                                        //                                                       child: Text(
+                                        //                                                         items['title'],
+                                        //                                                         style: const TextStyle(fontSize: 14.0, color: Color(0xffFFFFFF), fontFamily: 'Inter', fontWeight: FontWeight.w500),
+                                        //                                                       ),
+                                        //                                                     );
+                                        //                                                   }).toList(),
+                                        //                                                   onChanged: (String? newValue) {
+                                        //                                                     setState(() {
+                                        //                                                       _status = newValue;
+                                        //                                                     });
+                                        //                                                   },
+                                        //                                                 ),
+                                        //                                               );
+                                        //                                             },
+                                        //                                           )),
+                                        //                                     ),
+                                        //                                     const SizedBox(
+                                        //                                       width: 12.0,
+                                        //                                     ),
+                                        //                                     Container(
+                                        //                                         width: 240.0,
+                                        //                                         margin: const EdgeInsets.only(top: 20.0, right: 10.0),
+                                        //                                         height: 56.0,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           color: const Color(0xff334155),
+                                        //                                           //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                           borderRadius: BorderRadius.circular(
+                                        //                                             8.0,
+                                        //                                           ),
+                                        //                                           boxShadow: const [
+                                        //                                             BoxShadow(
+                                        //                                               color: Color(0xff475569),
+                                        //                                               offset: Offset(
+                                        //                                                 0.0,
+                                        //                                                 2.0,
+                                        //                                               ),
+                                        //                                               blurRadius: 0.0,
+                                        //                                               spreadRadius: 0.0,
+                                        //                                             ), //BoxShadow
+                                        //                                           ],
+                                        //                                         ),
+                                        //                                         child: Row(
+                                        //                                           mainAxisAlignment: MainAxisAlignment.start,
+                                        //                                           // crossAxisAlignment: CrossAxisAlignment.start,
+                                        //                                           children: [
+                                        //                                             const Spacer(),
+                                        //                                             Container(
+                                        //                                               margin: const EdgeInsets.only(top: 5.0, right: 10.0),
+                                        //                                               height: 20.0,
+                                        //                                               child: Padding(padding: const EdgeInsets.all(4.0), child: SvgPicture.asset('images/cross.svg')),
+                                        //                                             ),
+                                        //                                           ],
+                                        //                                         )),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                                 Row(
+                                        //                                   mainAxisAlignment:
+                                        //                                       MainAxisAlignment.end,
+                                        //                                   children: [
+                                        //                                     GestureDetector(
+                                        //                                       onTap: () {
+                                        //                                         Navigator.of(context).pop();
+                                        //                                       },
+                                        //                                       child: Container(
+                                        //                                         width: 97, //MediaQuery.of(context).size.width * 0.22,
+                                        //                                         margin: const EdgeInsets.only(top: 15.0, bottom: 0.0),
+                                        //                                         height: 40.0,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           color: const Color(0xff334155),
+                                        //                                           //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                           borderRadius: BorderRadius.circular(
+                                        //                                             40.0,
+                                        //                                           ),
+                                        //                                         ),
 
-                                                                                child: const Align(
-                                                                                  alignment: Alignment.center,
-                                                                                  child: Text(
-                                                                                    "Cancel",
-                                                                                    style: TextStyle(fontSize: 14.0, color: ColorSelect.white_color, fontFamily: 'Inter', fontWeight: FontWeight.w700),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 16,
-                                                                            ),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                print("Hello i am a create project");
-                                                                                final isValid = _formKey.currentState!.validate();
-                                                                                setState(() => _submitted = true);
-                                                                                if (!isValid) {
-                                                                                  return;
-                                                                                }
-                                                                                editProject();
+                                        //                                         child: const Align(
+                                        //                                           alignment: Alignment.center,
+                                        //                                           child: Text(
+                                        //                                             "Cancel",
+                                        //                                             style: TextStyle(fontSize: 14.0, color: ColorSelect.white_color, fontFamily: 'Inter', fontWeight: FontWeight.w700),
+                                        //                                           ),
+                                        //                                         ),
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     const SizedBox(
+                                        //                                       width: 16,
+                                        //                                     ),
+                                        //                                     GestureDetector(
+                                        //                                       onTap: () {
+                                        //                                         print("Hello i am a create project");
+                                        //                                         final isValid = _formKey.currentState!.validate();
+                                        //                                         setState(() => _submitted = true);
+                                        //                                         if (!isValid) {
+                                        //                                           return;
+                                        //                                         }
+                                        //                                         editProject();
 
-                                                                                // widget.onSubmit(_name);
-                                                                                _formKey.currentState!.save();
-                                                                              },
-                                                                              child: Container(
-                                                                                width: 97.0, //MediaQuery.of(context).size.width * 0.22,
-                                                                                margin: const EdgeInsets.only(
-                                                                                  top: 15.0,
-                                                                                  bottom: 0.0,
-                                                                                  right: 10.0,
-                                                                                ),
-                                                                                height: 40.0,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: const Color(0xff7DD3FC),
-                                                                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    40.0,
-                                                                                  ),
-                                                                                ),
-                                                                                child: const Align(
-                                                                                  alignment: Alignment.center,
-                                                                                  child: Text(
-                                                                                    "Edit",
-                                                                                    style: TextStyle(fontSize: 14.0, color: ColorSelect.black_color, fontFamily: 'Inter', fontWeight: FontWeight.w700),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    },
-                                                    child: Container(
-                                                      height: 20,
-                                                      width: 50,
-                                                      child: const Text(
-                                                        "Edit",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontFamily: 'Inter',
-                                                            color: ColorSelect
-                                                                .white_color),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                PopupMenuItem(
-                                                  value: 1,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
+                                        //                                         // widget.onSubmit(_name);
+                                        //                                         _formKey.currentState!.save();
+                                        //                                       },
+                                        //                                       child: Container(
+                                        //                                         width: 97.0, //MediaQuery.of(context).size.width * 0.22,
+                                        //                                         margin: const EdgeInsets.only(
+                                        //                                           top: 15.0,
+                                        //                                           bottom: 0.0,
+                                        //                                           right: 10.0,
+                                        //                                         ),
+                                        //                                         height: 40.0,
+                                        //                                         decoration: BoxDecoration(
+                                        //                                           color: const Color(0xff7DD3FC),
+                                        //                                           //border: Border.all(color:  const Color(0xff1E293B)),
+                                        //                                           borderRadius: BorderRadius.circular(
+                                        //                                             40.0,
+                                        //                                           ),
+                                        //                                         ),
+                                        //                                         child: const Align(
+                                        //                                           alignment: Alignment.center,
+                                        //                                           child: Text(
+                                        //                                             "Edit",
+                                        //                                             style: TextStyle(fontSize: 14.0, color: ColorSelect.black_color, fontFamily: 'Inter', fontWeight: FontWeight.w700),
+                                        //                                           ),
+                                        //                                         ),
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                               ],
+                                        //                             ),
+                                        //                           ),
+                                        //                         ),
+                                        //                       ),
+                                        //                     );
+                                        //                   });
+                                        //             },
+                                        //             child: Container(
+                                        //               height: 20,
+                                        //               width: 50,
+                                        //               child: const Text(
+                                        //                 "Edit",
+                                        //                 style: TextStyle(
+                                        //                     fontSize: 14,
+                                        //                     fontWeight:
+                                        //                         FontWeight.w500,
+                                        //                     fontFamily: 'Inter',
+                                        //                     color: ColorSelect
+                                        //                         .white_color),
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //         PopupMenuItem(
+                                        //           value: 1,
+                                        //           child: GestureDetector(
+                                        //             onTap: () {
+                                        //               Navigator.pop(context);
 
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return StatefulBuilder(
-                                                              builder: (context,
-                                                                      setState) =>
-                                                                  AlertDialog(
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              28.0),
-                                                                ),
-                                                                backgroundColor:
-                                                                    ColorSelect
-                                                                        .peoplelistbackgroundcolor,
-                                                                content:
-                                                                    Container(
-                                                                  height: 110.0,
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Container(
-                                                                        margin: const EdgeInsets.only(
-                                                                            right:
-                                                                                20.0),
-                                                                        child:
-                                                                            const Text(
-                                                                          "Do you want to delete this project",
-                                                                          style: TextStyle(
-                                                                              fontSize: 20,
-                                                                              fontWeight: FontWeight.w700,
-                                                                              fontFamily: 'Inter',
-                                                                              color: ColorSelect.white_color),
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                15.0),
-                                                                        child:
-                                                                            const Text(
-                                                                          "Once deleted,you will not find this person in project list ",
-                                                                          style: TextStyle(
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontFamily: 'Inter',
-                                                                              color: ColorSelect.delete),
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        margin: const EdgeInsets.only(
-                                                                            top:
-                                                                                30.0),
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Spacer(),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                              child: Container(
-                                                                                margin: const EdgeInsets.only(right: 35.0),
-                                                                                child: const Text(
-                                                                                  "Cancel",
-                                                                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Inter', color: ColorSelect.delete_text),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                              child: const Text(
-                                                                                "Delete",
-                                                                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Inter', color: ColorSelect.delete_text),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  //MediaQueryx.of(context).size.height * 0.85,
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    },
-                                                    child: const Text(
-                                                      "Delete",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontFamily: 'Inter',
-                                                          color: ColorSelect
-                                                              .white_color),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                              elevation: 8.0,
-                                            ).then((value) {
-                                              if (value != null) print(value);
-                                            });
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 10.0),
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color:
-                                                      const Color(0xff334155),
-                                                ),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(40))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: SvgPicture.asset(
-                                                "images/edit.svg",
-                                              ),
-                                            ),
-                                          ),
-                                        )
+                                        //               showDialog(
+                                        //                   context: context,
+                                        //                   builder: (context) {
+                                        //                     return StatefulBuilder(
+                                        //                       builder: (context,
+                                        //                               setState) =>
+                                        //                           AlertDialog(
+                                        //                         shape:
+                                        //                             RoundedRectangleBorder(
+                                        //                           borderRadius:
+                                        //                               BorderRadius
+                                        //                                   .circular(
+                                        //                                       28.0),
+                                        //                         ),
+                                        //                         backgroundColor:
+                                        //                             ColorSelect
+                                        //                                 .peoplelistbackgroundcolor,
+                                        //                         content:
+                                        //                             Container(
+                                        //                           height: 110.0,
+                                        //                           child: Column(
+                                        //                             crossAxisAlignment:
+                                        //                                 CrossAxisAlignment
+                                        //                                     .start,
+                                        //                             children: [
+                                        //                               Container(
+                                        //                                 margin: const EdgeInsets.only(
+                                        //                                     right:
+                                        //                                         20.0),
+                                        //                                 child:
+                                        //                                     const Text(
+                                        //                                   "Do you want to delete this project",
+                                        //                                   style: TextStyle(
+                                        //                                       fontSize: 20,
+                                        //                                       fontWeight: FontWeight.w700,
+                                        //                                       fontFamily: 'Inter',
+                                        //                                       color: ColorSelect.white_color),
+                                        //                                 ),
+                                        //                               ),
+                                        //                               Container(
+                                        //                                 margin: EdgeInsets.only(
+                                        //                                     top:
+                                        //                                         15.0),
+                                        //                                 child:
+                                        //                                     const Text(
+                                        //                                   "Once deleted,you will not find this person in project list ",
+                                        //                                   style: TextStyle(
+                                        //                                       fontSize: 14,
+                                        //                                       fontWeight: FontWeight.w400,
+                                        //                                       fontFamily: 'Inter',
+                                        //                                       color: ColorSelect.delete),
+                                        //                                 ),
+                                        //                               ),
+                                        //                               Container(
+                                        //                                 margin: const EdgeInsets.only(
+                                        //                                     top:
+                                        //                                         30.0),
+                                        //                                 child:
+                                        //                                     Row(
+                                        //                                   children: [
+                                        //                                     Spacer(),
+                                        //                                     GestureDetector(
+                                        //                                       onTap: () {
+                                        //                                         Navigator.pop(context);
+                                        //                                       },
+                                        //                                       child: Container(
+                                        //                                         margin: const EdgeInsets.only(right: 35.0),
+                                        //                                         child: const Text(
+                                        //                                           "Cancel",
+                                        //                                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Inter', color: ColorSelect.delete_text),
+                                        //                                         ),
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                     GestureDetector(
+                                        //                                       onTap: () {
+                                        //                                         Navigator.pop(context);
+                                        //                                       },
+                                        //                                       child: const Text(
+                                        //                                         "Delete",
+                                        //                                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Inter', color: ColorSelect.delete_text),
+                                        //                                       ),
+                                        //                                     ),
+                                        //                                   ],
+                                        //                                 ),
+                                        //                               )
+                                        //                             ],
+                                        //                           ),
+                                        //                           //MediaQueryx.of(context).size.height * 0.85,
+                                        //                         ),
+                                        //                       ),
+                                        //                     );
+                                        //                   });
+                                        //             },
+                                        //             child: const Text(
+                                        //               "Delete",
+                                        //               style: TextStyle(
+                                        //                   fontSize: 14,
+                                        //                   fontWeight:
+                                        //                       FontWeight.w500,
+                                        //                   fontFamily: 'Inter',
+                                        //                   color: ColorSelect
+                                        //                       .white_color),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ],
+                                        //       elevation: 8.0,
+                                        //     ).then((value) {
+                                        //       if (value != null) print(value);
+                                        //     });
+                                        //   },
+                                        //   child: Container(
+                                        //     margin: const EdgeInsets.only(
+                                        //         right: 10.0),
+                                        //     height: 30.0,
+                                        //     width: 30.0,
+                                        //     decoration: BoxDecoration(
+                                        //         border: Border.all(
+                                        //           color:
+                                        //               const Color(0xff334155),
+                                        //         ),
+                                        //         borderRadius:
+                                        //             const BorderRadius.all(
+                                        //                 Radius.circular(40))),
+                                        //     child: Padding(
+                                        //       padding:
+                                        //           const EdgeInsets.all(8.0),
+                                        //       child: SvgPicture.asset(
+                                        //         "images/edit.svg",
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // )
                                       ],
                                     ),
                                     SizedBox(

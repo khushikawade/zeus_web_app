@@ -51,15 +51,22 @@ import 'package:zeus/helper_widget/scrollbar_helper_widget.dart';
 import 'package:zeus/utility/app_url.dart';
 
 class MyMenu extends StatefulWidget {
+  final List<PeopleData>? peopleList;
   final String title;
   final Alignment alignment;
   final Offset offset;
   PeopleData? data;
+  BuildContext buildContext;
+  final Function? returnValue;
+
   MyMenu(
       {required this.title,
       required this.alignment,
+      this.peopleList,
       this.offset = const Offset(0, 0),
       this.data,
+      required this.buildContext,
+      this.returnValue,
       Key? key})
       : super(key: key);
 
@@ -450,8 +457,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           );
                                           Future.delayed(
                                               const Duration(seconds: 2), () {
-                                            deletePeople(
-                                                widget.data!.id, context);
+                                            deletePeople(widget.data!.id,
+                                                widget.buildContext);
                                           });
                                         },
                                         child: const Text(
@@ -4109,7 +4116,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           filename: "file_up"));
     }
 
-
     // ignore: todo
     // TODO:SAYYAM :- add this code and comment below codeq {23/11/2022}
     for (int i = 0; i < abc.length; i++) {
@@ -4138,20 +4144,15 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     if (response.statusCode == 200) {
       decodedMap = json.decode(responseString);
 
-      //final stringRes = JsonEncoder.withIndent('').convert(decodedMap);
-
-      // ignore: use_build_context_synchronously
-
-      // final stringRes = JsonEncoder.withIndent('').convert(decodedMap);
-      // print(stringRes);
       SmartDialog.dismiss();
-      Navigator.push(
-          context,
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => MyHomePage(
                     onSubmit: (String value) {},
                     adOnSubmit: (String value) {},
-                  )));
+                  )),
+          (Route<dynamic> route) => false);
     } else {
       SmartDialog.dismiss();
 
@@ -4162,7 +4163,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     }
   }
 
-  deletePeople(int? peopleId, BuildContext context) async {
+  deletePeople(int? peopleId, BuildContext buildContext) async {
     var url = '${AppUrl.delete}${peopleId}';
     var token = 'Bearer ' + storage.read("token");
 
@@ -4177,14 +4178,18 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       SmartDialog.dismiss();
 
+      widget.returnValue!();
+
       // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    onSubmit: (String value) {},
-                    adOnSubmit: (String value) {},
-                  )));
+      //Navigator.pop(context, true);
+      // Navigator.of(buildContext).pushReplacement(
+      //   MaterialPageRoute(
+      //       builder: (context) => MyHomePage(
+      //             onSubmit: (String value) {},
+      //             adOnSubmit: (String value) {},
+      //           )),
+      // );
+      //(Route<dynamic> route) => false);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
