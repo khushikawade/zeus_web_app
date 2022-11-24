@@ -73,6 +73,8 @@ class _NavigationRailState extends State<MyHomePage>
 
   var startTime1;
   var endTime2;
+  bool saveButtonClick = false;
+  bool selectDepartment = false;
 
   getformattedTime(TimeOfDay time) {
     DateTime tempDate = DateFormat("hh:mm")
@@ -214,23 +216,29 @@ class _NavigationRailState extends State<MyHomePage>
     print(response.statusCode);
 
     var responseString = await response.stream.bytesToString();
+    print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
       SmartDialog.dismiss();
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    onSubmit: (String value) {},
-                    adOnSubmit: (String value) {},
-                  )));
+      Navigator.pop(context, true);
+      setState(() {
+        _selectedIndex = 2;
+      });
 
       print("add people created");
     } else {
+      Map<String, dynamic> responseJson = json.decode(responseString);
+      print("Error response ------------------------ ${responseJson}");
+      
       SmartDialog.dismiss();
 
+      // Fluttertoast.showToast(
+      //   msg: 'Something Went Wrong',
+      //   backgroundColor: Colors.grey,
+      // );
+
+      //var user = userFromJson(response.body);
       Fluttertoast.showToast(
-        msg: 'Something Went Wrong',
+        msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
     }
@@ -628,6 +636,9 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 InkWell(
                                   onTap: () {
+                                    setState(() {
+                                      saveButtonClick = true;
+                                    });
                                     if (_formKey.currentState!.validate()) {
                                       SmartDialog.showLoading(
                                         msg:
@@ -1286,86 +1297,72 @@ class _NavigationRailState extends State<MyHomePage>
 
                                       Expanded(
                                         flex: 1,
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.13,
-                                          margin: const EdgeInsets.only(
-                                              top: 10.0, right: 30),
-                                          height: 56.0,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff334155),
-                                            //border: Border.all(color:  const Color(0xff1E293B)),
-                                            borderRadius: BorderRadius.circular(
-                                              8.0,
-                                            ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 6.0, left: 16.0),
-                                                  child: const Text(
-                                                    "Department",
-                                                    style: TextStyle(
-                                                        fontSize: 13.0,
-                                                        color:
-                                                            Color(0xff64748B),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 16.0, right: 16.0),
-                                                height: 20.0,
-                                                child: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.13,
+                                              margin: const EdgeInsets.only(
+                                                  top: 10.0, right: 30),
+                                              height: 56.0,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff334155),
+                                                //border: Border.all(color:  const Color(0xff1E293B)),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  8.0,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 6.0,
+                                                              left: 16.0),
+                                                      child: const Text(
+                                                        "Department1",
+                                                        style: TextStyle(
+                                                            fontSize: 13.0,
+                                                            color: Color(
+                                                                0xff64748B),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      )),
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 16.0,
+                                                            right: 16.0),
+                                                    height: 20.0,
+                                                    child: Container(
 
-                                                    // padding: const EdgeInsets.all(2.0),
-                                                    child: StatefulBuilder(
-                                                  builder:
-                                                      (BuildContext context,
+                                                        // padding: const EdgeInsets.all(2.0),
+                                                        child: StatefulBuilder(
+                                                      builder: (BuildContext
+                                                              context,
                                                           StateSettersetState) {
-                                                    return DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                        dropdownColor:
-                                                            ColorSelect
-                                                                .class_color,
-                                                        value: _depat,
-                                                        underline: Container(),
-                                                        hint: const Text(
-                                                          "Select",
-                                                          style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        isExpanded: true,
-                                                        icon: const Icon(
-                                                          // Add this
-                                                          Icons
-                                                              .arrow_drop_down, // Add this
-                                                          color:
-                                                              Color(0xff64748B),
-
-                                                          // Add this
-                                                        ),
-                                                        items: _department
-                                                            .map((items) {
-                                                          return DropdownMenuItem(
-                                                            value: items['id']
-                                                                .toString(),
-                                                            child: Text(
-                                                              items['name'],
-                                                              style: const TextStyle(
+                                                        return DropdownButtonHideUnderline(
+                                                          child: DropdownButton(
+                                                            dropdownColor:
+                                                                ColorSelect
+                                                                    .class_color,
+                                                            value: _depat,
+                                                            underline:
+                                                                Container(),
+                                                            hint: const Text(
+                                                              "Select",
+                                                              style: TextStyle(
                                                                   fontSize:
                                                                       14.0,
                                                                   color: Color(
@@ -1374,25 +1371,76 @@ class _NavigationRailState extends State<MyHomePage>
                                                                       'Inter',
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w400),
+                                                                          .w500),
                                                             ),
-                                                          );
-                                                        }).toList(),
-                                                        onChanged:
-                                                            (String? newValue) {
-                                                          setStateView(() {
-                                                            print(
-                                                                "---------newValue--------------${newValue}");
-                                                            _depat = newValue;
-                                                          });
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                )),
-                                              )
-                                            ],
-                                          ),
+                                                            isExpanded: true,
+                                                            icon: const Icon(
+                                                              // Add this
+                                                              Icons
+                                                                  .arrow_drop_down, // Add this
+                                                              color: Color(
+                                                                  0xff64748B),
+
+                                                              // Add this
+                                                            ),
+                                                            items: _department
+                                                                .map((items) {
+                                                              return DropdownMenuItem(
+                                                                value: items[
+                                                                        'id']
+                                                                    .toString(),
+                                                                child: Text(
+                                                                  items['name'],
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          14.0,
+                                                                      color: Color(
+                                                                          0xffFFFFFF),
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400),
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged: (String?
+                                                                newValue) {
+                                                              setStateView(() {
+                                                                print(
+                                                                    "---------newValue--------------${newValue}");
+                                                                _depat =
+                                                                    newValue;
+                                                              });
+                                                              setState(() {
+                                                                selectDepartment =
+                                                                    true;
+                                                              });
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    )),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            // Text("Red"),
+                                            // saveButtonClick
+                                            //     ? selectDepartment
+                                            //         ? const Text(
+                                            //             " ",
+                                            //           )
+                                            //         : Padding(
+                                            //             padding:
+                                            //                 const EdgeInsets
+                                            //                     .only(
+                                            //               top: 8,
+                                            //               left: 26,
+                                            //             ),
+                                            //             child: errorWidget())
+                                            //     : Container(),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -2100,7 +2148,18 @@ class _NavigationRailState extends State<MyHomePage>
                                                     //print(item.title);
                                                     searchTextField!.textField!
                                                         .controller!.text = '';
-                                                    abc.add(item.title!);
+
+                                                    if (abc.isNotEmpty) {
+                                                      if (abc.contains(
+                                                          item.title!)) {
+                                                      } else {
+                                                        abc.add(item.title!
+                                                            .toString());
+                                                      }
+                                                    } else {
+                                                      abc.add(item.title!
+                                                          .toString());
+                                                    }
                                                   });
                                                 },
                                                 itemBuilder: (context, item) {
@@ -3412,5 +3471,11 @@ class _NavigationRailState extends State<MyHomePage>
           .where((x) => x['title'].toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
+  }
+
+  errorWidget() {
+    return Text('Please Select this field',
+        style:
+            TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
   }
 }

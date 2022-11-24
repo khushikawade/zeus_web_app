@@ -48,6 +48,7 @@ class ProjectEdit extends StatefulWidget {
   Alignment alignment;
   Offset offset;
   ProjectDetailResponse response;
+  BuildContext buildContext;
   List statusList;
   List currencyList;
   List accountableId;
@@ -63,6 +64,7 @@ class ProjectEdit extends StatefulWidget {
       required this.id,
       required this.statusList,
       required this.response,
+      required this.buildContext,
       Key? key})
       : super(key: key);
 
@@ -169,7 +171,6 @@ class _ProjectEditState extends State<ProjectEdit>
 
     if (widget.statusList != null && widget.statusList.isNotEmpty) {
       widget.statusList.asMap().forEach((index, element) {
-        print("Value of list ---------------------- ${element['title']}");
         if (element['title'] == widget.response.data!.status) {
           _status = element['id'].toString();
         }
@@ -178,7 +179,6 @@ class _ProjectEditState extends State<ProjectEdit>
 
     if (widget.accountableId != null && widget.accountableId.isNotEmpty) {
       widget.accountableId.asMap().forEach((index, element) {
-        print("Value of list ---------------------- ${element['id']}");
         if (element['id'].toString() ==
             widget.response.data!.accountablePersonId.toString()) {
           _account = element['id'].toString();
@@ -188,7 +188,6 @@ class _ProjectEditState extends State<ProjectEdit>
 
     if (widget.currencyList != null && widget.currencyList.isNotEmpty) {
       widget.currencyList.asMap().forEach((index, element) {
-        print("Value of list ---------------------- ${element['title']}");
         if (element['id'].toString() == widget.response.data!.currency) {
           _curren = element['id'].toString();
         }
@@ -1487,7 +1486,7 @@ class _ProjectEditState extends State<ProjectEdit>
                               Container(
                                 margin: const EdgeInsets.only(right: 20.0),
                                 child: const Text(
-                                  "Do you want to delete this project",
+                                  "Do you want to delete this project?",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
@@ -1498,7 +1497,7 @@ class _ProjectEditState extends State<ProjectEdit>
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted,you will not find this person in project list ",
+                                  "Once deleted,you will not find this project in the list ",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -1539,7 +1538,8 @@ class _ProjectEditState extends State<ProjectEdit>
 
                                           Future.delayed(
                                               const Duration(seconds: 2), () {
-                                            deletePeople(widget.id, context);
+                                            deleteProject(
+                                                widget.id, widget.buildContext);
                                           });
                                         },
                                         child: const Text(
@@ -1578,7 +1578,7 @@ class _ProjectEditState extends State<ProjectEdit>
     );
   }
 
-  deletePeople(String? peopleId, BuildContext context) async {
+  deleteProject(String? peopleId, BuildContext buildContext) async {
     var response;
     var url = '${AppUrl.deleteForProject}${peopleId}';
     var token = 'Bearer ' + storage.read("token");
@@ -1594,14 +1594,19 @@ class _ProjectEditState extends State<ProjectEdit>
 
       SmartDialog.dismiss();
 
-     // ignore: use_build_context_synchronously
-     Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MyHomePage(
-                        onSubmit: (String value) {},
-                        adOnSubmit: (String value) {},
-                      )));
+      try {
+        Navigator.of(buildContext).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                      onSubmit: (String value) {},
+                      adOnSubmit: (String value) {},
+                    )),
+            (Route<dynamic> route) => false);
+      } catch (e) {
+        print(buildContext.widget);
+        print("Error in navigating ------------------------------");
+        print(e);
+      }
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -1614,6 +1619,8 @@ class _ProjectEditState extends State<ProjectEdit>
 
   //Edit project api
   editProject(BuildContext context) async {
+    print("-----------------------------");
+    print(widget.id);
     var response;
     var token = 'Bearer ' + storage.read("token");
     try {
@@ -1629,6 +1636,9 @@ class _ProjectEditState extends State<ProjectEdit>
       map['estimation_hours'] = _estimatehours.text.toString();
       map['status'] = _status;
       map['description'] = _description.text.toString();
+      map['delivery_date'] = selectedDate.toString();
+
+      // delivery_date
 
       try {
         var response = await http.post(
@@ -1648,13 +1658,13 @@ class _ProjectEditState extends State<ProjectEdit>
 
           SmartDialog.dismiss();
           // ignore: use_build_context_synchronously
-          Navigator.push(
-              context,
+          Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => MyHomePage(
                         onSubmit: (String value) {},
                         adOnSubmit: (String value) {},
-                      )));
+                      )),
+              (Route<dynamic> route) => false);
         } else {
           SmartDialog.dismiss();
           Navigator.pop(context);
