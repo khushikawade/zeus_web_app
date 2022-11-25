@@ -12,11 +12,11 @@ import '../navigator_tabs/people_idle/model/model_class.dart';
 import '../utility/constant.dart';
 
 class Service {
-  Future<PeopleIdelResponse?> getIdel() async {
+  Future<PeopleIdelResponse?> getIdel(String? searchText) async {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.get(
-        Uri.parse(AppUrl.ideal_list),
+        Uri.parse(AppUrl.ideal_list+'?search=${searchText??''}'),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -36,10 +36,10 @@ class Service {
     } catch (e) {}
   }
 
-  Future<PeopleList?> getpeopleList() async {
+  Future<PeopleList?> getpeopleList(String? searchText) async {
+
     var token = 'Bearer ' + storage.read("token");
-    var response = await http.get(
-      Uri.parse(AppUrl.people_list),
+    var response = await http.get(Uri.parse(AppUrl.people_list+'?search=${searchText??''}'),
       headers: {
         "Accept": "application/json",
         "Authorization": token,

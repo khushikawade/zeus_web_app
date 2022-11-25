@@ -15,8 +15,11 @@ import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/searchbar.dart';
 import 'package:zeus/navigation/tag_model/tag_user.dart';
 import 'package:zeus/navigation/tag_model/tagresponse.dart';
+import 'package:zeus/navigator_tabs/idle/data/DataClass.dart';
+import 'package:zeus/navigator_tabs/people_idle/data/getdata_provider.dart';
 import 'package:zeus/people_profile/editpage/edit_page.dart';
 import 'package:zeus/routers/routers_class.dart';
+import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import '../DemoContainer.dart';
 import '../navigator_tabs/idle/data/project_detail_data/ProjectDetailData.dart';
@@ -50,6 +53,7 @@ class _NavigationRailState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   AutoCompleteTextField? searchTextField;
   final fieldText = TextEditingController();
+    final searchController = TextEditingController();
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
   static List<Datum> users = <Datum>[];
   bool loading = true;
@@ -60,6 +64,7 @@ class _NavigationRailState extends State<MyHomePage>
   List<String> abc = [];
   List<String> selectedDaysList = List.empty(growable: true);
   TimeRangeResult? _timeRange;
+  Debouncer _debouncer = Debouncer();
 
   var items = [
     'Item 1',
@@ -75,6 +80,12 @@ class _NavigationRailState extends State<MyHomePage>
   var endTime2;
   bool saveButtonClick = false;
   bool selectDepartment = false;
+  bool selectSalary = false;
+  bool selectDays = false;
+  bool selectSkill = false;
+  bool selectTime = false;
+  bool selectTimeZone = false;
+  bool selectImage = false;
 
   getformattedTime(TimeOfDay time) {
     DateTime tempDate = DateFormat("hh:mm")
@@ -228,7 +239,7 @@ class _NavigationRailState extends State<MyHomePage>
     } else {
       Map<String, dynamic> responseJson = json.decode(responseString);
       print("Error response ------------------------ ${responseJson}");
-      
+
       SmartDialog.dismiss();
 
       // Fluttertoast.showToast(
@@ -360,8 +371,8 @@ class _NavigationRailState extends State<MyHomePage>
       _tag,
       _day,
       _shortday;
-  bool _submitted = false;
-  bool _addSubmitted = false;
+  // bool _submitted = false;
+  bool _addSubmitted = true;
   String name = '';
 
   // var _formKey = GlobalKey<FormState>();
@@ -616,6 +627,12 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
+                                      if (selectDepartment == false ||
+                                          selectSalary == false ||
+                                          selectSkill == false ||
+                                          selectTimeZone == false) {
+                                        saveButtonClick = false;
+                                      }
                                       Navigator.of(context).pop();
                                     },
                                     child: const Align(
@@ -636,20 +653,27 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    setState(() {
+                                    if (_formKey.currentState!.validate()) {
+                                      if (selectImage == true &&
+                                          selectDepartment == true &&
+                                          selectDays == true &&
+                                          selectSkill == true &&
+                                          selectTime == true &&
+                                          selectTimeZone == true) {
+                                        SmartDialog.showLoading(
+                                          msg:
+                                              "Your request is in progress please wait for a while...",
+                                        );
+
+                                        Future.delayed(
+                                            const Duration(seconds: 2), () {
+                                          createPeople(context, setStateView);
+                                        });
+                                      }
+                                    }
+                                    setStateView(() {
                                       saveButtonClick = true;
                                     });
-                                    if (_formKey.currentState!.validate()) {
-                                      SmartDialog.showLoading(
-                                        msg:
-                                            "Your request is in progress please wait for a while...",
-                                      );
-
-                                      Future.delayed(const Duration(seconds: 2),
-                                          () {
-                                        createPeople(context, setStateView);
-                                      });
-                                    }
                                   },
                                   child: Container(
                                     width: 97,
@@ -727,46 +751,76 @@ class _NavigationRailState extends State<MyHomePage>
                                           setStateView(() {
                                             webImage = image!;
                                             imageavail = true;
+                                            selectImage = true;
                                           });
                                         },
-                                        child: Container(
-                                          height: 35.0,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.11,
-                                          margin: const EdgeInsets.only(
-                                              left: 48.0, top: 20.0),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff334155),
-                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                            borderRadius: BorderRadius.circular(
-                                              40.0,
-                                            ),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 16.0),
-                                                child: SvgPicture.asset(
-                                                    'images/camera_pic.svg'),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 11.0),
-                                                child: const Text(
-                                                  "Upload new",
-                                                  style: TextStyle(
-                                                      color: Color(0xffFFFFFF),
-                                                      fontSize: 14.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              height: 35.0,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.11,
+                                              margin: const EdgeInsets.only(
+                                                  left: 48.0, top: 20.0),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff334155),
+                                                //border: Border.all(color: const Color(0xff0E7490)),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  40.0,
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 16.0),
+                                                    child: SvgPicture.asset(
+                                                        'images/camera_pic.svg'),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 11.0),
+                                                    child: const Text(
+                                                      "Upload new",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontSize: 14.0,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                SizedBox(width: 10),
+                                                saveButtonClick
+                                                    ? selectImage
+                                                        ? const Text(
+                                                            " ",
+                                                          )
+                                                        : Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top: 8,
+                                                              left: 0,
+                                                            ),
+                                                            child:
+                                                                errorWidget())
+                                                    : Text(''),
+                                              ],
+                                            )
+                                            // handleAllerrorWidget(selectImage)
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -1329,7 +1383,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                               top: 6.0,
                                                               left: 16.0),
                                                       child: const Text(
-                                                        "Department1",
+                                                        "Department",
                                                         style: TextStyle(
                                                             fontSize: 13.0,
                                                             color: Color(
@@ -1411,8 +1465,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                                     "---------newValue--------------${newValue}");
                                                                 _depat =
                                                                     newValue;
-                                                              });
-                                                              setState(() {
                                                                 selectDepartment =
                                                                     true;
                                                               });
@@ -1426,20 +1478,20 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                             ),
                                             // Text("Red"),
-                                            // saveButtonClick
-                                            //     ? selectDepartment
-                                            //         ? const Text(
-                                            //             " ",
-                                            //           )
-                                            //         : Padding(
-                                            //             padding:
-                                            //                 const EdgeInsets
-                                            //                     .only(
-                                            //               top: 8,
-                                            //               left: 26,
-                                            //             ),
-                                            //             child: errorWidget())
-                                            //     : Container(),
+                                            saveButtonClick
+                                                ? selectDepartment
+                                                    ? const Text(
+                                                        " ",
+                                                      )
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 8,
+                                                          left: 15,
+                                                        ),
+                                                        child: errorWidget())
+                                                : Text(''),
                                           ],
                                         ),
                                       ),
@@ -1542,63 +1594,44 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Row(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.07,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0,
-                                            top: 16.0,
-                                            bottom: 16.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                        ),
-                                        child: Container(
                                             margin: const EdgeInsets.only(
-                                                left: 13.0, right: 18.0),
-                                            // padding: const EdgeInsets.all(2.0),
-                                            child: StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  StateSettersetState) {
-                                                return DropdownButtonHideUnderline(
-                                                  child: DropdownButton(
-                                                    dropdownColor:
-                                                        ColorSelect.class_color,
-                                                    value: _curren,
-                                                    underline: Container(),
-                                                    hint: const Text(
-                                                      "Select",
-                                                      style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    isExpanded: true,
-                                                    icon: Icon(
-                                                      // Add this
-                                                      Icons.arrow_drop_down,
-                                                      // Add this
-                                                      color: Color(0xff64748B),
-
-                                                      // Add this
-                                                    ),
-                                                    items: _currencyName
-                                                        .map((items) {
-                                                      return DropdownMenuItem(
-                                                        value: items['id']
-                                                            .toString(),
-                                                        child: Text(
-                                                          items['currency']
-                                                              ['symbol'],
-                                                          style: const TextStyle(
+                                                left: 30.0,
+                                                top: 16.0,
+                                                bottom: 16.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
+                                              ),
+                                            ),
+                                            child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 13.0, right: 18.0),
+                                                // padding: const EdgeInsets.all(2.0),
+                                                child: StatefulBuilder(
+                                                  builder:
+                                                      (BuildContext context,
+                                                          StateSettersetState) {
+                                                    return DropdownButtonHideUnderline(
+                                                      child: DropdownButton(
+                                                        dropdownColor:
+                                                            ColorSelect
+                                                                .class_color,
+                                                        value: _curren,
+                                                        underline: Container(),
+                                                        hint: const Text(
+                                                          "Select",
+                                                          style: TextStyle(
                                                               fontSize: 14.0,
                                                               color: Color(
                                                                   0xffFFFFFF),
@@ -1606,20 +1639,74 @@ class _NavigationRailState extends State<MyHomePage>
                                                                   'Inter',
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w400),
+                                                                      .w500),
                                                         ),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      setStateView(() {
-                                                        _curren = newValue;
-                                                      });
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            )),
+                                                        isExpanded: true,
+                                                        icon: Icon(
+                                                          // Add this
+                                                          Icons.arrow_drop_down,
+                                                          // Add this
+                                                          color:
+                                                              Color(0xff64748B),
+
+                                                          // Add this
+                                                        ),
+                                                        items: _currencyName
+                                                            .map((items) {
+                                                          return DropdownMenuItem(
+                                                            value: items['id']
+                                                                .toString(),
+                                                            child: Text(
+                                                              items['currency']
+                                                                  ['symbol'],
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      14.0,
+                                                                  color: Color(
+                                                                      0xffFFFFFF),
+                                                                  fontFamily:
+                                                                      'Inter',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                            ),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged:
+                                                            (String? newValue) {
+                                                          setStateView(() {
+                                                            _curren = newValue;
+                                                            selectSalary = true;
+                                                          });
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                          ),
+                                          // saveButtonClick
+                                          //     ? selectSalary
+                                          //         ? const Text(
+                                          //             " ",
+                                          //           )
+                                          //         : const Padding(
+                                          //             padding: EdgeInsets.only(
+                                          //               top: 0,
+                                          //               left: 0,
+                                          //             ),
+                                          //             child: Text(
+                                          //                 "Please Select ",
+                                          //                 style: TextStyle(
+                                          //                     color: Color
+                                          //                         .fromARGB(
+                                          //                             255,
+                                          //                             221,
+                                          //                             49,
+                                          //                             60),
+                                          //                     fontSize: 14)),
+                                          //           )
+                                          //     : Text(''),
+                                        ],
                                       ),
                                       const SizedBox(
                                         width: 8.0,
@@ -1747,31 +1834,44 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.26,
-                                        margin:
-                                            const EdgeInsets.only(left: 30.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  // Colors.red,
+                                                  const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
                                               ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                        ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
+                                            ),
+                                          ),
+                                          handleAllerrorWidget(selectDays)
+                                        ],
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
@@ -1849,11 +1949,13 @@ class _NavigationRailState extends State<MyHomePage>
                                                           selectedDaysList.add(
                                                               _shortday!
                                                                   .toString());
+                                                          selectDays = true;
                                                         }
                                                       } else {
                                                         selectedDaysList.add(
                                                             _shortday!
                                                                 .toString());
+                                                        selectDays = true;
                                                       }
                                                     });
                                                   },
@@ -1867,7 +1969,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
 
                                   SizedBox(
-                                    height: 55,
+                                    height: 30,
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 26),
                                       child: ListView.builder(
@@ -1927,31 +2029,42 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0, top: 16.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
                                               ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                        ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
+                                            ),
+                                          ),
+                                          handleAllerrorWidget(selectTime)
+                                        ],
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
@@ -2027,6 +2140,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 getformattedTime(startTime);
                                             endTime2 =
                                                 getformattedTime(endTime);
+                                            selectTime = true;
                                           });
                                         }),
                                   ),
@@ -2077,98 +2191,116 @@ class _NavigationRailState extends State<MyHomePage>
                                           ),
                                     ],
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 5, right: 5),
-                                    width: MediaQuery.of(context).size.width *
-                                        0.26,
-                                    margin: const EdgeInsets.only(
-                                        left: 30.0, top: 16.0),
-                                    height: 50.0,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff334155),
-                                      //border: Border.all(color:  const Color(0xff1E293B)),
-                                      borderRadius: BorderRadius.circular(
-                                        8.0,
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding:
+                                            EdgeInsets.only(left: 5, right: 5),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.26,
+                                        margin: const EdgeInsets.only(
+                                            left: 30.0, top: 16.0),
+                                        height: 50.0,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          //border: Border.all(color:  const Color(0xff1E293B)),
+                                          borderRadius: BorderRadius.circular(
+                                            8.0,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            loading
+                                                ? CircularProgressIndicator()
+                                                : searchTextField =
+                                                    AutoCompleteTextField<
+                                                        Datum>(
+                                                    // controller: input_controller,
+                                                    //   suggestions: input_list,
+                                                    clearOnSubmit: false,
+                                                    key: key,
+                                                    cursorColor: Colors.white,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      contentPadding:
+                                                          EdgeInsets.only(
+                                                              top: 15.0),
+                                                      prefixIcon: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 4.0),
+                                                          child: Icon(
+                                                            Icons.search,
+                                                            color: Color(
+                                                                0xff64748B),
+                                                          )),
+                                                      hintText: 'Search',
+                                                      hintStyle: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color:
+                                                              Color(0xff64748B),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                      border: InputBorder.none,
+                                                    ),
+
+                                                    suggestions: users,
+                                                    keyboardType:
+                                                        TextInputType.text,
+
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14.0),
+
+                                                    itemFilter: (item, query) {
+                                                      return item.title!
+                                                          .toLowerCase()
+                                                          .startsWith(query
+                                                              .toLowerCase());
+                                                    },
+                                                    itemSorter: (a, b) {
+                                                      return a.title!
+                                                          .compareTo(b.title!);
+                                                    },
+                                                    itemSubmitted: (item) {
+                                                      setStateView(() {
+                                                        //print(item.title);
+                                                        searchTextField!
+                                                            .textField!
+                                                            .controller!
+                                                            .text = '';
+
+                                                        if (abc.isNotEmpty) {
+                                                          if (abc.contains(
+                                                              item.title!)) {
+                                                          } else {
+                                                            abc.add(item.title!
+                                                                .toString());
+                                                            selectSkill = true;
+                                                          }
+                                                        } else {
+                                                          abc.add(item.title!
+                                                              .toString());
+                                                          selectSkill = true;
+                                                        }
+                                                      });
+                                                    },
+                                                    itemBuilder:
+                                                        (context, item) {
+                                                      // ui for the autocompelete row
+                                                      return row(item);
+                                                    },
+                                                  )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        loading
-                                            ? CircularProgressIndicator()
-                                            : searchTextField =
-                                                AutoCompleteTextField<Datum>(
-                                                // controller: input_controller,
-                                                //   suggestions: input_list,
-                                                clearOnSubmit: false,
-                                                key: key,
-                                                cursorColor: Colors.white,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 15.0),
-                                                  prefixIcon: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 4.0),
-                                                      child: Icon(
-                                                        Icons.search,
-                                                        color:
-                                                            Color(0xff64748B),
-                                                      )),
-                                                  hintText: 'Search',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xff64748B),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  border: InputBorder.none,
-                                                ),
-
-                                                suggestions: users,
-                                                keyboardType:
-                                                    TextInputType.text,
-
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14.0),
-
-                                                itemFilter: (item, query) {
-                                                  return item.title!
-                                                      .toLowerCase()
-                                                      .startsWith(
-                                                          query.toLowerCase());
-                                                },
-                                                itemSorter: (a, b) {
-                                                  return a.title!
-                                                      .compareTo(b.title!);
-                                                },
-                                                itemSubmitted: (item) {
-                                                  setStateView(() {
-                                                    //print(item.title);
-                                                    searchTextField!.textField!
-                                                        .controller!.text = '';
-
-                                                    if (abc.isNotEmpty) {
-                                                      if (abc.contains(
-                                                          item.title!)) {
-                                                      } else {
-                                                        abc.add(item.title!
-                                                            .toString());
-                                                      }
-                                                    } else {
-                                                      abc.add(item.title!
-                                                          .toString());
-                                                    }
-                                                  });
-                                                },
-                                                itemBuilder: (context, item) {
-                                                  // ui for the autocompelete row
-                                                  return row(item);
-                                                },
-                                              )
-                                      ],
-                                    ),
+                                      handleAllerrorWidget(selectSkill)
+                                    ],
                                   ),
 
                                   /*  SizedBox(
@@ -2183,7 +2315,7 @@ class _NavigationRailState extends State<MyHomePage>
 */
 
                                   SizedBox(
-                                    height: 55,
+                                    height: 30,
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 26),
                                       child: ListView.builder(
@@ -2490,10 +2622,17 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                          String pattern =
+                                              r'(^(?:[+0]9)?[0-9]{10}$)';
+                                          RegExp regExp = new RegExp(pattern);
+                                          // RegExp regex = RegExp(
+                                          //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                                           if (value!.isEmpty) {
                                             return 'Please enter';
+                                          } else if (!regExp.hasMatch(value)) {
+                                            return 'Please enter valid mobile number';
                                           }
+
                                           return null;
                                         },
                                         onChanged: (text) =>
@@ -2568,9 +2707,19 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                          RegExp regex = RegExp(
+                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
                                           if (value!.isEmpty) {
-                                            return 'Please enter';
+                                            return 'Please enter email';
+                                          }
+                                          if (!regex.hasMatch(value)) {
+                                            return 'Enter valid Email';
+                                          }
+                                          if (regex.hasMatch(values)) {
+                                            return 'please enter valid email';
+                                          }
+                                          if (value.length > 50) {
+                                            return 'No more length 50';
                                           }
                                           return null;
                                         },
@@ -2579,79 +2728,94 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.26,
-                                    margin: const EdgeInsets.only(
-                                        top: 20.0, left: 30.0),
-                                    height: 56.0,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff334155),
-                                      //border: Border.all(color:  const Color(0xff1E293B)),
-                                      borderRadius: BorderRadius.circular(
-                                        8.0,
-                                      ),
-                                    ),
-                                    child: Container(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.26,
                                         margin: const EdgeInsets.only(
-                                            left: 16.0, right: 20.0),
-                                        // padding: const EdgeInsets.all(2.0),
-                                        child: StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSettersetState) {
-                                            return DropdownButtonHideUnderline(
-                                              child: DropdownButton(
-                                                dropdownColor:
-                                                    ColorSelect.class_color,
-                                                value: _time,
-                                                underline: Container(),
-                                                hint: const Text(
-                                                  "Select TimeZone",
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                isExpanded: true,
-                                                icon: Icon(
-                                                  // Add this
-                                                  Icons.arrow_drop_down,
-                                                  // Add this
-                                                  color: Color(0xff64748B),
-
-                                                  // Add this
-                                                ),
-                                                items: _timeline.map((items) {
-                                                  return DropdownMenuItem(
-                                                    value:
-                                                        items['id'].toString(),
-                                                    child: Text(
-                                                      items['name'] +
-                                                          ', ' +
-                                                          items[
-                                                              'diff_from_gtm'],
-                                                      style: const TextStyle(
+                                            top: 20.0, left: 30.0),
+                                        height: 56.0,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          //border: Border.all(color:  const Color(0xff1E293B)),
+                                          borderRadius: BorderRadius.circular(
+                                            8.0,
+                                          ),
+                                        ),
+                                        child: Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 16.0, right: 20.0),
+                                            // padding: const EdgeInsets.all(2.0),
+                                            child: StatefulBuilder(
+                                              builder: (BuildContext context,
+                                                  StateSettersetState) {
+                                                return DropdownButtonHideUnderline(
+                                                  child: DropdownButton(
+                                                    dropdownColor:
+                                                        ColorSelect.class_color,
+                                                    value: _time,
+                                                    underline: Container(),
+                                                    hint: const Text(
+                                                      "Select TimeZone",
+                                                      style: TextStyle(
                                                           fontSize: 14.0,
                                                           color:
                                                               Color(0xffFFFFFF),
                                                           fontFamily: 'Inter',
                                                           fontWeight:
-                                                              FontWeight.w400),
+                                                              FontWeight.w500),
                                                     ),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? newValue) {
-                                                  setStateView(() {
-                                                    _time = newValue;
-                                                    print("account:$_time");
-                                                  });
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        )),
+                                                    isExpanded: true,
+                                                    icon: Icon(
+                                                      // Add this
+                                                      Icons.arrow_drop_down,
+                                                      // Add this
+                                                      color: Color(0xff64748B),
+
+                                                      // Add this
+                                                    ),
+                                                    items:
+                                                        _timeline.map((items) {
+                                                      return DropdownMenuItem(
+                                                        value: items['id']
+                                                            .toString(),
+                                                        child: Text(
+                                                          items['name'] +
+                                                              ', ' +
+                                                              items[
+                                                                  'diff_from_gtm'],
+                                                          style: const TextStyle(
+                                                              fontSize: 14.0,
+                                                              color: Color(
+                                                                  0xffFFFFFF),
+                                                              fontFamily:
+                                                                  'Inter',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged:
+                                                        (String? newValue) {
+                                                      setStateView(() {
+                                                        _time = newValue;
+                                                        print("account:$_time");
+                                                        selectTimeZone = true;
+                                                      });
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            )),
+                                      ),
+                                      handleAllerrorWidget(selectTimeZone)
+                                    ],
                                   ),
                                 ],
                               ),
@@ -2716,20 +2880,25 @@ class _NavigationRailState extends State<MyHomePage>
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w700)),*/
 
-                              if (prefs.getString('val') == 'q') ...[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("List",
-                                        style: TextStyle(
-                                            color: Color(0xff93C5FD),
-                                            fontSize: 14.0,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500)),
-                                  ],
-                                ),
-                              ] else if (prefs.getString('val') == 'r') ...[
+                              // if (prefs.getString('val') == 'q') ...[
+                              _selectedIndex == 1
+                                  ? Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("List",
+                                            style: TextStyle(
+                                                color: Color(0xff93C5FD),
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500)),
+                                      ],
+                                    )
+                                  : Container(),
+                              //] else
+                              if (prefs.getString('val') == 'r') ...[
                                 const Text("Profile",
                                     style: TextStyle(
                                         color: Color(0xffFFFFFF),
@@ -2758,6 +2927,20 @@ class _NavigationRailState extends State<MyHomePage>
                           )),
                     );
                   }),
+              const SizedBox(width: 30),
+              // if (prefs.getString('val')! == 'q') ...[
+              _selectedIndex == 1
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 26.0, left: 0.0),
+                      child: Text("Timeline",
+                          style: TextStyle(
+                              color: Color(0xffffffff),
+                              fontSize: 14.0,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500)),
+                    )
+                  : Container(),
+              // ],
               const Spacer(),
 
               /* Container(
@@ -2820,13 +3003,33 @@ class _NavigationRailState extends State<MyHomePage>
                   ),
                 ),
                 child: Column(
+                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     TextField(
-                      // controller: input_controller,
+                       controller: searchController,
                       //   suggestions: input_list,
                       //key: key,
+                      onChanged: (val) {
+                        try {
+                          _debouncer.run(() {
+                            if (_selectedIndex == 1) {
+                              Provider.of<DataIdelClass>(context, listen: false)
+                                  .getPeopleIdel(searchText: val);
+                            } else if (_selectedIndex == 2) {
+                              Provider.of<PeopleIdelClass>(context,
+                                      listen: false)
+                                  .getPeopleDataList(searchText: val);
+                            } else if (_selectedIndex == 3) {
+                              print(_selectedIndex);
+                            }
+                          });
+                        } catch (e) {
+                          print(e);
+                          print(val);
+                        }
+                      },
 
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(top: 16.0),
                         prefixIcon: Padding(
                             padding: EdgeInsets.only(top: 4.0),
@@ -2834,7 +3037,11 @@ class _NavigationRailState extends State<MyHomePage>
                               Icons.search,
                               color: Color(0xff64748B),
                             )),
-                        hintText: 'Search Project',
+                        hintText: _selectedIndex == 1
+                            ? 'Search Project'
+                            : _selectedIndex == 2
+                                ? 'Search People'
+                                : 'Search',
                         hintStyle: TextStyle(
                             fontSize: 14.0,
                             color: Color(0xff64748B),
@@ -2920,6 +3127,8 @@ class _NavigationRailState extends State<MyHomePage>
                             } else if (add1[add1.length - 1] == 1) {
                               showAlertDialog(context);
                             } else if (add1[add1.length - 1] == 2) {
+
+                              
                               print('sizeeee' + _addtag.length.toString());
                               showAddPeople(context);
                             }
@@ -2927,7 +3136,11 @@ class _NavigationRailState extends State<MyHomePage>
                             //
                             setState(() {
                               _selectedIndex = index;
+                              searchController.clear();
                               add1.add(index);
+                              print(
+                                  '<<<<<<<<<<<<<<_selectedIndex>>>>>>>>>>>>>>');
+                              print(_selectedIndex);
                             });
                           }
                         },
@@ -3477,5 +3690,25 @@ class _NavigationRailState extends State<MyHomePage>
     return Text('Please Select this field',
         style:
             TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
+  }
+
+  handleAllerrorWidget(bool selectTesting) {
+    return Row(
+      children: [
+        const SizedBox(width: 45),
+        saveButtonClick
+            ? selectTesting
+                ? const Text(
+                    " ",
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      left: 0,
+                    ),
+                    child: errorWidget())
+            : Text(''),
+      ],
+    );
   }
 }

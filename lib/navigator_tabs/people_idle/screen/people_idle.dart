@@ -746,8 +746,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             ProfileDetail(list: _peopleList)));
 
                 if (result != null && result) {
-                  Provider.of<PeopleIdelClass>(context, listen: false)
-                      .getPeopleDataList();
+                  Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
                 }
               },
               cells: [
@@ -932,8 +931,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                         returnValue: () {
                           print(
                               "Value returned --------------------------------------");
-                          Provider.of<PeopleIdelClass>(context, listen: false)
-                              .getPeopleDataList();
+                          Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
                           // setState(() {
                           //   data.peopleList!.data!.forEach((element) {
                           //     data.peopleList!.data!.removeAt(index);
@@ -955,17 +953,27 @@ class _PeopleIdleState extends State<PeopleIdle> {
     }
 
     return data.peopleList == null || data.peopleList!.data!.isEmpty
-        ? const Expanded(
-            child: Center(
-                child: Text(
-              "No Records Found !",
-              style: TextStyle(
-                  color: Color(0xffFFFFFF),
-                  fontSize: 22.0,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500),
-            )),
-          )
+        ? Container(
+              width: MediaQuery.of(context).size.width < 950
+                    ? MediaQuery.of(context).size.width * 2
+                    : MediaQuery.of(context).size.width - 200,
+
+                // height: MediaQuery.of(context).size.height * 0.83,
+                // height: MediaQuery.of(context).size.height * 0.83,
+
+                height: 969,
+          child: const Expanded(
+              child: Center(
+                  child: Text(
+                "No Records Found !",
+                style: TextStyle(
+                    color: Color(0xffFFFFFF),
+                    fontSize: 22.0,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500),
+              )),
+            ),
+        )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -988,7 +996,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                               showBottomBorder: true,
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
-                              dividerThickness: 0.5,
+                              dividerThickness: 0.7,
                               columns: const [
                                 DataColumn(
                                   label: Text(

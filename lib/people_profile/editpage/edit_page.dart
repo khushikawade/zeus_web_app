@@ -422,7 +422,7 @@ class _EditPageState extends State<EditPage> {
                                                 setState(() {
                                                   //  validator: (value) => value == null ? 'field required' : null,
                                                   //               onSaved: (value) => name = value,
-                                                  
+
                                                   _account = newValue;
                                                   print("account:$_account");
                                                   selectAccountablePerson =
@@ -724,7 +724,6 @@ class _EditPageState extends State<EditPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-
                 children: [
                   Expanded(
                     flex: 4,
@@ -1144,7 +1143,7 @@ class _EditPageState extends State<EditPage> {
                                   GestureDetector(
                                     onTap: () async {
                                       _selectDate(setState);
-                                      selectDeliveryDate = true;
+                                      // selectDeliveryDate = true;
                                     },
                                     child: Container(
                                         margin: const EdgeInsets.only(
@@ -1167,18 +1166,18 @@ class _EditPageState extends State<EditPage> {
                             ],
                           ),
                         ),
-                        createButtonClick
-                            ? selectDeliveryDate
-                                ? const Text(
-                                    " ",
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 8,
-                                      left: 20,
-                                    ),
-                                    child: errorWidget())
-                            : Container(),
+                        // createButtonClick
+                        //     ? selectDeliveryDate
+                        //         ? const Text(
+                        //             " ",
+                        //           )
+                        //         : Padding(
+                        //             padding: EdgeInsets.only(
+                        //               top: 8,
+                        //               left: 20,
+                        //             ),
+                        //             child: errorWidget())
+                        //     : Container(),
                       ],
                     ),
                   ),
@@ -1187,87 +1186,89 @@ class _EditPageState extends State<EditPage> {
               SizedBox(
                 height: 20,
               ),
-              Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.99,
-                    margin: const EdgeInsets.only(
-                        top: 15.0, left: 10.0, right: 10.0),
-                    height: 120.0,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      //border: Border.all(color:  const Color(0xff1E293B)),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xff475569),
-                          offset: Offset(
-                            0.0,
-                            2.0,
-                          ),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
-                        ), //BoxShadow
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          margin: const EdgeInsets.only(top: 24.0, left: 26.0),
-                          child: const Text(
-                            "Description",
-                            style: TextStyle(
-                                fontSize: 13.0,
-                                color: Color(0xff64748B),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500),
-                          )),
-                    ],
-                  ),
-                  TextFormField(
-                    controller: descriptionController,
-                    maxLines: 5,
-                    cursorColor: const Color(0xffFFFFFF),
-                    style: const TextStyle(color: Color(0xffFFFFFF)),
-                    textAlignVertical: TextAlignVertical.bottom,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        errorStyle: TextStyle(
-                            fontSize: 14.0,
-                            // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
-                            height: 0.20),
-                        contentPadding: EdgeInsets.only(
-                          bottom: 16.0,
-                          top: 54.0,
-                          right: 10,
-                          left: 26.0,
-                        ),
-                        border: InputBorder.none,
-                        //   hintText: 'Project title',
-                        hintStyle: TextStyle(
-                            fontSize: 14.0,
-                            // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
-                            color: Color(0xffFFFFFF),
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500)),
-                    autovalidateMode: _submitted
-                        ? AutovalidateMode.onUserInteraction
-                        : AutovalidateMode.disabled,
-                    validator: (value) {
-                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                      if (value!.isEmpty) {
-                        return 'Please enter';
-                      }
-                      return null;
-                    },
-                    onChanged: (text) => setState(() => name_ = text),
-                  ),
-                ],
-              ),
+
+              ///-----------------------------Description----------------------------
+              // Stack(
+              //   children: [
+              // Container(
+              //   width: MediaQuery.of(context).size.width * 0.99,
+              //   margin: const EdgeInsets.only(
+              //       top: 15.0, left: 10.0, right: 10.0),
+              //   height: 120.0,
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xff334155),
+              //     //border: Border.all(color:  const Color(0xff1E293B)),
+              //     borderRadius: BorderRadius.circular(
+              //       8.0,
+              //     ),
+              //     boxShadow: const [
+              //       BoxShadow(
+              //         color: Color(0xff475569),
+              //         offset: Offset(
+              //           0.0,
+              //           2.0,
+              //         ),
+              //         blurRadius: 0.0,
+              //         spreadRadius: 0.0,
+              //       ), //BoxShadow
+              //     ],
+              //   ),
+              // ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Container(
+              //         margin: const EdgeInsets.only(top: 24.0, left: 26.0),
+              //         child: const Text(
+              //           "Description",
+              //           style: TextStyle(
+              //               fontSize: 13.0,
+              //               color: Color(0xff64748B),
+              //               fontFamily: 'Inter',
+              //               fontWeight: FontWeight.w500),
+              //         )),
+              //   ],
+              // ),
+              // TextFormField(
+              //   controller: descriptionController,
+              //   maxLines: 5,
+              //   cursorColor: const Color(0xffFFFFFF),
+              //   style: const TextStyle(color: Color(0xffFFFFFF)),
+              //   textAlignVertical: TextAlignVertical.bottom,
+              //   keyboardType: TextInputType.text,
+              //   decoration: const InputDecoration(
+              //       errorStyle: TextStyle(
+              //           fontSize: 14.0,
+              //           // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+              //           height: 0.20),
+              //       contentPadding: EdgeInsets.only(
+              //         bottom: 16.0,
+              //         top: 54.0,
+              //         right: 10,
+              //         left: 26.0,
+              //       ),
+              //       border: InputBorder.none,
+              //       //   hintText: 'Project title',
+              //       hintStyle: TextStyle(
+              //           fontSize: 14.0,
+              //           // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+              //           color: Color(0xffFFFFFF),
+              //           fontFamily: 'Inter',
+              //           fontWeight: FontWeight.w500)),
+              //   autovalidateMode: _submitted
+              //       ? AutovalidateMode.onUserInteraction
+              //       : AutovalidateMode.disabled,
+              //   validator: (value) {
+              //     //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+              //     if (value!.isEmpty) {
+              //       return 'Please enter';
+              //     }
+              //     return null;
+              //   },
+              //   onChanged: (text) => setState(() => name_ = text),
+              // ),
+              //   ],
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -1314,8 +1315,7 @@ class _EditPageState extends State<EditPage> {
                         if (selectAccountablePerson == true &&
                             selectCustomer == true &&
                             selectCurrency == true &&
-                            selectStatus == true &&
-                            selectDeliveryDate == true) {
+                            selectStatus == true) {
                           SmartDialog.showLoading(
                             msg:
                                 "Your request is in progress please wait for a while...",

@@ -81,7 +81,7 @@ class _ProjectEditState extends State<ProjectEdit>
   var _formKey = GlobalKey<FormState>();
   var isLoading = false;
   // var status = widget.response.data!.status; //response.data!.status;
-  bool _submitted = false;
+  bool _submitted = true;
 
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -1274,92 +1274,93 @@ class _ProjectEditState extends State<ProjectEdit>
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.99,
-                                      margin: const EdgeInsets.only(
-                                          top: 15.0, left: 10.0, right: 10.0),
-                                      height: 120.0,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        //border: Border.all(color:  const Color(0xff1E293B)),
-                                        borderRadius: BorderRadius.circular(
-                                          8.0,
-                                        ),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Color(0xff475569),
-                                            offset: Offset(
-                                              0.0,
-                                              2.0,
-                                            ),
-                                            blurRadius: 0.0,
-                                            spreadRadius: 0.0,
-                                          ), //BoxShadow
-                                        ],
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            margin: const EdgeInsets.only(
-                                                top: 24.0, left: 26.0),
-                                            child: const Text(
-                                              "Description",
-                                              style: TextStyle(
-                                                  fontSize: 13.0,
-                                                  color: Color(0xff64748B),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500),
-                                            )),
-                                      ],
-                                    ),
-                                    TextFormField(
-                                      controller: _description,
-                                      maxLines: 5,
-                                      cursorColor: const Color(0xffFFFFFF),
-                                      style: const TextStyle(
-                                          color: Color(0xffFFFFFF)),
-                                      textAlignVertical:
-                                          TextAlignVertical.bottom,
-                                      keyboardType: TextInputType.text,
-                                      decoration: const InputDecoration(
-                                          errorStyle: TextStyle(
-                                              fontSize: 14.0,
-                                              // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
-                                              height: 0.20),
-                                          contentPadding: EdgeInsets.only(
-                                            bottom: 16.0,
-                                            top: 54.0,
-                                            right: 10,
-                                            left: 26.0,
-                                          ),
-                                          border: InputBorder.none,
-                                          //   hintText: 'Project title',
-                                          hintStyle: TextStyle(
-                                              fontSize: 14.0,
-                                              // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
-                                              color: Color(0xffFFFFFF),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500)),
-                                      autovalidateMode: _submitted
-                                          ? AutovalidateMode.onUserInteraction
-                                          : AutovalidateMode.disabled,
-                                      validator: (value) {
-                                        //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                        if (value!.isEmpty) {
-                                          return 'Please enter';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (text) => setState(() {}),
-                                    ),
-                                  ],
-                                ),
+                                //description---------------------------------------------//
+                                // Stack(
+                                //   children: [
+                                //     Container(
+                                //       width: MediaQuery.of(context).size.width *
+                                //           0.99,
+                                //       margin: const EdgeInsets.only(
+                                //           top: 15.0, left: 10.0, right: 10.0),
+                                //       height: 120.0,
+                                //       decoration: BoxDecoration(
+                                //         color: const Color(0xff334155),
+                                //         //border: Border.all(color:  const Color(0xff1E293B)),
+                                //         borderRadius: BorderRadius.circular(
+                                //           8.0,
+                                //         ),
+                                //         boxShadow: const [
+                                //           BoxShadow(
+                                //             color: Color(0xff475569),
+                                //             offset: Offset(
+                                //               0.0,
+                                //               2.0,
+                                //             ),
+                                //             blurRadius: 0.0,
+                                //             spreadRadius: 0.0,
+                                //           ), //BoxShadow
+                                //         ],
+                                //       ),
+                                //     ),
+                                //     Column(
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       children: [
+                                //         Container(
+                                //             margin: const EdgeInsets.only(
+                                //                 top: 24.0, left: 26.0),
+                                //             child: const Text(
+                                //               "Description",
+                                //               style: TextStyle(
+                                //                   fontSize: 13.0,
+                                //                   color: Color(0xff64748B),
+                                //                   fontFamily: 'Inter',
+                                //                   fontWeight: FontWeight.w500),
+                                //             )),
+                                //       ],
+                                //     ),
+                                //     TextFormField(
+                                //       controller: _description,
+                                //       maxLines: 5,
+                                //       cursorColor: const Color(0xffFFFFFF),
+                                //       style: const TextStyle(
+                                //           color: Color(0xffFFFFFF)),
+                                //       textAlignVertical:
+                                //           TextAlignVertical.bottom,
+                                //       keyboardType: TextInputType.text,
+                                //       decoration: const InputDecoration(
+                                //           errorStyle: TextStyle(
+                                //               fontSize: 14.0,
+                                //               // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                                //               height: 0.20),
+                                //           contentPadding: EdgeInsets.only(
+                                //             bottom: 16.0,
+                                //             top: 54.0,
+                                //             right: 10,
+                                //             left: 26.0,
+                                //           ),
+                                //           border: InputBorder.none,
+                                //           //   hintText: 'Project title',
+                                //           hintStyle: TextStyle(
+                                //               fontSize: 14.0,
+                                //               // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
+                                //               color: Color(0xffFFFFFF),
+                                //               fontFamily: 'Inter',
+                                //               fontWeight: FontWeight.w500)),
+                                //       autovalidateMode: _submitted
+                                //           ? AutovalidateMode.onUserInteraction
+                                //           : AutovalidateMode.disabled,
+                                //       validator: (value) {
+                                //         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                //         if (value!.isEmpty) {
+                                //           return 'Please enter';
+                                //         }
+                                //         return null;
+                                //       },
+                                //       onChanged: (text) => setState(() {}),
+                                //     ),
+                                //   ],
+                                // ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [

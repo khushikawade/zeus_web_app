@@ -216,7 +216,7 @@ class _IdleState extends State<Idle> {
   ScrollController _controller = ScrollController();
 
   Future? getListData() {
-    return Provider.of<DataIdelClass>(context, listen: false).getPeopleIdel();
+    return Provider.of<DataIdelClass>(context, listen: false).getPeopleIdel(searchText: '');
   }
 
   Future? getList;
@@ -716,17 +716,28 @@ class _IdleState extends State<Idle> {
 
     return data!.peopleIdelResponse == null ||
             data.peopleIdelResponse!.data!.isEmpty
-        ? const Expanded(
-            child: Center(
-                child: Text(
-              "No Records Found !",
-              style: TextStyle(
-                  color: Color(0xffFFFFFF),
-                  fontSize: 22.0,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500),
-            )),
-          )
+        ? Container(
+                 width: MediaQuery.of(context).size.width < 950
+                    ? MediaQuery.of(context).size.width * 2
+                    : MediaQuery.of(context).size.width - 200,
+
+                // height: MediaQuery.of(context).size.height * 0.83,
+                // height: MediaQuery.of(context).size.height * 0.83,
+
+                height: 969,
+          
+          child: const Expanded(
+              child: Center(
+                  child: Text(
+                "No Records Found !",
+                style: TextStyle(
+                    color: Color(0xffFFFFFF),
+                    fontSize: 22.0,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500),
+              )),
+            ),
+        )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -746,7 +757,7 @@ class _IdleState extends State<Idle> {
                           child: DataTable(
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
-                              dividerThickness: 0.5,
+                              dividerThickness: 0.7,
                               columns: const [
                                 DataColumn(
                                   label: Text(

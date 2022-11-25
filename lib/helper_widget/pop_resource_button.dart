@@ -78,6 +78,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   String _value = "";
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   static List<Datum> users = <Datum>[];
   List<String> selectedDaysList = List.empty(growable: true);
   List _timeline = [];
@@ -127,8 +128,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     'Sunday',
   ];
 
-  bool _addSubmitted = false;
+  bool _addSubmitted = true;
   bool loading = true;
+
+  // bool saveButtonClick = false;
   bool? _isSelected;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _nickName = TextEditingController();
@@ -609,16 +612,25 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    SmartDialog.showLoading(
-                                      msg:
-                                          "Your request is in progress please wait for a while...",
-                                    );
+                                    if (_addFormKey.currentState!.validate()) {
+                                      if (selectedDaysList.length > 0 &&
+                                          abc.length > 0) {
+                                        SmartDialog.showLoading(
+                                          msg:
+                                              "Your request is in progress please wait for a while...",
+                                        );
 
-                                    Future.delayed(const Duration(seconds: 2),
-                                        () {
-                                      getUpdatePeople(
-                                          widget.data!.id.toString(), context);
-                                    });
+                                        Future.delayed(
+                                            const Duration(seconds: 2), () {
+                                          getUpdatePeople(
+                                              widget.data!.id.toString(),
+                                              context);
+                                        });
+                                      }
+                                    }
+                                    // setState() {
+                                    //   saveButtonClick = true;
+                                    // }
                                   },
                                   child: Container(
                                     width:
@@ -3107,28 +3119,39 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
               ),
               Stack(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.26,
-                    margin: const EdgeInsets.only(left: 30.0),
-                    height: 56.0,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      //border: Border.all(color:  const Color(0xff1E293B)),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0xff475569),
-                          offset: Offset(
-                            0.0,
-                            2.0,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.26,
+                        margin: const EdgeInsets.only(left: 30.0),
+                        height: 56.0,
+                        decoration: BoxDecoration(
+                          color:
+                              // Colors.red,
+                              const Color(0xff334155),
+                          //border: Border.all(color:  const Color(0xff1E293B)),
+                          borderRadius: BorderRadius.circular(
+                            8.0,
                           ),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
-                        ), //BoxShadow
-                      ],
-                    ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xff475569),
+                              offset: Offset(
+                                0.0,
+                                2.0,
+                              ),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ), //BoxShadow
+                          ],
+                        ),
+                      ),
+                      selectedDaysList.length == 0
+                          ? handleAllerrorWidget()
+                          : Text('')
+                    ],
                   ),
                   Container(
                       margin: const EdgeInsets.only(top: 6.0, left: 45.0),
@@ -3505,77 +3528,84 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.only(left: 5, right: 5),
-                width: MediaQuery.of(context).size.width * 0.26,
-                margin: const EdgeInsets.only(left: 30.0, top: 16.0),
-                height: 50.0,
-                decoration: BoxDecoration(
-                  color: const Color(0xff334155),
-                  //border: Border.all(color:  const Color(0xff1E293B)),
-                  borderRadius: BorderRadius.circular(
-                    8.0,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    searchTextField = AutoCompleteTextField<Datum>(
-                      // controller: input_controller,
-                      //   suggestions: input_list,
-                      clearOnSubmit: false,
-                      key: key,
-                      cursorColor: Colors.white,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 15.0),
-                        prefixIcon: Padding(
-                            padding: EdgeInsets.only(top: 4.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Color(0xff64748B),
-                            )),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                            fontSize: 14.0,
-                            color: Color(0xff64748B),
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400),
-                        border: InputBorder.none,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 5, right: 5),
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: const EdgeInsets.only(left: 30.0, top: 16.0),
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff334155),
+                      //border: Border.all(color:  const Color(0xff1E293B)),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
                       ),
+                    ),
+                    child: Column(
+                      children: [
+                        searchTextField = AutoCompleteTextField<Datum>(
+                          // controller: input_controller,
+                          //   suggestions: input_list,
+                          clearOnSubmit: false,
+                          key: key,
+                          cursorColor: Colors.white,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.only(top: 15.0),
+                            prefixIcon: Padding(
+                                padding: EdgeInsets.only(top: 4.0),
+                                child: Icon(
+                                  Icons.search,
+                                  color: Color(0xff64748B),
+                                )),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xff64748B),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
 
-                      suggestions: users,
-                      keyboardType: TextInputType.text,
+                          suggestions: users,
+                          keyboardType: TextInputType.text,
 
-                      style: TextStyle(color: Colors.white, fontSize: 14.0),
+                          style: TextStyle(color: Colors.white, fontSize: 14.0),
 
-                      itemFilter: (item, query) {
-                        return item.title!
-                            .toLowerCase()
-                            .startsWith(query.toLowerCase());
-                      },
-                      itemSorter: (a, b) {
-                        return a.title!.compareTo(b.title!);
-                      },
-                      itemSubmitted: (item) {
-                        setState(() {
-                          //print(item.title);
-                          searchTextField!.textField!.controller!.text = '';
-                          if (abc.isNotEmpty) {
-                            if (abc.contains(item.title!)) {
-                            } else {
-                              abc.add(item.title!.toString());
-                            }
-                          } else {
-                            abc.add(item.title!.toString());
-                          }
-                        });
-                      },
-                      itemBuilder: (context, item) {
-                        // ui for the autocompelete row
-                        return row(item);
-                      },
-                    )
-                  ],
-                ),
+                          itemFilter: (item, query) {
+                            return item.title!
+                                .toLowerCase()
+                                .startsWith(query.toLowerCase());
+                          },
+                          itemSorter: (a, b) {
+                            return a.title!.compareTo(b.title!);
+                          },
+                          itemSubmitted: (item) {
+                            setState(() {
+                              //print(item.title);
+                              searchTextField!.textField!.controller!.text = '';
+                              if (abc.isNotEmpty) {
+                                if (abc.contains(item.title!)) {
+                                } else {
+                                  abc.add(item.title!.toString());
+                                }
+                              } else {
+                                abc.add(item.title!.toString());
+                              }
+                            });
+                          },
+                          itemBuilder: (context, item) {
+                            // ui for the autocompelete row
+                            return row(item);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  abc.length == 0 ? handleAllerrorWidget() : Text('')
+                ],
               ),
               widget.data!.resource != null
                   ? SizedBox(
@@ -3856,10 +3886,16 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
                     validator: (value) {
-                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      String pattern = r'(^(?:[+0]9)?[0-9]{10}$)';
+                      RegExp regExp = new RegExp(pattern);
+                      // RegExp regex = RegExp(
+                      //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regExp.hasMatch(value)) {
+                        return 'Please enter valid mobile number';
                       }
+
                       return null;
                     },
                     onChanged: (text) => setState(() => name1 = text),
@@ -3926,9 +3962,19 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
                     validator: (value) {
-                      //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
                       if (value!.isEmpty) {
-                        return 'Please enter';
+                        return 'Please enter email';
+                      }
+                      if (!regex.hasMatch(value)) {
+                        return 'Enter valid Email';
+                      }
+                      if (regex.hasMatch(values)) {
+                        return 'please enter valid email';
+                      }
+                      if (value.length > 50) {
+                        return 'No more length 50';
                       }
                       return null;
                     },
@@ -4252,5 +4298,25 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
       return value;
     }
+  }
+
+  errorWidget() {
+    return Text('Please Select this field',
+        style:
+            TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
+  }
+
+  handleAllerrorWidget() {
+    return Row(
+      children: [
+        const SizedBox(width: 45),
+        Padding(
+            padding: const EdgeInsets.only(
+              top: 8,
+              left: 0,
+            ),
+            child: errorWidget())
+      ],
+    );
   }
 }

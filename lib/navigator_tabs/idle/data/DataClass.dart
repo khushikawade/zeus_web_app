@@ -8,9 +8,9 @@ class DataIdelClass extends ChangeNotifier {
   PeopleIdelResponse? peopleIdelResponse;
   bool loading = false;
 
-  Future<void> getPeopleIdel() async {
+  Future<void> getPeopleIdel({String? searchText}) async {
     loading = true;
-    peopleIdelResponse = (await service.getIdel())!;
+    peopleIdelResponse = (await service.getIdel(searchText))!;
     print("javascript");
    // print(peopleIdelResponse);
     loading = false;

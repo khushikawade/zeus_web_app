@@ -83,8 +83,7 @@ showDailog(
       );
       // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
+        var responseJson =jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
         // ignore: use_build_context_synchronously
         Navigator.of(context).pushAndRemoveUntil(
@@ -1997,7 +1996,7 @@ showDailog(
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 10,),
+                              const SizedBox(width: 10,),
                               Expanded(
                                 flex: 1,
                                 child: Column(
