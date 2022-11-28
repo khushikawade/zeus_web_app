@@ -1,9 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zeus/DemoContainer.dart';
+import 'package:zeus/add_new_phase/model/mileston_model.dart';
+import 'package:zeus/add_new_phase/model/phase_details.dart';
+import 'package:zeus/add_new_phase/model/resourcedata.dart';
+import 'package:zeus/add_new_phase/model/resources_needed.dart';
+import 'package:zeus/add_new_phase/model/subtask_model.dart';
 import 'package:zeus/helper_widget/dropdown_textfield.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
@@ -11,7 +19,11 @@ import 'package:zeus/helper_widget/select_datefield.dart';
 import 'package:zeus/helper_widget/subTaskList.dart';
 import 'package:zeus/helper_widget/textfield_milestone.dart';
 import 'package:zeus/helper_widget/textformfield.dart';
+import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/services/api.dart';
+import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/validations.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class NewPhase extends StatefulWidget {
   const NewPhase({Key? key}) : super(key: key);
@@ -21,7 +33,22 @@ class NewPhase extends StatefulWidget {
 }
 
 class _NewPhaseState extends State<NewPhase> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController controller_next_phase = TextEditingController();
+  TextEditingController controller_phase_type = TextEditingController();
+  AutoCompleteTextField? searchTextField;
+  ResourceNeededModel? resourceNeededModel;
+  String startDateForphaseDetail = '25/11/2022';
+  String endDateForphaseDetail = '27/11/2022';
+  List<PhaseDetails> _list = [];
+  List<String> abc = [];
+  static List<Details> users = <Details>[];
+  bool loading = true;
+  bool startloading = false;
+  String? _depat, selectUser;
+  String? _depat1;
+  List _department = [];
+  Api api = Api();
+  PhaseDetails phaseDetails = PhaseDetails();
   DateTime startDate = DateTime.now().subtract(Duration(days: 40));
   DateTime endDate = DateTime.now().add(Duration(days: 40));
   DateTime selectedDate = DateTime.now();
@@ -30,14 +57,18 @@ class _NewPhaseState extends State<NewPhase> {
   bool clickAddSubTask = false;
   bool saveButtonClick = false;
   bool saveButtonClickForSubtask = false;
-  var items = [
-    'Type',
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  GlobalKey<AutoCompleteTextFieldState<Details>> key = new GlobalKey();
+
+  @override
+  void initState() {
+    // _getTag = getProject();
+    // change();
+
+    getDepartment();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -112,31 +143,36 @@ class _NewPhaseState extends State<NewPhase> {
                               const SizedBox(
                                 width: 16,
                               ),
-                              Container(
-                                width:
-                                    97, //MediaQuery.of(context).size.width * 0.22,
-                                margin: const EdgeInsets.only(
-                                    top: 10.0, right: 20.0, bottom: 10.0),
-                                height: 40.0,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff7DD3FC),
-                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                  borderRadius: BorderRadius.circular(
-                                    40.0,
+                              InkWell(
+                                child: Container(
+                                  width:
+                                      97, //MediaQuery.of(context).size.width * 0.22,
+                                  margin: const EdgeInsets.only(
+                                      top: 10.0, right: 20.0, bottom: 10.0),
+                                  height: 40.0,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff7DD3FC),
+                                    //border: Border.all(color:  const Color(0xff1E293B)),
+                                    borderRadius: BorderRadius.circular(
+                                      40.0,
+                                    ),
                                   ),
-                                ),
 
-                                child: const Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Save",
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xff000000),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700),
+                                  child: const Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Save",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Color(0xff000000),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                   ),
                                 ),
+                                onTap: () {
+                                  createPhase();
+                                },
                               ),
                             ],
                           ),
@@ -163,100 +199,214 @@ class _NewPhaseState extends State<NewPhase> {
                             height: 8.0,
                           ),
                           formField(
+                            controller: controller_next_phase,
                             context: context,
                             labelText: "Phase Title",
                             hintText: 'Next Waves',
+                            callback: (values) {
+                              setState(() {
+                                phaseDetails.title = values;
+                                print(phaseDetails.title);
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20.0,
                           ),
                           formField(
+                            controller: controller_phase_type,
                             labelText: "Phase Type",
                             context: context,
                             hintText: 'Design Phase',
+                            callback: (values) {
+                              setState(() {
+                                phaseDetails.phase_type = values;
+                                print(phaseDetails.phase_type);
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20.0,
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 30.0),
-                            // height: 50.0,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff334155),
-                              //border: Border.all(color:  const Color(0xff1E293B)),
-                              borderRadius: BorderRadius.circular(
-                                8.0,
-                              ),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0xff475569),
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
-                                ), //BoxShadow
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.26,
-                                  margin: const EdgeInsets.only(
-                                      top: 5.0, left: 0.0),
-                                  height: 56.0,
-                                  child: TextFormField(
-                                    cursorColor: const Color(0xffFFFFFF),
-                                    style: TextStyle(color: Color(0xffFFFFFF)),
-                                    textAlignVertical: TextAlignVertical.bottom,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.only(
-                                          bottom: 16.0,
-                                          top: 0.0,
-                                          right: 10,
-                                          left: 15.0,
-                                        ),
-                                        prefixIcon: Container(
-                                            child:
-                                                Image.asset('images/date.png')),
-                                        border: InputBorder.none,
-                                        hintText: "",
-                                        // suffixIcon: Icon(Icons.cancel),
-                                        hintStyle: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400)),
-                                    onChanged: (value) {
-                                      //filterSearchResults(value);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                          DatePicker(title: "Start date"),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          DatePicker(title: "End date"),
+                          const SizedBox(
+                            height: 20.0,
                           ),
                           titleHeadlineWidget("Resources needed", 16.0),
                           Row(
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20.0, top: 7),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 20.0, top: 7),
                                 child: CircleAvatar(
                                   backgroundColor: Color(0xff334155),
                                   radius: 30,
-                                  child: SvgPicture.asset(
-                                    'images/photo.svg',
-                                    width: 24.0,
-                                    height: 24.0,
-                                  ),
+                                  child: Icon(Icons.person_outline),
+                                  // SvgPicture.asset(
+                                  //   'images/photo.svg',
+                                  //   width: 24.0,
+                                  //   height: 24.0,
+                                  // ),
                                 ),
                               ),
-                              dropdownTexttfield(context, dropdownvalue, items),
+                              Container(
+                                // width: 305, //MediaQuery.of(context).size.width * 0.22,
+                                margin: const EdgeInsets.only(
+                                    top: 20.0, left: 30.0),
+                                height: 56.0,
+                                width: MediaQuery.of(context).size.width * 0.20,
+                                // margin: const EdgeInsets.only(right: 30.0),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  //border: Border.all(color:  const Color(0xff1E293B)),
+                                  borderRadius: BorderRadius.circular(
+                                    8.0,
+                                  ),
+                                ),
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  height: 20.0,
+                                  child: Container(
+
+                                      // padding: const EdgeInsets.all(2.0),
+                                      child: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSettersetState) {
+                                      return DropdownButtonHideUnderline(
+                                        child: DropdownButton(
+                                          dropdownColor:
+                                              ColorSelect.class_color,
+                                          value: _depat,
+                                          underline: Container(),
+                                          hint: const Text(
+                                            "Select",
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          isExpanded: true,
+                                          icon: const Icon(
+                                            // Add this
+                                            Icons.arrow_drop_down, // Add this
+                                            color: Color(0xff64748B),
+
+                                            // Add this
+                                          ),
+                                          items: _department.map((items) {
+                                            return DropdownMenuItem(
+                                              value: items['id'].toString(),
+                                              child: Text(
+                                                items['name'],
+                                                style: const TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: Color(0xffFFFFFF),
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              _depat = newValue;
+                                              if (newValue != null) {
+                                                startloading = true;
+                                                getResourcesNeeded(newValue);
+                                              }
+                                            });
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  )),
+                                ),
+                              ),
                             ],
                           ),
+                          startloading == true
+                              ? loading == true
+                                  ? Center(
+                                      child: const CircularProgressIndicator())
+                                  : Container(
+                                      padding:
+                                          EdgeInsets.only(left: 5, right: 5),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.26,
+                                      margin: const EdgeInsets.only(
+                                          left: 30.0, top: 16.0),
+                                      height: 50.0,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        //border: Border.all(color:  const Color(0xff1E293B)),
+                                        borderRadius: BorderRadius.circular(
+                                          8.0,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          searchTextField =
+                                              AutoCompleteTextField<Details>(
+                                            clearOnSubmit: false,
+                                            key: key,
+                                            cursorColor: Colors.white,
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 15.0),
+                                              prefixIcon: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 4.0),
+                                                  child: Icon(
+                                                    Icons.search,
+                                                    color: Color(0xff64748B),
+                                                  )),
+                                              hintText: 'Search',
+                                              hintStyle: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color(0xff64748B),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w400),
+                                              border: InputBorder.none,
+                                            ),
+                                            suggestions: users,
+                                            keyboardType: TextInputType.text,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14.0),
+                                            itemFilter: (item, query) {
+                                              return item.name!
+                                                  .toLowerCase()
+                                                  .startsWith(
+                                                      query.toLowerCase());
+                                            },
+                                            itemSorter: (a, b) {
+                                              return a.name!.compareTo(b.name!);
+                                            },
+                                            itemSubmitted: (item) {
+                                              setState(() {
+                                                //print(item.title);
+                                                searchTextField!.textField!
+                                                    .controller!.text = '';
+                                                if (!abc.contains(item.name)) {
+                                                  abc.add(item.name!);
+                                                }
+                                              });
+                                            },
+                                            itemBuilder: (context, item) {
+                                              // ui for the autocompelete row
+                                              return rowResourceName(item);
+                                            },
+                                          ),
+                                      
+                                        ],
+                                      ),
+                                    )
+                              : Container()
                         ],
                       ),
                     ),
@@ -407,21 +557,90 @@ class _NewPhaseState extends State<NewPhase> {
                           clickAddSubTask
                               ? Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20.0, top: 7),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 20.0, top: 7),
                                       child: CircleAvatar(
-                                        backgroundColor: Color(0xff334155),
-                                        radius: 30,
-                                        child: SvgPicture.asset(
-                                          'images/photo.svg',
-                                          width: 24.0,
-                                          height: 24.0,
+                                          backgroundColor: Color(0xff334155),
+                                          radius: 30,
+                                          child: Icon(Icons.person_outline)
+
+                                          //  SvgPicture.asset(
+                                          //   'images/photo.svg',
+                                          //   width: 24.0,
+                                          //   height: 24.0,
+                                          // ),
+                                          ),
+                                    ),
+                                    Container(
+                                      // width: 305, //MediaQuery.of(context).size.width * 0.22,
+                                      margin: const EdgeInsets.only(
+                                          top: 20.0, left: 30.0),
+                                      height: 56.0,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.20,
+                                      // margin: const EdgeInsets.only(right: 30.0),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        //border: Border.all(color:  const Color(0xff1E293B)),
+                                        borderRadius: BorderRadius.circular(
+                                          8.0,
                                         ),
                                       ),
-                                    ),
-                                    dropdownTexttfield(
-                                        context, dropdownvalue, items),
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 16.0, right: 16.0),
+                                        height: 20.0,
+                                        child: Container(
+
+                                            // padding: const EdgeInsets.all(2.0),
+                                            child: StatefulBuilder(
+                                          builder: (BuildContext context,
+                                              StateSettersetState) {
+                                            return DropdownButtonHideUnderline(
+                                              child: DropdownButton(
+                                                dropdownColor:
+                                                    ColorSelect.class_color,
+                                                value: _depat1,
+                                                underline: Container(),
+                                                hint: titleHeadlineWidget(
+                                                    "Select", 14.0),
+                                                isExpanded: true,
+                                                icon: const Icon(
+                                                  // Add this
+                                                  Icons
+                                                      .arrow_drop_down, // Add this
+                                                  color: Color(0xff64748B),
+
+                                                  // Add this
+                                                ),
+                                                items: _department.map((items) {
+                                                  return DropdownMenuItem(
+                                                    value:
+                                                        items['id'].toString(),
+                                                    child: Text(
+                                                      items['name'],
+                                                      style: const TextStyle(
+                                                          fontSize: 14.0,
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    _depat1 = newValue;
+                                                  });
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        )),
+                                      ),
+                                    )
                                   ],
                                 )
                               : saveButtonClickForSubtask
@@ -551,5 +770,39 @@ class _NewPhaseState extends State<NewPhase> {
             fontWeight: FontWeight.w700),
       ),
     );
+  }
+
+  createPhase() {}
+
+  getDepartment() async {
+    List department = [];
+    department = await api.getDeparment();
+    if (department != null) {
+      setState(() {
+        _department = department;
+      });
+    }
+  }
+
+  getResourcesNeeded(String newValue) async {
+    abc.clear();
+    setState(() {
+      loading = true;
+    });
+    resourceNeededModel = await api.getResourceNeeded(newValue);
+
+    if (resourceNeededModel != null && resourceNeededModel!.data != null) {
+      if (resourceNeededModel!.data!.isNotEmpty) {
+        users = resourceNeededModel!.data!;
+        for (int i = 0; i < resourceNeededModel!.data!.length; i++) {
+          abc.add(resourceNeededModel!.data![i].name.toString());
+        }
+      } else {}
+    }
+    setState(() {
+      loading = false;
+    });
+    print(abc);
+    print(abc);
   }
 }

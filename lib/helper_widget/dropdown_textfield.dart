@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 Widget dropdownTexttfield(
-    BuildContext context, String dropdownvalue, List<String> items) {
+  BuildContext context,
+  String dropdownvalue,
+  List<String> items, //Function(String values) callback
+) {
   return Container(
     // width: 305, //MediaQuery.of(context).size.width * 0.22,
     margin: const EdgeInsets.only(top: 20.0, left: 30.0),
@@ -58,6 +61,7 @@ Widget dropdownTexttfield(
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownvalue = newValue!;
+                    // callback(dropdownvalue);
                   });
                 },
                 selectedItemBuilder: (BuildContext context) {

@@ -5,10 +5,10 @@ import 'package:zeus/helper_widget/labeltextfield.dart';
 Widget formFieldMilestone(
         {required String labelText, dynamic context, dynamic hintText}) =>
     Padding(
-        padding: const EdgeInsets.only(left: 30.0, bottom: 15),
+        padding: const EdgeInsets.only(bottom: 15),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.32,
-          margin: const EdgeInsets.only(right: 30.0),
+          width: MediaQuery.of(context).size.width * 0.26,
+          margin: const EdgeInsets.only(left: 30.0),
           height: 56.0,
           decoration: BoxDecoration(
             color:

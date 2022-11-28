@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zeus/utility/constant.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AppUtil {
   static Color getStatusContainerColor(String status) {
@@ -42,6 +43,16 @@ class AppUtil {
       }
     } else {
       return 'N/A';
+    }
+  }
+
+  static Future<bool> checkNetwork() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

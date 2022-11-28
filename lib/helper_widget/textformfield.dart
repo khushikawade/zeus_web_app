@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
 
 Widget formField(
-        {required String labelText, dynamic context, dynamic hintText}) =>
+        {required String labelText,
+        required BuildContext context,
+        dynamic hintText,
+        required controller,
+        required Function(String values) callback}) =>
     Container(
       width: MediaQuery.of(context).size.width * 0.26,
       margin: const EdgeInsets.only(left: 30.0),
@@ -40,6 +44,7 @@ Widget formField(
               style: const TextStyle(color: Color(0xffFFFFFF)),
               textAlignVertical: TextAlignVertical.bottom,
               keyboardType: TextInputType.text,
+              controller: controller,
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.only(
                     bottom: 16.0,
@@ -56,7 +61,13 @@ Widget formField(
                       fontWeight: FontWeight.w400)),
               onChanged: (value) {
                 //filterSearchResults(value);
+                controller = value;
+                callback(controller);
               },
+              // onSaved: (value) {
+              //   controller = value;
+              //   callback(controller);
+              // },
             ),
           ),
         ],

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:zeus/DemoContainer.dart';
+import 'package:zeus/add_new_phase/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -1588,8 +1589,7 @@ showDailog(
                                                           searchTextField =
                                                               AutoCompleteTextField<
                                                                   SkillsData>(
-                                                            // controller: input_controller,
-                                                            //   suggestions: input_list,
+                                                            
                                                             clearOnSubmit:
                                                                 false,
                                                             key: key,
@@ -1680,40 +1680,6 @@ showDailog(
                                                                   item);
                                                             },
                                                           )
-                                                          // ListView.builder(
-                                                          //   shrinkWrap: true,
-                                                          //   scrollDirection:
-                                                          //       Axis.vertical,
-                                                          //   itemCount:
-                                                          //       response
-                                                          //           .data!
-                                                          //           .tags!
-                                                          //           .length,
-                                                          //   itemBuilder:
-                                                          //       (BuildContext
-                                                          //               context,
-                                                          //           int index) {
-                                                          //     Tags tag = response
-                                                          //             .data!
-                                                          //             .tags![
-                                                          //         index];
-                                                          //     var tagName =
-                                                          //         tag.name;
-                                                          //     return Text(
-                                                          //       '$tagName',
-                                                          //       style: const TextStyle(
-                                                          //           color: ColorSelect
-                                                          //               .white_color,
-                                                          //           fontSize:
-                                                          //               11.0,
-                                                          //           fontFamily:
-                                                          //               'Inter',
-                                                          //           fontWeight:
-                                                          //               FontWeight
-                                                          //                   .w500),
-                                                          //     );
-                                                          //   },
-                                                          // ),
                                                         ],
                                                       ),
                                                     ),
@@ -2136,31 +2102,40 @@ showDailog(
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          right: 8.0, top: 0.0),
-                                      child: SvgPicture.asset(
-                                        'images/plus.svg',
-                                        color: const Color(0xff93C5FD),
-                                        width: 10.0,
-                                        height: 10.0,
+                                InkWell(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            right: 8.0, top: 0.0),
+                                        child: SvgPicture.asset(
+                                          'images/plus.svg',
+                                          color: const Color(0xff93C5FD),
+                                          width: 10.0,
+                                          height: 10.0,
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          right: 80.0, top: 0.0),
-                                      child: const Text(
-                                        "New phase",
-                                        style: TextStyle(
-                                            color: Color(0xff93C5FD),
-                                            fontSize: 12.0,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700),
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            right: 80.0, top: 0.0),
+                                        child: const Text(
+                                          "New phase",
+                                          style: TextStyle(
+                                              color: Color(0xff93C5FD),
+                                              fontSize: 12.0,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                  onTap: () async {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return NewPhase();
+                                        });
+                                  },
                                 ),
                               ],
                             ),

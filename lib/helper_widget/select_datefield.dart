@@ -30,10 +30,10 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30.0, bottom: 15),
+      padding: const EdgeInsets.only(bottom: 15),
       child: Container(
-          width: MediaQuery.of(context).size.width * 0.30,
-          margin: const EdgeInsets.only(right: 30.0),
+          width: MediaQuery.of(context).size.width * 0.26,
+          margin: const EdgeInsets.only(left: 30.0),
           height: 56.0,
           decoration: BoxDecoration(
             color: const Color(0xff334155),
