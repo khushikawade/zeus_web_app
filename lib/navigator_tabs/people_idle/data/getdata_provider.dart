@@ -20,6 +20,7 @@ class PeopleIdelClass with ChangeNotifier {
       peopleList = await service.getpeopleList(searchText);
       print("java");
     } catch (e) {
+  
       print("Exception in parsing $e");
     }
 

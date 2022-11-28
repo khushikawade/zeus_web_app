@@ -308,27 +308,21 @@ class _ProfileDetailState extends State<ProfileDetail> {
                       Expanded(
                         child: Container(
                           // width: MediaQuery.of(context).size.width * 0.89,
-                          height:
-                              MediaQuery.of(context).size.height * 0.40,
+                          height: MediaQuery.of(context).size.height * 0.40,
                           //width: double.infinity,
                           margin: const EdgeInsets.only(
-                              left: 59.0,
-                              right: 32.0,
-                              bottom: 0.0,
-                              top: 35.0),
+                              left: 59.0, right: 32.0, bottom: 0.0, top: 35.0),
                           decoration: BoxDecoration(
                             color: const Color(0xff1E293B),
                             border: Border.all(
-                                color: ColorSelect
-                                    .peoplelistbackgroundcolor),
+                                color: ColorSelect.peoplelistbackgroundcolor),
                             borderRadius: BorderRadius.circular(
                               12.0,
                             ),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
                                 height: 40.0,
@@ -352,8 +346,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     child: Text(
                                       "OCCUPIED",
                                       style: TextStyle(
-                                          color:
-                                              ColorSelect.boxtext_color,
+                                          color: ColorSelect.boxtext_color,
                                           fontSize: 14.0,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w500),
@@ -370,8 +363,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                           left: 16.0, top: 20.0),
                                       decoration: BoxDecoration(
                                         //color: const Color(0xff334155),
-                                        borderRadius:
-                                            BorderRadius.circular(
+                                        borderRadius: BorderRadius.circular(
                                           40.0,
                                         ),
                                       ),
@@ -385,7 +377,14 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     margin: const EdgeInsets.only(
                                         left: 16.0, top: 10.0),
                                     child: Text(
-                                      list.name.toString(),
+                                      list.resource != null
+                                          ? list.resource!.nickname != null &&
+                                                  list.resource!.nickname!
+                                                      .isNotEmpty
+                                              ? list.resource!.nickname
+                                                  .toString()
+                                              : 'TBD'
+                                          : 'TBD',
                                       style: const TextStyle(
                                           color: ColorSelect.white_color,
                                           fontSize: 22.0,
@@ -410,18 +409,15 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                           .resource!
                                                           .designation!
                                                           .isNotEmpty
-                                                  ? list.resource!
-                                                      .designation
+                                                  ? list.resource!.designation
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
                                           style: const TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                       Container(
@@ -433,9 +429,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                         width: 6.0,
                                         decoration: const BoxDecoration(
                                             color: Color(0xff64748B),
-                                            borderRadius:
-                                                BorderRadius.all(
-                                                    Radius.circular(20))),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(
@@ -448,23 +443,18 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                               ? list.resource!.department!
                                                               .name !=
                                                           null &&
-                                                      list
-                                                          .resource!
-                                                          .department!
-                                                          .name!
-                                                          .isNotEmpty
-                                                  ? list.resource!
-                                                      .department!.name
+                                                      list.resource!.department!
+                                                          .name!.isNotEmpty
+                                                  ? list.resource!.department!
+                                                      .name
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
                                           style: const TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                       Container(
@@ -476,9 +466,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                         width: 6.0,
                                         decoration: const BoxDecoration(
                                             color: Color(0xff64748B),
-                                            borderRadius:
-                                                BorderRadius.all(
-                                                    Radius.circular(20))),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(
@@ -489,12 +478,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                         child: Text(
                                           "Associated with: ",
                                           style: const TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                       Container(
@@ -507,22 +494,17 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                           list.resource != null
                                               ? list.resource!.associate !=
                                                           null &&
-                                                      list
-                                                          .resource!
-                                                          .associate!
+                                                      list.resource!.associate!
                                                           .isNotEmpty
-                                                  ? list
-                                                      .resource!.associate
+                                                  ? list.resource!.associate
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
                                           style: const TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                     ],
@@ -547,23 +529,18 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                             left: 0.0, top: 10.0),
                                         child: Text(
                                           list.resource != null
-                                              ? list.resource!.country !=
-                                                          null &&
-                                                      list
-                                                          .resource!
-                                                          .country!
+                                              ? list.resource!.city != null &&
+                                                      list.resource!.city!
                                                           .isNotEmpty
-                                                  ? list.resource!.country
+                                                  ? list.resource!.city
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
                                           style: TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                       Container(
@@ -572,12 +549,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                         child: const Text(
                                           ", ",
                                           style: TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                       Container(
@@ -585,67 +560,55 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                             left: 0.0, top: 10.0),
                                         child: Text(
                                           list.resource != null
-                                              ? list.resource!.city !=
+                                              ? list.resource!.country !=
                                                           null &&
-                                                      list.resource!.city!
+                                                      list.resource!.country!
                                                           .isNotEmpty
-                                                  ? list.resource!.city
+                                                  ? list.resource!.country
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
                                           style: TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 0.0, top: 10.0),
-                                        child: const Text(
-                                          ".",
-                                          style: TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
-                                        ),
-                                      ),
+                                      // Container(
+                                      //   margin: const EdgeInsets.only(
+                                      //       left: 0.0, top: 10.0),
+                                      //   child: const Text(
+                                      //     ".",
+                                      //     style: TextStyle(
+                                      //         color: ColorSelect.profile_color,
+                                      //         fontSize: 14.0,
+                                      //         fontFamily: 'Inter',
+                                      //         fontWeight: FontWeight.w400),
+                                      //   ),
+                                      // ),
                                       Container(
                                         margin: const EdgeInsets.only(
                                             left: 0.0, top: 10.0),
                                         child: Text(
                                           list.resource != null
-                                              ? list.resource!
-                                                              .timeZone !=
+                                              ? list.resource!.timeZone !=
                                                           null &&
-                                                      list
-                                                              .resource!
-                                                              .timeZone!
+                                                      list.resource!.timeZone!
                                                               .offset !=
                                                           null &&
-                                                      list
-                                                          .resource!
-                                                          .timeZone!
-                                                          .offset!
-                                                          .isNotEmpty
-                                                  ? list.resource!
-                                                      .timeZone!.offset
+                                                      list.resource!.timeZone!
+                                                          .offset!.isNotEmpty
+                                                  ? list.resource!.timeZone!
+                                                      .offset
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
                                           style: TextStyle(
-                                              color: ColorSelect
-                                                  .profile_color,
+                                              color: ColorSelect.profile_color,
                                               fontSize: 14.0,
                                               fontFamily: 'Inter',
-                                              fontWeight:
-                                                  FontWeight.w400),
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                     ],
@@ -676,8 +639,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin:
-                            const EdgeInsets.only(left: 175.0, top: 0.0),
+                        margin: const EdgeInsets.only(left: 175.0, top: 0.0),
                         child: const Text(
                           "About me",
                           style: TextStyle(
@@ -691,15 +653,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin:
-                                EdgeInsets.only(left: 134.0, top: 40.0),
+                            margin: EdgeInsets.only(left: 134.0, top: 40.0),
                             child: Text(
-                              list.resource != null
-                                  ? list.resource!.nickname != null &&
-                                          list.resource!.nickname!
-                                              .isNotEmpty
-                                      ? list.resource!.nickname.toString()
-                                      : 'TBD'
+                              list.name != null && list.name!.isNotEmpty
+                                  ? list.name.toString()
                                   : 'TBD',
                               style: TextStyle(
                                   color: ColorSelect.white_color,
@@ -739,8 +696,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin:
-                            const EdgeInsets.only(left: 175.0, top: 20.0),
+                        margin: const EdgeInsets.only(left: 175.0, top: 20.0),
                         child: const Text(
                           "Availability",
                           style: TextStyle(
@@ -754,8 +710,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(
-                                left: 120.0, top: 40.0),
+                            margin:
+                                const EdgeInsets.only(left: 120.0, top: 40.0),
                             child: Text(
                               // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
 
@@ -794,8 +750,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin:
-                            const EdgeInsets.only(left: 175.0, top: 40.0),
+                        margin: const EdgeInsets.only(left: 175.0, top: 40.0),
                         child: const Text(
                           "Skills",
                           style: TextStyle(
@@ -812,15 +767,13 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                 margin: const EdgeInsets.only(
                                     left: 160.0, top: 30.0),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 0.0),
+                                  padding: const EdgeInsets.only(left: 0.0),
                                   child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount:
-                                        list.resource!.skills!.length,
-                                    itemBuilder: (BuildContext context,
-                                        int index) {
+                                    itemCount: list.resource!.skills!.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
                                       //PeopleData _peopleListSkills = data.peopleList!.data![index];
                                       Skills _skills =
                                           list.resource!.skills![index];
@@ -832,32 +785,28 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                             left: 5.0, top: 5.0),
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
-                                          borderRadius:
-                                              BorderRadius.circular(
+                                          borderRadius: BorderRadius.circular(
                                             8.0,
                                           ),
                                         ),
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(
-                                                    left: 12.0,
-                                                    right: 12.0,
-                                                    top: 6.0,
-                                                    bottom: 6.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 12.0,
+                                                right: 12.0,
+                                                top: 6.0,
+                                                bottom: 6.0),
                                             child: Text(
-                                              skill != null &&
-                                                      skill.isNotEmpty
+                                              skill != null && skill.isNotEmpty
                                                   ? '$skill'
                                                   : 'TBD',
                                               style: const TextStyle(
-                                                  color: ColorSelect
-                                                      .white_color,
+                                                  color:
+                                                      ColorSelect.white_color,
                                                   fontSize: 14.0,
                                                   fontFamily: 'Inter',
-                                                  fontWeight:
-                                                      FontWeight.w400),
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ),
                                         ),

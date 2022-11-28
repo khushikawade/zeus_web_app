@@ -1433,7 +1433,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                         child: const Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            "Edit",
+                                            "Save",
                                             style: TextStyle(
                                                 fontSize: 14.0,
                                                 color: ColorSelect.black_color,

@@ -431,9 +431,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             children: [
                               Container(
                                 margin: const EdgeInsets.only(right: 20.0),
-                                child: const Text(
-                                  "Do you want to delete this person?",
-                                  style: TextStyle(
+                                child: Text(
+                                  // / print("Time2 ----------------------${Time2}");
+                                  "Do you want to delete this ${widget.data!.name!} ?",
+
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: 'Inter',
@@ -443,7 +445,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted,you will not find this person in project list ",
+                                  "Once deleted,you will not find this person in people list anymore.",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -493,7 +495,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                               fontSize: 14,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: 'Inter',
-                                              color: ColorSelect.delete_text),
+                                              color: ColorSelect.red_color),
                                         ),
                                       ),
                                     ],
