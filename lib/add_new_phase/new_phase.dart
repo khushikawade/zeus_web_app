@@ -58,6 +58,8 @@ class _NewPhaseState extends State<NewPhase> {
   bool saveButtonClick = false;
   bool saveButtonClickForSubtask = false;
   GlobalKey<AutoCompleteTextFieldState<Details>> key = new GlobalKey();
+  List<String> selectedSource = [];
+  List<String> selectedSubTaskSource = [];
 
   @override
   void initState() {
@@ -86,7 +88,7 @@ class _NewPhaseState extends State<NewPhase> {
               children: [
                 Container(
                     height: MediaQuery.of(context).size.height * 0.11,
-                    width: MediaQuery.of(context).size.width * 0.94,
+                    width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       color: Color(0xff283345),
                       //border: Border.all(color: const Color(0xff0E7490)),
@@ -116,8 +118,8 @@ class _NewPhaseState extends State<NewPhase> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                width:
-                                    97.0, //MediaQuery.of(context).size.width * 0.22,
+                                width: 97.0,
+                                //MediaQuery.of(context).size.width * 0.22,
                                 margin: const EdgeInsets.only(
                                     top: 10.0, bottom: 10.0),
                                 height: 40.0,
@@ -145,8 +147,8 @@ class _NewPhaseState extends State<NewPhase> {
                               ),
                               InkWell(
                                 child: Container(
-                                  width:
-                                      97, //MediaQuery.of(context).size.width * 0.22,
+                                  width: 97,
+                                  //MediaQuery.of(context).size.width * 0.22,
                                   margin: const EdgeInsets.only(
                                       top: 10.0, right: 20.0, bottom: 10.0),
                                   height: 40.0,
@@ -254,10 +256,12 @@ class _NewPhaseState extends State<NewPhase> {
                               ),
                               Container(
                                 // width: 305, //MediaQuery.of(context).size.width * 0.22,
-                                margin: const EdgeInsets.only(
-                                    top: 20.0, left: 30.0),
+
+                                margin: const EdgeInsets.only(left: 30.0),
                                 height: 56.0,
-                                width: MediaQuery.of(context).size.width * 0.20,
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.22),
+                                //width: MediaQuery.of(context).size.width * 0.20,
                                 // margin: const EdgeInsets.only(right: 30.0),
                                 decoration: BoxDecoration(
                                   color: const Color(0xff334155),
@@ -293,7 +297,8 @@ class _NewPhaseState extends State<NewPhase> {
                                           isExpanded: true,
                                           icon: const Icon(
                                             // Add this
-                                            Icons.arrow_drop_down, // Add this
+                                            Icons.arrow_drop_down,
+                                            // Add this
                                             color: Color(0xff64748B),
 
                                             // Add this
@@ -329,84 +334,154 @@ class _NewPhaseState extends State<NewPhase> {
                               ),
                             ],
                           ),
+
+
                           startloading == true
                               ? loading == true
                                   ? Center(
                                       child: const CircularProgressIndicator())
                                   : Container(
-                                      padding:
-                                          EdgeInsets.only(left: 5, right: 5),
                                       width: MediaQuery.of(context).size.width *
                                           0.26,
                                       margin: const EdgeInsets.only(
-                                          left: 30.0, top: 16.0),
-                                      height: 50.0,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        //border: Border.all(color:  const Color(0xff1E293B)),
-                                        borderRadius: BorderRadius.circular(
-                                          8.0,
+                                          top: 16, left: 30),
+                                      decoration: BoxDecoration(),
+                                      child: Expanded(
+                                        child: Container(
+                                          //padding: EdgeInsets.only(left: 5, right: 5),
+                                          height: 50.0,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            //border: Border.all(color:  const Color(0xff1E293B)),
+
+                                            borderRadius: BorderRadius.circular(
+                                              8.0,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              searchTextField =
+                                                  AutoCompleteTextField<
+                                                      Details>(
+                                                clearOnSubmit: false,
+                                                key: key,
+                                                cursorColor: Colors.white,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          top: 15.0),
+                                                  prefixIcon: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 4.0),
+                                                      child: Icon(
+                                                        Icons.search,
+                                                        color:
+                                                            Color(0xff64748B),
+                                                      )),
+                                                  hintText: 'Search',
+                                                  hintStyle: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: Color(0xff64748B),
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  border: InputBorder.none,
+                                                ),
+                                                suggestions: users,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14.0),
+                                                itemFilter: (item, query) {
+                                                  return item.name!
+                                                      .toLowerCase()
+                                                      .startsWith(
+                                                          query.toLowerCase());
+                                                },
+                                                itemSorter: (a, b) {
+                                                  return a.name!
+                                                      .compareTo(b.name!);
+                                                },
+                                                    itemSubmitted: (item) {
+                                                      setState(() {
+                                                        //print(item.title);
+                                                        searchTextField!.textField!.controller!.text = '';
+                                                        if (selectedSource.isNotEmpty) {
+                                                          if (selectedSource.contains(item.name)) {
+                                                          } else {
+                                                            selectedSource.add(item.name!);
+                                                          }
+                                                        } else {
+                                                          selectedSource.add(item.name!);
+                                                        }
+                                                      });
+                                                    },
+                                                itemBuilder: (context, item) {
+                                                  // ui for the autocompelete row
+                                                  return rowResourceName(item);
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          searchTextField =
-                                              AutoCompleteTextField<Details>(
-                                            clearOnSubmit: false,
-                                            key: key,
-                                            cursorColor: Colors.white,
-                                            decoration: const InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.only(top: 15.0),
-                                              prefixIcon: Padding(
-                                                  padding:
-                                                      EdgeInsets.only(top: 4.0),
-                                                  child: Icon(
-                                                    Icons.search,
-                                                    color: Color(0xff64748B),
-                                                  )),
-                                              hintText: 'Search',
-                                              hintStyle: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xff64748B),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w400),
-                                              border: InputBorder.none,
-                                            ),
-                                            suggestions: users,
-                                            keyboardType: TextInputType.text,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14.0),
-                                            itemFilter: (item, query) {
-                                              return item.name!
-                                                  .toLowerCase()
-                                                  .startsWith(
-                                                      query.toLowerCase());
-                                            },
-                                            itemSorter: (a, b) {
-                                              return a.name!.compareTo(b.name!);
-                                            },
-                                            itemSubmitted: (item) {
-                                              setState(() {
-                                                //print(item.title);
-                                                searchTextField!.textField!
-                                                    .controller!.text = '';
-                                                if (!abc.contains(item.name)) {
-                                                  abc.add(item.name!);
-                                                }
-                                              });
-                                            },
-                                            itemBuilder: (context, item) {
-                                              // ui for the autocompelete row
-                                              return rowResourceName(item);
-                                            },
-                                          ),
-                                      
-                                        ],
-                                      ),
                                     )
-                              : Container()
+                              : Container(),
+
+                          selectedSource.isNotEmpty
+                              ? SizedBox(
+                            height: 55,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 28.0),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: selectedSource.length,
+                                itemBuilder: (context, index) {
+                                  // Skills _skills =
+                                  //     widget.data!.resource!.skills![index];
+                                  // var tag = _skills.title;
+                                  return Container(
+                                    height: 32.0,
+                                    margin: const EdgeInsets.only(left: 12.0),
+                                    child: InputChip(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(8))),
+                                      deleteIcon: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      backgroundColor: const Color(0xff334155),
+                                      visualDensity: VisualDensity.compact,
+                                      materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                      label: Text(
+                                        selectedSource[index],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      //  selected: _isSelected!,
+                                      onSelected: (bool selected) {
+                                        setState(() {
+                                          //    _isSelected = selected;
+                                        });
+                                      },
+                                      onDeleted: () {
+                                        setState(() {
+                                          selectedSource.removeAt(index);
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                              : Container(),
+
+
                         ],
                       ),
                     ),
@@ -555,97 +630,12 @@ class _NewPhaseState extends State<NewPhase> {
                                   "Resources need for subtask", 16)
                               : Container(),
                           clickAddSubTask
-                              ? Row(
-                                  children: [
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 20.0, top: 7),
-                                      child: CircleAvatar(
-                                          backgroundColor: Color(0xff334155),
-                                          radius: 30,
-                                          child: Icon(Icons.person_outline)
-
-                                          //  SvgPicture.asset(
-                                          //   'images/photo.svg',
-                                          //   width: 24.0,
-                                          //   height: 24.0,
-                                          // ),
-                                          ),
-                                    ),
-                                    Container(
-                                      // width: 305, //MediaQuery.of(context).size.width * 0.22,
-                                      margin: const EdgeInsets.only(
-                                          top: 20.0, left: 30.0),
-                                      height: 56.0,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.20,
-                                      // margin: const EdgeInsets.only(right: 30.0),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        //border: Border.all(color:  const Color(0xff1E293B)),
-                                        borderRadius: BorderRadius.circular(
-                                          8.0,
-                                        ),
-                                      ),
-                                      child: Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 16.0, right: 16.0),
-                                        height: 20.0,
-                                        child: Container(
-
-                                            // padding: const EdgeInsets.all(2.0),
-                                            child: StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSettersetState) {
-                                            return DropdownButtonHideUnderline(
-                                              child: DropdownButton(
-                                                dropdownColor:
-                                                    ColorSelect.class_color,
-                                                value: _depat1,
-                                                underline: Container(),
-                                                hint: titleHeadlineWidget(
-                                                    "Select", 14.0),
-                                                isExpanded: true,
-                                                icon: const Icon(
-                                                  // Add this
-                                                  Icons
-                                                      .arrow_drop_down, // Add this
-                                                  color: Color(0xff64748B),
-
-                                                  // Add this
-                                                ),
-                                                items: _department.map((items) {
-                                                  return DropdownMenuItem(
-                                                    value:
-                                                        items['id'].toString(),
-                                                    child: Text(
-                                                      items['name'],
-                                                      style: const TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? newValue) {
-                                                  setState(() {
-                                                    _depat1 = newValue;
-                                                  });
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        )),
-                                      ),
-                                    )
-                                  ],
-                                )
+                              ? subTaskResourcesView()
                               : saveButtonClickForSubtask
                                   ? subTaskList(context)
                                   : Container(),
+
+
                         ],
                       ),
                     )
@@ -655,6 +645,252 @@ class _NewPhaseState extends State<NewPhase> {
             ),
           ),
         ));
+  }
+
+
+ Widget subTaskResourcesView(){
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0, top: 7),
+              child: CircleAvatar(
+                backgroundColor: Color(0xff334155),
+                radius: 30,
+                child: Icon(Icons.person_outline),
+                // SvgPicture.asset(
+                //   'images/photo.svg',
+                //   width: 24.0,
+                //   height: 24.0,
+                // ),
+              ),
+            ),
+            Container(
+              // width: 305, //MediaQuery.of(context).size.width * 0.22,
+
+              margin: const EdgeInsets.only(left: 30.0),
+              height: 56.0,
+              width:
+              (MediaQuery.of(context).size.width * 0.22),
+              //width: MediaQuery.of(context).size.width * 0.20,
+              // margin: const EdgeInsets.only(right: 30.0),
+              decoration: BoxDecoration(
+                color: const Color(0xff334155),
+                //border: Border.all(color:  const Color(0xff1E293B)),
+                borderRadius: BorderRadius.circular(
+                  8.0,
+                ),
+              ),
+              child: Container(
+                margin: const EdgeInsets.only(
+                    left: 16.0, right: 16.0),
+                height: 20.0,
+                child: Container(
+                  // padding: const EdgeInsets.all(2.0),
+                    child: StatefulBuilder(
+                      builder: (BuildContext context,
+                          StateSettersetState) {
+                        return DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            dropdownColor:
+                            ColorSelect.class_color,
+                            value: _depat,
+                            underline: Container(),
+                            hint: const Text(
+                              "Select",
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xffFFFFFF),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            isExpanded: true,
+                            icon: const Icon(
+                              // Add this
+                              Icons.arrow_drop_down,
+                              // Add this
+                              color: Color(0xff64748B),
+
+                              // Add this
+                            ),
+                            items: _department.map((items) {
+                              return DropdownMenuItem(
+                                value: items['id'].toString(),
+                                child: Text(
+                                  items['name'],
+                                  style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight:
+                                      FontWeight.w400),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _depat = newValue;
+                                if (newValue != null) {
+                                  startloading = true;
+                                  getResourcesNeeded(newValue);
+                                }
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    )),
+              ),
+            ),
+          ],
+        ),
+
+        startloading == true
+            ? loading == true
+            ? Center(
+            child: const CircularProgressIndicator())
+            : Container(
+          width: MediaQuery.of(context).size.width *
+              0.26,
+          margin: const EdgeInsets.only(
+              top: 16, left: 30),
+          decoration: BoxDecoration(),
+          child: Expanded(
+            child: Container(
+              //padding: EdgeInsets.only(left: 5, right: 5),
+              height: 50.0,
+              decoration: BoxDecoration(
+                color: const Color(0xff334155),
+                //border: Border.all(color:  const Color(0xff1E293B)),
+
+                borderRadius: BorderRadius.circular(
+                  8.0,
+                ),
+              ),
+              child: Column(
+                children: [
+                  searchTextField =
+                      AutoCompleteTextField<
+                          Details>(
+                        clearOnSubmit: false,
+                        key: key,
+                        cursorColor: Colors.white,
+                        decoration:
+                        const InputDecoration(
+                          contentPadding:
+                          EdgeInsets.only(
+                              top: 15.0),
+                          prefixIcon: Padding(
+                              padding: EdgeInsets.only(
+                                  top: 4.0),
+                              child: Icon(
+                                Icons.search,
+                                color:
+                                Color(0xff64748B),
+                              )),
+                          hintText: 'Search',
+                          hintStyle: TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xff64748B),
+                              fontFamily: 'Inter',
+                              fontWeight:
+                              FontWeight.w400),
+                          border: InputBorder.none,
+                        ),
+                        suggestions: users,
+                        keyboardType:
+                        TextInputType.text,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0),
+                        itemFilter: (item, query) {
+                          return item.name!
+                              .toLowerCase()
+                              .startsWith(
+                              query.toLowerCase());
+                        },
+                        itemSorter: (a, b) {
+                          return a.name!
+                              .compareTo(b.name!);
+                        },
+                        itemSubmitted: (item) {
+                          setState(() {
+                            //print(item.title);
+                            searchTextField!.textField!.controller!.text = '';
+                            if (selectedSource.isNotEmpty) {
+                              if (selectedSource.contains(item.name)) {
+                              } else {
+                                selectedSource.add(item.name!);
+                              }
+                            } else {
+                              selectedSource.add(item.name!);
+                            }
+                          });
+                        },
+                        itemBuilder: (context, item) {
+                          // ui for the autocompelete row
+                          return rowResourceName(item);
+                        },
+                      ),
+                ],
+              ),
+            ),
+          ),
+        )
+            : Container(),
+        selectedSubTaskSource.isNotEmpty
+            ? SizedBox(
+          height: 55,
+          child: Padding(
+            padding: EdgeInsets.only(left: 28.0),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: selectedSource.length,
+              itemBuilder: (context, index) {
+                // Skills _skills =
+                //     widget.data!.resource!.skills![index];
+                // var tag = _skills.title;
+                return Container(
+                  height: 32.0,
+                  margin: const EdgeInsets.only(left: 12.0),
+                  child: InputChip(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(8))),
+                    deleteIcon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    backgroundColor: const Color(0xff334155),
+                    visualDensity: VisualDensity.compact,
+                    materialTapTargetSize:
+                    MaterialTapTargetSize.shrinkWrap,
+                    label: Text(
+                      selectedSource[index],
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    //  selected: _isSelected!,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        //    _isSelected = selected;
+                      });
+                    },
+                    onDeleted: () {
+                      setState(() {
+                        selectedSource.removeAt(index);
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        )
+            : Container(),
+      ],
+    );
   }
 
   clickAddMileStone() {
