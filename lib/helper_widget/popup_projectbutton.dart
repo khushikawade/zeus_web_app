@@ -264,8 +264,10 @@ class _ProjectEditState extends State<ProjectEdit>
 
       itemBuilder: (context) => [
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 1,
-          child: GestureDetector(
+          child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -1452,22 +1454,27 @@ class _ProjectEditState extends State<ProjectEdit>
                   });
             },
             child: Container(
-              height: 20,
-              width: 50,
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    color: ColorSelect.white_color),
+              height: 50,
+              width: double.infinity,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 5, top: 15),
+                child: Text(
+                  "Edit",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
               ),
             ),
           ),
         ),
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 2,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -1564,13 +1571,20 @@ class _ProjectEditState extends State<ProjectEdit>
                     );
                   });
             },
-            child: const Text(
-              "Delete",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  color: ColorSelect.white_color),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 5, top: 15),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
+              ),
             ),
           ),
         )
