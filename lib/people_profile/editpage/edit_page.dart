@@ -284,7 +284,7 @@ class _EditPageState extends State<EditPage> {
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
                           top: 54.0,
@@ -317,6 +317,7 @@ class _EditPageState extends State<EditPage> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisSize: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
@@ -722,15 +723,16 @@ class _EditPageState extends State<EditPage> {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
                     flex: 4,
                     child: Stack(
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.10,
+                          //width: MediaQuery.of(context).size.width * 0.10,
                           margin: const EdgeInsets.only(top: 15.0, left: 10.0),
                           height: 56.0,
                           decoration: BoxDecoration(
@@ -808,7 +810,7 @@ class _EditPageState extends State<EditPage> {
                     width: 16,
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -827,7 +829,7 @@ class _EditPageState extends State<EditPage> {
                           ),
                           child: Container(
                               margin:
-                                  const EdgeInsets.only(left: 5.0, right: 5.0),
+                                  const EdgeInsets.only(left: 12.0, right: 5.0),
                               // padding: const EdgeInsets.all(2.0),
                               child: StatefulBuilder(
                                 builder: (BuildContext context,
@@ -880,32 +882,32 @@ class _EditPageState extends State<EditPage> {
                                 },
                               )),
                         ),
-                        // createButtonClick
-                        //     ? selectCurrency
-                        //         ? const Text(
-                        //             " ",
-                        //           )
-                        //         : const Padding(
-                        //             padding: EdgeInsets.only(left: 13),
-                        //             child: Text("Please Select ",
-                        //                 style: TextStyle(
-                        //                     color: Color.fromARGB(
-                        //                         255, 221, 49, 60),
-                        //                     fontSize: 14)),
-                        //           )
-                        //     : Container(),
+                        createButtonClick
+                            ? selectCurrency
+                                ? const Text(
+                                    " ",
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.only(left: 13),
+                                    child: Text("Please Select ",
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 221, 49, 60),
+                                            fontSize: 14)),
+                                  )
+                            : Container(),
                       ],
                     ),
                   ),
                   SizedBox(
-                    width: 18,
+                    width: 16,
                   ),
                   Expanded(
                     flex: 7,
                     child: Stack(
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.19,
+                          // width: MediaQuery.of(context).size.width * 0.19,
                           margin: const EdgeInsets.only(top: 15.0, right: 10.0),
                           height: 56.0,
                           decoration: BoxDecoration(
@@ -987,6 +989,7 @@ class _EditPageState extends State<EditPage> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(

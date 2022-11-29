@@ -726,17 +726,15 @@ class _IdleState extends State<Idle> {
 
                 height: 969,
           
-          child: const Expanded(
-              child: Center(
-                  child: Text(
-                "No Records Found !",
-                style: TextStyle(
-                    color: Color(0xffFFFFFF),
-                    fontSize: 22.0,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500),
-              )),
-            ),
+          child: const Center(
+              child: Text(
+            "No Records Found!",
+            style: TextStyle(
+                color: Color(0xffFFFFFF),
+                fontSize: 22.0,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500),
+          )),
         )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
