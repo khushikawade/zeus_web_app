@@ -2515,8 +2515,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                     validator: (value) {
                       //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Please enter valid name';
                       }
                       return null;
                     },
@@ -3089,8 +3092,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               : AutovalidateMode.disabled,
                           validator: (value) {
                             //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            RegExp regex = RegExp(r'^\D+|(?<=\d),(?=\d)');
+
                             if (value!.isEmpty) {
                               return 'Please enter';
+                            } else if (regex.hasMatch(value)) {
+                              return 'Please enter valid salary';
                             }
                             return null;
                           },
@@ -3760,8 +3767,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         : AutovalidateMode.disabled,
                     validator: (value) {
                       //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Please enter valid  country name';
                       }
                       return null;
                     },
@@ -3830,8 +3840,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         : AutovalidateMode.disabled,
                     validator: (value) {
                       //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Please enter valid  city name';
                       }
                       return null;
                     },

@@ -941,7 +941,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           } else if (!regex.hasMatch(value)) {
                                             return 'Please enter valid name';
                                           }
-                                          return " ";
+                                          return null;
                                         },
                                         onChanged: (text) =>
                                             setStateView(() => name1 = text),
@@ -1826,7 +1826,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     .hasMatch(value)) {
                                                   return 'Please enter valid salary';
                                                 }
-                                                return " ";
+                                                return null;
                                               },
                                               onChanged: (text) => setStateView(
                                                   () => name1 = text),
@@ -2522,7 +2522,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           } else if (!regex.hasMatch(value)) {
                                             return 'Please enter valid  country name';
                                           }
-                                          return " ";
+                                          return null;
                                         },
                                         onChanged: (text) =>
                                             setStateView(() => name1 = text),
@@ -2612,9 +2612,9 @@ class _NavigationRailState extends State<MyHomePage>
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid  country name';
+                                            return 'Please enter valid  city name';
                                           }
-                                          return " ";
+                                          return null;
                                         },
                                         onChanged: (text) =>
                                             setStateView(() => name1 = text),
@@ -3097,7 +3097,7 @@ class _NavigationRailState extends State<MyHomePage>
 
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(top: 16.0),
-                        prefixIcon: Padding(
+                        prefixIcon: const Padding(
                             padding: EdgeInsets.only(top: 4.0),
                             child: Icon(
                               Icons.search,
@@ -3108,7 +3108,7 @@ class _NavigationRailState extends State<MyHomePage>
                             : _selectedIndex == 2
                                 ? 'Search People'
                                 : 'Search',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             fontSize: 14.0,
                             color: Color(0xff64748B),
                             fontFamily: 'Inter',
@@ -3127,8 +3127,8 @@ class _NavigationRailState extends State<MyHomePage>
                   width: 40.0,
                   height: 40.0,
                   margin: const EdgeInsets.only(
-                    top: 24.0,
-                    right: 12.0,
+                    top: 16.0,
+                    right: 5.0,
                     left: 10.0,
                   ),
                   child: const CircleAvatar(
@@ -3152,8 +3152,8 @@ class _NavigationRailState extends State<MyHomePage>
                 ),
                 margin: const EdgeInsets.only(
                   top: 26.0,
-                  left: 8.0,
-                  right: 20.0,
+                  left: 6.0,
+                  right: 40.0,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),

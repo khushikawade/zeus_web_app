@@ -258,11 +258,20 @@ class _ProfileDetailState extends State<ProfileDetail> {
     }
 
     List<String> commaSepratedList = [];
+    String availibiltyDaySeprated = '';
 
     if (list.resource != null &&
         list.resource!.availibiltyDay != null &&
         list.resource!.availibiltyDay!.isNotEmpty) {
       commaSepratedList = list.resource!.availibiltyDay!.split(", ");
+
+      print(commaSepratedList);
+
+      availibiltyDaySeprated = list.resource!.availibiltyDay!.contains(',')
+          ? list.resource!.availibiltyDay!.replaceAll(',', ' -')
+          : list.resource!.availibiltyDay!;
+      print("---------------------------------commaSepratedList");
+      print(availibiltyDaySeprated);
     }
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
@@ -476,7 +485,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                           right: 0.0,
                                         ),
                                         child: Text(
-                                          "Associated with: ",
+                                          "Associated with:",
                                           style: const TextStyle(
                                               color: ColorSelect.profile_color,
                                               fontSize: 14.0,
@@ -575,6 +584,18 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                       ),
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                          top: 13.0,
+                                          left: 8.0,
+                                        ),
+                                        height: 6.0,
+                                        width: 6.0,
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff64748B),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                      ),
                                       // Container(
                                       //   margin: const EdgeInsets.only(
                                       //       left: 0.0, top: 10.0),
@@ -589,7 +610,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                       // ),
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            left: 0.0, top: 10.0),
+                                            left: 10.0, top: 10.0),
                                         child: Text(
                                           list.resource != null
                                               ? list.resource!.timeZone !=
@@ -649,44 +670,46 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               fontWeight: FontWeight.w500),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 134.0, top: 40.0),
-                            child: Text(
-                              list.name != null && list.name!.isNotEmpty
-                                  ? list.name.toString()
-                                  : 'TBD',
-                              style: TextStyle(
-                                  color: ColorSelect.white_color,
-                                  fontSize: 16.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 134.0, top: 40.0),
+                              child: Text(
+                                list.name != null && list.name!.isNotEmpty
+                                    ? list.name.toString()
+                                    : 'TBD',
+                                style: TextStyle(
+                                    color: ColorSelect.white_color,
+                                    fontSize: 16.0,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
-                          Container(
-                            //width: 700.0,
-                            height: 50.0,
-                            margin: const EdgeInsets.only(
-                              left: 134.0,
-                              top: 8.0,
+                            Container(
+                              //width: 700.0,
+                              height: 50.0,
+                              margin: const EdgeInsets.only(
+                                left: 134.0,
+                                top: 8.0,
+                              ),
+                              child: Text(
+                                list.resource != null
+                                    ? list.resource!.bio != null &&
+                                            list.resource!.bio!.isNotEmpty
+                                        ? list.resource!.bio.toString()
+                                        : 'TBD'
+                                    : 'TBD',
+                                style: TextStyle(
+                                    color: ColorSelect.text_color,
+                                    fontSize: 16.0,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
-                            child: Text(
-                              list.resource != null
-                                  ? list.resource!.bio != null &&
-                                          list.resource!.bio!.isNotEmpty
-                                      ? list.resource!.bio.toString()
-                                      : 'TBD'
-                                  : 'TBD',
-                              style: TextStyle(
-                                  color: ColorSelect.text_color,
-                                  fontSize: 16.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -716,7 +739,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
 
                               list.resource != null
-                                  ? "${list.resource!.availibiltyDay} | ${list.resource!.availibiltyTime} | $timezome$timeoffset/$city"
+                                  ? "${availibiltyDaySeprated} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
                                   : 'TBD',
                               style: const TextStyle(
                                   color: ColorSelect.white_color,
