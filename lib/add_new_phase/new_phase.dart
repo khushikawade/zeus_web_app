@@ -45,7 +45,8 @@ class _NewPhaseState extends State<NewPhase> {
   static List<Details> users = <Details>[];
   bool loading = true;
   bool startloading = false;
-  String? _depat="2", selectUser, subtaskDepat;
+  dynamic? _depat;
+  String? selectUser, subtaskDepat;
   String? _depat1;
   List _department = [];
   Api api = Api();
@@ -323,15 +324,16 @@ class _NewPhaseState extends State<NewPhase> {
                                           onChanged: (dynamic newValue) {
                                             setState(() {
                                               print(newValue);
-                                              var result=newValue['name'];
+                                              var result = newValue['id'];
                                               print(newValue);
-                                              _depat = newValue['id'].toString();
+                                              _depat = newValue;
                                               print(newValue);
 
-                                              // if (newValue != null) {
-                                              //   startloading = true;
-                                              //   getResourcesNeeded(_depat!);
-                                              // }
+                                              if (newValue != null) {
+                                                startloading = true;
+                                                getResourcesNeeded(
+                                                    newValue['id'].toString());
+                                              }
                                             });
                                           },
                                         ),
@@ -424,7 +426,8 @@ class _NewPhaseState extends State<NewPhase> {
                                                         listResource.add(
                                                             PhasesSortedResources(
                                                                 department:
-                                                                    _depat,
+                                                                    _depat[
+                                                                        'name'],
                                                                 details: item));
                                                         selectedSource
                                                             .add(item.name!);
@@ -433,7 +436,8 @@ class _NewPhaseState extends State<NewPhase> {
                                                       listResource.add(
                                                           PhasesSortedResources(
                                                               department:
-                                                                  _depat,
+                                                                  _depat[
+                                                                      'name'],
                                                               details: item));
                                                       selectedSource
                                                           .add(item.name!);
@@ -732,7 +736,7 @@ class _NewPhaseState extends State<NewPhase> {
 
                           // Add this
                         ),
-                        items: listResource.map((items) {
+                        items: listResource.toSet().map((items) {
                           return DropdownMenuItem(
                             value: items.department,
                             child: Text(
@@ -747,7 +751,7 @@ class _NewPhaseState extends State<NewPhase> {
                         }).toList(),
                         onChanged: (newValue) {
                           setState(() {
-                            //subtaskDepat = newValue.;
+                            subtaskDepat = newValue.toString();
                             if (newValue != null) {
                               // startloading = true;
                               //getResourcesNeeded(newValue);
@@ -1036,6 +1040,15 @@ class _NewPhaseState extends State<NewPhase> {
     });
     print(abc);
     print(abc);
+  }
+
+  removeDuplicate() {
+    return listResource
+        .map((f) => f.toString())
+        .toSet()
+        .toList()
+        .map((f) => json.decode(f) as List<dynamic>)
+        .toList();
   }
 }
 
