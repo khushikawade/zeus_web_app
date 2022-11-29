@@ -36,6 +36,7 @@ class _NewPhaseState extends State<NewPhase> {
   TextEditingController controller_next_phase = TextEditingController();
   TextEditingController controller_phase_type = TextEditingController();
   AutoCompleteTextField? searchTextField;
+  AutoCompleteTextField? subTaskResourcesSearchTextField;
   ResourceNeededModel? resourceNeededModel;
   String startDateForphaseDetail = '25/11/2022';
   String endDateForphaseDetail = '27/11/2022';
@@ -44,7 +45,7 @@ class _NewPhaseState extends State<NewPhase> {
   static List<Details> users = <Details>[];
   bool loading = true;
   bool startloading = false;
-  String? _depat, selectUser;
+  String? _depat="2", selectUser, subtaskDepat;
   String? _depat1;
   List _department = [];
   Api api = Api();
@@ -58,7 +59,9 @@ class _NewPhaseState extends State<NewPhase> {
   bool saveButtonClick = false;
   bool saveButtonClickForSubtask = false;
   GlobalKey<AutoCompleteTextFieldState<Details>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<Details>> subtaskKey = new GlobalKey();
   List<String> selectedSource = [];
+  List<PhasesSortedResources> listResource = [];
   List<String> selectedSubTaskSource = [];
 
   @override
@@ -305,7 +308,7 @@ class _NewPhaseState extends State<NewPhase> {
                                           ),
                                           items: _department.map((items) {
                                             return DropdownMenuItem(
-                                              value: items['id'].toString(),
+                                              value: items,
                                               child: Text(
                                                 items['name'],
                                                 style: const TextStyle(
@@ -317,13 +320,18 @@ class _NewPhaseState extends State<NewPhase> {
                                               ),
                                             );
                                           }).toList(),
-                                          onChanged: (String? newValue) {
+                                          onChanged: (dynamic newValue) {
                                             setState(() {
-                                              _depat = newValue;
-                                              if (newValue != null) {
-                                                startloading = true;
-                                                getResourcesNeeded(newValue);
-                                              }
+                                              print(newValue);
+                                              var result=newValue['name'];
+                                              print(newValue);
+                                              _depat = newValue['id'].toString();
+                                              print(newValue);
+
+                                              // if (newValue != null) {
+                                              //   startloading = true;
+                                              //   getResourcesNeeded(_depat!);
+                                              // }
                                             });
                                           },
                                         ),
@@ -334,8 +342,6 @@ class _NewPhaseState extends State<NewPhase> {
                               ),
                             ],
                           ),
-
-
                           startloading == true
                               ? loading == true
                                   ? Center(
@@ -404,20 +410,36 @@ class _NewPhaseState extends State<NewPhase> {
                                                   return a.name!
                                                       .compareTo(b.name!);
                                                 },
-                                                    itemSubmitted: (item) {
-                                                      setState(() {
-                                                        //print(item.title);
-                                                        searchTextField!.textField!.controller!.text = '';
-                                                        if (selectedSource.isNotEmpty) {
-                                                          if (selectedSource.contains(item.name)) {
-                                                          } else {
-                                                            selectedSource.add(item.name!);
-                                                          }
-                                                        } else {
-                                                          selectedSource.add(item.name!);
-                                                        }
-                                                      });
-                                                    },
+                                                itemSubmitted: (item) {
+                                                  setState(() {
+                                                    //print(item.title);
+                                                    searchTextField!.textField!
+                                                        .controller!.text = '';
+                                                    if (selectedSource
+                                                        .isNotEmpty) {
+                                                      if (selectedSource
+                                                          .contains(
+                                                              item.name)) {
+                                                      } else {
+                                                        listResource.add(
+                                                            PhasesSortedResources(
+                                                                department:
+                                                                    _depat,
+                                                                details: item));
+                                                        selectedSource
+                                                            .add(item.name!);
+                                                      }
+                                                    } else {
+                                                      listResource.add(
+                                                          PhasesSortedResources(
+                                                              department:
+                                                                  _depat,
+                                                              details: item));
+                                                      selectedSource
+                                                          .add(item.name!);
+                                                    }
+                                                  });
+                                                },
                                                 itemBuilder: (context, item) {
                                                   // ui for the autocompelete row
                                                   return rowResourceName(item);
@@ -429,59 +451,62 @@ class _NewPhaseState extends State<NewPhase> {
                                       ),
                                     )
                               : Container(),
-
                           selectedSource.isNotEmpty
                               ? SizedBox(
-                            height: 55,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 28.0),
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: selectedSource.length,
-                                itemBuilder: (context, index) {
-                                  // Skills _skills =
-                                  //     widget.data!.resource!.skills![index];
-                                  // var tag = _skills.title;
-                                  return Container(
-                                    height: 32.0,
-                                    margin: const EdgeInsets.only(left: 12.0),
-                                    child: InputChip(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(8))),
-                                      deleteIcon: const Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      backgroundColor: const Color(0xff334155),
-                                      visualDensity: VisualDensity.compact,
-                                      materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                      label: Text(
-                                        selectedSource[index],
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      //  selected: _isSelected!,
-                                      onSelected: (bool selected) {
-                                        setState(() {
-                                          //    _isSelected = selected;
-                                        });
-                                      },
-                                      onDeleted: () {
-                                        setState(() {
-                                          selectedSource.removeAt(index);
-                                        });
+                                  height: 55,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 28.0),
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: selectedSource.length,
+                                      itemBuilder: (context, index) {
+                                        // Skills _skills =
+                                        //     widget.data!.resource!.skills![index];
+                                        // var tag = _skills.title;
+                                        return Container(
+                                          height: 32.0,
+                                          margin:
+                                              const EdgeInsets.only(left: 12.0),
+                                          child: InputChip(
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8))),
+                                            deleteIcon: const Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ),
+                                            backgroundColor:
+                                                const Color(0xff334155),
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            label: Text(
+                                              selectedSource[index],
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            //  selected: _isSelected!,
+                                            onSelected: (bool selected) {
+                                              setState(() {
+                                                //    _isSelected = selected;
+                                              });
+                                            },
+                                            onDeleted: () {
+                                              setState(() {
+                                                listResource.removeAt(index);
+                                                selectedSource.removeAt(index);
+                                              });
+                                            },
+                                          ),
+                                        );
                                       },
                                     ),
-                                  );
-                                },
-                              ),
-                            ),
-                          )
+                                  ),
+                                )
                               : Container(),
-
-
                         ],
                       ),
                     ),
@@ -634,8 +659,6 @@ class _NewPhaseState extends State<NewPhase> {
                               : saveButtonClickForSubtask
                                   ? subTaskList(context)
                                   : Container(),
-
-
                         ],
                       ),
                     )
@@ -647,8 +670,7 @@ class _NewPhaseState extends State<NewPhase> {
         ));
   }
 
-
- Widget subTaskResourcesView(){
+  Widget subTaskResourcesView() {
     return Column(
       children: [
         Row(
@@ -671,8 +693,7 @@ class _NewPhaseState extends State<NewPhase> {
 
               margin: const EdgeInsets.only(left: 30.0),
               height: 56.0,
-              width:
-              (MediaQuery.of(context).size.width * 0.22),
+              width: (MediaQuery.of(context).size.width * 0.22),
               //width: MediaQuery.of(context).size.width * 0.20,
               // margin: const EdgeInsets.only(right: 30.0),
               decoration: BoxDecoration(
@@ -683,78 +704,67 @@ class _NewPhaseState extends State<NewPhase> {
                 ),
               ),
               child: Container(
-                margin: const EdgeInsets.only(
-                    left: 16.0, right: 16.0),
+                margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                 height: 20.0,
                 child: Container(
-                  // padding: const EdgeInsets.all(2.0),
+                    // padding: const EdgeInsets.all(2.0),
                     child: StatefulBuilder(
-                      builder: (BuildContext context,
-                          StateSettersetState) {
-                        return DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            dropdownColor:
-                            ColorSelect.class_color,
-                            value: _depat,
-                            underline: Container(),
-                            hint: const Text(
-                              "Select",
-                              style: TextStyle(
+                  builder: (BuildContext context, StateSettersetState) {
+                    return DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        dropdownColor: ColorSelect.class_color,
+                        value: subtaskDepat,
+                        underline: Container(),
+                        hint: const Text(
+                          "Select",
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xffFFFFFF),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500),
+                        ),
+                        isExpanded: true,
+                        icon: const Icon(
+                          // Add this
+                          Icons.arrow_drop_down,
+                          // Add this
+                          color: Color(0xff64748B),
+
+                          // Add this
+                        ),
+                        items: listResource.map((items) {
+                          return DropdownMenuItem(
+                            value: items.department,
+                            child: Text(
+                              items.department!,
+                              style: const TextStyle(
                                   fontSize: 14.0,
                                   color: Color(0xffFFFFFF),
                                   fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w400),
                             ),
-                            isExpanded: true,
-                            icon: const Icon(
-                              // Add this
-                              Icons.arrow_drop_down,
-                              // Add this
-                              color: Color(0xff64748B),
-
-                              // Add this
-                            ),
-                            items: _department.map((items) {
-                              return DropdownMenuItem(
-                                value: items['id'].toString(),
-                                child: Text(
-                                  items['name'],
-                                  style: const TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight:
-                                      FontWeight.w400),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _depat = newValue;
-                                if (newValue != null) {
-                                  startloading = true;
-                                  getResourcesNeeded(newValue);
-                                }
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    )),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            //subtaskDepat = newValue.;
+                            if (newValue != null) {
+                              // startloading = true;
+                              //getResourcesNeeded(newValue);
+                            }
+                          });
+                        },
+                      ),
+                    );
+                  },
+                )),
               ),
             ),
           ],
         ),
-
-        startloading == true
-            ? loading == true
-            ? Center(
-            child: const CircularProgressIndicator())
-            : Container(
-          width: MediaQuery.of(context).size.width *
-              0.26,
-          margin: const EdgeInsets.only(
-              top: 16, left: 30),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.26,
+          margin: const EdgeInsets.only(top: 16, left: 30),
           decoration: BoxDecoration(),
           child: Expanded(
             child: Container(
@@ -770,124 +780,111 @@ class _NewPhaseState extends State<NewPhase> {
               ),
               child: Column(
                 children: [
-                  searchTextField =
-                      AutoCompleteTextField<
-                          Details>(
-                        clearOnSubmit: false,
-                        key: key,
-                        cursorColor: Colors.white,
-                        decoration:
-                        const InputDecoration(
-                          contentPadding:
-                          EdgeInsets.only(
-                              top: 15.0),
-                          prefixIcon: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 4.0),
-                              child: Icon(
-                                Icons.search,
-                                color:
-                                Color(0xff64748B),
-                              )),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                              fontSize: 14.0,
-                              color: Color(0xff64748B),
-                              fontFamily: 'Inter',
-                              fontWeight:
-                              FontWeight.w400),
-                          border: InputBorder.none,
-                        ),
-                        suggestions: users,
-                        keyboardType:
-                        TextInputType.text,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0),
-                        itemFilter: (item, query) {
-                          return item.name!
-                              .toLowerCase()
-                              .startsWith(
-                              query.toLowerCase());
-                        },
-                        itemSorter: (a, b) {
-                          return a.name!
-                              .compareTo(b.name!);
-                        },
-                        itemSubmitted: (item) {
-                          setState(() {
-                            //print(item.title);
-                            searchTextField!.textField!.controller!.text = '';
-                            if (selectedSource.isNotEmpty) {
-                              if (selectedSource.contains(item.name)) {
-                              } else {
-                                selectedSource.add(item.name!);
-                              }
-                            } else {
-                              selectedSource.add(item.name!);
-                            }
-                          });
-                        },
-                        itemBuilder: (context, item) {
-                          // ui for the autocompelete row
-                          return rowResourceName(item);
-                        },
-                      ),
+                  subTaskResourcesSearchTextField =
+                      AutoCompleteTextField<Details>(
+                    clearOnSubmit: false,
+                    key: subtaskKey,
+                    cursorColor: Colors.white,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 15.0),
+                      prefixIcon: Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: Icon(
+                            Icons.search,
+                            color: Color(0xff64748B),
+                          )),
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Color(0xff64748B),
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    suggestions: users,
+                    keyboardType: TextInputType.text,
+                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
+                    itemFilter: (item, query) {
+                      return item.name!
+                          .toLowerCase()
+                          .startsWith(query.toLowerCase());
+                    },
+                    itemSorter: (a, b) {
+                      return a.name!.compareTo(b.name!);
+                    },
+                    itemSubmitted: (item) {
+                      setState(() {
+                        subTaskResourcesSearchTextField!
+                            .textField!.controller!.text = '';
+                        if (selectedSubTaskSource.isNotEmpty) {
+                          if (selectedSubTaskSource.contains(item.name)) {
+                          } else {
+                            selectedSubTaskSource.add(item.name!);
+                          }
+                        } else {
+                          selectedSubTaskSource.add(item.name!);
+                        }
+                      });
+                    },
+                    itemBuilder: (context, item) {
+                      // ui for the autocompelete row
+                      return rowResourceName(item);
+                    },
+                  ),
                 ],
               ),
             ),
           ),
-        )
-            : Container(),
+        ),
         selectedSubTaskSource.isNotEmpty
             ? SizedBox(
-          height: 55,
-          child: Padding(
-            padding: EdgeInsets.only(left: 28.0),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: selectedSource.length,
-              itemBuilder: (context, index) {
-                // Skills _skills =
-                //     widget.data!.resource!.skills![index];
-                // var tag = _skills.title;
-                return Container(
-                  height: 32.0,
-                  margin: const EdgeInsets.only(left: 12.0),
-                  child: InputChip(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(8))),
-                    deleteIcon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    backgroundColor: const Color(0xff334155),
-                    visualDensity: VisualDensity.compact,
-                    materialTapTargetSize:
-                    MaterialTapTargetSize.shrinkWrap,
-                    label: Text(
-                      selectedSource[index],
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    //  selected: _isSelected!,
-                    onSelected: (bool selected) {
-                      setState(() {
-                        //    _isSelected = selected;
-                      });
-                    },
-                    onDeleted: () {
-                      setState(() {
-                        selectedSource.removeAt(index);
-                      });
+                height: 55,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 28.0),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: selectedSubTaskSource.length,
+                    itemBuilder: (context, index) {
+                      // Skills _skills =
+                      //     widget.data!.resource!.skills![index];
+                      // var tag = _skills.title;
+                      return Container(
+                        height: 32.0,
+                        margin: const EdgeInsets.only(left: 12.0),
+                        child: InputChip(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          deleteIcon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          backgroundColor: const Color(0xff334155),
+                          visualDensity: VisualDensity.compact,
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          label: Text(
+                            selectedSubTaskSource[index],
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          //  selected: _isSelected!,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              //    _isSelected = selected;
+                            });
+                          },
+                          onDeleted: () {
+                            setState(() {
+                              selectedSubTaskSource.removeAt(index);
+                            });
+                          },
+                        ),
+                      );
                     },
                   ),
-                );
-              },
-            ),
-          ),
-        )
+                ),
+              )
             : Container(),
       ],
     );
@@ -1026,7 +1023,6 @@ class _NewPhaseState extends State<NewPhase> {
       loading = true;
     });
     resourceNeededModel = await api.getResourceNeeded(newValue);
-
     if (resourceNeededModel != null && resourceNeededModel!.data != null) {
       if (resourceNeededModel!.data!.isNotEmpty) {
         users = resourceNeededModel!.data!;
@@ -1041,4 +1037,11 @@ class _NewPhaseState extends State<NewPhase> {
     print(abc);
     print(abc);
   }
+}
+
+class PhasesSortedResources {
+  String? department;
+  Details? details;
+
+  PhasesSortedResources({required this.department, required this.details});
 }

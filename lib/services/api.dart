@@ -96,9 +96,9 @@ class Api {
     if (!internet) {
       return ResourceNeededModel(error: Constants.noInternet, statusCode: 401);
     }
-
-    Response response =
-        await _apiClient.getMethod(AppUrl.resourceNeeded + "search?type=$key");
+    print('<<<<<<<<<<<<<<<<<<<<<resource data>>>>>>>>>>>>>>>>>>>>>');
+    print(AppUrl.resourceNeeded + "search?type=$key");
+    Response response = await _apiClient.getMethod(AppUrl.resourceNeeded + "search?type=$key");
     if (response.statusCode == 200) {
       try {
         if (response.body.contains('error')) {
