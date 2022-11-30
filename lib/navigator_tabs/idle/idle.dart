@@ -353,7 +353,7 @@ class _IdleState extends State<Idle> {
               _projectData.customer!.image!.isNotEmpty) {
             print(_projectData.customer!.image!);
           } else {
-            print("96939633");
+            //print("96939633");
           }
 
           if (_projectData != null &&

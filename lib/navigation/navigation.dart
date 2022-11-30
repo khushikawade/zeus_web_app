@@ -372,6 +372,7 @@ class _NavigationRailState extends State<MyHomePage>
       _tag,
       _day,
       _shortday;
+
   // bool _submitted = false;
   bool _addSubmitted = true;
   String name = '';
@@ -1432,7 +1433,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                             icon: const Icon(
                                                               // Add this
                                                               Icons
-                                                                  .arrow_drop_down, // Add this
+                                                                  .arrow_drop_down,
+                                                              // Add this
                                                               color: Color(
                                                                   0xff64748B),
 
