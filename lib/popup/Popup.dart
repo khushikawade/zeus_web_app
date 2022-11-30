@@ -10,6 +10,7 @@ import 'package:zeus/DemoContainer.dart';
 import 'package:zeus/add_new_phase/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
+import 'package:zeus/popup/popup_phasebutton.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
@@ -2093,6 +2094,29 @@ showDailog(
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 15.0, right: 50.0),
+                                    child: const Text(
+                                      "Action",
+                                      style: TextStyle(
+                                          color: Color(0xff94A3B8),
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       left: 10.0, bottom: 10),
+                                  //   child: MenuPhase(
+                                  //       title: 'Menu at bottom',
+                                  //       alignment: Alignment.topRight,
+                                  //       buildContext: context,
+                                  //       returnValue: () {
+                                  //         Navigator.pop(context, true);
+                                  //       }),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -2189,6 +2213,33 @@ showDailog(
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
                                             ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 62.0, bottom: 8),
+                                            child: Stack(children: [
+                                              MenuPhase(
+                                                index: index,
+                                                onDeleteSuccess: () {
+                                                  setState(() {
+                                                    response.data!.phase!
+                                                        .removeAt(index);
+                                                  });
+                                                },
+                                                setState: setState,
+                                                response: response,
+                                                data: phase,
+                                                title: 'Menu at bottom',
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                buildContext: context,
+                                                returnValue: () {
+                                                  print(
+                                                      "Value returned --------------------------------------");
+                                                  // Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
+                                                },
+                                              )
+                                            ]),
                                           ),
                                         ],
                                       ),

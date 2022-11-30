@@ -2388,7 +2388,7 @@ class _DashboardScreenState extends State<DashBoard>
                         ),
                       ),
                       border: InputBorder.none,
-                      hintText: 'Search project',
+                      hintText: 'Search projects',
                       hintStyle: const TextStyle(
                           fontSize: 14.0,
                           color: Color(0xff64748B),

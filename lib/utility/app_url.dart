@@ -29,6 +29,9 @@ class AppUrl {
   static const String searchLanguage = "$baseUrl/tags";
   static const String departmentResources = '/departments';
   static const String resourceNeeded = '/resource/';
+
+  static const String deleteForphase = "$baseUrl/phase/";
+  static const String logOut = "$baseUrl/signout";
 // static const String forgotPassword = baseUrl +
 
   // Future<String?> getAccountable() async {
