@@ -477,6 +477,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                             msg:
                                                 "Your request is in progress please wait for a while...",
                                           );
+
+                                          //deletepeople
                                           Future.delayed(
                                               const Duration(seconds: 2), () {
                                             deletePeople(widget.data!.id,
@@ -676,8 +678,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           );
         });
   }
-
-
 
   Widget getDesktopView(StateSetter setState) {
     return Row(
@@ -1556,14 +1556,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                   }
                                 });
                               },
-
                             ),
                           ),
                         );
                       },
                     )),
                   ),
-              
                 ],
               ),
               SizedBox(

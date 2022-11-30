@@ -22,6 +22,7 @@ import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import '../DemoContainer.dart';
+import '../logout_module/logout_view.dart';
 import '../navigator_tabs/idle/data/project_detail_data/ProjectDetailData.dart';
 import '../navigator_tabs/idle/idle.dart';
 import 'package:provider/provider.dart';
@@ -3074,28 +3075,31 @@ class _NavigationRailState extends State<MyHomePage>
                    //   AssetImage(images/image.png),
                   )*/
                   )),
-              Container(
-                width: 24.0,
-                height: 24.0,
-                decoration: BoxDecoration(
-                  color: const Color(0xff334155),
-                  border: Border.all(color: const Color(0xff334155)),
-                  borderRadius: BorderRadius.circular(
-                    10.0,
-                  ),
-                ),
-                margin: const EdgeInsets.only(
-                  top: 26.0,
-                  left: 8.0,
-                  right: 20.0,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: SvgPicture.asset(
-                    "images/drop_arrow.svg",
-                  ),
-                ),
-              ),
+              LogOut(returnValue: () {}),
+              // Container(
+              //   width: 24.0,
+              //   height: 24.0,
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xff334155),
+              //     border: Border.all(color: const Color(0xff334155)),
+              //     borderRadius: BorderRadius.circular(
+              //       10.0,
+              //     ),
+              //   ),
+              //   margin: const EdgeInsets.only(
+              //     top: 26.0,
+              //     left: 8.0,
+              //     right: 20.0,
+              //   ),
+              //   child:
+
+              //    Padding(
+              //     padding: const EdgeInsets.all(6.0),
+              //     child: SvgPicture.asset(
+              //       "images/drop_arrow.svg",
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 16,
               ),
