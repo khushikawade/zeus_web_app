@@ -746,7 +746,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             ProfileDetail(list: _peopleList)));
 
                 if (result != null && result) {
-                  Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
+                  Provider.of<PeopleIdelClass>(context, listen: false).getPeopleDataList();
                 }
               },
               cells: [
@@ -931,7 +931,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                         returnValue: () {
                           print(
                               "Value returned --------------------------------------");
-                          Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
+                          Provider.of<PeopleIdelClass>(context, listen: false).getPeopleDataList();
                           // setState(() {
                           //   data.peopleList!.data!.forEach((element) {
                           //     data.peopleList!.data!.removeAt(index);

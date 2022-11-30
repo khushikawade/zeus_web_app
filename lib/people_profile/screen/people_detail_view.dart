@@ -84,69 +84,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
     }
   }
 
-  Future<void> getUpdatePeople() async {
-    var token = 'Bearer ' + storage.read("token");
-    var userId = storage.read("user_id");
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
-    request.headers
-        .addAll({"Content-Type": "application/json", "Authorization": token});
-    request.fields['user_id'] = userId;
-    request.fields['name'] = _name.text.toString();
-    request.fields['nickname'] = _nickName.text.toString();
-    request.fields['email'] = _emailAddress.text.toString();
-    request.fields['phone_number'] = _phoneNumber.text.toString();
-    request.fields['password'] = 'Nirmaljeet@123';
-    request.fields['bio'] = _bio.text.toString();
-    request.fields['designation'] = _designation.text.toString();
-    request.fields['department_id'] = list.resource != null
-        ? _depat ?? list.resource!.department!.id.toString()
-        : '';
-    request.fields['associate'] = _association.text.toString();
-    request.fields['salary'] = _salary.text.toString();
-    request.fields['salary_currency'] = _salaryCurrency.text.toString();
-    request.fields['availibilty_day'] = _availableDay.text.toString();
-    request.fields['availibilty_time'] = _availableTime.text.toString();
-    request.fields['country'] = _country.text.toString();
-    request.fields['city'] = _enterCity.text.toString();
-    request.fields['time_zone'] = list.resource != null
-        ? _time ?? list.resource!.timeZone!.diffFromGtm.toString()
-        : '';
-    // request.fields['skills'] =abc;
-
-    if (!imageavail) {
-    } else {
-      _selectedFile = webImage;
-      request.files.add(await http.MultipartFile.fromBytes(
-          'image', _selectedFile!,
-          contentType: MediaType('application', 'octet-stream'),
-          filename: "file_up"));
-    }
-    if (list.resource != null) {
-      for (int i = 0; i < list.resource!.skills!.length; i++) {
-        request.fields['skills[$i]'] = '${list.resource!.skills![i]}';
-      }
-    }
-
-    print("Request Data ---------------------------------- ${request}");
-
-    var response = await request.send();
-    var responseString = await response.stream.bytesToString();
-    if (response.statusCode == 200) {
-      final decodedMap = json.decode(responseString);
-
-      print(decodedMap);
-
-      final stringRes = JsonEncoder.withIndent('').convert(decodedMap);
-      print(stringRes);
-      print("yes");
-      print("===============================???UPdated Successfully");
-    } else {
-      print(responseString);
-      print("failed");
-    }
-  }
-
   final TextEditingController _name = TextEditingController();
   final TextEditingController _nickName = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -639,7 +576,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                       .toString()
                                                   : 'TBD'
                                               : 'TBD',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: ColorSelect
                                                   .profile_color,
                                               fontSize: 14.0,

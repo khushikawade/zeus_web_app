@@ -3294,6 +3294,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                 child: Padding(
                   padding: EdgeInsets.only(left: 26),
                   child: ListView.builder(
+                    shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: selectedDaysList.length,
                     //.tagResponse!.data!.length,
@@ -3613,6 +3614,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       child: Padding(
                         padding: EdgeInsets.only(left: 28.0),
                         child: ListView.builder(
+                          shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: abc.length,
                           itemBuilder: (context, index) {
@@ -4219,15 +4221,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       decodedMap = json.decode(responseString);
 
       SmartDialog.dismiss();
-      // ignore: use_build_context_synchronously
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(
-      //         builder: (context) => MyHomePage(
-      //               onSubmit: (String value) {},
-      //               adOnSubmit: (String value) {},
-      //             )),
-      //     (Route<dynamic> route) => false);
-      Navigator.pop(context);
+      try {
+        Navigator.pop(context);
+      } catch (e) {
+        print(e);
+      }
+
       widget.returnValue!();
     } else {
       SmartDialog.dismiss();
