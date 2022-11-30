@@ -9,6 +9,7 @@ import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
 import 'package:zeus/navigator_tabs/people_idle/model/model_class.dart';
+import 'package:zeus/navigator_tabs/people_idle/screen/people_idle.dart';
 import 'package:zeus/people_profile/screen/people_detail_view.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -4253,6 +4254,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       //               adOnSubmit: (String value) {},
       //             )),
       //     (Route<dynamic> route) => false);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       widget.returnValue!();
     } else {
