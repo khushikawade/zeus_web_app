@@ -268,20 +268,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
         list.resource!.availibiltyDay!.isNotEmpty) {
       commaSepratedList = list.resource!.availibiltyDay!.split(", ");
 
-      print(commaSepratedList);
-
-      availibiltyDaySeprated = list.resource!.availibiltyDay!.contains(',')
-          ? list.resource!.availibiltyDay!.replaceAll(',', '-')
-          : list.resource!.availibiltyDay!;
-      print("---------------------------------commaSepratedList");
-      print(availibiltyDaySeprated);
-
-      // for (int i = 0; i <= commaSepratedList.length; i++) {
-      //   print(commaSepratedList[i]);
-      // }
-
       commaSepratedList.forEach((element) {
-        // print(element);
         DaysList object = DaysList("", 0);
         if (element == "Mon") {
           object.day = element;
@@ -311,17 +298,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
           object.day = element;
           object.dayNumber = 7;
           daysList.add(object);
-        } else {
-          print("---------------------------------- element");
-          print(element);
-        }
+        } else {}
       });
     }
-    print("---------------------------------- length");
-    print(daysList.length);
+
     daysList.sort((a, b) => a.dayNumber!.compareTo((b.dayNumber!)));
-    print(daysList[0].day);
-    print(daysList[daysList.length - 1].day);
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
