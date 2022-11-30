@@ -54,6 +54,8 @@ class ProjectEdit extends StatefulWidget {
   List accountableId;
   List customerName;
   String? id;
+  DateTime? deliveryDate;
+
   ProjectEdit(
       {required this.title,
       required this.alignment,
@@ -65,6 +67,7 @@ class ProjectEdit extends StatefulWidget {
       required this.statusList,
       required this.response,
       required this.buildContext,
+      required this.deliveryDate,
       Key? key})
       : super(key: key);
 
@@ -74,7 +77,7 @@ class ProjectEdit extends StatefulWidget {
 
 class _ProjectEditState extends State<ProjectEdit>
     with SingleTickerProviderStateMixin {
-  DateTime selectedDate = DateTime.now();
+  DateTime? deliveryDate;
   String? _account, _custome, _curren, _status;
 
   // var _id = widget.id;
@@ -90,38 +93,6 @@ class _ProjectEditState extends State<ProjectEdit>
   final TextEditingController _estimatehours = TextEditingController();
   final TextEditingController _description = TextEditingController();
   var myFormat = DateFormat('d MMM yyyy');
-
-  //Add description and time api
-  Future<void> addDescriptionProject() async {
-    var token = 'Bearer ' + storage.read("token");
-    try {
-      var response = await http.put(
-        Uri.parse('${AppUrl.baseUrl}/project/project-dates/${widget.id}'),
-        body: jsonEncode({
-          "description": _description.text.toString(),
-          //"cost": dropdownvalue,
-          "working_days": '12', //dropdownvalue ,
-          "deadline_date": myFormat.format(selectedDate),
-          "reminder_date": myFormat.format(selectedDate),
-          "delivery_date": myFormat.format(selectedDate),
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      // ignore: unrelated_type_equality_checks
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-      } else {
-        print("failuree");
-      }
-    } catch (e) {
-      // print('error caught: $e');
-    }
-  }
 
   // update Controller Value
   updateControllerValue() {
@@ -151,7 +122,7 @@ class _ProjectEditState extends State<ProjectEdit>
     _estimatehours.text = widget.response.data != null &&
             widget.response.data!.estimationHours != null &&
             widget.response.data!.estimationHours!.isNotEmpty
-        ? widget.response.data!.budget!.toString()
+        ? widget.response.data!.estimationHours!.toString()
         : '';
 
     _custome =
@@ -193,6 +164,17 @@ class _ProjectEditState extends State<ProjectEdit>
         }
       });
     }
+    if (widget.response != null &&
+        widget.response.data != null &&
+        widget.response.data!.deliveryDate!.isNotEmpty &&
+        widget.response.data!.deliveryDate! != "0000-00-00 00:00:00") {
+      deliveryDate =
+          DateTime.parse(widget.response.data!.deliveryDate!.toString());
+
+      //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
+    } else {
+      deliveryDate = DateTime.now();
+    }
   }
 
   Future<void> _selectDate(setState) async {
@@ -210,13 +192,13 @@ class _ProjectEditState extends State<ProjectEdit>
             child: child!,
           );
         },
-        initialDate: selectedDate,
-        firstDate: new DateTime.now().subtract(new Duration(days: 0)),
-        lastDate: DateTime(2101));
+        initialDate: deliveryDate!,
+        firstDate: deliveryDate!,
+        lastDate: DateTime(5000));
 
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != deliveryDate) {
       setState(() {
-        selectedDate = picked;
+        deliveryDate = picked;
       });
     }
   }
@@ -264,8 +246,10 @@ class _ProjectEditState extends State<ProjectEdit>
 
       itemBuilder: (context) => [
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 1,
-          child: GestureDetector(
+          child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -879,11 +863,10 @@ class _ProjectEditState extends State<ProjectEdit>
                                             textAlignVertical:
                                                 TextAlignVertical.bottom,
                                             keyboardType: TextInputType.text,
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                                 errorStyle: TextStyle(
                                                     fontSize: 14, height: 0.20),
-                                                contentPadding:
-                                                    const EdgeInsets.only(
+                                                contentPadding: EdgeInsets.only(
                                                   bottom: 16.0,
                                                   top: 57.0,
                                                   right: 10,
@@ -891,7 +874,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 ),
                                                 border: InputBorder.none,
                                                 hintText: '',
-                                                hintStyle: const TextStyle(
+                                                hintStyle: TextStyle(
                                                     fontSize: 14.0,
                                                     color: Color(0xffFFFFFF),
                                                     fontFamily: 'Inter',
@@ -1056,11 +1039,10 @@ class _ProjectEditState extends State<ProjectEdit>
                                             textAlignVertical:
                                                 TextAlignVertical.bottom,
                                             keyboardType: TextInputType.text,
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                                 errorStyle: TextStyle(
                                                     fontSize: 14, height: 0.20),
-                                                contentPadding:
-                                                    const EdgeInsets.only(
+                                                contentPadding: EdgeInsets.only(
                                                   bottom: 16.0,
                                                   top: 57.0,
                                                   right: 10,
@@ -1068,7 +1050,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 ),
                                                 border: InputBorder.none,
                                                 hintText: '',
-                                                hintStyle: const TextStyle(
+                                                hintStyle: TextStyle(
                                                     fontSize: 14.0,
                                                     color: Color(0xffFFFFFF),
                                                     fontFamily: 'Inter',
@@ -1243,7 +1225,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                               top: 3.0,
                                                               left: 20.0),
                                                       child: Text(
-                                                        '${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}',
+                                                        '${deliveryDate!.day} / ${deliveryDate!.month} / ${deliveryDate!.year}',
                                                         style: const TextStyle(
                                                             fontSize: 14.0,
                                                             color: Color(
@@ -1431,7 +1413,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                         child: const Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            "Edit",
+                                            "Save",
                                             style: TextStyle(
                                                 fontSize: 14.0,
                                                 color: ColorSelect.black_color,
@@ -1452,22 +1434,27 @@ class _ProjectEditState extends State<ProjectEdit>
                   });
             },
             child: Container(
-              height: 20,
-              width: 50,
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    color: ColorSelect.white_color),
+              height: 50,
+              width: double.infinity,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 5, top: 15),
+                child: Text(
+                  "Edit",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
               ),
             ),
           ),
         ),
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 2,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -1564,13 +1551,20 @@ class _ProjectEditState extends State<ProjectEdit>
                     );
                   });
             },
-            child: const Text(
-              "Delete",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  color: ColorSelect.white_color),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 5, top: 15),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
+              ),
             ),
           ),
         )
@@ -1637,7 +1631,7 @@ class _ProjectEditState extends State<ProjectEdit>
       map['estimation_hours'] = _estimatehours.text.toString();
       map['status'] = _status;
       map['description'] = _description.text.toString();
-      map['delivery_date'] = selectedDate.toString();
+      map['delivery_date'] = deliveryDate.toString();
 
       // delivery_date
 

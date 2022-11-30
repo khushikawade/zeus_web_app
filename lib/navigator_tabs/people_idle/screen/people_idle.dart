@@ -132,11 +132,13 @@ class _PeopleIdleState extends State<PeopleIdle> {
         child: Scaffold(
           backgroundColor: ColorSelect.class_color,
           body: SingleChildScrollView(
+            controller: horizontalScroll,
+            scrollDirection: Axis.horizontal,
             //controller: vertical_scrollcontroller,
-            scrollDirection: Axis.vertical,
+            // scrollDirection: Axis.vertical,
             child: SingleChildScrollView(
-              controller: horizontalScroll,
-              scrollDirection: Axis.horizontal,
+              // controller: horizontalScroll,
+              // scrollDirection: Axis.horizontal,
               child: Container(
                 width: MediaQuery.of(context).size.width < 950
                     ? MediaQuery.of(context).size.width * 2

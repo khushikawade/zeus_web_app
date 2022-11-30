@@ -9,6 +9,7 @@ import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
 import 'package:zeus/navigator_tabs/people_idle/model/model_class.dart';
+import 'package:zeus/navigator_tabs/people_idle/screen/people_idle.dart';
 import 'package:zeus/people_profile/screen/people_detail_view.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -105,6 +106,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   var dataPeople = 'people_data';
   bool imageavail = false;
   Future? _getList;
+  bool selectedColor = false;
   var postion;
   SharedPreferences? sharedPreferences;
   GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
@@ -194,7 +196,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
       offset: widget.offset,
-      color: Color(0xFF0F172A),
+      color:
+          // Colors.red,
+          Color(0xFF0F172A),
       // icon: const Padding(
       //   padding: EdgeInsets.only(bottom: 15.0),
       //   child: Icon(
@@ -210,6 +214,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         height: 30,
         width: 30,
         decoration: BoxDecoration(
+            // color: Colors.pinkAccent,
             border: Border.all(
               color: ColorSelect.box_decoration,
             ),
@@ -228,20 +233,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       itemBuilder: (context) => [
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 1,
           child: InkWell(
-            // hoverColor: Colors.red,
+            hoverColor: Color(0xff1e293b),
             onTap: () {
-              print(widget.data);
-              print(widget.data);
-              print('xyzzzzzzzzzzzzzzzzzzzz');
-              setState(() {
-                // Color(0xffffffff);
-              });
-              Colors.red;
-
               if (widget.data != null) {
                 setState(() {
+                  selectedColor = true;
                   final splitNames =
                       widget.data!.resource!.availibiltyDay!.split(", ");
 
@@ -393,22 +392,28 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
               Navigator.pop(context);
             },
             child: Container(
-              width: 30,
-              // color: ColorSelect.backgroundColor,
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    color: ColorSelect.white_color),
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 5.0, top: 15),
+                child: Text(
+                  "Edit",
+                  // textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
               ),
             ),
           ),
         ),
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 2,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -427,9 +432,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             children: [
                               Container(
                                 margin: const EdgeInsets.only(right: 20.0),
-                                child: const Text(
-                                  "Do you want to delete this person?",
-                                  style: TextStyle(
+                                child: Text(
+                                  // / print("Time2 ----------------------${Time2}");
+                                  "Do you want to delete this ${widget.data!.name!} ?",
+
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: 'Inter',
@@ -439,7 +446,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted,you will not find this person in project list ",
+                                  "Once deleted,you will not find this person in people list anymore.",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -491,7 +498,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                               fontSize: 14,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: 'Inter',
-                                              color: ColorSelect.delete_text),
+                                              color: ColorSelect.red_color),
                                         ),
                                       ),
                                     ],
@@ -506,13 +513,20 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     );
                   });
             },
-            child: const Text(
-              "Delete",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  color: ColorSelect.white_color),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 5, top: 15),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
+              ),
             ),
           ),
         )
@@ -840,8 +854,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                     validator: (value) {
                       //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Please enter valid name';
                       }
                       return null;
                     },
@@ -1414,8 +1431,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               : AutovalidateMode.disabled,
                           validator: (value) {
                             //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            RegExp regex = RegExp(r'^\D+|(?<=\d),(?=\d)');
+
                             if (value!.isEmpty) {
                               return 'Please enter';
+                            } else if (regex.hasMatch(value)) {
+                              return 'Please enter valid salary';
                             }
                             return null;
                           },
@@ -2024,8 +2045,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         : AutovalidateMode.disabled,
                     validator: (value) {
                       //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Please enter valid  country name';
                       }
                       return null;
                     },
@@ -2094,8 +2118,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         : AutovalidateMode.disabled,
                     validator: (value) {
                       //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                      RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
+                      } else if (!regex.hasMatch(value)) {
+                        return 'Please enter valid  city name';
                       }
                       return null;
                     },

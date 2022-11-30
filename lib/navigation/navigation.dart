@@ -19,6 +19,7 @@ import 'package:zeus/navigator_tabs/idle/data/DataClass.dart';
 import 'package:zeus/navigator_tabs/people_idle/data/getdata_provider.dart';
 import 'package:zeus/people_profile/editpage/edit_page.dart';
 import 'package:zeus/routers/routers_class.dart';
+import 'package:zeus/util/validation.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import '../DemoContainer.dart';
@@ -76,6 +77,10 @@ class _NavigationRailState extends State<MyHomePage>
   ];
   var startTime;
   var endTime;
+  String validateName = '';
+  String validNickName = '';
+  String validateCountry = '';
+  String validateCity = '';
 
   var startTime1;
   var endTime2;
@@ -844,31 +849,40 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.99,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, right: 25.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0, right: 25.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
                                               ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                        ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
+                                            ),
+                                          ),
+                                          errorWidget2(validateName)
+                                        ],
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(
@@ -921,9 +935,13 @@ class _NavigationRailState extends State<MyHomePage>
                                             : AutovalidateMode.disabled,
 
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                          // validateName = nameValidation(value);
+                                          RegExp regex =
+                                              RegExp(r'^[a-z A-Z]+$');
                                           if (value!.isEmpty) {
                                             return 'Please enter';
+                                          } else if (!regex.hasMatch(value)) {
+                                            return 'Please enter valid name';
                                           }
                                           return null;
                                         },
@@ -934,31 +952,42 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.99,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0, right: 25.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0,
+                                                top: 16.0,
+                                                right: 25.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
                                               ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                        ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
+                                            ),
+                                          ),
+                                          // errorWidget2(validNickName)
+                                        ],
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
@@ -1004,7 +1033,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             : AutovalidateMode.disabled,
 
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                          // validNickName = nameValidation(value);
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           }
@@ -1791,8 +1820,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                   : AutovalidateMode.disabled,
                                               validator: (value) {
                                                 //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                                RegExp regex = RegExp(
+                                                    r'^\D+|(?<=\d),(?=\d)');
+
                                                 if (value!.isEmpty) {
                                                   return 'Please enter';
+                                                } else if (regex
+                                                    .hasMatch(value)) {
+                                                  return 'Please enter valid salary';
                                                 }
                                                 return null;
                                               },
@@ -2404,31 +2439,40 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.26,
-                                        margin:
-                                            const EdgeInsets.only(left: 30.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
                                               ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                        ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
+                                            ),
+                                          ),
+                                          errorWidget2(validateCountry)
+                                        ],
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
@@ -2470,8 +2514,16 @@ class _NavigationRailState extends State<MyHomePage>
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
                                           //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+
+                                          // validateCountry =
+                                          //     countryValidation(value);
+
+                                          RegExp regex =
+                                              RegExp(r'^[a-z A-Z]+$');
                                           if (value!.isEmpty) {
                                             return 'Please enter';
+                                          } else if (!regex.hasMatch(value)) {
+                                            return 'Please enter valid  country name';
                                           }
                                           return null;
                                         },
@@ -2482,31 +2534,40 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0, top: 16.0),
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
                                               ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                        ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
+                                            ),
+                                          ),
+                                          errorWidget2(validateCity)
+                                        ],
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
@@ -2548,8 +2609,13 @@ class _NavigationRailState extends State<MyHomePage>
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
                                           //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                          // validateCity = cityValidation(value);
+                                          RegExp regex =
+                                              RegExp(r'^[a-z A-Z]+$');
                                           if (value!.isEmpty) {
                                             return 'Please enter';
+                                          } else if (!regex.hasMatch(value)) {
+                                            return 'Please enter valid  city name';
                                           }
                                           return null;
                                         },
@@ -3034,7 +3100,7 @@ class _NavigationRailState extends State<MyHomePage>
 
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(top: 16.0),
-                        prefixIcon: Padding(
+                        prefixIcon: const Padding(
                             padding: EdgeInsets.only(top: 4.0),
                             child: Icon(
                               Icons.search,
@@ -3045,7 +3111,7 @@ class _NavigationRailState extends State<MyHomePage>
                             : _selectedIndex == 2
                                 ? 'Search People'
                                 : 'Search',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             fontSize: 14.0,
                             color: Color(0xff64748B),
                             fontFamily: 'Inter',
@@ -3064,8 +3130,8 @@ class _NavigationRailState extends State<MyHomePage>
                   width: 40.0,
                   height: 40.0,
                   margin: const EdgeInsets.only(
-                    top: 24.0,
-                    right: 12.0,
+                    top: 16.0,
+                    right: 5.0,
                     left: 10.0,
                   ),
                   child: const CircleAvatar(
@@ -3102,6 +3168,28 @@ class _NavigationRailState extends State<MyHomePage>
               //     ),
               //   ),
               // ),
+              Container(
+                width: 24.0,
+                height: 24.0,
+                decoration: BoxDecoration(
+                  color: const Color(0xff334155),
+                  border: Border.all(color: const Color(0xff334155)),
+                  borderRadius: BorderRadius.circular(
+                    10.0,
+                  ),
+                ),
+                margin: const EdgeInsets.only(
+                  top: 26.0,
+                  left: 6.0,
+                  right: 40.0,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: SvgPicture.asset(
+                    "images/drop_arrow.svg",
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 16,
               ),
@@ -3694,6 +3782,27 @@ class _NavigationRailState extends State<MyHomePage>
     return Text('Please Select this field',
         style:
             TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
+  }
+
+  errorWidget2(validateValue) {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 45,
+        ),
+        saveButtonClick
+            ? validateValue != null && validateValue.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text('$validateValue',
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 221, 49, 60),
+                            fontSize: 14)),
+                  )
+                : Text('')
+            : Text('')
+      ],
+    );
   }
 
   handleAllerrorWidget(bool selectTesting) {

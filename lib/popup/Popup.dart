@@ -68,8 +68,8 @@ showDailog(
         Uri.parse('${AppUrl.baseUrl}/project/$_id'),
         body: jsonEncode({
           "title": _projecttitle.text.toString(),
-          // "accountable_person_id": _account,
-          "accountable_person_id": "1",
+          "accountable_person_id": _account,
+          //"accountable_person_id": "1",
           "customer_id": _custome,
           "crm_task_id": _crmtask.text.toString(),
           "work_folder_id": _warkfolderId.text.toString(),
@@ -77,6 +77,9 @@ showDailog(
           "currency": _curren,
           "estimation_hours": _estimatehours.text.toString(),
           "status": _status,
+          "delivery_date": selectedDateDevlivery != null
+              ? myFormat.format(selectedDateDevlivery!)
+              : "",
         }),
         headers: {
           "Content-Type": "application/json",
@@ -269,12 +272,17 @@ showDailog(
     _estimatehours.text = response.data != null &&
             response.data!.estimationHours != null &&
             response.data!.estimationHours!.isNotEmpty
-        ? response.data!.budget!.toString()
+        ? response.data!.estimationHours!.toString()
         : '';
 
     _custome = response.data != null && response.data!.customerId != null
         ? response.data!.customerId.toString()
         : '';
+
+    _account =
+        response.data != null && response.data!.accountablePersonId != null
+            ? response.data!.accountablePersonId.toString()
+            : '';
 
     if (response.data != null &&
         response.data!.reminderDate != null &&
@@ -350,17 +358,29 @@ showDailog(
           );
         },
         // initialDate: selectedDate,
-        // initialDate: setDate == "5"
-        //     ? selectedDateDeadline!
-        //     : setDate == "4"
-        //         ? selectedDateDevlivery!
-        //         : setDate == "3"
-        //             ? selectedDateReminder!
-        //             : setDate == "2"
-        //                 ? selectedDate!
-        //                 : selectedDate!,
-        initialDate: DateTime.now(),
-        firstDate: new DateTime.now().subtract(new Duration(days: 0)),
+        // initialDate:
+        //      setDate == "5"
+        //         ? selectedDateDeadline!
+        //         : setDate == "4"
+        //             ? selectedDateDevlivery!
+        //             : setDate == "3"
+        //                 ? selectedDateReminder!
+        //                 : setDate == "2"
+        //                     ? selectedDate!
+        //                     : selectedDate!,
+
+        initialDate: setDate == "5"
+            ? selectedDateDeadline!
+            : setDate == "4"
+                ? selectedDateDevlivery!
+                : setDate == "3"
+                    ? selectedDateReminder!
+                    : setDate == "2"
+                        ? selectedDate!
+                        : selectedDate!,
+
+        // initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
         lastDate: DateTime(2101));
 
     if (picked != null && picked != selectedDate) {
@@ -978,7 +998,8 @@ showDailog(
                                           id: id,
                                           statusList: statusList,
                                           title: 'Edit Project',
-                                          alignment: Alignment.center),
+                                          alignment: Alignment.center,
+                                          deliveryDate: selectedDateDevlivery),
                                     ],
                                   ),
                                 ),
@@ -1131,7 +1152,7 @@ showDailog(
                                               margin: const EdgeInsets.only(
                                                   left: 20.0, top: 40.0),
                                               child: const Text(
-                                                "Deadline date",
+                                                "Deadline",
                                                 style: TextStyle(
                                                     color: Color(0xff94A3B8),
                                                     fontSize: 11.0,
@@ -1269,9 +1290,11 @@ showDailog(
                                           },
                                           child: Container(
                                             margin: const EdgeInsets.only(
-                                                top: 16.0, left: 40.0),
+                                                top: 30.0,
+                                                left: 40.0,
+                                                bottom: 10),
                                             height: 28.0,
-                                            width: 28.0,
+                                            width: 40.0,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: Color(0xff334155),
@@ -1279,13 +1302,15 @@ showDailog(
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(40))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: SvgPicture.asset(
-                                                "images/cross.svg",
-                                              ),
-                                            ),
+                                            child: const Padding(
+                                                padding: EdgeInsets.all(6.0),
+                                                // child: SvgPicture.asset(
+                                                //   "images/cross.svg",
+                                                // ),
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                )),
                                           ),
                                         ),
                                       ],
