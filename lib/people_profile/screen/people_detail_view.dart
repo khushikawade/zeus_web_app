@@ -336,8 +336,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
             controller: horizontalScroll,
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
-              controller: verticalScroll,
-              scrollDirection: Axis.vertical,
+              // controller: verticalScroll,
+              // scrollDirection: Axis.vertical,
               child: Container(
                 width: MediaQuery.of(context).size.width < 950
                     ? MediaQuery.of(context).size.width * 2
