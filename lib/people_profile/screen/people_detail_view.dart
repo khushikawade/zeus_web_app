@@ -335,384 +335,466 @@ class _ProfileDetailState extends State<ProfileDetail> {
           body: SingleChildScrollView(
             controller: horizontalScroll,
             scrollDirection: Axis.horizontal,
-            child: Container(
-              width: MediaQuery.of(context).size.width < 950
-                  ? MediaQuery.of(context).size.width * 2
-                  : MediaQuery.of(context).size.width - 100,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          // width: MediaQuery.of(context).size.width * 0.89,
-                          height: MediaQuery.of(context).size.height * 0.40,
-                          //width: double.infinity,
-                          margin: const EdgeInsets.only(
-                              left: 59.0, right: 32.0, bottom: 0.0, top: 35.0),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff1E293B),
-                            border: Border.all(
-                                color: ColorSelect.peoplelistbackgroundcolor),
-                            borderRadius: BorderRadius.circular(
-                              12.0,
+            child: SingleChildScrollView(
+              controller: verticalScroll,
+              scrollDirection: Axis.vertical,
+              child: Container(
+                width: MediaQuery.of(context).size.width < 950
+                    ? MediaQuery.of(context).size.width * 2
+                    : MediaQuery.of(context).size.width - 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            // width: MediaQuery.of(context).size.width * 0.89,
+                            height: MediaQuery.of(context).size.height * 0.40,
+                            //width: double.infinity,
+                            margin: const EdgeInsets.only(
+                                left: 59.0,
+                                right: 32.0,
+                                bottom: 0.0,
+                                top: 35.0),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff1E293B),
+                              border: Border.all(
+                                  color: ColorSelect.peoplelistbackgroundcolor),
+                              borderRadius: BorderRadius.circular(
+                                12.0,
+                              ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: 40.0,
+                                  margin: const EdgeInsets.only(
+                                      left: 16.0, top: 16.0),
+                                  decoration: BoxDecoration(
+                                    color: ColorSelect.box_decoration,
+                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                    borderRadius: BorderRadius.circular(
+                                      55.0,
+                                    ),
+                                  ),
+                                  child: const Align(
+                                    alignment: Alignment.center,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 10.0,
+                                          right: 10.0,
+                                          top: 10.0,
+                                          bottom: 10.0),
+                                      child: Text(
+                                        "OCCUPIED",
+                                        style: TextStyle(
+                                            color: ColorSelect.boxtext_color,
+                                            fontSize: 14.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
+                                        width: 134.0,
+                                        height: 134.0,
+                                        margin: const EdgeInsets.only(
+                                            left: 16.0, top: 20.0),
+                                        decoration: BoxDecoration(
+                                          //color: const Color(0xff334155),
+                                          borderRadius: BorderRadius.circular(
+                                            40.0,
+                                          ),
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 110,
+                                          backgroundImage:
+                                              NetworkImage(list.image!),
+                                        )),
+
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 16.0, top: 10.0),
+                                      child: Text(
+                                        list.resource != null
+                                            ? list.resource!.nickname != null &&
+                                                    list.resource!.nickname!
+                                                        .isNotEmpty
+                                                ? list.resource!.nickname
+                                                    .toString()
+                                                : 'TBD'
+                                            : 'TBD',
+                                        style: const TextStyle(
+                                            color: ColorSelect.white_color,
+                                            fontSize: 22.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    //  "$name\n$designation,$associate",
+
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 10.0,
+                                            right: 0.0,
+                                          ),
+                                          child: Text(
+                                            list.resource != null
+                                                ? list.resource!.designation !=
+                                                            null &&
+                                                        list
+                                                            .resource!
+                                                            .designation!
+                                                            .isNotEmpty
+                                                    ? list.resource!.designation
+                                                        .toString()
+                                                    : 'TBD'
+                                                : 'TBD',
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 13.0,
+                                            left: 8.0,
+                                          ),
+                                          height: 6.0,
+                                          width: 6.0,
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xff64748B),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 10.0,
+                                            left: 8.0,
+                                            right: 0.0,
+                                          ),
+                                          child: Text(
+                                            list.resource != null
+                                                ? list.resource!.department!
+                                                                .name !=
+                                                            null &&
+                                                        list
+                                                            .resource!
+                                                            .department!
+                                                            .name!
+                                                            .isNotEmpty
+                                                    ? list.resource!.department!
+                                                        .name
+                                                        .toString()
+                                                    : 'TBD'
+                                                : 'TBD',
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 13.0,
+                                            left: 8.0,
+                                          ),
+                                          height: 6.0,
+                                          width: 6.0,
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xff64748B),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 10.0,
+                                            left: 8.0,
+                                            right: 0.0,
+                                          ),
+                                          child: Text(
+                                            "Associated with:",
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 10.0,
+                                            left: 8.0,
+                                            right: 0.0,
+                                          ),
+                                          child: Text(
+                                            list.resource != null
+                                                ? list.resource!.associate !=
+                                                            null &&
+                                                        list
+                                                            .resource!
+                                                            .associate!
+                                                            .isNotEmpty
+                                                    ? list.resource!.associate
+                                                        .toString()
+                                                    : 'TBD'
+                                                : 'TBD',
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 20.0,
+                                          height: 18.0,
+                                          margin: const EdgeInsets.only(
+                                            top: 10.0,
+                                            left: 16.0,
+                                            right: 0.0,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            "images/location_icon.svg",
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 0.0, top: 10.0),
+                                          child: Text(
+                                            list.resource != null
+                                                ? list.resource!.city != null &&
+                                                        list.resource!.city!
+                                                            .isNotEmpty
+                                                    ? list.resource!.city
+                                                        .toString()
+                                                    : 'TBD'
+                                                : 'TBD',
+                                            style: TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 0.0, top: 10.0),
+                                          child: const Text(
+                                            ", ",
+                                            style: TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 0.0, top: 10.0),
+                                          child: Text(
+                                            list.resource != null
+                                                ? list.resource!.country !=
+                                                            null &&
+                                                        list.resource!.country!
+                                                            .isNotEmpty
+                                                    ? list.resource!.country
+                                                        .toString()
+                                                    : 'TBD'
+                                                : 'TBD',
+                                            style: TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 13.0,
+                                            left: 8.0,
+                                          ),
+                                          height: 6.0,
+                                          width: 6.0,
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xff64748B),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        // Container(
+                                        //   margin: const EdgeInsets.only(
+                                        //       left: 0.0, top: 10.0),
+                                        //   child: const Text(
+                                        //     ".",
+                                        //     style: TextStyle(
+                                        //         color: ColorSelect.profile_color,
+                                        //         fontSize: 14.0,
+                                        //         fontFamily: 'Inter',
+                                        //         fontWeight: FontWeight.w400),
+                                        //   ),
+                                        // ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 10.0, top: 10.0),
+                                          child: Text(
+                                            list.resource != null
+                                                ? list.resource!.timeZone !=
+                                                            null &&
+                                                        list.resource!.timeZone!
+                                                                .offset !=
+                                                            null &&
+                                                        list.resource!.timeZone!
+                                                            .offset!.isNotEmpty
+                                                    ? list.resource!.timeZone!
+                                                        .offset
+                                                        .toString()
+                                                    : 'TBD'
+                                                : 'TBD',
+                                            style: TextStyle(
+                                                color:
+                                                    ColorSelect.profile_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, bottom: 10),
+                                  child: MyMenu(
+                                      data: list,
+                                      title: 'Menu at bottom',
+                                      alignment: Alignment.topRight,
+                                      buildContext: context,
+                                      returnValue: () {
+                                        Navigator.pop(context, true);
+                                      }),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Row(
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 175.0, top: 0.0),
+                          child: const Text(
+                            "About me",
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 18.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                height: 40.0,
+                                margin: EdgeInsets.only(left: 134.0, top: 40.0),
+                                child: Text(
+                                  list.name != null && list.name!.isNotEmpty
+                                      ? list.name.toString()
+                                      : 'TBD',
+                                  style: TextStyle(
+                                      color: ColorSelect.white_color,
+                                      fontSize: 16.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Container(
+                                //width: 700.0,
+                                height: 50.0,
                                 margin: const EdgeInsets.only(
-                                    left: 16.0, top: 16.0),
-                                decoration: BoxDecoration(
-                                  color: ColorSelect.box_decoration,
-                                  //border: Border.all(color: const Color(0xff0E7490)),
-                                  borderRadius: BorderRadius.circular(
-                                    55.0,
-                                  ),
+                                  left: 134.0,
+                                  top: 8.0,
                                 ),
-                                child: const Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 10.0,
-                                        right: 10.0,
-                                        top: 10.0,
-                                        bottom: 10.0),
-                                    child: Text(
-                                      "OCCUPIED",
-                                      style: TextStyle(
-                                          color: ColorSelect.boxtext_color,
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
+                                child: Text(
+                                  list.resource != null
+                                      ? list.resource!.bio != null &&
+                                              list.resource!.bio!.isNotEmpty
+                                          ? list.resource!.bio.toString()
+                                          : 'TBD'
+                                      : 'TBD',
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 16.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400),
                                 ),
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                      width: 134.0,
-                                      height: 134.0,
-                                      margin: const EdgeInsets.only(
-                                          left: 16.0, top: 20.0),
-                                      decoration: BoxDecoration(
-                                        //color: const Color(0xff334155),
-                                        borderRadius: BorderRadius.circular(
-                                          40.0,
-                                        ),
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 110,
-                                        backgroundImage:
-                                            NetworkImage(list.image!),
-                                      )),
-
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 16.0, top: 10.0),
-                                    child: Text(
-                                      list.resource != null
-                                          ? list.resource!.nickname != null &&
-                                                  list.resource!.nickname!
-                                                      .isNotEmpty
-                                              ? list.resource!.nickname
-                                                  .toString()
-                                              : 'TBD'
-                                          : 'TBD',
-                                      style: const TextStyle(
-                                          color: ColorSelect.white_color,
-                                          fontSize: 22.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  //  "$name\n$designation,$associate",
-
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          right: 0.0,
-                                        ),
-                                        child: Text(
-                                          list.resource != null
-                                              ? list.resource!.designation !=
-                                                          null &&
-                                                      list
-                                                          .resource!
-                                                          .designation!
-                                                          .isNotEmpty
-                                                  ? list.resource!.designation
-                                                      .toString()
-                                                  : 'TBD'
-                                              : 'TBD',
-                                          style: const TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 13.0,
-                                          left: 8.0,
-                                        ),
-                                        height: 6.0,
-                                        width: 6.0,
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff64748B),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 8.0,
-                                          right: 0.0,
-                                        ),
-                                        child: Text(
-                                          list.resource != null
-                                              ? list.resource!.department!
-                                                              .name !=
-                                                          null &&
-                                                      list.resource!.department!
-                                                          .name!.isNotEmpty
-                                                  ? list.resource!.department!
-                                                      .name
-                                                      .toString()
-                                                  : 'TBD'
-                                              : 'TBD',
-                                          style: const TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 13.0,
-                                          left: 8.0,
-                                        ),
-                                        height: 6.0,
-                                        width: 6.0,
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff64748B),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 8.0,
-                                          right: 0.0,
-                                        ),
-                                        child: Text(
-                                          "Associated with:",
-                                          style: const TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 8.0,
-                                          right: 0.0,
-                                        ),
-                                        child: Text(
-                                          list.resource != null
-                                              ? list.resource!.associate !=
-                                                          null &&
-                                                      list.resource!.associate!
-                                                          .isNotEmpty
-                                                  ? list.resource!.associate
-                                                      .toString()
-                                                  : 'TBD'
-                                              : 'TBD',
-                                          style: const TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 20.0,
-                                        height: 18.0,
-                                        margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 16.0,
-                                          right: 0.0,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          "images/location_icon.svg",
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 0.0, top: 10.0),
-                                        child: Text(
-                                          list.resource != null
-                                              ? list.resource!.city != null &&
-                                                      list.resource!.city!
-                                                          .isNotEmpty
-                                                  ? list.resource!.city
-                                                      .toString()
-                                                  : 'TBD'
-                                              : 'TBD',
-                                          style: TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 0.0, top: 10.0),
-                                        child: const Text(
-                                          ", ",
-                                          style: TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 0.0, top: 10.0),
-                                        child: Text(
-                                          list.resource != null
-                                              ? list.resource!.country !=
-                                                          null &&
-                                                      list.resource!.country!
-                                                          .isNotEmpty
-                                                  ? list.resource!.country
-                                                      .toString()
-                                                  : 'TBD'
-                                              : 'TBD',
-                                          style: TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 13.0,
-                                          left: 8.0,
-                                        ),
-                                        height: 6.0,
-                                        width: 6.0,
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff64748B),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                      ),
-                                      // Container(
-                                      //   margin: const EdgeInsets.only(
-                                      //       left: 0.0, top: 10.0),
-                                      //   child: const Text(
-                                      //     ".",
-                                      //     style: TextStyle(
-                                      //         color: ColorSelect.profile_color,
-                                      //         fontSize: 14.0,
-                                      //         fontFamily: 'Inter',
-                                      //         fontWeight: FontWeight.w400),
-                                      //   ),
-                                      // ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 10.0, top: 10.0),
-                                        child: Text(
-                                          list.resource != null
-                                              ? list.resource!.timeZone !=
-                                                          null &&
-                                                      list.resource!.timeZone!
-                                                              .offset !=
-                                                          null &&
-                                                      list.resource!.timeZone!
-                                                          .offset!.isNotEmpty
-                                                  ? list.resource!.timeZone!
-                                                      .offset
-                                                      .toString()
-                                                  : 'TBD'
-                                              : 'TBD',
-                                          style: TextStyle(
-                                              color: ColorSelect.profile_color,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, bottom: 10),
-                                child: MyMenu(
-                                    data: list,
-                                    title: 'Menu at bottom',
-                                    alignment: Alignment.topRight,
-                                    buildContext: context,
-                                    returnValue: () {
-                                      Navigator.pop(context, true);
-                                    }),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 175.0, top: 0.0),
-                        child: const Text(
-                          "About me",
-                          style: TextStyle(
-                              color: ColorSelect.text_color,
-                              fontSize: 18.0,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 175.0, top: 20.0),
+                          child: const Text(
+                            "Availability",
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 18.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 134.0, top: 40.0),
+                              margin:
+                                  const EdgeInsets.only(left: 120.0, top: 40.0),
                               child: Text(
-                                list.name != null && list.name!.isNotEmpty
-                                    ? list.name.toString()
+                                // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
+
+                                list.resource != null
+                                    ? startDay == endDay
+                                        ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
+                                        : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
                                     : 'TBD',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: ColorSelect.white_color,
                                     fontSize: 16.0,
                                     fontFamily: 'Inter',
@@ -720,20 +802,14 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               ),
                             ),
                             Container(
-                              //width: 700.0,
-                              height: 50.0,
+                              // width: 700.0,
                               margin: const EdgeInsets.only(
-                                left: 134.0,
                                 top: 8.0,
+                                left: 120.0,
                               ),
                               child: Text(
-                                list.resource != null
-                                    ? list.resource!.bio != null &&
-                                            list.resource!.bio!.isNotEmpty
-                                        ? list.resource!.bio.toString()
-                                        : 'TBD'
-                                    : 'TBD',
-                                style: TextStyle(
+                                "$salary hours/week",
+                                style: const TextStyle(
                                     color: ColorSelect.text_color,
                                     fontSize: 16.0,
                                     fontFamily: 'Inter',
@@ -742,160 +818,106 @@ class _ProfileDetailState extends State<ProfileDetail> {
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 175.0, top: 20.0),
-                        child: const Text(
-                          "Availability",
-                          style: TextStyle(
-                              color: ColorSelect.text_color,
-                              fontSize: 18.0,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin:
-                                const EdgeInsets.only(left: 120.0, top: 40.0),
-                            child: Text(
-                              // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
-
-                              list.resource != null
-                                  ? startDay == endDay
-                                      ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
-                                      : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
-                                  : 'TBD',
-                              style: const TextStyle(
-                                  color: ColorSelect.white_color,
-                                  fontSize: 16.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w600),
-                            ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 175.0, top: 40.0),
+                          child: const Text(
+                            "Skills",
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 18.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
                           ),
-                          Container(
-                            // width: 700.0,
-                            margin: const EdgeInsets.only(
-                              top: 8.0,
-                              left: 120.0,
-                            ),
-                            child: Text(
-                              "$salary hours/week",
-                              style: const TextStyle(
-                                  color: ColorSelect.text_color,
-                                  fontSize: 16.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 175.0, top: 40.0),
-                        child: const Text(
-                          "Skills",
-                          style: TextStyle(
-                              color: ColorSelect.text_color,
-                              fontSize: 18.0,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500),
                         ),
-                      ),
-                      list.resource != null
-                          ? SizedBox(
-                              height: 65,
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                    left: 160.0, top: 30.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 0.0),
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: list.resource!.skills!.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      //PeopleData _peopleListSkills = data.peopleList!.data![index];
-                                      Skills _skills =
-                                          list.resource!.skills![index];
-                                      var skill = _skills.title;
-                                      // postion=index;
-                                      return Container(
-                                        height: 32.0,
-                                        margin: const EdgeInsets.only(
-                                            left: 5.0, top: 5.0),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 12.0,
-                                                right: 12.0,
-                                                top: 6.0,
-                                                bottom: 6.0),
-                                            child: Text(
-                                              skill != null && skill.isNotEmpty
-                                                  ? '$skill'
-                                                  : 'TBD',
-                                              style: const TextStyle(
-                                                  color:
-                                                      ColorSelect.white_color,
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.only(
-                                left: 12.0,
-                                right: 12.0,
-                                top: 15.0,
-                              ),
-                              child: SizedBox(
+                        list.resource != null
+                            ? SizedBox(
                                 height: 65,
                                 child: Container(
                                   margin: const EdgeInsets.only(
-                                      left: 160.0, top: 35.0),
-                                  child: const Text('TBD',
-                                      style: TextStyle(
-                                          color: ColorSelect.white_color,
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500)),
+                                      left: 160.0, top: 30.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 0.0),
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: list.resource!.skills!.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        //PeopleData _peopleListSkills = data.peopleList!.data![index];
+                                        Skills _skills =
+                                            list.resource!.skills![index];
+                                        var skill = _skills.title;
+                                        // postion=index;
+                                        return Container(
+                                          height: 32.0,
+                                          margin: const EdgeInsets.only(
+                                              left: 5.0, top: 5.0),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            borderRadius: BorderRadius.circular(
+                                              8.0,
+                                            ),
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0,
+                                                  right: 12.0,
+                                                  top: 6.0,
+                                                  bottom: 6.0),
+                                              child: Text(
+                                                skill != null &&
+                                                        skill.isNotEmpty
+                                                    ? '$skill'
+                                                    : 'TBD',
+                                                style: const TextStyle(
+                                                    color:
+                                                        ColorSelect.white_color,
+                                                    fontSize: 14.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 12.0,
+                                  right: 12.0,
+                                  top: 15.0,
+                                ),
+                                child: SizedBox(
+                                  height: 65,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 160.0, top: 35.0),
+                                    child: const Text('TBD',
+                                        style: TextStyle(
+                                            color: ColorSelect.white_color,
+                                            fontSize: 14.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500)),
+                                  ),
                                 ),
                               ),
-                            ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

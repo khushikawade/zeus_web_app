@@ -216,7 +216,8 @@ class _IdleState extends State<Idle> {
   ScrollController _controller = ScrollController();
 
   Future? getListData() {
-    return Provider.of<DataIdelClass>(context, listen: false).getPeopleIdel(searchText: '');
+    return Provider.of<DataIdelClass>(context, listen: false)
+        .getPeopleIdel(searchText: '');
   }
 
   Future? getList;
@@ -717,16 +718,16 @@ class _IdleState extends State<Idle> {
     return data!.peopleIdelResponse == null ||
             data.peopleIdelResponse!.data!.isEmpty
         ? Container(
-                 width: MediaQuery.of(context).size.width < 950
-                    ? MediaQuery.of(context).size.width * 2
-                    : MediaQuery.of(context).size.width - 200,
+            width: MediaQuery.of(context).size.width < 950
+                ? MediaQuery.of(context).size.width * 2
+                : MediaQuery.of(context).size.width - 200,
 
-                // height: MediaQuery.of(context).size.height * 0.83,
-                // height: MediaQuery.of(context).size.height * 0.83,
+            // height: MediaQuery.of(context).size.height * 0.83,
+            // height: MediaQuery.of(context).size.height * 0.83,
 
-                height: 969,
-          
-          child: const Expanded(
+            height: 969,
+
+            child: const Expanded(
               child: Center(
                   child: Text(
                 "No Records Found !",
@@ -737,7 +738,7 @@ class _IdleState extends State<Idle> {
                     fontWeight: FontWeight.w500),
               )),
             ),
-        )
+          )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
