@@ -3,4 +3,5 @@ class DaysList {
   num? dayNumber;
 
   DaysList(this.day, this.dayNumber);
+
 }

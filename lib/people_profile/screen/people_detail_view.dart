@@ -303,6 +303,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
     }
 
     daysList.sort((a, b) => a.dayNumber!.compareTo((b.dayNumber!)));
+    var startDay = daysList[0].day;
+    var endDay = daysList[daysList.length - 1].day;
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
@@ -769,7 +771,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
 
                               list.resource != null
-                                  ? "${daysList[0].day} - ${daysList[daysList.length - 1].day} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
+                                  ? startDay == endDay
+                                      ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
+                                      : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
                                   : 'TBD',
                               style: const TextStyle(
                                   color: ColorSelect.white_color,
