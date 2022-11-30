@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zeus/helper_widget/daysList.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:provider/provider.dart';
@@ -260,6 +261,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
     List<String> commaSepratedList = [];
     String availibiltyDaySeprated = '';
 
+    List<DaysList>? daysList = <DaysList>[];
+
     if (list.resource != null &&
         list.resource!.availibiltyDay != null &&
         list.resource!.availibiltyDay!.isNotEmpty) {
@@ -272,7 +275,53 @@ class _ProfileDetailState extends State<ProfileDetail> {
           : list.resource!.availibiltyDay!;
       print("---------------------------------commaSepratedList");
       print(availibiltyDaySeprated);
+
+      // for (int i = 0; i <= commaSepratedList.length; i++) {
+      //   print(commaSepratedList[i]);
+      // }
+
+      commaSepratedList.forEach((element) {
+        // print(element);
+        DaysList object = DaysList("", 0);
+        if (element == "Mon") {
+          object.day = element;
+          object.dayNumber = 1;
+          daysList.add(object);
+        } else if (element == "Tue") {
+          object.day = element;
+          object.dayNumber = 2;
+          daysList.add(object);
+        } else if (element == "Wed") {
+          object.day = element;
+          object.dayNumber = 3;
+          daysList.add(object);
+        } else if (element == "Thu") {
+          object.day = element;
+          object.dayNumber = 4;
+          daysList.add(object);
+        } else if (element == "Fri") {
+          object.day = element;
+          object.dayNumber = 5;
+          daysList.add(object);
+        } else if (element == "Sat") {
+          object.day = element;
+          object.dayNumber = 6;
+          daysList.add(object);
+        } else if (element == "Sun") {
+          object.day = element;
+          object.dayNumber = 7;
+          daysList.add(object);
+        } else {
+          print("---------------------------------- element");
+          print(element);
+        }
+      });
     }
+    print("---------------------------------- length");
+    print(daysList.length);
+    daysList.sort((a, b) => a.dayNumber!.compareTo((b.dayNumber!)));
+    print(daysList[0].day);
+    print(daysList[daysList.length - 1].day);
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
@@ -739,7 +788,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
 
                               list.resource != null
-                                  ? "${availibiltyDaySeprated} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
+                                  ? "${daysList[0].day} - ${daysList[daysList.length - 1].day} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
                                   : 'TBD',
                               style: const TextStyle(
                                   color: ColorSelect.white_color,
