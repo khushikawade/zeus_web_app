@@ -10,6 +10,7 @@ import 'package:zeus/DemoContainer.dart';
 import 'package:zeus/add_new_phase/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
+import 'package:zeus/popup/popup_phasebutton.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
@@ -84,7 +85,8 @@ showDailog(
       );
       // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
-        var responseJson =jsonDecode(response.body.toString()) as Map<String, dynamic>;
+        var responseJson =
+            jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
         // ignore: use_build_context_synchronously
         Navigator.of(context).pushAndRemoveUntil(
@@ -405,1010 +407,912 @@ showDailog(
                       Container(
                         width: MediaQuery.of(context).size.width * 0.99,
                         padding: EdgeInsets.only(),
-                        
+
                         //color: Colors.green,
                         child: Column(
                           children: [
                             Row(
                               children: [
-
-                                         Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    margin: const EdgeInsets.only(
-                                                        left: 30.0, top: 30.0),
-                                                    child: Text(
-                                                      response.data?.title ?? '',
-                                                      style: const TextStyle(
-                                                          color: Color(0xffFFFFFF),
-                                                          fontSize: 22.0,
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      if (status == "Open") ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 82.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff16A34A),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Open",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          'On track') ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 82.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff16A34A),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "On track",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          'Live') ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 52.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff16A34A),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Live",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          "Design sent for approval") ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 190.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff115E59),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Design sent for approval",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          "New features request") ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 171.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xffA21CAF),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "New features request",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          "Update request") ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 147.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff0E7490),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Update request",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          "Sent for approval") ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 147.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff166534),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Sent for approval",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          'Risk') ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 53.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xffB91C1C),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Risk",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else if (status ==
-                                                          "Potential risk") ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 113.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xff9A3412),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Potential risk",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ] else ...[
-                                                        Container(
-                                                          height: 32.0,
-                                                          width: 53.0,
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 30.0,
-                                                                  right: 12.0,
-                                                                  top: 12.0),
-                                                          decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xffB91C1C),
-                                                            //border: Border.all(color: const Color(0xff0E7490)),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                              8.0,
-                                                            ),
-                                                          ),
-                                                          child: const Align(
-                                                            alignment:
-                                                                Alignment.center,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      left: 12.0,
-                                                                      right: 12.0,
-                                                                      top: 6.0,
-                                                                      bottom: 6.0),
-                                                              child: Text(
-                                                                "Risk",
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontSize: 14.0,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                      Container(
-                                                        margin: const EdgeInsets.only(
-                                                            left: 16.0, top: 12.0),
-                                                        width: 110,
-                                                        height: 32,
-                                                        child: Stack(
-                                                          children: [
-                                                            Positioned(
-                                                              top: 0,
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            100),
-                                                                child: Image.network(
-                                                                  'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                                                                  width: 32,
-                                                                  height: 32,
-                                                                  fit: BoxFit.cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                              left: 22,
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            100),
-                                                                child: Image.network(
-                                                                  'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
-                                                                  width: 32,
-                                                                  height: 32,
-                                                                  fit: BoxFit.cover,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                              left: 46.0,
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            100),
-                                                                child: Container(
-                                                                  width: 32,
-                                                                  height: 32,
-                                                                  color: Color(
-                                                                      0xff334155),
-                                                                  child:
-                                                                      Image.network(
-                                                                    'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
-                                                                    width: 32,
-                                                                    height: 32,
-                                                                    fit: BoxFit.cover,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                              left: 70.0,
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            100),
-                                                                child: Container(
-                                                                  width: 32,
-                                                                  height: 32,
-                                                                  color: Color(
-                                                                      0xff334155),
-                                                                  child:
-                                                                      Image.network(
-                                                                    'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
-                                                                    width: 32,
-                                                                    height: 32,
-                                                                    fit: BoxFit.cover,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Stack(
-                                                        clipBehavior: Clip.none,
-                                                        children: [
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets.only(
-                                                                    left: 12.0,
-                                                                    top: 8.0),
-                                                            child: SvgPicture.asset(
-                                                              'images/list_ceramony.svg',
-                                                              width: 19.06,
-                                                              height: 17.01,
-                                                            ),
-                                                          ),
-                                                          Positioned(
-                                                            bottom: 10,
-                                                            left: 12,
-                                                            child: Center(
-                                                              child: Container(
-                                                                margin:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                  top: 13.0,
-                                                                  left: 8.0,
-                                                                ),
-                                                                height: 16.0,
-                                                                width: 16.0,
-                                                                decoration: const BoxDecoration(
-                                                                    color: Colors.red,
-                                                                    borderRadius: BorderRadius
-                                                                        .all(Radius
-                                                                            .circular(
-                                                                                20))),
-                                                                child: const Align(
-                                                                  alignment: Alignment
-                                                                      .center,
-                                                                  child: Text(
-                                                                    "2",
-                                                                    style: TextStyle(
-                                                                        color: Color(
-                                                                            0xffFFFFFF),
-                                                                        fontSize:
-                                                                            11.0,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              ProjectEdit(
-                                                  accountableId: accountableId,
-                                                  currencyList: currencyName,
-                                                  customerName: customerName,
-                                                  response: response,
-                                                  buildContext: context,
-                                                  id: id,
-                                                  statusList: statusList,
-                                                  title: 'Edit Project',
-                                                  alignment: Alignment.center),
-                                            ],
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0, top: 30.0),
+                                            child: Text(
+                                              response.data?.title ?? '',
+                                              style: const TextStyle(
+                                                  color: Color(0xffFFFFFF),
+                                                  fontSize: 22.0,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                           ),
-                                        ),
-                                
-                                             Expanded(
-                                               child: Container(
-                                                height: 80.0,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    2,
-                                                decoration: const BoxDecoration(),
-                                                child: ListView(
-                                                  scrollDirection: Axis.horizontal,
-                                                  physics:
-                                                      const BouncingScrollPhysics(),
+                                          Row(
+                                            children: [
+                                              if (status == "Open") ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 82.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff16A34A),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Open",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status ==
+                                                  'On track') ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 82.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff16A34A),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "On track",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status == 'Live') ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 52.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff16A34A),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Live",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status ==
+                                                  "Design sent for approval") ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 190.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 20.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff115E59),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Design sent for approval",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status ==
+                                                  "New features request") ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 171.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffA21CAF),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "New features request",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status ==
+                                                  "Update request") ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 147.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff0E7490),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Update request",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status ==
+                                                  "Sent for approval") ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 147.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff166534),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Sent for approval",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status == 'Risk') ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 53.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffB91C1C),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Risk",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else if (status ==
+                                                  "Potential risk") ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 113.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xff9A3412),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Potential risk",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ] else ...[
+                                                Container(
+                                                  height: 32.0,
+                                                  width: 53.0,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0,
+                                                      right: 12.0,
+                                                      top: 12.0),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffB91C1C),
+                                                    //border: Border.all(color: const Color(0xff0E7490)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      8.0,
+                                                    ),
+                                                  ),
+                                                  child: const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 6.0,
+                                                          bottom: 6.0),
+                                                      child: Text(
+                                                        "Risk",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 16.0, top: 12.0),
+                                                width: 110,
+                                                height: 32,
+                                                child: Stack(
                                                   children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  top: 40.0),
-                                                          child: const Text(
-                                                            "Start date",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Color(0xff94A3B8),
-                                                                fontSize: 11.0,
-                                                                fontFamily: 'Inter',
-                                                                fontWeight:
-                                                                    FontWeight.w400),
-                                                          ),
+                                                    Positioned(
+                                                      top: 0,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Image.network(
+                                                          'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                                                          width: 32,
+                                                          height: 32,
+                                                          fit: BoxFit.cover,
                                                         ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            setDate = "2";
-                                                            _selectDate(setState);
-                                                          },
-                                                          child: Container(
-                                                            margin:
-                                                                const EdgeInsets.only(
-                                                                    left: 20.0,
-                                                                    top: 6.0),
-                                                            child: Text(
-                                                              AppUtil.formattedDateYear(
-                                                                  selectedDate
-                                                                      .toString()), // "$startDate",
-                                                              style: const TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontSize: 14.0,
-                                                                  fontFamily: 'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                             
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  top: 40.0),
-                                                          child: const Text(
-                                                            "Reminder date",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Color(0xff94A3B8),
-                                                                fontSize: 11.0,
-                                                                fontFamily: 'Inter',
-                                                                fontWeight:
-                                                                    FontWeight.w400),
-                                                          ),
+                                                    Positioned(
+                                                      left: 22,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Image.network(
+                                                          'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                                                          width: 32,
+                                                          height: 32,
+                                                          fit: BoxFit.cover,
                                                         ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            setDate = "3";
-                                                            _selectDate(setState);
-                                                          },
-                                                          child: Container(
-                                                            margin:
-                                                                const EdgeInsets.only(
-                                                                    left: 20.0,
-                                                                    top: 6.0),
-                                                            child: Text(
-                                                              // reminderDate1 == null
-                                                              //     ?
-                                                              AppUtil.formattedDateYear(
-                                                                  selectedDateReminder
-                                                                      .toString()),
-                                                              //   "${selectedDateReminder.day}${selectedDateReminder.month}${selectedDateReminder.year}",
-                                                              // : "$reminderDate1",
-                                                              style: const TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontSize: 14.0,
-                                                                  fontFamily: 'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                             
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  top: 40.0),
-                                                          child: const Text(
-                                                            "Delivery date",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Color(0xff94A3B8),
-                                                                fontSize: 11.0,
-                                                                fontFamily: 'Inter',
-                                                                fontWeight:
-                                                                    FontWeight.w400),
+                                                    Positioned(
+                                                      left: 46.0,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Container(
+                                                          width: 32,
+                                                          height: 32,
+                                                          color:
+                                                              Color(0xff334155),
+                                                          child: Image.network(
+                                                            'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                                                            width: 32,
+                                                            height: 32,
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            setDate = "4";
-                                                            _selectDate(setState);
-                                                          },
-                                                          child: Container(
-                                                            margin:
-                                                                const EdgeInsets.only(
-                                                                    left: 20.0,
-                                                                    top: 6.0),
-                                                            child: Text(
-                                                              // deliveryDate == null
-                                                              //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
-                                                              AppUtil.formattedDateYear(
-                                                                  selectedDateDevlivery
-                                                                      .toString()),
-                                             
-                                                              // : "$deliveryDate",
-                                                              style: const TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontSize: 14.0,
-                                                                  fontFamily: 'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                             
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  top: 40.0),
-                                                          child: const Text(
-                                                            "Deadline date",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Color(0xff94A3B8),
-                                                                fontSize: 11.0,
-                                                                fontFamily: 'Inter',
-                                                                fontWeight:
-                                                                    FontWeight.w400),
-                                                          ),
-                                                        ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            setDate = "5";
-                                                            _selectDate(setState);
-                                                          },
-                                                          child: Container(
-                                                            margin:
-                                                                const EdgeInsets.only(
-                                                                    left: 20.0,
-                                                                    top: 6.0),
-                                                            child: Text(
-                                                              // deadlineDate == null
-                                                              //  ?
-                                                              AppUtil.formattedDateYear(
-                                                                  selectedDateDeadline
-                                                                      .toString()),
-                                             
-                                                              // : '$deadlineDate',
-                                                              style: const TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontSize: 14.0,
-                                                                  fontFamily: 'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                             
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  top: 40.0),
-                                                          child: const Text(
-                                                            "Working days",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Color(0xff94A3B8),
-                                                                fontSize: 11.0,
-                                                                fontFamily: 'Inter',
-                                                                fontWeight:
-                                                                    FontWeight.w400),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets.only(
-                                                                  left: 20.0,
-                                                                  top: 6.0),
-                                                          child: Text(
-                                                            response.data != null &&
-                                                                    response.data!
-                                                                            .workingDays! !=
-                                                                        null &&
-                                                                    response
-                                                                        .data!
-                                                                        .workingDays!
-                                                                        .isNotEmpty
-                                                                ? response.data!
-                                                                    .workingDays!
-                                                                : 'N/A',
-                                                            style: const TextStyle(
-                                                                color:
-                                                                    Color(0xffFFFFFF),
-                                                                fontSize: 14.0,
-                                                                fontFamily: 'Inter',
-                                                                fontWeight:
-                                                                    FontWeight.w400),
-                                                          ),
-                                                        ),
-                                             
-                                                        // InkWell(
-                                                        //                          onTap: (){},
-                                             
-                                                        //                         child: Container(
-                                                        //                           height: 18.0,
-                                                        //                           margin: const EdgeInsets.only(left: 20.0, top: 6.0),
-                                                        //                            child:    DropdownButtonHideUnderline(
-                                                        //                              child: DropdownButton(
-                                                        //                                dropdownColor:
-                                                        //                                ColorSelect.class_color,
-                                                        //                                // Initial Value
-                                                        //                                value: dropdownvalue,
-                                                        //                                hint:  Text(
-                                                        //                                  response!.data!.workingDays.toString(),
-                                                        //                                  style: const TextStyle(
-                                                        //                                      fontSize: 14.0,
-                                                        //                                      color: Color(0xffFFFFFF),
-                                                        //                                      fontFamily: 'Inter',
-                                                        //                                      fontWeight:
-                                                        //                                      FontWeight.w500),
-                                                        //                                ),
-                                             
-                                                        //                                // Down Arrow Icon
-                                                        //                                icon: Visibility (visible:false, child: Icon(Icons.arrow_downward)),
-                                             
-                                                        //                                // Array list of items
-                                                        //                                items: items.map((String items) {
-                                                        //                                  return DropdownMenuItem(
-                                                        //                                    value: items,
-                                                        //                                    child: Text(items,style: const TextStyle(
-                                                        //                                        fontSize: 14.0,
-                                                        //                                        color:
-                                                        //                                        Color(0xffFFFFFF),
-                                                        //                                        fontFamily: 'Inter',
-                                                        //                                        fontWeight:
-                                                        //                                        FontWeight.w400),),
-                                                        //                                  );
-                                                        //                                }).toList(),
-                                                        //                                // After selecting the desired option,it will
-                                                        //                                // change button value to selected value
-                                                        //                                onChanged: (String? newValue) {
-                                                        //                                  setState(() {
-                                                        //                                    dropdownvalue = newValue!;
-                                                        //                                  });
-                                                        //                                },
-                                                        //                              ),
-                                                        //                            ),
-                                                        //                         ),
-                                                        //                       ),
-                                                      ],
-                                                    ),
-                                             
-                                                    // const Spacer(),
-                                             
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context).pop();
-                                                      },
-                                                      child: Container(
-                                                        margin: const EdgeInsets.only(
-                                                            top: 16.0, left: 40.0),
-                                                        height: 28.0,
-                                                        width: 28.0,
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                color:
-                                                                    Color(0xff334155),
-                                                                width: 0.6),
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                        .all(
-                                                                    Radius.circular(
-                                                                        40))),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets.all(
-                                                                  8.0),
-                                                          child: SvgPicture.asset(
-                                                            "images/cross.svg",
+                                                    Positioned(
+                                                      left: 70.0,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Container(
+                                                          width: 32,
+                                                          height: 32,
+                                                          color:
+                                                              Color(0xff334155),
+                                                          child: Image.network(
+                                                            'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                                                            width: 32,
+                                                            height: 32,
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                                                                     ),
-                                             )
-                                         
+                                              ),
+                                              Stack(
+                                                clipBehavior: Clip.none,
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 12.0,
+                                                            top: 8.0),
+                                                    child: SvgPicture.asset(
+                                                      'images/list_ceramony.svg',
+                                                      width: 19.06,
+                                                      height: 17.01,
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 10,
+                                                    left: 12,
+                                                    child: Center(
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .only(
+                                                          top: 13.0,
+                                                          left: 8.0,
+                                                        ),
+                                                        height: 16.0,
+                                                        width: 16.0,
+                                                        decoration: const BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            20))),
+                                                        child: const Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "2",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffFFFFFF),
+                                                                fontSize: 11.0,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      ProjectEdit(
+                                          accountableId: accountableId,
+                                          currencyList: currencyName,
+                                          customerName: customerName,
+                                          response: response,
+                                          buildContext: context,
+                                          id: id,
+                                          statusList: statusList,
+                                          title: 'Edit Project',
+                                          alignment: Alignment.center),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 80.0,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    decoration: const BoxDecoration(),
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      physics: const BouncingScrollPhysics(),
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20.0, top: 40.0),
+                                              child: const Text(
+                                                "Start date",
+                                                style: TextStyle(
+                                                    color: Color(0xff94A3B8),
+                                                    fontSize: 11.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setDate = "2";
+                                                _selectDate(setState);
+                                              },
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 20.0, top: 6.0),
+                                                child: Text(
+                                                  AppUtil.formattedDateYear(
+                                                      selectedDate
+                                                          .toString()), // "$startDate",
+                                                  style: const TextStyle(
+                                                      color: Color(0xffFFFFFF),
+                                                      fontSize: 14.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20.0, top: 40.0),
+                                              child: const Text(
+                                                "Reminder date",
+                                                style: TextStyle(
+                                                    color: Color(0xff94A3B8),
+                                                    fontSize: 11.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setDate = "3";
+                                                _selectDate(setState);
+                                              },
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 20.0, top: 6.0),
+                                                child: Text(
+                                                  // reminderDate1 == null
+                                                  //     ?
+                                                  AppUtil.formattedDateYear(
+                                                      selectedDateReminder
+                                                          .toString()),
+                                                  //   "${selectedDateReminder.day}${selectedDateReminder.month}${selectedDateReminder.year}",
+                                                  // : "$reminderDate1",
+                                                  style: const TextStyle(
+                                                      color: Color(0xffFFFFFF),
+                                                      fontSize: 14.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20.0, top: 40.0),
+                                              child: const Text(
+                                                "Delivery date",
+                                                style: TextStyle(
+                                                    color: Color(0xff94A3B8),
+                                                    fontSize: 11.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setDate = "4";
+                                                _selectDate(setState);
+                                              },
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 20.0, top: 6.0),
+                                                child: Text(
+                                                  // deliveryDate == null
+                                                  //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
+                                                  AppUtil.formattedDateYear(
+                                                      selectedDateDevlivery
+                                                          .toString()),
+
+                                                  // : "$deliveryDate",
+                                                  style: const TextStyle(
+                                                      color: Color(0xffFFFFFF),
+                                                      fontSize: 14.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20.0, top: 40.0),
+                                              child: const Text(
+                                                "Deadline date",
+                                                style: TextStyle(
+                                                    color: Color(0xff94A3B8),
+                                                    fontSize: 11.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setDate = "5";
+                                                _selectDate(setState);
+                                              },
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 20.0, top: 6.0),
+                                                child: Text(
+                                                  // deadlineDate == null
+                                                  //  ?
+                                                  AppUtil.formattedDateYear(
+                                                      selectedDateDeadline
+                                                          .toString()),
+
+                                                  // : '$deadlineDate',
+                                                  style: const TextStyle(
+                                                      color: Color(0xffFFFFFF),
+                                                      fontSize: 14.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20.0, top: 40.0),
+                                              child: const Text(
+                                                "Working days",
+                                                style: TextStyle(
+                                                    color: Color(0xff94A3B8),
+                                                    fontSize: 11.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 20.0, top: 6.0),
+                                              child: Text(
+                                                response.data != null &&
+                                                        response.data!
+                                                                .workingDays! !=
+                                                            null &&
+                                                        response
+                                                            .data!
+                                                            .workingDays!
+                                                            .isNotEmpty
+                                                    ? response
+                                                        .data!.workingDays!
+                                                    : 'N/A',
+                                                style: const TextStyle(
+                                                    color: Color(0xffFFFFFF),
+                                                    fontSize: 14.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+
+                                            // InkWell(
+                                            //                          onTap: (){},
+
+                                            //                         child: Container(
+                                            //                           height: 18.0,
+                                            //                           margin: const EdgeInsets.only(left: 20.0, top: 6.0),
+                                            //                            child:    DropdownButtonHideUnderline(
+                                            //                              child: DropdownButton(
+                                            //                                dropdownColor:
+                                            //                                ColorSelect.class_color,
+                                            //                                // Initial Value
+                                            //                                value: dropdownvalue,
+                                            //                                hint:  Text(
+                                            //                                  response!.data!.workingDays.toString(),
+                                            //                                  style: const TextStyle(
+                                            //                                      fontSize: 14.0,
+                                            //                                      color: Color(0xffFFFFFF),
+                                            //                                      fontFamily: 'Inter',
+                                            //                                      fontWeight:
+                                            //                                      FontWeight.w500),
+                                            //                                ),
+
+                                            //                                // Down Arrow Icon
+                                            //                                icon: Visibility (visible:false, child: Icon(Icons.arrow_downward)),
+
+                                            //                                // Array list of items
+                                            //                                items: items.map((String items) {
+                                            //                                  return DropdownMenuItem(
+                                            //                                    value: items,
+                                            //                                    child: Text(items,style: const TextStyle(
+                                            //                                        fontSize: 14.0,
+                                            //                                        color:
+                                            //                                        Color(0xffFFFFFF),
+                                            //                                        fontFamily: 'Inter',
+                                            //                                        fontWeight:
+                                            //                                        FontWeight.w400),),
+                                            //                                  );
+                                            //                                }).toList(),
+                                            //                                // After selecting the desired option,it will
+                                            //                                // change button value to selected value
+                                            //                                onChanged: (String? newValue) {
+                                            //                                  setState(() {
+                                            //                                    dropdownvalue = newValue!;
+                                            //                                  });
+                                            //                                },
+                                            //                              ),
+                                            //                            ),
+                                            //                         ),
+                                            //                       ),
+                                          ],
+                                        ),
+
+                                        // const Spacer(),
+
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 16.0, left: 40.0),
+                                            height: 28.0,
+                                            width: 28.0,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Color(0xff334155),
+                                                    width: 0.6),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(40))),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: SvgPicture.asset(
+                                                "images/cross.svg",
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
-                                 SizedBox(
-                                        height:
-                                            30.0, //MediaQuery.of(context).size.height * 0.10,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                100.0,
-                                        child: const Divider(
-                                          color: Color(0xff94A3B8),
-                                          thickness: 0.2,
-                                        )),
-                             
+                            SizedBox(
+                                height:
+                                    30.0, //MediaQuery.of(context).size.height * 0.10,
+                                width:
+                                    MediaQuery.of(context).size.width * 100.0,
+                                child: const Divider(
+                                  color: Color(0xff94A3B8),
+                                  thickness: 0.2,
+                                )),
                           ],
                         ),
-                      
                       ),
-                      
+
                       Expanded(
                         child: SizedBox(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                             
                               Expanded(
                                 flex: 1,
                                 child: Column(
@@ -1589,7 +1493,6 @@ showDailog(
                                                           searchTextField =
                                                               AutoCompleteTextField<
                                                                   SkillsData>(
-                                                            
                                                             clearOnSubmit:
                                                                 false,
                                                             key: key,
@@ -1629,17 +1532,14 @@ showDailog(
                                                                   InputBorder
                                                                       .none,
                                                             ),
-
                                                             suggestions: users,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
-
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 14.0),
-
                                                             itemFilter:
                                                                 (item, query) {
                                                               return item.name!
@@ -1751,7 +1651,7 @@ showDailog(
                                         ),
                                       ],
                                     ),
-                            
+
                                     // TODO POTEN
                                     Container(
                                       width: MediaQuery.of(context).size.width *
@@ -1962,7 +1862,9 @@ showDailog(
                                   ],
                                 ),
                               ),
-                              const SizedBox(width: 10,),
+                              const SizedBox(
+                                width: 10,
+                              ),
                               Expanded(
                                 flex: 1,
                                 child: Column(
@@ -2192,6 +2094,29 @@ showDailog(
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 15.0, right: 50.0),
+                                    child: const Text(
+                                      "Action",
+                                      style: TextStyle(
+                                          color: Color(0xff94A3B8),
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       left: 10.0, bottom: 10),
+                                  //   child: MenuPhase(
+                                  //       title: 'Menu at bottom',
+                                  //       alignment: Alignment.topRight,
+                                  //       buildContext: context,
+                                  //       returnValue: () {
+                                  //         Navigator.pop(context, true);
+                                  //       }),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -2288,6 +2213,33 @@ showDailog(
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
                                             ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 62.0, bottom: 8),
+                                            child: Stack(children: [
+                                              MenuPhase(
+                                                index: index,
+                                                onDeleteSuccess: () {
+                                                  setState(() {
+                                                    response.data!.phase!
+                                                        .removeAt(index);
+                                                  });
+                                                },
+                                                setState: setState,
+                                                response: response,
+                                                data: phase,
+                                                title: 'Menu at bottom',
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                buildContext: context,
+                                                returnValue: () {
+                                                  print(
+                                                      "Value returned --------------------------------------");
+                                                  // Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
+                                                },
+                                              )
+                                            ]),
                                           ),
                                         ],
                                       ),

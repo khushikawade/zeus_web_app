@@ -53,7 +53,7 @@ class _NavigationRailState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   AutoCompleteTextField? searchTextField;
   final fieldText = TextEditingController();
-    final searchController = TextEditingController();
+  final searchController = TextEditingController();
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
   static List<Datum> users = <Datum>[];
   bool loading = true;
@@ -3006,7 +3006,7 @@ class _NavigationRailState extends State<MyHomePage>
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     TextField(
-                       controller: searchController,
+                      controller: searchController,
                       //   suggestions: input_list,
                       //key: key,
                       onChanged: (val) {
@@ -3127,8 +3127,6 @@ class _NavigationRailState extends State<MyHomePage>
                             } else if (add1[add1.length - 1] == 1) {
                               showAlertDialog(context);
                             } else if (add1[add1.length - 1] == 2) {
-
-                              
                               print('sizeeee' + _addtag.length.toString());
                               showAddPeople(context);
                             }
