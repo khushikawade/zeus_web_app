@@ -357,16 +357,28 @@ showDailog(
           );
         },
         // initialDate: selectedDate,
-        // initialDate: setDate == "5"
-        //     ? selectedDateDeadline!
-        //     : setDate == "4"
-        //         ? selectedDateDevlivery!
-        //         : setDate == "3"
-        //             ? selectedDateReminder!
-        //             : setDate == "2"
-        //                 ? selectedDate!
-        //                 : selectedDate!,
-        initialDate: DateTime.now(),
+        // initialDate:
+        //      setDate == "5"
+        //         ? selectedDateDeadline!
+        //         : setDate == "4"
+        //             ? selectedDateDevlivery!
+        //             : setDate == "3"
+        //                 ? selectedDateReminder!
+        //                 : setDate == "2"
+        //                     ? selectedDate!
+        //                     : selectedDate!,
+
+        initialDate: setDate == "5"
+            ? selectedDateDeadline!
+            : setDate == "4"
+                ? selectedDateDevlivery!
+                : setDate == "3"
+                    ? selectedDateReminder!
+                    : setDate == "2"
+                        ? selectedDate!
+                        : selectedDate!,
+
+        // initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(2101));
 
@@ -642,7 +654,7 @@ showDailog(
                                                   ),
                                                 ),
                                               ] else if (status ==
-                                                  "Update request") ...[
+                                                  "Update requested") ...[
                                                 Container(
                                                   height: 32.0,
                                                   width: 147.0,
@@ -668,7 +680,7 @@ showDailog(
                                                           top: 6.0,
                                                           bottom: 6.0),
                                                       child: Text(
-                                                        "Update request",
+                                                        "Update requested",
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),

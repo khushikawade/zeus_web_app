@@ -268,7 +268,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
       print(commaSepratedList);
 
       availibiltyDaySeprated = list.resource!.availibiltyDay!.contains(',')
-          ? list.resource!.availibiltyDay!.replaceAll(',', ' -')
+          ? list.resource!.availibiltyDay!.replaceAll(',', '-')
           : list.resource!.availibiltyDay!;
       print("---------------------------------commaSepratedList");
       print(availibiltyDaySeprated);
