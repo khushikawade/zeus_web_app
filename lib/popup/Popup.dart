@@ -10,6 +10,7 @@ import 'package:zeus/DemoContainer.dart';
 import 'package:zeus/add_new_phase/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
+import 'package:zeus/popup/popup_phasebutton.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
@@ -654,7 +655,7 @@ showDailog(
                                                   ),
                                                 ),
                                               ] else if (status ==
-                                                  "Update requested") ...[
+                                                  "Update request") ...[
                                                 Container(
                                                   height: 32.0,
                                                   width: 147.0,
@@ -680,7 +681,7 @@ showDailog(
                                                           top: 6.0,
                                                           bottom: 6.0),
                                                       child: Text(
-                                                        "Update requested",
+                                                        "Update request",
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
@@ -930,76 +931,75 @@ showDailog(
                                                   ],
                                                 ),
                                               ),
-                                              // Stack(
-                                              //   clipBehavior: Clip.none,
-                                              //   children: [
-                                              //     Container(
-                                              //       margin:
-                                              //           const EdgeInsets.only(
-                                              //               left: 12.0,
-                                              //               top: 8.0),
-                                              //       child: SvgPicture.asset(
-                                              //         'images/list_ceramony.svg',
-                                              //         width: 19.06,
-                                              //         height: 17.01,
-                                              //       ),
-                                              //     ),
-                                              // Positioned(
-                                              //   bottom: 10,
-                                              //   left: 12,
-                                              //   child: Center(
-                                              //     child: Container(
-                                              //       margin: const EdgeInsets
-                                              //           .only(
-                                              //         top: 13.0,
-                                              //         left: 8.0,
-                                              //       ),
-                                              //       height: 16.0,
-                                              //       width: 16.0,
-                                              //       decoration: const BoxDecoration(
-                                              //           color: Colors.red,
-                                              //           borderRadius:
-                                              //               BorderRadius
-                                              //                   .all(Radius
-                                              //                       .circular(
-                                              //                           20))),
-                                              //       child: const Align(
-                                              //         alignment:
-                                              //             Alignment.center,
-                                              //         child: Text(
-                                              //           "2",
-                                              //           style: TextStyle(
-                                              //               color: Color(
-                                              //                   0xffFFFFFF),
-                                              //               fontSize: 11.0,
-                                              //               fontFamily:
-                                              //                   'Inter',
-                                              //               fontWeight:
-                                              //                   FontWeight
-                                              //                       .w500),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // ),
-                                              //   ],
-                                              // ),
+                                              Stack(
+                                                clipBehavior: Clip.none,
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 12.0,
+                                                            top: 8.0),
+                                                    child: SvgPicture.asset(
+                                                      'images/list_ceramony.svg',
+                                                      width: 19.06,
+                                                      height: 17.01,
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 10,
+                                                    left: 12,
+                                                    child: Center(
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .only(
+                                                          top: 13.0,
+                                                          left: 8.0,
+                                                        ),
+                                                        height: 16.0,
+                                                        width: 16.0,
+                                                        decoration: const BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            20))),
+                                                        child: const Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "2",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffFFFFFF),
+                                                                fontSize: 11.0,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
                                         ],
                                       ),
                                       ProjectEdit(
-                                        accountableId: accountableId,
-                                        currencyList: currencyName,
-                                        customerName: customerName,
-                                        response: response,
-                                        buildContext: context,
-                                        id: id,
-                                        statusList: statusList,
-                                        title: 'Edit Project',
-                                        alignment: Alignment.center,
-                                        deliveryDate: selectedDateDevlivery,
-                                      ),
+                                          accountableId: accountableId,
+                                          currencyList: currencyName,
+                                          customerName: customerName,
+                                          response: response,
+                                          buildContext: context,
+                                          id: id,
+                                          statusList: statusList,
+                                          title: 'Edit Project',
+                                          alignment: Alignment.center,
+                                          deliveryDate: selectedDateDevlivery),
                                     ],
                                   ),
                                 ),
@@ -1037,9 +1037,7 @@ showDailog(
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(
-                                                  left: 20.0,
-                                                  top: 6.0,
-                                                ),
+                                                    left: 20.0, top: 6.0),
                                                 child: Text(
                                                   AppUtil.formattedDateYear(
                                                       selectedDate
@@ -2121,6 +2119,29 @@ showDailog(
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 15.0, right: 50.0),
+                                    child: const Text(
+                                      "Action",
+                                      style: TextStyle(
+                                          color: Color(0xff94A3B8),
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(
+                                  //       left: 10.0, bottom: 10),
+                                  //   child: MenuPhase(
+                                  //       title: 'Menu at bottom',
+                                  //       alignment: Alignment.topRight,
+                                  //       buildContext: context,
+                                  //       returnValue: () {
+                                  //         Navigator.pop(context, true);
+                                  //       }),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -2217,6 +2238,33 @@ showDailog(
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
                                             ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 62.0, bottom: 8),
+                                            child: Stack(children: [
+                                              MenuPhase(
+                                                index: index,
+                                                onDeleteSuccess: () {
+                                                  setState(() {
+                                                    response.data!.phase!
+                                                        .removeAt(index);
+                                                  });
+                                                },
+                                                setState: setState,
+                                                response: response,
+                                                data: phase,
+                                                title: 'Menu at bottom',
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                buildContext: context,
+                                                returnValue: () {
+                                                  print(
+                                                      "Value returned --------------------------------------");
+                                                  // Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
+                                                },
+                                              )
+                                            ]),
                                           ),
                                         ],
                                       ),

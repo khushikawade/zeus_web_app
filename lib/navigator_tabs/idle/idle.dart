@@ -272,6 +272,8 @@ class _IdleState extends State<Idle> {
 
     if (data!.peopleIdelResponse != null) {
       if (data.peopleIdelResponse!.data!.isNotEmpty) {
+        print(data.peopleIdelResponse!.data!.length);
+        print(data.peopleIdelResponse!.data!.length);
         data.peopleIdelResponse!.data!.asMap().forEach((index, element) {
           Data _projectData = data.peopleIdelResponse!.data![index];
 
@@ -351,7 +353,7 @@ class _IdleState extends State<Idle> {
               _projectData.customer!.image!.isNotEmpty) {
             print(_projectData.customer!.image!);
           } else {
-            print("96939633");
+            //print("96939633");
           }
 
           if (_projectData != null &&
@@ -418,15 +420,16 @@ class _IdleState extends State<Idle> {
                     .getProjectDetail(_projectData.id!.toString())
                     .then((val) {
                   showDailog(
-                      context,
-                      Provider.of<ProjectDetail>(context, listen: false)
-                          .productData(),
-                      _statusList,
-                      _currencyName,
-                      _accountableId,
-                      _customerName,
-                      _projectData.id.toString(),
-                      skillsData);
+                    context,
+                    Provider.of<ProjectDetail>(context, listen: false)
+                        .productData(),
+                    _statusList,
+                    _currencyName,
+                    _accountableId,
+                    _customerName,
+                    _projectData.id.toString(),
+                    skillsData,
+                  );
                 });
                 // Navigator.push(
                 //     context,
@@ -725,20 +728,18 @@ class _IdleState extends State<Idle> {
             // height: MediaQuery.of(context).size.height * 0.83,
             // height: MediaQuery.of(context).size.height * 0.83,
 
-            height: 969,
-
-            child: const Expanded(
-              child: Center(
-                  child: Text(
-                "No Records Found !",
-                style: TextStyle(
-                    color: Color(0xffFFFFFF),
-                    fontSize: 22.0,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500),
-              )),
-            ),
-          )
+                height: 969,
+          
+          child: const Center(
+              child: Text(
+            "No Records Found!",
+            style: TextStyle(
+                color: Color(0xffFFFFFF),
+                fontSize: 22.0,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500),
+          )),
+        )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,

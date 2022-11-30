@@ -748,9 +748,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             ProfileDetail(list: _peopleList)));
 
                 if (result != null && result) {
-                  print("9865327");
-                  Provider.of<PeopleIdelClass>(context, listen: true)
-                      .getPeopleDataList();
+                  Provider.of<PeopleIdelClass>(context, listen: false).getPeopleDataList();
                 }
               },
               cells: [
@@ -935,8 +933,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                         returnValue: () {
                           print(
                               "Value returned --------------------------------------");
-                          Provider.of<PeopleIdelClass>(context, listen: true)
-                              .getPeopleDataList();
+                          Provider.of<PeopleIdelClass>(context, listen: false).getPeopleDataList();
                           // setState(() {
                           //   data.peopleList!.data!.forEach((element) {
                           //     data.peopleList!.data!.removeAt(index);
@@ -966,19 +963,17 @@ class _PeopleIdleState extends State<PeopleIdle> {
             // height: MediaQuery.of(context).size.height * 0.83,
             // height: MediaQuery.of(context).size.height * 0.83,
 
-            height: 969,
-            child: const Expanded(
-              child: Center(
-                  child: Text(
-                "No Records Found !",
-                style: TextStyle(
-                    color: Color(0xffFFFFFF),
-                    fontSize: 22.0,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500),
-              )),
-            ),
-          )
+                height: 969,
+          child: const Center(
+              child: Text(
+            "No Records Found!",
+            style: TextStyle(
+                color: Color(0xffFFFFFF),
+                fontSize: 22.0,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500),
+          )),
+        )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,

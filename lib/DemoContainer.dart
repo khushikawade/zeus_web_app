@@ -52,6 +52,7 @@ class _SearchTextClassState extends State<SearchTextClass> {
     'Item 1',
     //'Item 2',
   ];
+
   sers(String jsonString) {
     final parsed = json.decode(jsonString).cast<Map<String, dynamic>>();
     return parsed.map<User>((json) => User.fromJson(json)).toList();
@@ -64,7 +65,6 @@ class _SearchTextClassState extends State<SearchTextClass> {
   }
 
   @override
-
   // Printing all the values in List
 
   Widget build(BuildContext context) {
@@ -151,7 +151,7 @@ Widget rowProject(SkillsData user) {
   );
 }
 
-Widget rowResourceName(Details user) {
+Widget rowResourceName(item) {
   return Container(
     padding: EdgeInsets.all(11.0),
     decoration: BoxDecoration(
@@ -160,7 +160,7 @@ Widget rowResourceName(Details user) {
     child: Row(
       children: <Widget>[
         Text(
-          user.name.toString(),
+          item.name.toString(),
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         SizedBox(

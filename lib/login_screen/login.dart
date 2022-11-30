@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -313,7 +314,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          login();
+                          SmartDialog.showLoading(
+                            msg:
+                                "Your request is in progress please wait for a while...",
+                          );
+                          Future.delayed(const Duration(seconds: 2), () {
+                            login();
+                          });
                         },
                         child: Align(
                           alignment: Alignment.topRight,
@@ -397,7 +404,12 @@ class _LoginScreenState extends State<LoginScreen> {
         storage.write("user_id", responseJson['data']['user']['id'].toString());
         // await sharedPreferences.setString('user',responseJson['name']);
         //  ==========edited sayyamyadav
-        Navigator.pushNamed(context, "/home");
+        //Navigator.pushNamed(context, "/home");
+        SmartDialog.dismiss();
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/home", (route) => false);
+
+        ///  Navigator.pushReplacementNamed(context, "/home");
 
         /* Navigator.push(
             context,
@@ -409,8 +421,10 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.grey,
         );
         print("failedd");
+        SmartDialog.dismiss();
       }
     } else {
+      SmartDialog.dismiss();
       _submit();
     }
   }
