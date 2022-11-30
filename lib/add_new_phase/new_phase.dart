@@ -43,6 +43,7 @@ class _NewPhaseState extends State<NewPhase> {
   List<PhaseDetails> _list = [];
   List<String> abc = [];
   static List<Details> users = <Details>[];
+  static List<Details> resourceSuggestions = <Details>[];
   bool loading = true;
   bool startloading = false;
   dynamic? _depat;
@@ -429,8 +430,7 @@ class _NewPhaseState extends State<NewPhase> {
                                                                     _depat[
                                                                         'name'],
                                                                 details: item));
-                                                        selectedSource
-                                                            .add(item.name!);
+                                                        selectedSource.add(item.name!);
                                                       }
                                                     } else {
                                                       listResource.add(
@@ -500,6 +500,11 @@ class _NewPhaseState extends State<NewPhase> {
                                             },
                                             onDeleted: () {
                                               setState(() {
+                                                removeDuplicate();
+                                                selectedSubTaskSource
+                                                    .removeWhere((element) =>
+                                                        element ==
+                                                        selectedSource[index]);
                                                 listResource.removeAt(index);
                                                 selectedSource.removeAt(index);
                                               });
@@ -736,7 +741,7 @@ class _NewPhaseState extends State<NewPhase> {
 
                           // Add this
                         ),
-                        items: listResource.toSet().map((items) {
+                        items: removeDuplicate().map((items) {
                           return DropdownMenuItem(
                             value: items.department,
                             child: Text(
@@ -751,6 +756,14 @@ class _NewPhaseState extends State<NewPhase> {
                         }).toList(),
                         onChanged: (newValue) {
                           setState(() {
+                            resourceSuggestions.clear();
+                            for (var element in listResource) {
+                              if(element.department!.toLowerCase()==newValue.toString().toLowerCase()){
+                                resourceSuggestions.add(element.details!);
+                              }
+                            }
+
+
                             subtaskDepat = newValue.toString();
                             if (newValue != null) {
                               // startloading = true;
@@ -805,7 +818,7 @@ class _NewPhaseState extends State<NewPhase> {
                           fontWeight: FontWeight.w400),
                       border: InputBorder.none,
                     ),
-                    suggestions: users,
+                    suggestions: resourceSuggestions,
                     keyboardType: TextInputType.text,
                     style: const TextStyle(color: Colors.white, fontSize: 14.0),
                     itemFilter: (item, query) {
@@ -1042,13 +1055,18 @@ class _NewPhaseState extends State<NewPhase> {
     print(abc);
   }
 
-  removeDuplicate() {
-    return listResource
-        .map((f) => f.toString())
-        .toSet()
-        .toList()
-        .map((f) => json.decode(f) as List<dynamic>)
-        .toList();
+  List<PhasesSortedResources> removeDuplicate() {
+    var seen = Set<String>();
+    List<PhasesSortedResources> uniquelist =
+        listResource.where((item) => seen.add(item.department!)).toList();
+
+    // return listResource
+    //     .map((f) => f.toString())
+    //     .toSet()
+    //     .toList()
+    //     .map((f) => json.decode(f) as List<dynamic>)
+    //     .toList();
+    return uniquelist;
   }
 }
 
