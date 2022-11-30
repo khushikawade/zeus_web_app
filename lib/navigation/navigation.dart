@@ -3168,31 +3168,31 @@ class _NavigationRailState extends State<MyHomePage>
               //     ),
               //   ),
               // ),
-              Container(
-                width: 24.0,
-                height: 24.0,
-                decoration: BoxDecoration(
-                  color: const Color(0xff334155),
-                  border: Border.all(color: const Color(0xff334155)),
-                  borderRadius: BorderRadius.circular(
-                    10.0,
-                  ),
-                ),
-                margin: const EdgeInsets.only(
-                  top: 26.0,
-                  left: 6.0,
-                  right: 40.0,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: SvgPicture.asset(
-                    "images/drop_arrow.svg",
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
+              // Container(
+              //   width: 24.0,
+              //   height: 24.0,
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xff334155),
+              //     border: Border.all(color: const Color(0xff334155)),
+              //     borderRadius: BorderRadius.circular(
+              //       10.0,
+              //     ),
+              //   ),
+              //   margin: const EdgeInsets.only(
+              //     top: 26.0,
+              //     left: 6.0,
+              //     right: 40.0,
+              //   ),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(6.0),
+              //     child: SvgPicture.asset(
+              //       "images/drop_arrow.svg",
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 16,
+              // ),
             ],
           ),
         ),
