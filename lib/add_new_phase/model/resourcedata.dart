@@ -1,7 +1,7 @@
 class ResourceData {
-  String? resource_id;
-  String? department_id;
-  String? resource_name;
+  String? resource_id="";
+  String? department_id="";
+  String? resource_name="";
 
   ResourceData({this.resource_id, this.department_id, this.resource_name});
 

@@ -209,7 +209,6 @@ class _NewPhaseState extends State<NewPhase> {
                             controller: controller_next_phase,
                             context: context,
                             labelText: "Phase Title",
-                            hintText: 'Next Waves',
                             callback: (values) {
                               setState(() {
                                 phaseDetails.title = values;
@@ -224,7 +223,6 @@ class _NewPhaseState extends State<NewPhase> {
                             controller: controller_phase_type,
                             labelText: "Phase Type",
                             context: context,
-                            hintText: 'Design Phase',
                             callback: (values) {
                               setState(() {
                                 phaseDetails.phase_type = values;
@@ -235,11 +233,11 @@ class _NewPhaseState extends State<NewPhase> {
                           const SizedBox(
                             height: 20.0,
                           ),
-                          DatePicker(title: "Start date"),
+                          Container(),//DatePicker(title: "Start date"),
                           const SizedBox(
                             height: 20.0,
                           ),
-                          DatePicker(title: "End date"),
+                          Container(),//DatePicker(title: "End date"),
                           const SizedBox(
                             height: 20.0,
                           ),
@@ -581,7 +579,7 @@ class _NewPhaseState extends State<NewPhase> {
                           formFieldMilestone(
                             labelText: "Milestone Title",
                             context: context,
-                            hintText: 'Design 1',
+
                           )
                               : saveButtonClick
                               ? milestoneList(context)
@@ -591,7 +589,7 @@ class _NewPhaseState extends State<NewPhase> {
                           ),
                           clickedAddMileStone == false
                               ? Container()
-                              : DatePicker(title: "Milestone Date"),
+                              : Container()//DatePicker(title: "Milestone Date"),
                         ],
                       ),
                     ),
@@ -651,13 +649,13 @@ class _NewPhaseState extends State<NewPhase> {
                             height: 8.0,
                           ),
                           clickAddSubTask
-                              ? DatePicker(title: "Start date")
+                              ? Container()//DatePicker(title: "Start date")
                               : Container(),
                           const SizedBox(
                             height: 8.0,
                           ),
                           clickAddSubTask
-                              ? DatePicker(title: "End date")
+                              ? Container()//DatePicker(title: "End date")
                               : Container(),
                           const SizedBox(
                             height: 8.0,

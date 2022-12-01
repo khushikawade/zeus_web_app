@@ -53,8 +53,8 @@ Widget formField(
                     left: 15.0,
                   ),
                   border: InputBorder.none,
-                  hintText: hintText,
-                  hintStyle: const TextStyle(
+                  hintText: hintText??labelText,
+                  hintStyle:  const TextStyle(
                       fontSize: 14.0,
                       color: Color(0xffFFFFFF),
                       fontFamily: 'Inter',
