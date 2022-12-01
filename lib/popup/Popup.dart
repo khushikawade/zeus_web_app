@@ -369,17 +369,17 @@ showDailog(
         //                     ? selectedDate!
         //                     : selectedDate!,
 
-        initialDate: setDate == "5"
-            ? selectedDateDeadline!
-            : setDate == "4"
-                ? selectedDateDevlivery!
-                : setDate == "3"
-                    ? selectedDateReminder!
-                    : setDate == "2"
-                        ? selectedDate!
-                        : selectedDate!,
+        // initialDate: setDate == "5"
+        //     ? selectedDateDeadline!
+        //     : setDate == "4"
+        //         ? selectedDateDevlivery!
+        //         : setDate == "3"
+        //             ? selectedDateReminder!
+        //             : setDate == "2"
+        //                 ? selectedDate!
+        //                 : selectedDate!,
 
-        // initialDate: DateTime.now(),
+        initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(2101));
 
@@ -931,60 +931,60 @@ showDailog(
                                                   ],
                                                 ),
                                               ),
-                                              Stack(
-                                                clipBehavior: Clip.none,
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 12.0,
-                                                            top: 8.0),
-                                                    child: SvgPicture.asset(
-                                                      'images/list_ceramony.svg',
-                                                      width: 19.06,
-                                                      height: 17.01,
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    bottom: 10,
-                                                    left: 12,
-                                                    child: Center(
-                                                      child: Container(
-                                                        margin: const EdgeInsets
-                                                            .only(
-                                                          top: 13.0,
-                                                          left: 8.0,
-                                                        ),
-                                                        height: 16.0,
-                                                        width: 16.0,
-                                                        decoration: const BoxDecoration(
-                                                            color: Colors.red,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            20))),
-                                                        child: const Align(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "2",
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xffFFFFFF),
-                                                                fontSize: 11.0,
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              // Stack(
+                                              //   clipBehavior: Clip.none,
+                                              //   children: [
+                                              //     Container(
+                                              //       margin:
+                                              //           const EdgeInsets.only(
+                                              //               left: 12.0,
+                                              //               top: 8.0),
+                                              //       child: SvgPicture.asset(
+                                              //         'images/list_ceramony.svg',
+                                              //         width: 19.06,
+                                              //         height: 17.01,
+                                              //       ),
+                                              //     ),
+                                              //     Positioned(
+                                              //       bottom: 10,
+                                              //       left: 12,
+                                              //       child: Center(
+                                              //         child: Container(
+                                              //           margin: const EdgeInsets
+                                              //               .only(
+                                              //             top: 13.0,
+                                              //             left: 8.0,
+                                              //           ),
+                                              //           height: 16.0,
+                                              //           width: 16.0,
+                                              //           decoration: const BoxDecoration(
+                                              //               color: Colors.red,
+                                              //               borderRadius:
+                                              //                   BorderRadius
+                                              //                       .all(Radius
+                                              //                           .circular(
+                                              //                               20))),
+                                              //           child: const Align(
+                                              //             alignment:
+                                              //                 Alignment.center,
+                                              //             child: Text(
+                                              //               "2",
+                                              //               style: TextStyle(
+                                              //                   color: Color(
+                                              //                       0xffFFFFFF),
+                                              //                   fontSize: 11.0,
+                                              //                   fontFamily:
+                                              //                       'Inter',
+                                              //                   fontWeight:
+                                              //                       FontWeight
+                                              //                           .w500),
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                             ],
                                           ),
                                         ],
