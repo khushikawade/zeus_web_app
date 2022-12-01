@@ -306,6 +306,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
     var startDay = daysList[0].day;
     var endDay = daysList[daysList.length - 1].day;
 
+    
+
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     name = arguments;
