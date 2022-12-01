@@ -142,7 +142,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
               child: Container(
                 width: MediaQuery.of(context).size.width < 950
                     ? MediaQuery.of(context).size.width * 2
-                    : MediaQuery.of(context).size.width - 200,
+                    : MediaQuery.of(context).size.width - 160,
 
                 // height: MediaQuery.of(context).size.height * 0.83,
                 // height: MediaQuery.of(context).size.height * 0.83,
