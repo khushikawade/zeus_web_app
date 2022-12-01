@@ -647,7 +647,8 @@ showDailog(
                                 // ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 16.0, ),
+                                    left: 16.0,
+                                  ),
                                   child: Container(
                                       height: 130,
                                       width: 2,
@@ -1527,7 +1528,7 @@ showDailog(
                                                     "13 Jul",
                                                     style: TextStyle(
                                                         color:
-                                                            Color(0xff94A3B8),
+                                                            Color(0xffffffff),
                                                         fontSize: 14.0,
                                                         fontFamily: 'Inter',
                                                         fontWeight:
