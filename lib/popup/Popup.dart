@@ -48,7 +48,7 @@ showDailog(
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<SkillsData>> key = new GlobalKey();
   List<SkillsData> users = <SkillsData>[];
-  String? setDate;
+  // String? setDate;
   users = skills;
   bool loading = true;
   final TextEditingController _projecttitle = TextEditingController();
@@ -291,6 +291,9 @@ showDailog(
       selectedDateReminder =
           DateTime.parse(response.data!.reminderDate!.toString());
 
+      print("date time now ${DateTime.now()}");
+      print('--------------------------------------');
+
       //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
     }
 
@@ -342,7 +345,40 @@ showDailog(
     //     : '';
   }
 
-  Future<void> _selectDate(setState) async {
+  DateTime getInitialDate(int calendarTapValue) {
+    if (calendarTapValue == 1) {
+      return selectedDate!;
+    } else if (calendarTapValue == 2) {
+      return selectedDateReminder!;
+    } else if (calendarTapValue == 3) {
+      return selectedDateDevlivery!;
+    } else {
+      return selectedDateDeadline!;
+    }
+  }
+
+  DateTime getFirstDate(int calendarTapValue) {
+    if (calendarTapValue == 1) {
+      if (selectedDate!.compareTo(DateTime.now()) < 0) {
+        return selectedDate!;
+      }
+    } else if (calendarTapValue == 2) {
+      if (selectedDateReminder!.compareTo(DateTime.now()) < 0) {
+        return selectedDateReminder!;
+      }
+    } else if (calendarTapValue == 3) {
+      if (selectedDateDevlivery!.compareTo(DateTime.now()) < 0) {
+        return selectedDateDevlivery!;
+      }
+    } else {
+      if (selectedDateDeadline!.compareTo(DateTime.now()) < 0) {
+        return selectedDateDeadline!;
+      }
+    }
+    return DateTime.now();
+  }
+
+  Future<void> _selectDate(setState, int calendarTapValue) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         builder: (BuildContext context, Widget? child) {
@@ -357,17 +393,6 @@ showDailog(
             child: child!,
           );
         },
-        // initialDate: selectedDate,
-        // initialDate:
-        //      setDate == "5"
-        //         ? selectedDateDeadline!
-        //         : setDate == "4"
-        //             ? selectedDateDevlivery!
-        //             : setDate == "3"
-        //                 ? selectedDateReminder!
-        //                 : setDate == "2"
-        //                     ? selectedDate!
-        //                     : selectedDate!,
 
         // initialDate: setDate == "5"
         //     ? selectedDateDeadline!
@@ -379,19 +404,48 @@ showDailog(
         //                 ? selectedDate!
         //                 : selectedDate!,
 
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
+        initialDate: calendarTapValue == 1
+            ? selectedDate != null
+                ? getInitialDate(calendarTapValue)
+                : DateTime.now()
+            : calendarTapValue == 2
+                ? selectedDateReminder != null
+                    ? getInitialDate(calendarTapValue)
+                    : DateTime.now()
+                : calendarTapValue == 3
+                    ? selectedDateDevlivery != null
+                        ? getInitialDate(calendarTapValue)
+                        : DateTime.now()
+                    : selectedDateDeadline != null
+                        ? getInitialDate(calendarTapValue)
+                        : DateTime.now(),
+        firstDate: calendarTapValue == 1
+            ? selectedDate != null
+                ? getFirstDate(calendarTapValue)
+                : DateTime.now()
+            : calendarTapValue == 2
+                ? selectedDateReminder != null
+                    ? getFirstDate(calendarTapValue)
+                    : DateTime.now()
+                : calendarTapValue == 3
+                    ? selectedDateDevlivery != null
+                        ? getFirstDate(calendarTapValue)
+                        : DateTime.now()
+                    : selectedDateDeadline != null
+                        ? getFirstDate(calendarTapValue)
+                        : DateTime.now(),
+        //firstDate: DateTime.now(),
+        lastDate: DateTime(5000));
 
     if (picked != null && picked != selectedDate) {
       setState(() {
-        if (setDate == "2") {
+        if (calendarTapValue == 1) {
           selectedDate = picked;
-        } else if (setDate == "3") {
+        } else if (calendarTapValue == 2) {
           selectedDateReminder = picked;
-        } else if (setDate == "4") {
+        } else if (calendarTapValue == 3) {
           selectedDateDevlivery = picked;
-        } else if (setDate == "5") {
+        } else if (calendarTapValue == 4) {
           selectedDateDeadline = picked;
         } else {
           selectedDate = picked;
@@ -664,8 +718,8 @@ showDailog(
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setDate = "2";
-                                                _selectDate(setState);
+                                                //setDate = "2";
+                                                _selectDate(setState, 1);
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(
@@ -705,8 +759,8 @@ showDailog(
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setDate = "3";
-                                                _selectDate(setState);
+                                                //setDate = "3";
+                                                _selectDate(setState, 2);
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(
@@ -750,8 +804,8 @@ showDailog(
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setDate = "4";
-                                                _selectDate(setState);
+                                                //setDate = "4";
+                                                _selectDate(setState, 3);
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(
@@ -795,8 +849,8 @@ showDailog(
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setDate = "5";
-                                                _selectDate(setState);
+                                                //setDate = "5";
+                                                _selectDate(setState, 4);
                                               },
                                               child: Container(
                                                 margin: const EdgeInsets.only(
