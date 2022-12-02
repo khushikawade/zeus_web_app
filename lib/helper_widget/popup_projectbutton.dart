@@ -1161,7 +1161,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 0.13,
                                         margin: const EdgeInsets.only(
                                             top: 15.0, left: 10.0),
-                                        height: 56.0,
+                                        height: 60.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
@@ -1246,7 +1246,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                     0.12,
                                                 margin: const EdgeInsets.only(
                                                     top: 15.0, right: 10.0),
-                                                height: 56.0,
+                                                height: 60.0,
                                                 decoration: BoxDecoration(
                                                   color:
                                                       const Color(0xff334155),
@@ -1319,9 +1319,10 @@ class _ProjectEditState extends State<ProjectEdit>
                                                                         .now();
                                                                 _selectDate(
                                                                     setState);
+                                                              } else {
+                                                                _selectDate(
+                                                                    setState);
                                                               }
-                                                              _selectDate(
-                                                                  setState);
 
                                                               selectDeliveryDate =
                                                                   true;
