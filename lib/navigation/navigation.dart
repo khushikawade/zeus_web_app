@@ -1127,6 +1127,11 @@ class _NavigationRailState extends State<MyHomePage>
                                     ],
                                   ),
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -1143,7 +1148,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                   right: 16.0),
                                               height: 56.0,
                                               decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
+                                                color:
+                                                    const Color(0xff334155),
                                                 //border: Border.all(color:  const Color(0xff1E293B)),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -1169,7 +1175,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                   "Designation",
                                                   style: TextStyle(
                                                       fontSize: 11.0,
-                                                      color: Color(0xff64748B),
+                                                      color:
+                                                          Color(0xff64748B),
                                                       fontFamily: 'Inter',
                                                       fontWeight:
                                                           FontWeight.w500),
@@ -1186,27 +1193,32 @@ class _NavigationRailState extends State<MyHomePage>
                                                   color: Color(0xffFFFFFF)),
                                               textAlignVertical:
                                                   TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  counterText: "",
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 53.0,
-                                                    right: 10,
-                                                    left: 45.0,
-                                                  ),
-                                                  border: InputBorder.none,
-                                                  hintText: 'Enter',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
+                                              keyboardType:
+                                                  TextInputType.text,
+                                              decoration:
+                                                  const InputDecoration(
+                                                      counterText: "",
+                                                      errorStyle: TextStyle(
+                                                          fontSize: 14,
+                                                          height: 0.20),
+                                                      contentPadding:
+                                                          EdgeInsets.only(
+                                                        bottom: 16.0,
+                                                        top: 53.0,
+                                                        right: 10,
+                                                        left: 45.0,
+                                                      ),
+                                                      border:
+                                                          InputBorder.none,
+                                                      hintText: 'Enter',
+                                                      hintStyle: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color: Color(
+                                                              0xffFFFFFF),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight
+                                                                  .w500)),
                                               autovalidateMode: _addSubmitted
                                                   ? AutovalidateMode
                                                       .onUserInteraction
@@ -1218,175 +1230,16 @@ class _NavigationRailState extends State<MyHomePage>
                                                 }
                                                 return null;
                                               },
-                                              onChanged: (text) => setStateView(
-                                                  () => name1 = text),
+                                              onChanged: (text) =>
+                                                  setStateView(
+                                                      () => name1 = text),
                                             ),
                                           ],
                                         ),
                                       ),
-
-                                      /* const SizedBox(
-                                        width: 8.0,
-                                      ),*/
-                                      // Expanded(
-                                      //   flex: 1,
-                                      //   child: Container(
-                                      //     width: MediaQuery.of(context)
-                                      //             .size
-                                      //             .width *
-                                      //         0.13,
-                                      //     margin: const EdgeInsets.only(
-                                      //         top: 10.0, right: 30),
-                                      //     height: 56.0,
-                                      //     decoration: BoxDecoration(
-                                      //       color: const Color(0xff334155),
-                                      //       //border: Border.all(color:  const Color(0xff1E293B)),
-                                      //       borderRadius: BorderRadius.circular(
-                                      //         8.0,
-                                      //       ),
-                                      //     ),
-                                      //     child: Column(
-                                      //       crossAxisAlignment:
-                                      //           CrossAxisAlignment.start,
-                                      //       children: [
-                                      //         Container(
-                                      //             margin: const EdgeInsets.only(
-                                      //                 top: 6.0, left: 16.0),
-                                      //             child: const Text(
-                                      //               "Department",
-                                      //               style: TextStyle(
-                                      //                   fontSize: 13.0,
-                                      //                   color:
-                                      //                       Color(0xff64748B),
-                                      //                   fontFamily: 'Inter',
-                                      //                   fontWeight:
-                                      //                       FontWeight.w500),
-                                      //             )),
-                                      //         Container(
-                                      //           margin: const EdgeInsets.only(
-                                      //               left: 16.0, right: 16.0),
-                                      //           height: 20.0,
-                                      //           child: Container(
-
-                                      //               // padding: const EdgeInsets.all(2.0),
-                                      //               child: StatefulBuilder(
-                                      //             builder:
-                                      //                 (BuildContext context,
-                                      //                     StateSettersetState) {
-                                      //               return DropdownButtonHideUnderline(
-                                      //                 child:
-                                      //                     DropdownButtonFormField(
-                                      //                   dropdownColor:
-                                      //                       ColorSelect
-                                      //                           .class_color,
-                                      //                   value: _depat,
-                                      //                   // underline: Container(),
-                                      //                   hint: const Text(
-                                      //                     "Select",
-                                      //                     style: TextStyle(
-                                      //                         fontSize: 14.0,
-                                      //                         color: Color(
-                                      //                             0xffFFFFFF),
-                                      //                         fontFamily:
-                                      //                             'Inter',
-                                      //                         fontWeight:
-                                      //                             FontWeight
-                                      //                                 .w500),
-                                      //                   ),
-                                      //                   isExpanded: true,
-                                      //                   icon: const Icon(
-                                      //                     // Add this
-                                      //                     Icons.arrow_drop_down,
-                                      //                     // Add this
-                                      //                     color:
-                                      //                         Color(0xff64748B),
-
-                                      //                     // Add this
-                                      //                   ),
-                                      //                   items: _department
-                                      //                       .map((items) {
-                                      //                     return DropdownMenuItem(
-                                      //                       value: items['id']
-                                      //                           .toString(),
-                                      //                       child: Text(
-                                      //                         items['name'],
-                                      //                         style: const TextStyle(
-                                      //                             fontSize:
-                                      //                                 14.0,
-                                      //                             color: Color(
-                                      //                                 0xffFFFFFF),
-                                      //                             fontFamily:
-                                      //                                 'Inter',
-                                      //                             fontWeight:
-                                      //                                 FontWeight
-                                      //                                     .w400),
-                                      //                       ),
-                                      //                     );
-                                      //                   }).toList(),
-
-                                      //                   onChanged:
-                                      //                       (String? newValue) {
-                                      //                     setState(() {
-                                      //                       print(
-                                      //                           "---------newValue--------------${newValue}");
-                                      //                       _depat = newValue;
-                                      //                       print(
-                                      //                           "---------newValue--------------${_depat}");
-
-                                      //                       print(_depat);
-                                      //                     });
-                                      //                   },
-                                      //                   validator: (value) {
-                                      //                     value = _depat;
-                                      //                     if (value == null)
-                                      //                       return "Please select this field";
-                                      //                     else {
-                                      //                       return null;
-                                      //                     }
-                                      //                   },
-
-                                      //                   /* selectedItemBuilder:
-                                      //                                           (BuildContext
-                                      //                                       context) {
-                                      //                                         return _department.map(
-                                      //                                                 (
-                                      //                                                 value) {
-                                      //                                               return Container(
-                                      //                                                 margin: const EdgeInsets
-                                      //                                                     .only(
-                                      //                                                     top:
-                                      //                                                     15.0),
-                                      //                                                 child: Text(
-                                      //                                                     _depat!,
-                                      //                                                     style: const TextStyle(
-                                      //                                                         color: Color(
-                                      //                                                             0xffFFFFFF),
-                                      //                                                         fontFamily:
-                                      //                                                         'Inter',
-                                      //                                                         fontWeight: FontWeight
-                                      //                                                             .w400,
-                                      //                                                         fontSize:
-                                      //                                                         14.0)),
-                                      //                                               );
-                                      //                                             }).toList();
-                                      //                                       },*/
-                                      //                 ),
-                                      //               );
-                                      //             },
-                                      //           )),
-                                      //         )
-                                      //       ],
-                                      //     ),
-                                      //   ),
-                                      // ),
-
                                       Expanded(
                                         flex: 1,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                        child: Stack(
                                           children: [
                                             Container(
                                               width: MediaQuery.of(context)
@@ -1394,10 +1247,11 @@ class _NavigationRailState extends State<MyHomePage>
                                                       .width *
                                                   0.13,
                                               margin: const EdgeInsets.only(
-                                                  top: 10.0, right: 30),
+                                                  top: 16.0, right: 30),
                                               height: 56.0,
                                               decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
+                                                color:
+                                                    const Color(0xff334155),
                                                 //border: Border.all(color:  const Color(0xff1E293B)),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -1409,17 +1263,18 @@ class _NavigationRailState extends State<MyHomePage>
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              top: 6.0,
-                                                              left: 16.0),
+                                                      margin: const EdgeInsets
+                                                              .only(
+                                                          top: 6.0,
+                                                          left: 16.0),
                                                       child: const Text(
                                                         "Department",
                                                         style: TextStyle(
                                                             fontSize: 13.0,
                                                             color: Color(
                                                                 0xff64748B),
-                                                            fontFamily: 'Inter',
+                                                            fontFamily:
+                                                                'Inter',
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w500),
@@ -1433,12 +1288,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                     child: Container(
 
                                                         // padding: const EdgeInsets.all(2.0),
-                                                        child: StatefulBuilder(
+                                                        child:
+                                                            StatefulBuilder(
                                                       builder: (BuildContext
                                                               context,
                                                           StateSettersetState) {
                                                         return DropdownButtonHideUnderline(
-                                                          child: DropdownButton(
+                                                          child:
+                                                              DropdownButton(
                                                             dropdownColor:
                                                                 ColorSelect
                                                                     .class_color,
@@ -1476,7 +1333,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                                         'id']
                                                                     .toString(),
                                                                 child: Text(
-                                                                  items['name'],
+                                                                  items[
+                                                                      'name'],
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           14.0,
@@ -1485,14 +1343,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                                       fontFamily:
                                                                           'Inter',
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w400),
+                                                                          FontWeight.w400),
                                                                 ),
                                                               );
                                                             }).toList(),
                                                             onChanged: (String?
                                                                 newValue) {
-                                                              setStateView(() {
+                                                              setStateView(
+                                                                  () {
                                                                 print(
                                                                     "---------newValue--------------${newValue}");
                                                                 _depat =

@@ -1018,6 +1018,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                 ],
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     flex: 1,
@@ -1097,10 +1100,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
-
-                  /* const SizedBox(
-                                              width: 8.0,
-                                            ),*/
                   Expanded(
                     flex: 1,
                     child: Container(
