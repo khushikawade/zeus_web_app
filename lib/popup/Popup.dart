@@ -690,9 +690,11 @@ showDailog(
                                   ),
                                 ),
 
-                                // const VerticalDivider(
+                                // VerticalDivider(
+                                //   endIndent: 0,
+                                //   indent: 0.0,
                                 //   color: Colors.white10,
-                                //   thickness: 2,
+                                //   thickness: 5,
                                 // ),
                                 // const Divider(
                                 //   color: Colors.red,
@@ -1034,7 +1036,7 @@ showDailog(
                                 // height:
                                 //     10.0, //MediaQuery.of(context).size.height * 0.10,
                                 width:
-                                    MediaQuery.of(context).size.width * 100.0,
+                                   MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
                                   color: Color(0xff94A3B8),
                                   thickness: 0.2,
@@ -2001,6 +2003,9 @@ showDailog(
                           ],
                         ),
                       )
+                  
+                  
+                  
                     ],
                   ),
                 )),

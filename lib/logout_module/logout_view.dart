@@ -107,8 +107,12 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
             // hoverColor: Colors.red,
             onTap: () {
               Colors.red;
-
-              LogOut();
+              SmartDialog.showLoading(
+                msg: "Your request is in progress please wait for a while...",
+              );
+              Future.delayed(const Duration(seconds: 2), () {
+                LogOut();
+              });
             },
             child: Row(
               children: const [
