@@ -7,7 +7,8 @@ Widget formField(
         required BuildContext context,
         dynamic hintText,
         required controller,
-        required Function(String values) callback}) =>
+        required Function(String values) callback,
+        Function(String values)? validateCallback}) =>
     Container(
       width: MediaQuery.of(context).size.width * 0.26,
       margin: const EdgeInsets.only(left: 30.0),
@@ -53,8 +54,8 @@ Widget formField(
                     left: 15.0,
                   ),
                   border: InputBorder.none,
-                  hintText: hintText??labelText,
-                  hintStyle:  const TextStyle(
+                  hintText: hintText ?? labelText,
+                  hintStyle: const TextStyle(
                       fontSize: 14.0,
                       color: Color(0xffFFFFFF),
                       fontFamily: 'Inter',
@@ -63,6 +64,13 @@ Widget formField(
                 //filterSearchResults(value);
                 controller = value;
                 callback(controller);
+              },
+              validator: (value) {
+                try {
+                  validateCallback!(value!);
+                } catch (e) {
+                  print(e);
+                }
               },
               // onSaved: (value) {
               //   controller = value;
