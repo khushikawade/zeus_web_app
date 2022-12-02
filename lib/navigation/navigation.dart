@@ -75,6 +75,7 @@ class _NavigationRailState extends State<MyHomePage>
     'Item 4',
     'Item 5',
   ];
+  bool ishover = false;
   var startTime;
   var endTime;
   String validateName = '';
@@ -3196,16 +3197,46 @@ class _NavigationRailState extends State<MyHomePage>
                           //     label: Text('')),
 
                           NavigationRailDestination(
-                            icon: Container(
-                              width: 20.0,
-                              height: 18.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: SvgPicture.asset(
-                                "images/camera.svg",
+                            icon: InkWell(
+                              onHover: (ishover) {
+                                setState(() {
+                                  ishover = true;
+                                });
+                              },
+                              // onHover: (ishover) {
+                              //   setState(() {
+                              //     if (ishover) {
+                              //       ishover = true;
+                              //     } else {
+                              //       ishover = false;
+                              //     }
+                              //   });
+                              //   print(
+                              //       "--------------------------------------------------Is hover");
+                              //   print(ishover);
+                              // },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 20.0,
+                                    height: 18.0,
+                                    margin: const EdgeInsets.only(
+                                      top: 0.0,
+                                      left: 20.0,
+                                      right: 0.0,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
+                                    ),
+                                  ),
+                                  ishover
+                                      ? const Text("People",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white))
+                                      : Text('')
+                                ],
                               ),
                             ),
                             selectedIcon: Container(

@@ -268,7 +268,7 @@ class _ProjectEditState extends State<ProjectEdit>
                           content: Form(
                             key: _formKey,
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.40,
+                              width: MediaQuery.of(context).size.width * 0.27,
                               // height:
                               //     620.0, //MediaQuery.of(context).size.height * 0.85,
                               child: ListView(
@@ -298,8 +298,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                         child: Container(
                                           margin: const EdgeInsets.only(
                                               top: 0.0, right: 10.0),
-                                          width: 30,
-                                          height: 30,
+                                          width: 40,
+                                          height: 40,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: const Color(0xff1E293B),
@@ -403,13 +403,19 @@ class _ProjectEditState extends State<ProjectEdit>
                                     ],
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       Container(
-                                          width: 240.0,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.13,
                                           margin: const EdgeInsets.only(
-                                              top: 20.0, left: 10.0),
-                                          height: 56.0,
+                                              top: 15.0, left: 10.0),
+                                          height: 60.0,
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
                                             //border: Border.all(color:  const Color(0xff1E293B)),
@@ -445,31 +451,55 @@ class _ProjectEditState extends State<ProjectEdit>
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   )),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 5.0, left: 0.0),
-                                                height: 20.0,
-                                                child: Container(
-                                                    margin:
+                                              StatefulBuilder(
+                                                builder: (BuildContext context,
+                                                    StateSettersetState) {
+                                                  return Padding(
+                                                    padding:
                                                         const EdgeInsets.only(
-                                                            left: 15.0,
-                                                            right: 20.0),
-                                                    // padding: const EdgeInsets.all(2.0),
-                                                    child: StatefulBuilder(
-                                                      builder: (BuildContext
-                                                              context,
-                                                          StateSettersetState) {
-                                                        return DropdownButtonHideUnderline(
-                                                          child: DropdownButton(
-                                                            dropdownColor:
-                                                                ColorSelect
-                                                                    .class_color,
-                                                            value: _account,
-                                                            underline:
-                                                                Container(),
-                                                            hint: const Text(
-                                                              "Select Accountable Persons",
-                                                              style: TextStyle(
+                                                            left: 15,
+                                                            right: 4,
+                                                            top: 2),
+                                                    child:
+                                                        DropdownButtonHideUnderline(
+                                                      child: DropdownButton(
+                                                        isDense: true,
+                                                        dropdownColor:
+                                                            ColorSelect
+                                                                .class_color,
+                                                        value: _account,
+                                                        underline: Container(),
+                                                        hint: const Text(
+                                                          "Select Accountable Person",
+                                                          style: TextStyle(
+                                                              fontSize: 14.0,
+                                                              color: Color(
+                                                                  0xffFFFFFF),
+                                                              fontFamily:
+                                                                  'Inter',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        isExpanded: true,
+                                                        icon: const Icon(
+                                                          // Add this
+                                                          Icons
+                                                              .arrow_drop_down, // Add this
+                                                          color:
+                                                              Color(0xff64748B),
+
+                                                          // Add this
+                                                        ),
+                                                        items: widget
+                                                            .accountableId
+                                                            .map((items) {
+                                                          return DropdownMenuItem(
+                                                            value: items['id']
+                                                                .toString(),
+                                                            child: Text(
+                                                              items['name'],
+                                                              style: const TextStyle(
                                                                   fontSize:
                                                                       14.0,
                                                                   color: Color(
@@ -480,109 +510,87 @@ class _ProjectEditState extends State<ProjectEdit>
                                                                       FontWeight
                                                                           .w500),
                                                             ),
-                                                            isExpanded: true,
-                                                            icon: const Icon(
-                                                              // Add this
-                                                              Icons
-                                                                  .arrow_drop_down, // Add this
-                                                              color: Color(
-                                                                  0xff64748B),
-
-                                                              // Add this
-                                                            ),
-                                                            items: widget
-                                                                .accountableId
-                                                                .map((items) {
-                                                              return DropdownMenuItem(
-                                                                value: items[
-                                                                        'id']
-                                                                    .toString(),
-                                                                child: Text(
-                                                                  items['name'],
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          14.0,
-                                                                      color: Color(
-                                                                          0xffFFFFFF),
-                                                                      fontFamily:
-                                                                          'Inter',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                              );
-                                                            }).toList(),
-                                                            onChanged: (String?
-                                                                newValue) {
-                                                              setState(() {
-                                                                _account =
-                                                                    newValue;
-                                                                print(
-                                                                    "account:$_account");
-                                                              });
-                                                            },
-                                                          ),
-                                                        );
-                                                      },
-                                                    )),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged:
+                                                            (String? newValue) {
+                                                          setState(() {
+                                                            _account = newValue;
+                                                            print(
+                                                                "account:$_account");
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             ],
                                           )),
-                                      const SizedBox(
-                                        width: 12.0,
+                                      SizedBox(
+                                        width: 10,
                                       ),
-                                      Container(
-                                          width: 240,
-                                          margin: const EdgeInsets.only(
-                                              top: 20.0, right: 10.0),
-                                          height: 56.0,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff334155),
-                                            //border: Border.all(color:  const Color(0xff1E293B)),
-                                            borderRadius: BorderRadius.circular(
-                                              8.0,
+                                      Expanded(
+                                        child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.12,
+                                            margin: const EdgeInsets.only(
+                                                top: 15.0, right: 10.0),
+                                            height: 60.0,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              //border: Border.all(color:  const Color(0xff1E293B)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.0,
+                                              ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xff475569),
+                                                  offset: Offset(
+                                                    0.0,
+                                                    2.0,
+                                                  ),
+                                                  blurRadius: 0.0,
+                                                  spreadRadius: 0.0,
+                                                ), //BoxShadow
+                                              ],
                                             ),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0xff475569),
-                                                offset: Offset(
-                                                  0.0,
-                                                  2.0,
-                                                ),
-                                                blurRadius: 0.0,
-                                                spreadRadius: 0.0,
-                                              ), //BoxShadow
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 6.0, left: 16.0),
-                                                  child: const Text(
-                                                    "Customer",
-                                                    style: TextStyle(
-                                                        fontSize: 13.0,
-                                                        color:
-                                                            Color(0xff64748B),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                              Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5.0,
-                                                      right: 18.0,
-                                                      left: 15.0),
-                                                  height: 20.0,
-                                                  child: StatefulBuilder(
-                                                    builder: (BuildContext
-                                                            context,
-                                                        StateSettersetState) {
-                                                      return DropdownButtonHideUnderline(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 6.0,
+                                                            left: 16.0),
+                                                    child: const Text(
+                                                      "Customer",
+                                                      style: TextStyle(
+                                                          fontSize: 13.0,
+                                                          color:
+                                                              Color(0xff64748B),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )),
+                                                StatefulBuilder(
+                                                  builder:
+                                                      (BuildContext context,
+                                                          StateSettersetState) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              right: 4,
+                                                              top: 2),
+                                                      child:
+                                                          DropdownButtonHideUnderline(
                                                         child: DropdownButton(
+                                                          isDense: true,
                                                           dropdownColor:
                                                               ColorSelect
                                                                   .class_color,
@@ -642,11 +650,13 @@ class _ProjectEditState extends State<ProjectEdit>
                                                             });
                                                           },
                                                         ),
-                                                      );
-                                                    },
-                                                  )),
-                                            ],
-                                          )),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            )),
+                                      ),
                                     ],
                                   ),
                                   Stack(
@@ -1273,16 +1283,19 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 ],
                                               ),
                                               const Spacer(),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 5.0, right: 10.0),
-                                                height: 20.0,
-                                                child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            4.0),
-                                                    child: SvgPicture.asset(
-                                                        'images/cross.svg')),
+                                              InkWell(
+                                                onTap: () {},
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 5.0, right: 10.0),
+                                                  height: 20.0,
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: SvgPicture.asset(
+                                                          'images/cross.svg')),
+                                                ),
                                               ),
                                             ],
                                           )),
