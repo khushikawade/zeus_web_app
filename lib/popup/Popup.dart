@@ -689,6 +689,26 @@ showDailog(
                                     ],
                                   ),
                                 ),
+
+                                // const VerticalDivider(
+                                //   color: Colors.white10,
+                                //   thickness: 2,
+                                // ),
+                                // const Divider(
+                                //   color: Colors.red,
+                                //   thickness: 5,
+                                //   height: 30,
+                                // ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 16.0,
+                                  ),
+                                  child: Container(
+                                      height: 130,
+                                      width: 2,
+                                      color: Colors.white10),
+                                ),
+
                                 Expanded(
                                   child: Container(
                                     height: 80.0,
@@ -1005,9 +1025,14 @@ showDailog(
                                 )
                               ],
                             ),
+
+                            // Divider(
+                            //   color: Color(0xff94A3B8),
+                            //   thickness: 0.2,
+                            // )
                             SizedBox(
-                                height:
-                                    30.0, //MediaQuery.of(context).size.height * 0.10,
+                                // height:
+                                //     10.0, //MediaQuery.of(context).size.height * 0.10,
                                 width:
                                     MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
@@ -1182,7 +1207,7 @@ showDailog(
                                               position:
                                                   new RelativeRect.fromLTRB(
                                                       160.0,
-                                                      170.0,
+                                                      200.0,
                                                       160.0,
                                                       100.0),
                                               items: [
@@ -1557,7 +1582,7 @@ showDailog(
                                                     "13 Jul",
                                                     style: TextStyle(
                                                         color:
-                                                            Color(0xff94A3B8),
+                                                            Color(0xffffffff),
                                                         fontSize: 14.0,
                                                         fontFamily: 'Inter',
                                                         fontWeight:

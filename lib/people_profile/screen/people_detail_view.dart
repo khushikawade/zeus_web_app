@@ -235,6 +235,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
     var timeoffset;
     var city;
     var salary;
+    var capacity;
+    var nickname;
     if (list.resource != null) {
       timezome = list.resource!.timeZone!.name;
     } else {
@@ -256,6 +258,23 @@ class _ProfileDetailState extends State<ProfileDetail> {
       salary = list.resource!.salary;
     } else {
       salary = 'TBD';
+    }
+    if (list.resource != null && list.resource!.capacity != null) {
+      capacity = list.resource!.capacity;
+      // Character.isDigit(val)
+      // RegExp regex = RegExp(r'^[a-z A-Z]+$');
+      // capacity = list.resource!.capacity!.contains(regex)
+      //     ? list.resource!.capacity
+      //     : list.resource!.capacity!
+      //         .replaceAll(RegExp(r'^[a-z A-Z]+$'), ' hour/week');
+    } else {
+      capacity = 'TBD';
+    }
+
+    if (list.resource != null) {
+      nickname = list.resource!.nickname!;
+    } else {
+      nickname = 'TBD';
     }
 
     List<String> commaSepratedList = [];
@@ -305,8 +324,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
     daysList.sort((a, b) => a.dayNumber!.compareTo((b.dayNumber!)));
     var startDay = daysList[0].day;
     var endDay = daysList[daysList.length - 1].day;
-
-    
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
@@ -426,14 +443,15 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                       margin: const EdgeInsets.only(
                                           left: 16.0, top: 10.0),
                                       child: Text(
-                                        list.resource != null
-                                            ? list.resource!.nickname != null &&
-                                                    list.resource!.nickname!
-                                                        .isNotEmpty
-                                                ? list.resource!.nickname
-                                                    .toString()
-                                                : 'TBD'
-                                            : 'TBD',
+                                        "@$nickname",
+                                        // list.resource != null
+                                        //     ? list.resource!.nickname != null &&
+                                        //             list.resource!.nickname!
+                                        //                 .isNotEmpty
+                                        //         ? list.resource!.nickname
+                                        //             .toString()
+                                        //         : 'TBD'
+                                        //     : 'TBD',
                                         style: const TextStyle(
                                             color: ColorSelect.white_color,
                                             fontSize: 22.0,
@@ -793,8 +811,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
                                 list.resource != null
                                     ? startDay == endDay
-                                        ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
-                                        : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome/$city"
+                                        ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
+                                        : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
                                     : 'TBD',
                                 style: const TextStyle(
                                     color: ColorSelect.white_color,
@@ -810,7 +828,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                 left: 120.0,
                               ),
                               child: Text(
-                                "$salary hours/week",
+                                // "$salary hours/week",
+                                "$capacity",
                                 style: const TextStyle(
                                     color: ColorSelect.text_color,
                                     fontSize: 16.0,
