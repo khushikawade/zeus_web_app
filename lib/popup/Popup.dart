@@ -1338,7 +1338,9 @@ showDailog(
                                           MediaQuery.of(context).size.height *
                                               0.14,
                                       decoration: BoxDecoration(
-                                        color: const Color(0xff1E293B),
+                                        color:
+                                            // Colors.amber,
+                                            const Color(0xff1E293B),
                                         border: Border.all(
                                             color: const Color(0xff424D5F),
                                             width: 0.5),
@@ -1446,92 +1448,102 @@ showDailog(
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(top: 3.0),
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: 13,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Row(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 45.0, top: 8.0),
-                                                  height: 12.0,
-                                                  width: 12.0,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          color:
-                                                              Color(0xffEF4444),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          20))),
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 16.0, top: 8.0),
-                                                  child: const Text(
-                                                    "Technology not define yet",
-                                                    style: TextStyle(
+                                        child: Scrollbar(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: 13,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Row(
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 45.0,
+                                                            top: 8.0),
+                                                    height: 12.0,
+                                                    width: 12.0,
+                                                    decoration: const BoxDecoration(
                                                         color:
-                                                            Color(0xffE2E8F0),
-                                                        fontSize: 14.0,
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                            Color(0xffEF4444),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20))),
                                                   ),
-                                                ),
-                                                const Spacer(),
-                                                Container(
-                                                  height: 28.0,
-                                                  width: 28.0,
-                                                  margin: const EdgeInsets.only(
-                                                      right: 98.0, top: 8.0),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff334155),
-                                                    border: Border.all(
-                                                        color: const Color(
-                                                            0xff0F172A),
-                                                        width: 3.0),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      30.0,
-                                                    ),
-                                                  ),
-                                                  child: const Align(
-                                                    alignment: Alignment.center,
-                                                    child: Text(
-                                                      "RC",
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 16.0,
+                                                            top: 8.0),
+                                                    child: const Text(
+                                                      "Technology not define yet",
                                                       style: TextStyle(
                                                           color:
-                                                              Color(0xffFFFFFF),
-                                                          fontSize: 10.0,
+                                                              Color(0xffE2E8F0),
+                                                          fontSize: 14.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w500),
                                                     ),
                                                   ),
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 8.0, right: 50.0),
-                                                  child: const Text(
-                                                    "13 Jul",
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffffffff),
-                                                        fontSize: 14.0,
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                  const Spacer(),
+                                                  Container(
+                                                    height: 28.0,
+                                                    width: 28.0,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            right: 98.0,
+                                                            top: 8.0),
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xff334155),
+                                                      border: Border.all(
+                                                          color: const Color(
+                                                              0xff0F172A),
+                                                          width: 3.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        30.0,
+                                                      ),
+                                                    ),
+                                                    child: const Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        "RC",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 10.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 8.0,
+                                                            right: 50.0),
+                                                    child: const Text(
+                                                      "13 Jul",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xffffffff),
+                                                          fontSize: 14.0,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ),
                                     ),

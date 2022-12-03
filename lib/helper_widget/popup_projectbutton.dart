@@ -85,6 +85,8 @@ class _ProjectEditState extends State<ProjectEdit>
   var isLoading = false;
   // var status = widget.response.data!.status; //response.data!.status;
   bool _submitted = true;
+  bool selectDeliveryDate = false;
+  bool createButtonClick = false;
 
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -325,7 +327,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 0.99,
                                         margin: const EdgeInsets.only(
                                             top: 25.0, left: 10.0, right: 10.0),
-                                        height: 56.0,
+                                        height: 60.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
@@ -363,42 +365,47 @@ class _ProjectEditState extends State<ProjectEdit>
                                               )),
                                         ],
                                       ),
-                                      TextFormField(
-                                        controller: _projecttitle,
-                                        autocorrect: false,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            //counterText: '',
-                                            // errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 57.0,
-                                              right: 10,
-                                              left: 26.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: '',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _submitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        //  onChanged: (text) => setState(() => name_ = text),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 6.0),
+                                        child: TextFormField(
+                                          controller: _projecttitle,
+                                          autocorrect: false,
+                                          cursorColor: const Color(0xffFFFFFF),
+                                          style: const TextStyle(
+                                              color: Color(0xffFFFFFF)),
+                                          textAlignVertical:
+                                              TextAlignVertical.bottom,
+                                          keyboardType: TextInputType.text,
+                                          decoration: const InputDecoration(
+                                              //counterText: '',
+                                              // errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                              contentPadding: EdgeInsets.only(
+                                                bottom: 16.0,
+                                                top: 57.0,
+                                                right: 10,
+                                                left: 26.0,
+                                              ),
+                                              border: InputBorder.none,
+                                              hintText: '',
+                                              hintStyle: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color(0xffFFFFFF),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500)),
+                                          autovalidateMode: _submitted
+                                              ? AutovalidateMode
+                                                  .onUserInteraction
+                                              : AutovalidateMode.disabled,
+                                          validator: (value) {
+                                            //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                            if (value!.isEmpty) {
+                                              return 'Please enter';
+                                            }
+                                            return null;
+                                          },
+                                          //  onChanged: (text) => setState(() => name_ = text),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -667,7 +674,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 0.99,
                                         margin: const EdgeInsets.only(
                                             top: 20.0, left: 10.0, right: 10.0),
-                                        height: 56.0,
+                                        height: 60.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
@@ -705,43 +712,48 @@ class _ProjectEditState extends State<ProjectEdit>
                                               )),
                                         ],
                                       ),
-                                      TextFormField(
-                                        controller: _crmtask,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 57.0,
-                                              right: 16,
-                                              left: 26.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: '',
-                                            hintStyle: const TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _submitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 6.0),
+                                        child: TextFormField(
+                                          controller: _crmtask,
+                                          cursorColor: const Color(0xffFFFFFF),
+                                          style: const TextStyle(
+                                              color: Color(0xffFFFFFF)),
+                                          textAlignVertical:
+                                              TextAlignVertical.bottom,
+                                          keyboardType: TextInputType.text,
+                                          decoration: InputDecoration(
+                                              errorStyle: TextStyle(
+                                                  fontSize: 14, height: 0.20),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                bottom: 16.0,
+                                                top: 57.0,
+                                                right: 16,
+                                                left: 26.0,
+                                              ),
+                                              border: InputBorder.none,
+                                              hintText: '',
+                                              hintStyle: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color(0xffFFFFFF),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500)),
+                                          autovalidateMode: _submitted
+                                              ? AutovalidateMode
+                                                  .onUserInteraction
+                                              : AutovalidateMode.disabled,
 
-                                        validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        //  onChanged: (text) => setState(() => name_ = text),
+                                          validator: (value) {
+                                            //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                            if (value!.isEmpty) {
+                                              return 'Please enter';
+                                            }
+                                            return null;
+                                          },
+                                          //  onChanged: (text) => setState(() => name_ = text),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -753,7 +765,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 0.99,
                                         margin: const EdgeInsets.only(
                                             top: 20.0, left: 10.0, right: 10.0),
-                                        height: 56.0,
+                                        height: 60.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
@@ -791,42 +803,47 @@ class _ProjectEditState extends State<ProjectEdit>
                                               )),
                                         ],
                                       ),
-                                      TextFormField(
-                                        controller: _warkfolderId,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 57.0,
-                                              right: 10,
-                                              left: 26.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: '',
-                                            hintStyle: const TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _submitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        // onChanged: (text) => setState(() => name_ = text),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 6.0),
+                                        child: TextFormField(
+                                          controller: _warkfolderId,
+                                          cursorColor: const Color(0xffFFFFFF),
+                                          style: const TextStyle(
+                                              color: Color(0xffFFFFFF)),
+                                          textAlignVertical:
+                                              TextAlignVertical.bottom,
+                                          keyboardType: TextInputType.text,
+                                          decoration: InputDecoration(
+                                              errorStyle: TextStyle(
+                                                  fontSize: 14, height: 0.20),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                bottom: 16.0,
+                                                top: 57.0,
+                                                right: 10,
+                                                left: 26.0,
+                                              ),
+                                              border: InputBorder.none,
+                                              hintText: '',
+                                              hintStyle: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color(0xffFFFFFF),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500)),
+                                          autovalidateMode: _submitted
+                                              ? AutovalidateMode
+                                                  .onUserInteraction
+                                              : AutovalidateMode.disabled,
+                                          validator: (value) {
+                                            //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                            if (value!.isEmpty) {
+                                              return 'Please enter';
+                                            }
+                                            return null;
+                                          },
+                                          // onChanged: (text) => setState(() => name_ = text),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -844,7 +861,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                   0.10,
                                               margin: const EdgeInsets.only(
                                                   top: 20.0, left: 10.0),
-                                              height: 56.0,
+                                              height: 60.0,
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
                                                 //border: Border.all(color:  const Color(0xff1E293B)),
@@ -886,46 +903,55 @@ class _ProjectEditState extends State<ProjectEdit>
                                                     )),
                                               ],
                                             ),
-                                            TextFormField(
-                                              controller: _budget,
-                                              cursorColor:
-                                                  const Color(0xffFFFFFF),
-                                              style: const TextStyle(
-                                                  color: Color(0xffFFFFFF)),
-                                              textAlignVertical:
-                                                  TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 57.0,
-                                                    right: 10,
-                                                    left: 26.0,
-                                                  ),
-                                                  border: InputBorder.none,
-                                                  hintText: '',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              autovalidateMode: _submitted
-                                                  ? AutovalidateMode
-                                                      .onUserInteraction
-                                                  : AutovalidateMode.disabled,
-                                              validator: (value) {
-                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter';
-                                                }
-                                                return null;
-                                              },
-                                              // onChanged: (text) => setState(() => name_ = text),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 6.0),
+                                              child: TextFormField(
+                                                controller: _budget,
+                                                cursorColor:
+                                                    const Color(0xffFFFFFF),
+                                                style: const TextStyle(
+                                                    color: Color(0xffFFFFFF)),
+                                                textAlignVertical:
+                                                    TextAlignVertical.bottom,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        errorStyle: TextStyle(
+                                                            fontSize: 14,
+                                                            height: 0.20),
+                                                        contentPadding:
+                                                            EdgeInsets.only(
+                                                          bottom: 16.0,
+                                                          top: 57.0,
+                                                          right: 10,
+                                                          left: 26.0,
+                                                        ),
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText: '',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
+                                                autovalidateMode: _submitted
+                                                    ? AutovalidateMode
+                                                        .onUserInteraction
+                                                    : AutovalidateMode.disabled,
+                                                validator: (value) {
+                                                  //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                                  if (value!.isEmpty) {
+                                                    return 'Please enter';
+                                                  }
+                                                  return null;
+                                                },
+                                                // onChanged: (text) => setState(() => name_ = text),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -934,7 +960,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                         width: 16.0,
                                       ),
                                       Expanded(
-                                        flex: 2,
+                                        flex: 3,
                                         child: Container(
                                           width: MediaQuery.of(context)
                                                   .size
@@ -942,7 +968,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               0.08,
                                           margin:
                                               const EdgeInsets.only(top: 13.0),
-                                          height: 56.0,
+                                          height: 60.0,
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
                                             //border: Border.all(color:  const Color(0xff1E293B)),
@@ -1027,7 +1053,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               width: 235,
                                               margin: const EdgeInsets.only(
                                                   top: 20.0, right: 10.0),
-                                              height: 56.0,
+                                              height: 60.0,
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
                                                 //border: Border.all(color:  const Color(0xff1E293B)),
@@ -1069,46 +1095,55 @@ class _ProjectEditState extends State<ProjectEdit>
                                                     )),
                                               ],
                                             ),
-                                            TextFormField(
-                                              controller: _estimatehours,
-                                              cursorColor:
-                                                  const Color(0xffFFFFFF),
-                                              style: const TextStyle(
-                                                  color: Color(0xffFFFFFF)),
-                                              textAlignVertical:
-                                                  TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 57.0,
-                                                    right: 10,
-                                                    left: 26.0,
-                                                  ),
-                                                  border: InputBorder.none,
-                                                  hintText: '',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              autovalidateMode: _submitted
-                                                  ? AutovalidateMode
-                                                      .onUserInteraction
-                                                  : AutovalidateMode.disabled,
-                                              validator: (value) {
-                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter';
-                                                }
-                                                return null;
-                                              },
-                                              // onChanged: (text) => setState(() => name_ = text),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 6.0),
+                                              child: TextFormField(
+                                                controller: _estimatehours,
+                                                cursorColor:
+                                                    const Color(0xffFFFFFF),
+                                                style: const TextStyle(
+                                                    color: Color(0xffFFFFFF)),
+                                                textAlignVertical:
+                                                    TextAlignVertical.bottom,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        errorStyle: TextStyle(
+                                                            fontSize: 14,
+                                                            height: 0.20),
+                                                        contentPadding:
+                                                            EdgeInsets.only(
+                                                          bottom: 16.0,
+                                                          top: 57.0,
+                                                          right: 10,
+                                                          left: 26.0,
+                                                        ),
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText: '',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
+                                                autovalidateMode: _submitted
+                                                    ? AutovalidateMode
+                                                        .onUserInteraction
+                                                    : AutovalidateMode.disabled,
+                                                validator: (value) {
+                                                  //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                                  if (value!.isEmpty) {
+                                                    return 'Please enter';
+                                                  }
+                                                  return null;
+                                                },
+                                                // onChanged: (text) => setState(() => name_ = text),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -1117,12 +1152,16 @@ class _ProjectEditState extends State<ProjectEdit>
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width: 240,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.13,
                                         margin: const EdgeInsets.only(
-                                            top: 20.0, left: 10.0),
-                                        height: 56.0,
+                                            top: 15.0, left: 10.0),
+                                        height: 60.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
@@ -1194,111 +1233,181 @@ class _ProjectEditState extends State<ProjectEdit>
                                               },
                                             )),
                                       ),
-                                      const SizedBox(
-                                        width: 12.0,
-                                      ),
-                                      Container(
-                                          width: 240.0,
-                                          margin: const EdgeInsets.only(
-                                              top: 20.0, right: 10.0),
-                                          height: 56.0,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff334155),
-                                            //border: Border.all(color:  const Color(0xff1E293B)),
-                                            borderRadius: BorderRadius.circular(
-                                              8.0,
-                                            ),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0xff475569),
-                                                offset: Offset(
-                                                  0.0,
-                                                  2.0,
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.12,
+                                                margin: const EdgeInsets.only(
+                                                    top: 15.0, right: 10.0),
+                                                height: 60.0,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  //border: Border.all(color:  const Color(0xff1E293B)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.0,
+                                                  ),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Color(0xff475569),
+                                                      offset: Offset(
+                                                        0.0,
+                                                        2.0,
+                                                      ),
+                                                      blurRadius: 0.0,
+                                                      spreadRadius: 0.0,
+                                                    ), //BoxShadow
+                                                  ],
                                                 ),
-                                                blurRadius: 0.0,
-                                                spreadRadius: 0.0,
-                                              ), //BoxShadow
-                                            ],
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            // crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  _selectDate(setState);
-                                                },
-                                                child: Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 13.0),
-                                                  height: 22.0,
-                                                  width: 20.0,
-                                                  child: Image.asset(
-                                                      'images/date.png'),
-                                                ),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              top: 10.0,
-                                                              left: 20.0),
-                                                      child: const Text(
-                                                        "Delivery Date",
-                                                        style: TextStyle(
-                                                            fontSize: 13.0,
-                                                            color: Color(
-                                                                0xff64748B),
-                                                            fontFamily: 'Inter',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      )),
-                                                  GestureDetector(
-                                                    onTap: () async {
-                                                      _selectDate(setState);
-                                                    },
-                                                    child: Container(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        _selectDate(setState);
+                                                      },
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .only(left: 13.0),
+                                                        // height: 22.0,
+                                                        // width: 20.0,
+                                                        child: Image.asset(
+                                                            'images/date.png'),
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 8.0,
+                                                                    left: 20.0),
+                                                            child: const Text(
+                                                              "Delivery Date",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      13.0,
+                                                                  color: Color(
+                                                                      0xff64748B),
+                                                                  fontFamily:
+                                                                      'Inter',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            )),
+                                                        GestureDetector(
+                                                          onTap: () async {
+                                                            setState(() {
+                                                              if (deliveryDate ==
+                                                                  null) {
+                                                                deliveryDate =
+                                                                    DateTime
+                                                                        .now();
+                                                                _selectDate(
+                                                                    setState);
+                                                              } else {
+                                                                _selectDate(
+                                                                    setState);
+                                                              }
+
+                                                              selectDeliveryDate =
+                                                                  true;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 3.0,
+                                                                      left:
+                                                                          20.0),
+                                                              child: deliveryDate ==
+                                                                      null
+                                                                  ? const Text(
+                                                                      'Select Date',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14.0,
+                                                                          color: Color(
+                                                                              0xffFFFFFF),
+                                                                          fontFamily:
+                                                                              'Inter',
+                                                                          fontWeight:
+                                                                              FontWeight.w500))
+                                                                  : Text(
+                                                                      '${deliveryDate!.day} / ${deliveryDate!.month} / ${deliveryDate!.year}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              14.0,
+                                                                          color: Color(
+                                                                              0xffFFFFFF),
+                                                                          fontFamily:
+                                                                              'Inter',
+                                                                          fontWeight:
+                                                                              FontWeight.w500),
+                                                                    )),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const Spacer(),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        setState(
+                                                          () {
+                                                            createButtonClick =
+                                                                true;
+                                                            deliveryDate = null;
+                                                            selectDeliveryDate =
+                                                                false;
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Container(
                                                         margin: const EdgeInsets
                                                                 .only(
-                                                            top: 3.0,
-                                                            left: 20.0),
-                                                        child: Text(
-                                                          '${deliveryDate!.day} / ${deliveryDate!.month} / ${deliveryDate!.year}',
-                                                          style: const TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        )),
-                                                  ),
-                                                ],
-                                              ),
-                                              const Spacer(),
-                                              InkWell(
-                                                onTap: () {},
-                                                child: Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5.0, right: 10.0),
-                                                  height: 20.0,
-                                                  child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              4.0),
-                                                      child: SvgPicture.asset(
-                                                          'images/cross.svg')),
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                                            top: 5.0,
+                                                            right: 10.0),
+                                                        height: 20.0,
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(4.0),
+                                                            child: SvgPicture.asset(
+                                                                'images/cross.svg')),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                            createButtonClick
+                                                ? selectDeliveryDate
+                                                    ? const Text(
+                                                        " ",
+                                                      )
+                                                    : Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          top: 8,
+                                                          left: 26,
+                                                        ),
+                                                        child: errorWidget())
+                                                : Container(),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   SizedBox(
@@ -1433,15 +1542,18 @@ class _ProjectEditState extends State<ProjectEdit>
                                         onTap: () {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            SmartDialog.showLoading(
-                                              msg:
-                                                  "Your request is in progress please wait for a while...",
-                                            );
+                                            if (selectDeliveryDate == true) {
+                                              SmartDialog.showLoading(
+                                                msg:
+                                                    "Your request is in progress please wait for a while...",
+                                              );
 
-                                            Future.delayed(
-                                                const Duration(seconds: 2), () {
-                                              editProject(context);
-                                            });
+                                              Future.delayed(
+                                                  const Duration(seconds: 2),
+                                                  () {
+                                                editProject(context);
+                                              });
+                                            }
                                           }
                                         },
                                         child: Container(
@@ -1806,5 +1918,11 @@ class _ProjectEditState extends State<ProjectEdit>
     //   );
     //   return loadingEditeddata;
     // }
+  }
+
+  errorWidget() {
+    return Text('Please Select this field',
+        style:
+            TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
   }
 }
