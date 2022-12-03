@@ -972,7 +972,7 @@ showDailog(
                             SizedBox(
                                 height: 10.0,
                                 width:
-                                    MediaQuery.of(context).size.width * 100.0,
+                                   MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
                                   color: Color(0xff94A3B8),
                                   thickness: 0.1,
@@ -1953,6 +1953,9 @@ showDailog(
                           ],
                         ),
                       )
+                  
+                  
+                  
                     ],
                   ),
                 )),
