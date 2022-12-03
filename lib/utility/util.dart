@@ -55,4 +55,21 @@ class AppUtil {
       return false;
     }
   }
+
+  static stringToDate(String date){
+    try{
+      DateTime parseDate =  DateFormat("dd/MM/yyyy").parse(date);
+      return parseDate;
+    }
+    catch(e){
+      return DateTime.now();
+    }
+      }
+
+
+  static dateToString(DateTime date){
+     DateFormat formatter = DateFormat('dd/MM/yyyy');
+     String formatted = formatter.format(date);
+    return formatted;
+  }
 }

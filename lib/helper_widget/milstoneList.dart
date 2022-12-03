@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zeus/add_new_phase/model/phase_details.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-Widget milestoneList(context) => ListView.builder(
+Widget milestoneList(context, PhaseDetails phaseDetails, {required Null Function(dynamic values) callback}) => ListView.builder(
     shrinkWrap: true,
     // physics: BouncingScrollPhysics,
-    itemCount: 5,
+    itemCount: phaseDetails?.milestone?.length??0,
     itemBuilder: (BuildContext context, int index) {
       return Padding(
         padding:
@@ -47,9 +48,9 @@ Widget milestoneList(context) => ListView.builder(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          children: const [
-                            Text("D1",
-                                style: TextStyle(
+                          children:  [
+                            Text(phaseDetails.milestone?[index].title??'',
+                                style: const TextStyle(
                                     fontSize: 14.0,
                                     color: Color(0xffFFFFFF),
                                     fontFamily: 'Inter',
@@ -60,9 +61,9 @@ Widget milestoneList(context) => ListView.builder(
                           height: 5,
                         ),
                         Row(
-                          children: const [
-                            Text("09/12/2023",
-                                style: TextStyle(
+                          children: [
+                            Text(phaseDetails.milestone?[index].m_date??'',
+                                style: const TextStyle(
                                     fontSize: 14.0,
                                     color: Color(0xff8897ac),
                                     fontFamily: 'Inter',

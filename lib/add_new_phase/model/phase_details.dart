@@ -3,6 +3,8 @@ import 'package:zeus/add_new_phase/model/resourcedata.dart';
 
 import 'dart:convert';
 
+import 'package:zeus/add_new_phase/model/subtask_model.dart';
+
 PhaseDetails phaseDetailsFromJson(String str) =>
     PhaseDetails.fromJson(json.decode(str));
 
@@ -11,14 +13,15 @@ String phaseDetailsToJson(PhaseDetails data) => json.encode(data.toJson());
 class PhaseDetails {
   String? project_id;
   String? title;
+  String? phase_type="";
+  String? start_date="";
+  String? end_date="";
+  List<ResourceData>? resource=[];
+  List<Milestones>? milestone=[];
 
-  String? phase_type;
-  String? start_date;
-  String? end_date;
-  List<ResourceData>? resource;
-  List<Milestones>? milestone;
+  List<SubTasksModel>? sub_tasks=[];
   int? statusCode;
-  String? error;
+  String? error="";
 
   PhaseDetails({
     this.project_id,
@@ -30,6 +33,7 @@ class PhaseDetails {
     this.milestone,
     this.error,
     this.statusCode,
+    this.sub_tasks,
   });
 
   PhaseDetails.fromJson(Map<String, dynamic> json) {
@@ -51,6 +55,12 @@ class PhaseDetails {
         milestone!.add(Milestones.fromJson(v));
       });
     }
+    if (json['sub_tasks'] != null) {
+      sub_tasks = <SubTasksModel>[];
+      json['sub_tasks'].forEach((v) {
+        sub_tasks!.add(SubTasksModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +76,10 @@ class PhaseDetails {
     }
     if (this.milestone != null) {
       data['milestone'] = this.milestone!.map((v) => v.toJson()).toList();
+    }
+
+    if (this.sub_tasks != null) {
+      data['sub_tasks'] = this.sub_tasks!.map((v) => v.toJson()).toList();
     }
 
     return data;
