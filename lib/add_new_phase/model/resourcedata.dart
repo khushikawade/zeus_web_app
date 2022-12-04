@@ -1,6 +1,6 @@
 class ResourceData {
-  String? resource_id="";
-  String? department_id="";
+  int? resource_id=0;
+  int? department_id=0;
   String? resource_name="";
 
   ResourceData({this.resource_id, this.department_id, this.resource_name});

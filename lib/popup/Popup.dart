@@ -44,6 +44,7 @@ showDailog(
   var isLoading = false;
   bool? _isSelected;
   var status = response.data!.status;
+  //var id = response.data!.id;
   bool _submitted = false;
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<SkillsData>> key = new GlobalKey();
@@ -2057,10 +2058,11 @@ showDailog(
                                     ],
                                   ),
                                   onTap: () async {
+                                    Navigator.pop(context);
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return NewPhase();
+                                          return NewPhase(id!);
                                         });
                                   },
                                 ),

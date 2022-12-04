@@ -24,11 +24,17 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
-  DateTime startDate = DateTime.now().subtract(Duration(days: 40));
-  DateTime endDate = DateTime.now().add(Duration(days: 40));
-  DateTime selectedDate = DateTime.now();
+  DateTime? startDate ;
+  DateTime? endDate ;
+  DateTime? selectedDate;
 
 
+  @override
+  void initState() {
+      startDate=widget.startDate??DateTime.now();
+      endDate=widget.endDate??DateTime.now().add(const Duration(days: 36500));
+      selectedDate=widget.initialDate??DateTime.now();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -90,7 +96,7 @@ class _DatePickerState extends State<DatePicker> {
                               margin:
                                   const EdgeInsets.only(top: 3.0, left: 20.0),
                               child: Text(
-                                '${startDate.day} / ${startDate.month} / ${startDate.year}',
+                                '${startDate!.day} / ${startDate!.month} / ${startDate!.year}',
                                 style: const TextStyle(
                                     fontSize: 14.0,
                                     color: Color(0xffFFFFFF),
@@ -127,7 +133,7 @@ class _DatePickerState extends State<DatePicker> {
     if (startPickedDate != null) {
       //String formattedDate = DateFormat('dd-MM-yyyy').format(startPickedDate);
       setState(() {
-        widget.callback!("${startDate.day} / ${startDate.month} / ${startDate.year}");
+        widget.callback!("${startDate!.day} / ${startDate!.month} / ${startDate!.year}");
         startDate = startPickedDate;
       });
     }

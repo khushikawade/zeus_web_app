@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/DemoContainer.dart';
 import 'package:zeus/add_new_phase/model/mileston_model.dart';
@@ -21,12 +22,17 @@ import 'package:zeus/helper_widget/textfield_milestone.dart';
 import 'package:zeus/helper_widget/textformfield.dart';
 import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
 import 'package:zeus/services/api.dart';
+import 'package:zeus/services/responce_model/create_phase_resp.dart';
 import 'package:zeus/utility/colors.dart';
+import 'package:zeus/utility/util.dart';
 import 'package:zeus/utility/validations.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class NewPhase extends StatefulWidget {
-  const NewPhase({Key? key}) : super(key: key);
+  String id;
+
+  NewPhase(this.id, {Key? key}) : super(key: key);
 
   @override
   State<NewPhase> createState() => _NewPhaseState();
@@ -41,9 +47,6 @@ class _NewPhaseState extends State<NewPhase> {
   AutoCompleteTextField? searchTextField;
   AutoCompleteTextField? subTaskResourcesSearchTextField;
   ResourceNeededModel? resourceNeededModel;
-  String startDateForphaseDetail = '25/11/2022';
-  String endDateForphaseDetail = '27/11/2022';
-  List<PhaseDetails> _list = [];
   List<String> abc = [];
   static List<Details> users = <Details>[];
   static List<Details> resourceSuggestions = <Details>[];
@@ -51,7 +54,6 @@ class _NewPhaseState extends State<NewPhase> {
   bool startloading = false;
   dynamic? _depat;
   String? selectUser, subtaskDepat;
-  String? _depat1;
   List _department = [];
   Api api = Api();
   DateTime startDate = DateTime.now().subtract(Duration(days: 40));
@@ -66,11 +68,16 @@ class _NewPhaseState extends State<NewPhase> {
   GlobalKey<AutoCompleteTextFieldState<Details>> subtaskKey = new GlobalKey();
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
-  List<String> selectedSubTaskSource = [];
+  List<ResourceData> selectedSubTaskSource = [];
+  var _formKey = GlobalKey<FormState>();
 
   //VS --------------------------------------------------------------------------------
   String mileStoneTitle = "";
   String mileStoneDate = "";
+
+  String subTaskStartDate = "";
+  String subTaskEndDate = "";
+  String subTaskResourceName = "";
 
   //VS --------------------------------------------------------------------------------
 
@@ -78,7 +85,7 @@ class _NewPhaseState extends State<NewPhase> {
   void initState() {
     // _getTag = getProject();
     // change();
-
+    beforeScreenLoad();
     getDepartment();
 
     super.initState();
@@ -95,127 +102,130 @@ class _NewPhaseState extends State<NewPhase> {
         content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.99,
           height: MediaQuery.of(context).size.height * 0.99,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.11,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      color: Color(0xff283345),
-                      //border: Border.all(color: const Color(0xff0E7490)),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16.0),
-                        topLeft: Radius.circular(16.0),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.11,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff283345),
+                        //border: Border.all(color: const Color(0xff0E7490)),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16.0),
+                          topLeft: Radius.circular(16.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x26000000),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ), //BoxShadow
+                        ],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x26000000),
-                          offset: Offset(
-                            0.0,
-                            1.0,
-                          ),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
-                        ), //BoxShadow
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        titleHeadlineWidget("New Phase", 22.0),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                width: 97.0,
-                                //MediaQuery.of(context).size.width * 0.22,
-                                margin: const EdgeInsets.only(
-                                    top: 10.0, bottom: 10.0),
-                                height: 40.0,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff334155),
-                                  //border: Border.all(color:  const Color(0xff1E293B)),
-                                  borderRadius: BorderRadius.circular(
-                                    40.0,
-                                  ),
-                                ),
-                                child: const Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              InkWell(
-                                child: Container(
-                                  width: 97,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          titleHeadlineWidget("New Phase", 22.0),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 97.0,
                                   //MediaQuery.of(context).size.width * 0.22,
                                   margin: const EdgeInsets.only(
-                                      top: 10.0, right: 20.0, bottom: 10.0),
+                                      top: 10.0, bottom: 10.0),
                                   height: 40.0,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xff7DD3FC),
+                                    color: const Color(0xff334155),
                                     //border: Border.all(color:  const Color(0xff1E293B)),
                                     borderRadius: BorderRadius.circular(
                                       40.0,
                                     ),
                                   ),
-
                                   child: const Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "Save",
+                                      "Cancel",
                                       style: TextStyle(
                                           fontSize: 14.0,
-                                          color: Color(0xff000000),
+                                          color: Color(0xffFFFFFF),
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
                                 ),
-                                onTap: () {
-                                  createPhase();
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    phaseView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    mileStoneView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    subtaskView()
-                  ],
-                ),
-              ],
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                InkWell(
+                                  child: Container(
+                                    width: 97,
+                                    //MediaQuery.of(context).size.width * 0.22,
+                                    margin: const EdgeInsets.only(
+                                        top: 10.0, right: 20.0, bottom: 10.0),
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff7DD3FC),
+                                      //border: Border.all(color:  const Color(0xff1E293B)),
+                                      borderRadius: BorderRadius.circular(
+                                        40.0,
+                                      ),
+                                    ),
+
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Save",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xff000000),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    createPhase();
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      phaseView(),
+                      Container(
+                          height: MediaQuery.of(context).size.height * 0.99,
+                          child: const VerticalDivider(
+                            color: Color(0xff94A3B8),
+                            thickness: 0.2,
+                          )),
+                      mileStoneView(),
+                      Container(
+                          height: MediaQuery.of(context).size.height * 0.99,
+                          child: const VerticalDivider(
+                            color: Color(0xff94A3B8),
+                            thickness: 0.2,
+                          )),
+                      subtaskView()
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ));
@@ -239,28 +249,38 @@ class _NewPhaseState extends State<NewPhase> {
             height: 8.0,
           ),
           formField(
-            controller: controller_next_phase,
-            context: context,
-            labelText: "Phase Title",
-            callback: (values) {
-              setState(() {
-                _phaseDetails.title = values;
-              });
-            },
-          ),
+              controller: controller_next_phase,
+              context: context,
+              labelText: "Phase Title",
+              callback: (values) {
+                setState(() {
+                  _phaseDetails.title = values;
+                });
+              },
+              validateCallback: (value) {
+                if (value.isNotEmpty) {
+                  return 'Enter phase title';
+                }
+                return null;
+              }),
           const SizedBox(
             height: 20.0,
           ),
           formField(
-            controller: controller_phase_type,
-            labelText: "Phase Type",
-            context: context,
-            callback: (values) {
-              setState(() {
-                _phaseDetails.phase_type = values;
-              });
-            },
-          ),
+              controller: controller_phase_type,
+              labelText: "Phase Type",
+              context: context,
+              callback: (values) {
+                setState(() {
+                  _phaseDetails.phase_type = values;
+                });
+              },
+              validateCallback: (value) {
+                if (value.isNotEmpty) {
+                  return 'Enter phase title';
+                }
+                return null;
+              }),
           const SizedBox(
             height: 20.0,
           ),
@@ -283,7 +303,7 @@ class _NewPhaseState extends State<NewPhase> {
                 _phaseDetails.end_date = value;
               });
             },
-            startDate: DateTime.now(),
+            startDate: AppUtil.stringToDate(_phaseDetails.start_date ?? ""),
           ),
           const SizedBox(
             height: 20.0,
@@ -365,7 +385,7 @@ class _NewPhaseState extends State<NewPhase> {
                           onChanged: (dynamic newValue) {
                             setState(() {
                               print(newValue);
-                              var result = newValue['id'];
+
                               print(newValue);
                               _depat = newValue;
                               print(newValue);
@@ -440,11 +460,17 @@ class _NewPhaseState extends State<NewPhase> {
                                 itemSubmitted: (item) {
                                   setState(() {
                                     //print(item.title);
+
                                     searchTextField!
                                         .textField!.controller!.text = '';
                                     if (selectedSource.isNotEmpty) {
                                       if (selectedSource.contains(item.name)) {
                                       } else {
+                                        _phaseDetails.resource!.add(
+                                            ResourceData(
+                                                resource_name: item.name,
+                                                resource_id: item.id,
+                                                department_id: 1));
                                         listResource.add(PhasesSortedResources(
                                             department: _depat['name'],
                                             details: item));
@@ -454,6 +480,11 @@ class _NewPhaseState extends State<NewPhase> {
                                       listResource.add(PhasesSortedResources(
                                           department: _depat['name'],
                                           details: item));
+                                      _phaseDetails.resource!.add(ResourceData(
+                                          resource_name: item.name,
+                                          resource_id: item.id,
+                                          department_id: 1));
+
                                       selectedSource.add(item.name!);
                                     }
                                   });
@@ -585,7 +616,15 @@ class _NewPhaseState extends State<NewPhase> {
                   },
                 )
               : saveButtonClick
-                  ? milestoneList(context)
+                  ? milestoneList(
+                      context,
+                      _phaseDetails,
+                      callback: (values) {
+                        setState(() {
+                          mileStoneTitle = values;
+                        });
+                      },
+                    )
                   : Container(),
           const SizedBox(
             height: 8.0,
@@ -657,7 +696,9 @@ class _NewPhaseState extends State<NewPhase> {
           clickAddSubTask
               ? DatePicker(
                   title: "Start date",
-                  callback: (value) {},
+                  callback: (value) {
+                    subTaskStartDate = value;
+                  },
                   startDate: DateTime.now(),
                 )
               : Container(),
@@ -667,7 +708,9 @@ class _NewPhaseState extends State<NewPhase> {
           clickAddSubTask
               ? DatePicker(
                   title: "End date",
-                  callback: (value) {},
+                  callback: (value) {
+                    subTaskEndDate = value;
+                  },
                   startDate: DateTime.now(),
                 )
               : Container(),
@@ -680,7 +723,15 @@ class _NewPhaseState extends State<NewPhase> {
           clickAddSubTask
               ? subTaskResourcesView()
               : saveButtonClickForSubtask
-                  ? subTaskList(context)
+                  ? subTaskList(
+                      context,
+                      _phaseDetails,
+                      callback: (values) {
+                        setState(() {
+                          mileStoneTitle = values;
+                        });
+                      },
+                    )
                   : Container(),
         ],
       ),
@@ -840,16 +891,25 @@ class _NewPhaseState extends State<NewPhase> {
                     },
                     itemSubmitted: (item) {
                       setState(() {
+                        subTaskResourceName = item.name!;
                         subTaskResourcesSearchTextField!
                             .textField!.controller!.text = '';
-                        if (selectedSubTaskSource.isNotEmpty) {
-                          if (selectedSubTaskSource.contains(item.name)) {
-                          } else {
-                            selectedSubTaskSource.add(item.name!);
-                          }
-                        } else {
-                          selectedSubTaskSource.add(item.name!);
-                        }
+
+                        selectedSubTaskSource.clear();
+                        selectedSubTaskSource.add(ResourceData(
+                            department_id: 1,
+                            resource_id: item.id,
+                            resource_name: item.name));
+
+                        //
+                        // if (selectedSubTaskSource.isNotEmpty) {
+                        //   if (selectedSubTaskSource.contains(item.name)) {
+                        //   } else {
+                        //     selectedSubTaskSource.add(item.name!);
+                        //   }
+                        // } else {
+                        //   selectedSubTaskSource.add(item.name!);
+                        // }
                       });
                     },
                     itemBuilder: (context, item) {
@@ -891,7 +951,7 @@ class _NewPhaseState extends State<NewPhase> {
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           label: Text(
-                            selectedSubTaskSource[index],
+                            selectedSubTaskSource[index].resource_name ?? '',
                             style: TextStyle(color: Colors.white),
                           ),
                           //  selected: _isSelected!,
@@ -924,7 +984,7 @@ class _NewPhaseState extends State<NewPhase> {
         mainAxisSize: MainAxisSize.min,
         children: [
           InkWell(
-            child: Text(
+            child: const Text(
               "Cancel",
               style: TextStyle(
                   fontSize: 14.0,
@@ -932,7 +992,15 @@ class _NewPhaseState extends State<NewPhase> {
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w300),
             ),
-            onTap: (() {}),
+            onTap: () {
+              setState(() {
+                mileStoneDate = "";
+                mileStoneTitle = "";
+                controllerMilestoneTitle.text = "";
+                clickedAddMileStone = false;
+                saveButtonClick = true;
+              });
+            },
           ),
           const SizedBox(
             width: 16,
@@ -948,13 +1016,22 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               setState(() {
-                try {
-                  _phaseDetails.milestone!.add(Milestones(title: mileStoneTitle, m_date: mileStoneTitle));
-                } catch (e) {
-                  print(e);
+                if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
+                  try {
+                    _phaseDetails.milestone!.add(Milestones(
+                        title: mileStoneTitle, m_date: mileStoneDate));
+                    mileStoneDate = "";
+                    mileStoneTitle = "";
+                    controllerMilestoneTitle.text = "";
+                    clickedAddMileStone = false;
+                    saveButtonClick = true;
+                  } catch (e) {
+                    print(e);
+                  }
+                } else {
+                  print('Add milestone date');
                 }
-                clickedAddMileStone = false;
-                saveButtonClick = true;
+
                 // clickedAddMileStone = ;
               });
             },
@@ -980,7 +1057,15 @@ class _NewPhaseState extends State<NewPhase> {
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w300),
             ),
-            onTap: (() {}),
+            onTap: () {
+              setState(() {
+                selectedSubTaskSource.clear();
+                subTaskEndDate = "";
+                subTaskEndDate = "";
+                clickAddSubTask = false;
+                saveButtonClickForSubtask = true;
+              });
+            },
           ),
           const SizedBox(
             width: 16,
@@ -996,8 +1081,26 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               setState(() {
-                clickAddSubTask = false;
-                saveButtonClickForSubtask = true;
+                if (selectedSubTaskSource.isNotEmpty &&
+                    subTaskEndDate.isNotEmpty &&
+                    subTaskEndDate.isNotEmpty) {
+                  try {
+                    _phaseDetails.sub_tasks!.add(SubTasksModel(
+                        resource: selectedSubTaskSource[0],
+                        end_date: subTaskEndDate,
+                        start_date: subTaskStartDate));
+                    selectedSubTaskSource.clear();
+                    subTaskEndDate = "";
+                    subTaskEndDate = "";
+                    clickAddSubTask = false;
+                    saveButtonClickForSubtask = true;
+                  } catch (e) {
+                    print(e);
+                  }
+                } else {
+                  print('Enter sub task data');
+                }
+
                 // clickedAddMileStone = ;
               });
             },
@@ -1037,8 +1140,10 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   createPhase() {
-    _phaseDetails.project_id = "10";
-    print(_phaseDetails);
+    _phaseDetails.project_id = widget.id;
+    if (_formKey.currentState!.validate()) {
+      addNewPhaseApi();
+    }
   }
 
   getDepartment() async {
@@ -1048,6 +1153,28 @@ class _NewPhaseState extends State<NewPhase> {
       setState(() {
         _department = department;
       });
+    }
+  }
+
+  addNewPhaseApi() async {
+    SmartDialog.showLoading(
+      msg: "Your request is in progress please wait for a while...",
+    );
+    try {
+      //CreatePhaseResp createPhaseResp = await api.createNewPhase(phaseDetailsToJson(_phaseDetails));
+      CreatePhaseResp createPhaseResp =
+          await api.createNewPhase(json.encode(_phaseDetails));
+      if (createPhaseResp.status == true) {
+        Navigator.pop(context);
+      }
+      SmartDialog.dismiss();
+    } catch (e) {
+      SmartDialog.dismiss();
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        backgroundColor: Colors.grey,
+      );
+      print(e);
     }
   }
 
@@ -1084,6 +1211,14 @@ class _NewPhaseState extends State<NewPhase> {
     //     .map((f) => json.decode(f) as List<dynamic>)
     //     .toList();
     return uniquelist;
+  }
+
+  beforeScreenLoad() {
+    _phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
+    _phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
+    mileStoneDate = AppUtil.dateToString(DateTime.now());
+    subTaskStartDate = AppUtil.dateToString(DateTime.now());
+    subTaskEndDate = AppUtil.dateToString(DateTime.now());
   }
 }
 
