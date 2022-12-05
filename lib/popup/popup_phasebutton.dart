@@ -62,6 +62,8 @@ class MenuPhase extends StatefulWidget {
   StateSetter setState;
   final Function? returnValue;
   VoidCallback onDeleteSuccess;
+  VoidCallback? onEditClick;
+
 
   MenuPhase(
       {required this.index,
@@ -73,7 +75,9 @@ class MenuPhase extends StatefulWidget {
       this.data,
       required this.buildContext,
       required this.setState,
+        this.onEditClick,
       this.returnValue,
+
       Key? key})
       : super(key: key);
 
@@ -212,15 +216,9 @@ class _MenuPhaseState extends State<MenuPhase>
           child: InkWell(
             // hoverColor: Colors.red,
             onTap: () {
-              print(widget.data);
-              print(widget.data);
-              print('xyzzzzzzzzzzzzzzzzzzzz');
-              setState(() {
-                // Color(0xffffffff);
-              });
-              Colors.red;
 
-              Navigator.pop(context);
+              //Navigator.pop(context);
+              widget.onEditClick!();
             },
             child: Container(
               width: 30,

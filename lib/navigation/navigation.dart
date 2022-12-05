@@ -202,12 +202,9 @@ class _NavigationRailState extends State<MyHomePage>
     request.fields['associate'] = _association.text;
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
-    // request.fields['availibilty_day'] = _availableDay.text.toString();
-    // request.fields['availibilty_time'] = _availableTime.text.toString();
     request.fields['availibilty_day'] = commaSepratedString;
-    // request.fields['availibilty_day'] = [selectedDaysList.toString()];
-    request.fields['availibilty_time'] = "10AM-8PM";
-    // '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] =
+     '${startTime1}-${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -277,63 +274,7 @@ class _NavigationRailState extends State<MyHomePage>
       );
     }
   }
-
-  //Update project Api
-  updateProject() async {
-    try {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.post(
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource'),
-        body: jsonEncode({
-          "name": _name.text.toString(),
-          "nickname": _nickName.text.toString(),
-          "email": _emailAddress.text.toString(),
-          "phone_number": _phoneNumber.text.toString(),
-          "password": 'Nirmaljeet@123',
-          "bio": _bio.text.toString(),
-          "designation": 'Sr. developer',
-          "department_id": _depat,
-          "associate": _association.text.toString(),
-          "salary": '1900',
-          "salary_currency": 'USD',
-          "availibilty_day": 'asd',
-          "availibilty_time": '10-7',
-          "country": _country.text.toString(),
-          "city": _enterCity.text.toString(),
-          "time_zone": _time,
-          //"image":webImage,
-          "skills": _tag1,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      // ignore: unrelated_type_equality_checks
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes add people");
-        print(response.body);
-      } else {
-        print("failuree");
-        print(response.body);
-        Fluttertoast.showToast(
-          msg: 'Something Went Wrong',
-          backgroundColor: Colors.grey,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Something Went Wrong',
-        backgroundColor: Colors.grey,
-      );
-      print('error caught: $e');
-    }
-  }
-
+  
   //Create project Api
   createProject() async {
     var token = 'Bearer ' + storage.read("token");

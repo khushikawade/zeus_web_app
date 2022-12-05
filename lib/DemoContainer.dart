@@ -148,22 +148,16 @@ Widget rowProject(SkillsData user) {
 
 Widget rowResourceName(item) {
   return Container(
-    padding: EdgeInsets.all(11.0),
-    decoration: BoxDecoration(
+    padding: const EdgeInsets.all(11.0),
+    decoration: const BoxDecoration(
       color: Color(0xff0F172A),
     ),
     child: Row(
       children: <Widget>[
         Text(
           item.name.toString(),
-          style: TextStyle(fontSize: 16.0, color: Colors.white),
+          style: const TextStyle(fontSize: 16.0, color: Colors.white),
         ),
-        SizedBox(
-          width: 9.0,
-        ),
-        /* Text(
-          user!.email!,
-        ),*/
       ],
     ),
   );
