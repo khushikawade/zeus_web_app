@@ -110,8 +110,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   var postion;
   SharedPreferences? sharedPreferences;
   GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
-  final ScrollController _scrollController =
-      ScrollController(initialScrollOffset: 50.0);
+  // final ScrollController _scrollController =
+  //     ScrollController(initialScrollOffset: 50.0);
   List<int>? _selectedFile;
   var name;
   String name1 = '';
@@ -1405,12 +1405,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                   fontWeight: FontWeight.w500),
                             )),
                         TextFormField(
+                          maxLength: 15,
                           controller: _salary,
                           cursorColor: const Color(0xffFFFFFF),
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
+                              counterText: "",
                               errorStyle: TextStyle(fontSize: 14, height: 0.20),
                               contentPadding: EdgeInsets.only(
                                 bottom: 16.0,
@@ -2019,12 +2021,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 20,
                     controller: _country,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2092,12 +2096,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 20,
                     controller: _enterCity,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2165,12 +2171,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 10,
                     controller: _phoneNumber,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2241,12 +2249,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 20,
                     controller: _emailAddress,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,

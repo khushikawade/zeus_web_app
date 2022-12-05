@@ -299,6 +299,7 @@ class _EditPageState extends State<EditPage> {
                     ],
                   ),
                   TextFormField(
+                    maxLength: 20,
                     controller: _projecttitle,
                     inputFormatters: [UpperCaseTextFormatter()],
                     textCapitalization: TextCapitalization.characters,
@@ -308,6 +309,7 @@ class _EditPageState extends State<EditPage> {
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
                           top: 54.0,
@@ -615,12 +617,14 @@ class _EditPageState extends State<EditPage> {
                     ],
                   ),
                   TextFormField(
+                    maxLength: 20,
                     controller: _crmtask,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -691,12 +695,14 @@ class _EditPageState extends State<EditPage> {
                     ],
                   ),
                   TextFormField(
+                    maxLength: 20,
                     controller: _warkfolderId,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -773,12 +779,14 @@ class _EditPageState extends State<EditPage> {
                           ],
                         ),
                         TextFormField(
+                          maxLength: 8,
                           controller: _budget,
                           cursorColor: const Color(0xffFFFFFF),
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
+                              counterText: "",
                               errorStyle:
                                   TextStyle(fontSize: 15.0, height: 0.20),
                               contentPadding: EdgeInsets.only(
@@ -949,12 +957,14 @@ class _EditPageState extends State<EditPage> {
                           ],
                         ),
                         TextFormField(
+                          maxLength: 10,
                           controller: _estimatehours,
                           cursorColor: const Color(0xffFFFFFF),
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
+                              counterText: "",
                               errorStyle: TextStyle(
                                   fontSize: 14.0,
                                   // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),

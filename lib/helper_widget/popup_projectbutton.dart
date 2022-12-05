@@ -369,6 +369,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                         padding:
                                             const EdgeInsets.only(top: 6.0),
                                         child: TextFormField(
+                                          maxLength: 20,
                                           controller: _projecttitle,
                                           autocorrect: false,
                                           cursorColor: const Color(0xffFFFFFF),
@@ -378,7 +379,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               TextAlignVertical.bottom,
                                           keyboardType: TextInputType.text,
                                           decoration: const InputDecoration(
-                                              //counterText: '',
+                                              counterText: '',
                                               // errorStyle: TextStyle(fontSize: 14, height: 0.20),
                                               contentPadding: EdgeInsets.only(
                                                 bottom: 16.0,
@@ -716,6 +717,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                         padding:
                                             const EdgeInsets.only(top: 6.0),
                                         child: TextFormField(
+                                          maxLength: 20,
                                           controller: _crmtask,
                                           cursorColor: const Color(0xffFFFFFF),
                                           style: const TextStyle(
@@ -723,11 +725,11 @@ class _ProjectEditState extends State<ProjectEdit>
                                           textAlignVertical:
                                               TextAlignVertical.bottom,
                                           keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
+                                              counterText: "",
                                               errorStyle: TextStyle(
                                                   fontSize: 14, height: 0.20),
-                                              contentPadding:
-                                                  const EdgeInsets.only(
+                                              contentPadding: EdgeInsets.only(
                                                 bottom: 16.0,
                                                 top: 57.0,
                                                 right: 16,
@@ -735,7 +737,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               ),
                                               border: InputBorder.none,
                                               hintText: '',
-                                              hintStyle: const TextStyle(
+                                              hintStyle: TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color(0xffFFFFFF),
                                                   fontFamily: 'Inter',
@@ -807,6 +809,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                         padding:
                                             const EdgeInsets.only(top: 6.0),
                                         child: TextFormField(
+                                          maxLength: 20,
                                           controller: _warkfolderId,
                                           cursorColor: const Color(0xffFFFFFF),
                                           style: const TextStyle(
@@ -814,11 +817,11 @@ class _ProjectEditState extends State<ProjectEdit>
                                           textAlignVertical:
                                               TextAlignVertical.bottom,
                                           keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
+                                              counterText: "",
                                               errorStyle: TextStyle(
                                                   fontSize: 14, height: 0.20),
-                                              contentPadding:
-                                                  const EdgeInsets.only(
+                                              contentPadding: EdgeInsets.only(
                                                 bottom: 16.0,
                                                 top: 57.0,
                                                 right: 10,
@@ -826,7 +829,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               ),
                                               border: InputBorder.none,
                                               hintText: '',
-                                              hintStyle: const TextStyle(
+                                              hintStyle: TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color(0xffFFFFFF),
                                                   fontFamily: 'Inter',
@@ -907,6 +910,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               padding: const EdgeInsets.only(
                                                   top: 6.0),
                                               child: TextFormField(
+                                                maxLength: 10,
                                                 controller: _budget,
                                                 cursorColor:
                                                     const Color(0xffFFFFFF),
@@ -918,6 +922,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                     TextInputType.text,
                                                 decoration:
                                                     const InputDecoration(
+                                                        counterText: "",
                                                         errorStyle: TextStyle(
                                                             fontSize: 14,
                                                             height: 0.20),
@@ -1099,6 +1104,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               padding: const EdgeInsets.only(
                                                   top: 6.0),
                                               child: TextFormField(
+                                                maxLength: 10,
                                                 controller: _estimatehours,
                                                 cursorColor:
                                                     const Color(0xffFFFFFF),
@@ -1110,6 +1116,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                     TextInputType.text,
                                                 decoration:
                                                     const InputDecoration(
+                                                        counterText: "",
                                                         errorStyle: TextStyle(
                                                             fontSize: 14,
                                                             height: 0.20),

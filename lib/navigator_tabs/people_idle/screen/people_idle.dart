@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
@@ -868,7 +870,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
                         width: 250,
                         child: ListView.builder(
                           shrinkWrap: true,
-                          // scrollDirection: Axis.vertical,
                           scrollDirection: Axis.horizontal,
                           itemCount: _peopleList.resource!.skills!.length < 3
                               ? _peopleList.resource!.skills!.length
@@ -979,8 +980,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
               Expanded(
                 child: FittedBox(
                   child: SingleChildScrollView(
-                    // controller:
-                    //     vertical_scrollcontroller,
                     scrollDirection: Axis.vertical,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

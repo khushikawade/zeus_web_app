@@ -213,7 +213,7 @@ class _IdleState extends State<Idle> {
     );
   }
 
-  ScrollController _controller = ScrollController();
+  // ScrollController _controller = ScrollController();
 
   Future? getListData() {
     return Provider.of<DataIdelClass>(context, listen: false)
@@ -718,7 +718,7 @@ class _IdleState extends State<Idle> {
       }
     }
 
-    return data!.peopleIdelResponse == null ||
+    return data.peopleIdelResponse == null ||
             data.peopleIdelResponse!.data!.isEmpty
         ? Container(
             width: MediaQuery.of(context).size.width < 950
