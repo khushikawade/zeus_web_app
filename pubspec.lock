@@ -632,6 +632,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  show_more_text_popup:
+    dependency: "direct dev"
+    description:
+      name: show_more_text_popup
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   side_navigation:
     dependency: "direct dev"
     description:

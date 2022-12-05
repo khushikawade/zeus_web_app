@@ -11,7 +11,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
+import 'package:show_more_text_popup/show_more_text_popup.dart';
+import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
+import 'package:zeus/helper_widget/mytooltip.dart';
 import 'package:zeus/helper_widget/searchbar.dart';
 import 'package:zeus/navigation/tag_model/tag_user.dart';
 import 'package:zeus/navigation/tag_model/tagresponse.dart';
@@ -3359,32 +3362,18 @@ class _NavigationRailState extends State<MyHomePage>
                                 )),
                           ),
 
-                          // NavigationRailDestination(
-                          //     icon: Container(
-                          //       width: 20.0,
-                          //       height: 18.0,
-                          //       margin: const EdgeInsets.only(
-                          //         top: 0.0,
-                          //         left: 20.0,
-                          //         right: 0.0,
-                          //       ),
-                          //       child: SvgPicture.asset(
-                          //         "images/camera.svg",
-                          //       ),
-                          //     ),
-                          //     label: Text('')),
-
                           NavigationRailDestination(
                             icon: Container(
-                              width: 20.0,
-                              height: 18.0,
                               margin: const EdgeInsets.only(
                                 top: 0.0,
                                 left: 20.0,
                                 right: 0.0,
                               ),
-                              child: SvgPicture.asset(
-                                "images/camera.svg",
+                              child: Padding(
+                                padding: const EdgeInsets.all(9.0),
+                                child: SvgPicture.asset(
+                                  "images/camera.svg",
+                                ),
                               ),
                             ),
                             selectedIcon: Container(
@@ -3406,16 +3395,6 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                               child: Stack(
                                 children: [
-                                  // Positioned(
-                                  //   child: Container(
-                                  //       height: 8,
-                                  //       width: 8,
-                                  //       decoration: BoxDecoration(
-                                  //           color: Color(0xffEF4444),
-                                  //           borderRadius:
-                                  //               BorderRadius.circular(100))),
-                                  // ),
-
                                   Padding(
                                     padding: const EdgeInsets.all(6.0),
                                     child: SvgPicture.asset(
@@ -3424,7 +3403,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Positioned(
                                     right: 0,
-                                    top: 6,
+                                    top: 3,
                                     child: Container(
                                       padding: const EdgeInsets.all(1),
                                       decoration: BoxDecoration(
@@ -3451,6 +3430,83 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                 )),
                           ),
+                          // NavigationRailDestination(
+                          //   icon: Container(
+                          //     width: 20.0,
+                          //     height: 18.0,
+                          //     margin: const EdgeInsets.only(
+                          //       top: 0.0,
+                          //       left: 20.0,
+                          //       right: 0.0,
+                          //     ),
+                          //     child: SvgPicture.asset(
+                          //       "images/camera.svg",
+                          //     ),
+                          //   ),
+                          //   selectedIcon: Container(
+                          //     width: 56.0,
+                          //     height: 32.0,
+                          //     margin: const EdgeInsets.only(
+                          //       top: 0.0,
+                          //       left: 20.0,
+                          //       right: 0.0,
+                          //     ),
+                          //     alignment: Alignment.center,
+                          //     decoration: BoxDecoration(
+                          //       color: const Color(0xff334155),
+                          //       border:
+                          //           Border.all(color: const Color(0xff334155)),
+                          //       borderRadius: BorderRadius.circular(
+                          //         18.0,
+                          //       ),
+                          //     ),
+                          //     child: Stack(
+                          //       children: [
+                          //         // Positioned(
+                          //         //   child: Container(
+                          //         //       height: 8,
+                          //         //       width: 8,
+                          //         //       decoration: BoxDecoration(
+                          //         //           color: Color(0xffEF4444),
+                          //         //           borderRadius:
+                          //         //               BorderRadius.circular(100))),
+                          //         // ),
+
+                          //         Padding(
+                          //           padding: const EdgeInsets.all(6.0),
+                          //           child: SvgPicture.asset(
+                          //             "images/camera.svg",
+                          //           ),
+                          //         ),
+                          //         Positioned(
+                          //           right: 0,
+                          //           top: 6,
+                          //           child: Container(
+                          //             padding: const EdgeInsets.all(1),
+                          //             decoration: BoxDecoration(
+                          //               color: Colors.red,
+                          //               borderRadius: BorderRadius.circular(6),
+                          //             ),
+                          //             constraints: const BoxConstraints(
+                          //               minWidth: 8,
+                          //               minHeight: 8,
+                          //             ),
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          //   label: const Align(
+                          //       alignment: Alignment.center,
+                          //       child: Padding(
+                          //         padding: EdgeInsets.only(left: 25, top: 5),
+                          //         child: Text(
+                          //           'People',
+                          //           textAlign: TextAlign.center,
+                          //           style: TextStyle(fontSize: 12),
+                          //         ),
+                          //       )),
+                          // ),
 
                           NavigationRailDestination(
                             icon: Container(

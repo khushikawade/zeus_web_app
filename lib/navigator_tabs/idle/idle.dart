@@ -14,6 +14,7 @@ import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import 'dart:convert';
+import '../../helper_widget/custom_popups.dart';
 import '../../navigation/skills_model/skills_response.dart';
 import '../../utility/app_url.dart';
 import '../../popup/Popup.dart';
@@ -37,21 +38,34 @@ class Idle extends StatefulWidget {
 }
 
 class _IdleState extends State<Idle> {
+  GlobalKey key1 = new GlobalKey();
+  GlobalKey key2 = new GlobalKey();
+  GlobalKey key = new GlobalKey();
+  GlobalKey key3 = new GlobalKey();
+  GlobalKey key4 = new GlobalKey();
+  GlobalKey key5 = new GlobalKey();
+  GlobalKey key6 = new GlobalKey();
+  GlobalKey key7 = new GlobalKey();
+  GlobalKey key8 = new GlobalKey();
+  GlobalKey key9 = new GlobalKey();
+  GlobalKey key10 = new GlobalKey();
   List _statusList = [];
   List _currencyName = [];
   List _accountableId = [];
   List _customerName = [];
+  ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
   PopupScreen popupScreen = PopupScreen();
 
   //String? id = "";
-  bool amIHovering = false;
+  bool? amIHovering;
+  bool? amIHovering1;
 
   //Future? _getData;
   Future? _getProjectDetail;
   Offset exitFrom = const Offset(0, 0);
   bool hovered = false;
-
+  bool _isDownArrow = true;
   final ScrollController horizontalScroll = ScrollController();
   final double width = 18;
 
@@ -741,6 +755,7 @@ class _IdleState extends State<Idle> {
             )),
           )
         : Row(
+            key: Key("show_more_ink_well"),
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -760,115 +775,367 @@ class _IdleState extends State<Idle> {
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
                               dividerThickness: 0.7,
-                              columns: const [
+                              columns: [
                                 DataColumn(
-                                  label: Text(
-                                    "AP",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: MouseRegion(
+                                    onEnter: (event) {},
+                                    child: Text(
+                                      "AP",
+                                      key: key7,
+                                      style: const TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      setState(() {
+                                        amIHovering = true;
+                                      });
+                                      if (amIHovering == true) {
+                                        popup = ShowMoreTextPopups(context,
+                                            text: "AP",
+                                            height: 25,
+                                            width: 90,
+                                            textStyle: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            backgroundColor: Color(0xFF475569),
+                                            padding: EdgeInsets.all(6.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0));
+
+                                        popup!.show(
+                                          widgetKey: key7,
+                                        );
+                                      }
+                                    },
+                                    onExit: (event) {
+                                      setState(() {
+                                        amIHovering = false;
+                                        popup!.dismiss();
+                                        print(amIHovering);
+                                        print(amIHovering);
+                                      });
+                                    },
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Project name",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: MouseRegion(
+                                    child: Text(
+                                      "Project name",
+                                      key: key6,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      setState(() {
+                                        amIHovering1 = true;
+                                      });
+                                      if (amIHovering1 == true) {
+                                        popup = ShowMoreTextPopups(context,
+                                            text: "Project name",
+                                            textStyle: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            backgroundColor: Color(0xFF475569),
+                                            padding: EdgeInsets.all(6.0),
+                                            borderRadius:
+                                                BorderRadius.circular(28.0));
+
+                                        popup!.show(
+                                          widgetKey: key6,
+                                        );
+                                      }
+                                    },
+                                    onExit: ((event) {
+                                      setState(() {
+                                        amIHovering1 = false;
+                                      });
+                                    }),
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Current phase",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Current phase",
+                                      key: key5,
+                                      style: const TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Current phase",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key5,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Status",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Status",
+                                      key: key4,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Status",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key4,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "SPI",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "SPI",
+                                      key: key3,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "SPI",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key3,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Potential roadblocks",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Potential roadblock",
+                                      key: key8,
+                                      style: const TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Potential roadblock",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key8,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Last\nupdate",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Last\nupdate",
+                                      key: key9,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Last update",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key9,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Next\nmilestone",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Next\nmilestone",
+                                      key: key,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popups =
+                                          ShowMoreTextPopups(context,
+                                              text: "Next milestone",
+                                              onDismiss: () {},
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popups.show(
+                                        widgetKey: key,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Delivery\ndate",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Delivery\ndate",
+                                      key: key2,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Delivery date",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key2,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Deadline",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Deadline",
+                                      key: key1,
+                                      style: const TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Deadline",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key1,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                                 DataColumn(
-                                  label: Text(
-                                    "Resources",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
+                                  label: InkWell(
+                                    child: Text(
+                                      "Resources",
+                                      key: key10,
+                                      style: TextStyle(
+                                          color: ColorSelect.text_color,
+                                          fontSize: 14.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onHover: (value) {
+                                      ShowMoreTextPopups popup =
+                                          ShowMoreTextPopups(context,
+                                              text: "Resources",
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xFF475569),
+                                              padding: EdgeInsets.all(6.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(28.0));
+
+                                      popup.show(
+                                        widgetKey: key10,
+                                      );
+                                    },
+                                    onTap: () {},
                                   ),
                                 ),
                               ],
@@ -1113,4 +1380,13 @@ class _IdleState extends State<Idle> {
       return value;
     }
   }
+
+  // ShowMoreTextPopup popup = ShowMoreTextPopup(context,
+  //     text: text,
+  //     textStyle: TextStyle(color: Colors.black),
+  //     height: 200,
+  //     width: 100,
+  //     backgroundColor: Color(0xFF16CCCC),
+  //     padding: EdgeInsets.all(4.0),
+  //     borderRadius: BorderRadius.circular(10.0));
 }
