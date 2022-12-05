@@ -58,6 +58,7 @@ showDailog(
   final TextEditingController _estimatehours = TextEditingController();
   final TextEditingController _description = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
+  ScrollController _ScrollController = ScrollController();
   var myFormat = DateFormat('yyyy-MM-dd');
 
   //Edit project api
@@ -1237,9 +1238,8 @@ showDailog(
                                                       Navigator.pop(context);
                                                     },
                                                     child: Container(
-                                                      //height: 100,
+                                                      height: 50,
                                                       width: 400,
-
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -1529,8 +1529,13 @@ showDailog(
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(top: 3.0),
-                                        child: Scrollbar(
+                                        child: RawScrollbar(
+                                          controller: _ScrollController,
+                                          thumbColor: Color(0xff4b5563),
+                                          radius: Radius.circular(20),
+                                          thickness: 10,
                                           child: ListView.builder(
+                                            controller: _ScrollController,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: 13,
