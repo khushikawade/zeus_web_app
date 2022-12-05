@@ -24,6 +24,7 @@ import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_res
 import 'package:zeus/services/api.dart';
 import 'package:zeus/services/responce_model/create_phase_resp.dart';
 import 'package:zeus/utility/colors.dart';
+import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:zeus/utility/validations.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
@@ -69,17 +70,35 @@ class _NewPhaseState extends State<NewPhase> {
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
   List<ResourceData> selectedSubTaskSource = [];
-  var _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _mileStoneFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _subtaskFormKey = GlobalKey<FormState>();
+
+  String mileStoneAction = '';
+  int mileStoneEditIndex = 0;
+
+  String subtaskActionType = '';
+  int subTaskEditIndex = 0;
 
   //VS --------------------------------------------------------------------------------
   String mileStoneTitle = "";
-  String mileStoneDate = "";
+  String mileStoneDate = AppUtil.dateToString(DateTime.now());
 
-  String subTaskStartDate = "";
-  String subTaskEndDate = "";
+  String subTaskStartDate = AppUtil.dateToString(DateTime.now());
+  String subTaskEndDate = AppUtil.dateToString(DateTime.now());
   String subTaskResourceName = "";
 
+  bool allValidate = true;
+  bool savePhaseClick = false;
+  bool saveSubtaskClick = false;
+
   //VS --------------------------------------------------------------------------------
+
+  checkFormStatus() {
+    setState(() {
+      allValidate = false;
+    });
+  }
 
   @override
   void initState() {
@@ -195,7 +214,13 @@ class _NewPhaseState extends State<NewPhase> {
                                     ),
                                   ),
                                   onTap: () {
-                                    createPhase();
+                                    setState(() {
+                                      savePhaseClick = true;
+                                    });
+                                    Future.delayed(
+                                        const Duration(microseconds: 500), () {
+                                      createPhase();
+                                    });
                                   },
                                 ),
                               ],
@@ -258,8 +283,8 @@ class _NewPhaseState extends State<NewPhase> {
                 });
               },
               validateCallback: (value) {
-                if (value.isNotEmpty) {
-                  return 'Enter phase title';
+                if (value.isEmpty) {
+                  return 'Please enter phase title';
                 }
                 return null;
               }),
@@ -276,8 +301,8 @@ class _NewPhaseState extends State<NewPhase> {
                 });
               },
               validateCallback: (value) {
-                if (value.isNotEmpty) {
-                  return 'Enter phase title';
+                if (value.isEmpty) {
+                  return 'Please enter phase type';
                 }
                 return null;
               }),
@@ -290,8 +315,17 @@ class _NewPhaseState extends State<NewPhase> {
               setState(() {
                 _phaseDetails.start_date = value;
               });
+              setState(() {});
             },
             startDate: DateTime.now(),
+            validationCallBack: (String values) {
+              if (values.isEmpty) {
+                checkFormStatus();
+                return 'Please enter start date';
+              } else {
+                return null;
+              }
+            },
           ),
           const SizedBox(
             height: 20.0,
@@ -303,7 +337,25 @@ class _NewPhaseState extends State<NewPhase> {
                 _phaseDetails.end_date = value;
               });
             },
-            startDate: AppUtil.stringToDate(_phaseDetails.start_date ?? ""),
+            //  startDate: AppUtil.stringToDate(_1phaseDetails.start_date ?? ""),
+            startDate: _phaseDetails.sub_tasks!.isNotEmpty
+                ? DateTime.now().add(Duration(days: 10))
+                : DateTime.now(),
+
+            validationCallBack: (String values) {
+              if (values.isEmpty) {
+                checkFormStatus();
+                return 'Please enter end date';
+              } else if (_phaseDetails.end_date != null &&
+                  _phaseDetails.start_date != null) {
+                if ((AppUtil.stringToDate(_phaseDetails.end_date!).isBefore(
+                    (AppUtil.stringToDate(_phaseDetails.start_date!))))) {
+                  return 'End date must be greater then the start date';
+                }
+              } else {
+                return null;
+              }
+            },
           ),
           const SizedBox(
             height: 20.0,
@@ -404,6 +456,26 @@ class _NewPhaseState extends State<NewPhase> {
               ),
             ],
           ),
+          savePhaseClick && selectedSource.isEmpty
+              ? Container(
+                  width: MediaQuery.of(context).size.width * 0.26,
+                  margin: EdgeInsets.only(left: 30.0, top: 03),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Please select resources',
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.red,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                )
+              : SizedBox.shrink(),
           startloading == true
               ? loading == true
                   ? Center(child: const CircularProgressIndicator())
@@ -560,182 +632,366 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   Widget mileStoneView() {
-    return Expanded(
-      flex: 1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                clickedAddMileStone == false
-                    ? titleHeadlineWidget("Milestones", 18.0)
-                    : titleHeadlineWidget(" Add Milestones", 18.0),
-                InkWell(
-                  child: clickedAddMileStone == false
-                      ? Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              const Icon(
-                                Icons.add,
-                                size: 20,
-                                color: Color(0xff93C5FD),
-                              ),
-                              titleSubHeadlineWidget("Add Milestone", 14.0),
-                            ],
-                          ),
-                        )
-                      : clickAddMileStone(),
-                  onTap: () {
-                    setState(() {
-                      clickedAddMileStone = true;
-                    });
-                  },
-                )
-              ],
+    return Form(
+      key: _mileStoneFormKey,
+      child: Expanded(
+        flex: 1,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  clickedAddMileStone == false
+                      ? titleHeadlineWidget("Milestones", 18.0)
+                      : titleHeadlineWidget(" Add Milestones", 18.0),
+                  InkWell(
+                    child: clickedAddMileStone == false
+                        ? Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  size: 20,
+                                  color: Color(0xff93C5FD),
+                                ),
+                                titleSubHeadlineWidget("Add Milestone", 14.0),
+                              ],
+                            ),
+                          )
+                        : clickAddMileStone(),
+                    onTap: () {
+                      setState(() {
+                        savePhaseClick = true;
+                      });
+                      Future.delayed(const Duration(microseconds: 500), () {
+                        if (_formKey.currentState!.validate()) {
+                          if (allValidate && selectedSource.isNotEmpty) {
+                            setState(() {
+                              clickedAddMileStone = true;
+                            });
+                          }
+                        }
+                      });
+                    },
+                  )
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          clickedAddMileStone
-              ? formField(
-                  controller: controllerMilestoneTitle,
-                  context: context,
-                  labelText: "Milestone Title",
-                  callback: (values) {
-                    setState(() {
-                      mileStoneTitle = values;
-                    });
-                  },
-                )
-              : saveButtonClick
-                  ? milestoneList(
-                      context,
-                      _phaseDetails,
-                      callback: (values) {
-                        setState(() {
-                          mileStoneTitle = values;
-                        });
-                      },
-                    )
-                  : Container(),
-          const SizedBox(
-            height: 8.0,
-          ),
-          clickedAddMileStone == false
-              ? Container()
-              : DatePicker(
-                  title: "Milestone Date",
-                  callback: (value) {
-                    mileStoneDate = value;
-                  },
-                  startDate: DateTime.now(),
-                )
-        ],
+            const SizedBox(
+              height: 8.0,
+            ),
+            savePhaseClick && _phaseDetails.milestone!.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: const EdgeInsets.only(left: 30.0, top: 03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Please add milestone',
+                          style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox.shrink(),
+            clickedAddMileStone
+                ? formField(
+                    controller: controllerMilestoneTitle,
+                    context: context,
+                    labelText: "Milestone Title",
+                    validateCallback: (values) {
+                      if (values.isEmpty) {
+                        return 'Please enter milestone title';
+                      } else {
+                        return null;
+                      }
+                    },
+                    callback: (values) {
+                      setState(() {
+                        mileStoneTitle = values;
+                      });
+                    },
+                  )
+                : saveButtonClick
+                    ? milestoneList(
+                        context,
+                        _phaseDetails,
+                        callback: (values, index, action) {
+                          setState(() {
+                            if (action == "Delete") {
+                              onDeleteMileStone(index);
+                            } else if (action == "Edit") {
+                              onEditMileStone(index, values);
+                            } else {
+                              mileStoneTitle = values.title ?? '';
+                            }
+                          });
+                        },
+                      )
+                    : Container(),
+            const SizedBox(
+              height: 8.0,
+            ),
+            clickedAddMileStone == false
+                ? Container()
+                : DatePicker(
+                    title: "Milestone Date",
+                    callback: (value) {
+                      setState(() {
+                        mileStoneDate = value.trim();
+                        print(mileStoneDate);
+                      });
+                    },
+                    startDate: AppUtil.stringToDate(mileStoneDate),
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        // checkFormStatus();
+                        return 'Please enter milestone date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+          ],
+        ),
       ),
     );
+  }
+
+  onDeleteMileStone(int index) {
+    try {
+      if (_phaseDetails.milestone!.length >= index) {
+        setState(() {
+          _phaseDetails.milestone!.removeAt(index);
+        });
+      }
+    } catch (e) {}
+  }
+
+  onEditMileStone(int index, Milestones values) {
+    setState(() {
+      mileStoneEditIndex = index;
+      mileStoneAction = "Edit";
+      clickedAddMileStone = true;
+      controllerMilestoneTitle.text = values.title ?? "";
+      mileStoneTitle = values.title ?? "";
+      mileStoneDate = values.m_date ?? AppUtil.dateToString(DateTime.now());
+    });
   }
 
   Widget subtaskView() {
     return Expanded(
       flex: 1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 9, bottom: 0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                clickAddSubTask == false
-                    ? titleHeadlineWidget("Subtasks", 18.0)
-                    : titleHeadlineWidget(" Add Subtasks", 18.0),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: InkWell(
-                    child: Container(
-                        child: clickAddSubTask == false
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Icon(
-                                    Icons.add,
-                                    size: 20,
-                                    color: Color(0xff93C5FD),
-                                  ),
-                                  titleSubHeadlineWidget("Add Subtasks", 14.0),
-                                ],
-                              )
-                            : clickAddSubtask()),
-                    onTap: () {
-                      setState(() {
-                        clickAddSubTask = true;
-                      });
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          Column(
-            children: [],
-          ),
-          clickAddSubTask
-              ? DatePicker(
-                  title: "Start date",
-                  callback: (value) {
-                    subTaskStartDate = value;
-                  },
-                  startDate: DateTime.now(),
-                )
-              : Container(),
-          const SizedBox(
-            height: 8.0,
-          ),
-          clickAddSubTask
-              ? DatePicker(
-                  title: "End date",
-                  callback: (value) {
-                    subTaskEndDate = value;
-                  },
-                  startDate: DateTime.now(),
-                )
-              : Container(),
-          const SizedBox(
-            height: 8.0,
-          ),
-          clickAddSubTask
-              ? titleHeadlineWidget("Resources need for subtask", 16)
-              : Container(),
-          clickAddSubTask
-              ? subTaskResourcesView()
-              : saveButtonClickForSubtask
-                  ? subTaskList(
-                      context,
-                      _phaseDetails,
-                      callback: (values) {
+      child: Form(
+        key: _subtaskFormKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 9, bottom: 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  clickAddSubTask == false
+                      ? titleHeadlineWidget("Subtasks", 18.0)
+                      : titleHeadlineWidget(" Add Subtasks", 18.0),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: InkWell(
+                      child: Container(
+                          child: clickAddSubTask == false
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    const Icon(
+                                      Icons.add,
+                                      size: 20,
+                                      color: Color(0xff93C5FD),
+                                    ),
+                                    titleSubHeadlineWidget(
+                                        "Add Subtasks", 14.0),
+                                  ],
+                                )
+                              : clickAddSubtask()),
+                      onTap: () {
                         setState(() {
-                          mileStoneTitle = values;
+                          setState(() {
+                            savePhaseClick = true;
+                          });
+                          Future.delayed(const Duration(microseconds: 500), () {
+                            if (_formKey.currentState!.validate()) {
+                              if (allValidate && selectedSource.isNotEmpty) {
+                                setState(() {
+                                  clickAddSubTask = true;
+                                });
+                              }
+                            }
+                          });
                         });
                       },
-                    )
-                  : Container(),
-        ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Column(
+              children: [],
+            ),
+            clickAddSubTask
+                ? DatePicker(
+                    title: "Start date",
+                    callback: (value) {
+                      subTaskStartDate = value;
+                    },
+                    startDate: DateTime.now(),
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        return 'Please enter start date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+                : Container(),
+            const SizedBox(
+              height: 8.0,
+            ),
+            clickAddSubTask
+                ? DatePicker(
+                    title: "End date",
+                    callback: (value) {
+                      subTaskEndDate = value;
+                    },
+                    startDate: AppUtil.stringToDate(subTaskStartDate),
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        checkFormStatus();
+                        return 'Please enter end date';
+                      } else if (subTaskStartDate.isNotEmpty &&
+                          subTaskEndDate.isNotEmpty) {
+                        if ((AppUtil.stringToDate(subTaskEndDate).isBefore(
+                            (AppUtil.stringToDate(subTaskStartDate))))) {
+                          return 'End date must be greater then the start date';
+                        }
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+                : Container(),
+            const SizedBox(
+              height: 8.0,
+            ),
+            clickAddSubTask
+                ? titleHeadlineWidget("Resources need for subtask", 16)
+                : Container(),
+            saveSubtaskClick && selectedSubTaskSource.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: EdgeInsets.only(left: 30.0, top: 03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Please select resource',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: const EdgeInsets.only(left: 30.0, top: 03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Please add subtask',
+                          style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox.shrink(),
+            clickAddSubTask
+                ? subTaskResourcesView()
+                : saveButtonClickForSubtask
+                    ? subTaskList(
+                        context,
+                        _phaseDetails,
+                        callback: (values, index, subTaskAction) {
+                          if (subTaskAction == 'Delete') {
+                            onDeleteSubtask(index);
+                          } else if (subTaskAction == 'Edit') {
+                            onEditSubtask(index, values);
+                          } else {
+                            setState(() {
+                              mileStoneTitle =
+                                  values?.resource?.resource_name ?? '';
+                            });
+                          }
+                        },
+                      )
+                    : Container(),
+          ],
+        ),
       ),
     );
+  }
+
+  onDeleteSubtask(int index) {
+    try {
+      if (_phaseDetails.sub_tasks!.length >= index) {
+        setState(() {
+          _phaseDetails.sub_tasks!.removeAt(index);
+        });
+      }
+    } catch (e) {}
+  }
+
+  onEditSubtask(
+    int index,
+    SubTasksModel values,
+  ) {
+    setState(() {
+      subTaskEditIndex = index;
+      subtaskActionType = "Edit";
+      clickAddSubTask = true;
+      selectedSubTaskSource.add(values.resource!);
+      subTaskEndDate = values.start_date!;
+      subTaskEndDate = values.end_date!;
+    });
   }
 
   Widget subTaskResourcesView() {
@@ -994,7 +1250,7 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               setState(() {
-                mileStoneDate = "";
+                mileStoneDate = AppUtil.dateToString(DateTime.now());
                 mileStoneTitle = "";
                 controllerMilestoneTitle.text = "";
                 clickedAddMileStone = false;
@@ -1015,25 +1271,38 @@ class _NewPhaseState extends State<NewPhase> {
                   fontWeight: FontWeight.w500),
             ),
             onTap: () {
-              setState(() {
-                if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
-                  try {
-                    _phaseDetails.milestone!.add(Milestones(
-                        title: mileStoneTitle, m_date: mileStoneDate));
-                    mileStoneDate = "";
-                    mileStoneTitle = "";
-                    controllerMilestoneTitle.text = "";
-                    clickedAddMileStone = false;
-                    saveButtonClick = true;
-                  } catch (e) {
-                    print(e);
-                  }
-                } else {
-                  print('Add milestone date');
-                }
+              if (_mileStoneFormKey.currentState!.validate()) {
+                setState(() {
+                  if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
+                    try {
+                      if (mileStoneAction.isEmpty) {
+                        _phaseDetails.milestone!.add(Milestones(
+                            title: mileStoneTitle, m_date: mileStoneDate));
+                      } else {
+                        _phaseDetails.milestone![mileStoneEditIndex].title =
+                            mileStoneTitle;
+                        _phaseDetails.milestone![mileStoneEditIndex].m_date =
+                            mileStoneDate;
+                      }
 
-                // clickedAddMileStone = ;
-              });
+                      mileStoneEditIndex = 0;
+                      mileStoneAction = '';
+
+                      mileStoneDate = AppUtil.dateToString(DateTime.now());
+                      mileStoneTitle = "";
+                      controllerMilestoneTitle.text = "";
+                      clickedAddMileStone = false;
+                      saveButtonClick = true;
+                    } catch (e) {
+                      print(e);
+                    }
+                  } else {
+                    print('Add milestone date');
+                  }
+
+                  // clickedAddMileStone = ;
+                });
+              }
             },
           )
         ],
@@ -1081,24 +1350,39 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               setState(() {
-                if (selectedSubTaskSource.isNotEmpty &&
-                    subTaskEndDate.isNotEmpty &&
-                    subTaskEndDate.isNotEmpty) {
-                  try {
-                    _phaseDetails.sub_tasks!.add(SubTasksModel(
-                        resource: selectedSubTaskSource[0],
-                        end_date: subTaskEndDate,
-                        start_date: subTaskStartDate));
-                    selectedSubTaskSource.clear();
-                    subTaskEndDate = "";
-                    subTaskEndDate = "";
-                    clickAddSubTask = false;
-                    saveButtonClickForSubtask = true;
-                  } catch (e) {
-                    print(e);
+                saveSubtaskClick = true;
+                if (_subtaskFormKey.currentState!.validate()) {
+                  if (selectedSubTaskSource.isNotEmpty &&
+                      subTaskEndDate.isNotEmpty &&
+                      subTaskEndDate.isNotEmpty) {
+                    try {
+                      if (subtaskActionType.isEmpty) {
+                        _phaseDetails.sub_tasks!.add(SubTasksModel(
+                            resource: selectedSubTaskSource[0],
+                            end_date: subTaskEndDate,
+                            start_date: subTaskStartDate));
+                        subtaskActionType = '';
+                      } else {
+                        _phaseDetails.sub_tasks![subTaskEditIndex] =
+                            SubTasksModel(
+                                resource: selectedSubTaskSource[0],
+                                end_date: subTaskEndDate,
+                                start_date: subTaskStartDate);
+                        subtaskActionType = '';
+                      }
+
+                      selectedSubTaskSource.clear();
+                      subTaskEndDate = "";
+                      subTaskEndDate = "";
+                      clickAddSubTask = false;
+                      saveButtonClickForSubtask = true;
+                      saveSubtaskClick = false;
+                    } catch (e) {
+                      print(e);
+                    }
+                  } else {
+                    print('Enter sub task data');
                   }
-                } else {
-                  print('Enter sub task data');
                 }
 
                 // clickedAddMileStone = ;
@@ -1141,8 +1425,11 @@ class _NewPhaseState extends State<NewPhase> {
 
   createPhase() {
     _phaseDetails.project_id = widget.id;
+    allValidate = true;
     if (_formKey.currentState!.validate()) {
-      addNewPhaseApi();
+      if (allValidate && _phaseDetails.milestone!.isNotEmpty) {
+        addNewPhaseApi();
+      }
     }
   }
 

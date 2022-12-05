@@ -175,6 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           TextFormField(
+                     
                             autocorrect: false,
                             controller: emailController,
                             cursorColor: const Color(0xffFFFFFF),
