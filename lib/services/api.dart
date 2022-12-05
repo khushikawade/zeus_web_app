@@ -7,6 +7,7 @@ import 'package:zeus/services/api_client.dart';
 import 'package:http/http.dart';
 import 'package:zeus/services/responce_model/create_phase_resp.dart';
 import 'package:zeus/services/responce_model/get_phase_details_resp.dart';
+import 'package:zeus/services/responce_model/update_phase_resp.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/constants.dart';
 import 'package:zeus/utility/util.dart';
@@ -203,4 +204,46 @@ class Api {
           statusCode: response.statusCode);
     }
   }
+
+ // //Call Api for Get Product Sub Categoruy
+  Future<UpdatePhaseResp> updatePhase(String key,String id) async {
+    bool internet = await AppUtil.checkNetwork();
+    if (!internet) {
+      return UpdatePhaseResp(message: Constants.noInternet, statusCode: 401);
+    }
+    Response? response;
+    try {
+      response = await _apiClient.putMethod(AppUrl.updatePhase+id, key);
+      print(
+          '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
+      print(response.body);
+    } catch (e) {
+      print(e);
+    }
+
+    if (response!.statusCode == 200) {
+      try {
+        if (response.body.contains('error')) {
+          var jsonResponse = json.decode(response.body);
+          return UpdatePhaseResp(
+              message: jsonResponse['error']['message'], statusCode: 500);
+        } else {
+          UpdatePhaseResp resourceNeededModel =updatePhaseRespFromJson(response.body);
+          resourceNeededModel.statusCode = 200;
+          return resourceNeededModel;
+        }
+      } catch (e) {
+        print(e);
+        return UpdatePhaseResp(
+            message: Constants.somethingWentWorng, statusCode: 500);
+      }
+    } else {
+      return UpdatePhaseResp(
+          message: Constants.somethingWentWorng,
+          statusCode: response.statusCode);
+    }
+  }
+
+ 
+
 }

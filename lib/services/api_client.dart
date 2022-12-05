@@ -43,7 +43,7 @@ class ApiClient {
     }catch(e){
       print(e);
     }
-    http.Response response = await http.post(Uri.parse(BASE_URL + method), body: body, headers: header);
+    http.Response response = await http.put(Uri.parse(BASE_URL + method), body: body, headers: header);
     print('___${response.body.toString()}');
     return response;
   }
