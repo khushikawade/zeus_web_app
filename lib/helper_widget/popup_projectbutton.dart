@@ -477,7 +477,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                         value: _account,
                                                         underline: Container(),
                                                         hint: const Text(
-                                                          "Select Accountable Persons",
+                                                          "Select Accountable Person",
                                                           style: TextStyle(
                                                               fontSize: 14.0,
                                                               color: Color(

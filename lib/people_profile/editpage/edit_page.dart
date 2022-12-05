@@ -398,7 +398,7 @@ class _EditPageState extends State<EditPage> {
                                     value: _account,
                                     underline: Container(),
                                     hint: const Text(
-                                      "Select Accountable Persons",
+                                      "Select Accountable Person",
                                       style: TextStyle(
                                           fontSize: 15.0,
                                           color: Color(0xffFFFFFF),

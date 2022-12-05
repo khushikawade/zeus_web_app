@@ -728,18 +728,18 @@ class _IdleState extends State<Idle> {
             // height: MediaQuery.of(context).size.height * 0.83,
             // height: MediaQuery.of(context).size.height * 0.83,
 
-                height: 969,
-          
-          child: const Center(
-              child: Text(
-            "No Records Found!",
-            style: TextStyle(
-                color: Color(0xffFFFFFF),
-                fontSize: 22.0,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500),
-          )),
-        )
+            height: 969,
+
+            child: const Center(
+                child: Text(
+              "No Records Found!",
+              style: TextStyle(
+                  color: Color(0xffFFFFFF),
+                  fontSize: 22.0,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500),
+            )),
+          )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -904,49 +904,45 @@ class _IdleState extends State<Idle> {
         child: Scaffold(
           backgroundColor: ColorSelect.class_color,
           body: SingleChildScrollView(
-            controller: vertical_scrollcontroller,
-            scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-              controller: horizontalScroll,
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                width: MediaQuery.of(context).size.width < 950
-                    ? MediaQuery.of(context).size.width * 2
-                    : MediaQuery.of(context).size.width - 160,
+            controller: horizontalScroll,
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              width: MediaQuery.of(context).size.width < 950
+                  ? MediaQuery.of(context).size.width * 2
+                  : MediaQuery.of(context).size.width - 160,
 
-                // height: MediaQuery.of(context).size.height * 0.83,
-                // height: MediaQuery.of(context).size.height * 0.83,
+              // height: MediaQuery.of(context).size.height * 0.83,
+              // height: MediaQuery.of(context).size.height * 0.83,
 
-                height: 969,
-                margin: const EdgeInsets.only(
-                    left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xff1E293B),
-                  border: Border.all(color: const Color(0xff1E293B)),
-                  borderRadius: BorderRadius.circular(
-                    12.0,
-                  ),
+              height: 969,
+              margin: const EdgeInsets.only(
+                  left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+              decoration: BoxDecoration(
+                color: const Color(0xff1E293B),
+                border: Border.all(color: const Color(0xff1E293B)),
+                borderRadius: BorderRadius.circular(
+                  12.0,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Consumer<DataIdelClass?>(builder: (context, data, _) {
-                      return data!.loading
-                          ? const Expanded(
-                              child: Center(child: CircularProgressIndicator()))
-                          : Expanded(
-                              child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                makeProjectList(data),
-                              ],
-                            ));
-                      //return Container();
-                    }),
-                  ],
-                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Consumer<DataIdelClass?>(builder: (context, data, _) {
+                    return data!.loading
+                        ? const Expanded(
+                            child: Center(child: CircularProgressIndicator()))
+                        : Expanded(
+                            child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              makeProjectList(data),
+                            ],
+                          ));
+                    //return Container();
+                  }),
+                ],
               ),
             ),
           ),

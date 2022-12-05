@@ -44,6 +44,7 @@ showDailog(
   var isLoading = false;
   bool? _isSelected;
   var status = response.data!.status;
+  //var id = response.data!.id;
   bool _submitted = false;
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<SkillsData>> key = new GlobalKey();
@@ -487,9 +488,11 @@ showDailog(
                         child: Column(
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              padding: const EdgeInsets.only(top: 0, bottom: 0),
                               child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Row(
@@ -704,31 +707,17 @@ showDailog(
                                       ],
                                     ),
                                   ),
-
-                                  // const VerticalDivider(
-                                  //   color: Colors.white10,
-                                  //   thickness: 2,
-                                  // ),
-                                  // const Divider(
-                                  //   color: Colors.red,
-                                  //   thickness: 5,
-                                  //   height: 30,
-                                  // ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                      left: 16.0,
-                                    ),
+                                        left: 16.0, right: 0),
                                     child: Container(
-                                        height: 100,
-                                        width: 2,
+                                        height: 120,
+                                        width: 1,
                                         color: Colors.white10),
                                   ),
-
                                   Expanded(
                                     child: Container(
                                       height: 80.0,
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
                                       decoration: const BoxDecoration(),
                                       child: ListView(
                                         scrollDirection: Axis.horizontal,
@@ -740,7 +729,7 @@ showDailog(
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 40.0),
+                                                    left: 20.0, top: 20.0),
                                                 child: const Text(
                                                   "Start date",
                                                   style: TextStyle(
@@ -775,14 +764,13 @@ showDailog(
                                               ),
                                             ],
                                           ),
-
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 40.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Reminder date",
                                                   style: TextStyle(
@@ -800,7 +788,7 @@ showDailog(
                                                 },
                                                 child: Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
+                                                      left: 30.0, top: 6.0),
                                                   child: Text(
                                                     // reminderDate1 == null
                                                     //     ?
@@ -821,14 +809,13 @@ showDailog(
                                               ),
                                             ],
                                           ),
-
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 40.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Delivery date",
                                                   style: TextStyle(
@@ -846,7 +833,7 @@ showDailog(
                                                 },
                                                 child: Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
+                                                      left: 30.0, top: 6.0),
                                                   child: Text(
                                                     // deliveryDate == null
                                                     //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
@@ -867,14 +854,13 @@ showDailog(
                                               ),
                                             ],
                                           ),
-
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 40.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Deadline",
                                                   style: TextStyle(
@@ -892,7 +878,7 @@ showDailog(
                                                 },
                                                 child: Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
+                                                      left: 30.0, top: 6.0),
                                                   child: Text(
                                                     // deadlineDate == null
                                                     //  ?
@@ -913,14 +899,13 @@ showDailog(
                                               ),
                                             ],
                                           ),
-
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 40.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Working days",
                                                   style: TextStyle(
@@ -933,7 +918,7 @@ showDailog(
                                               ),
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 6.0),
+                                                    left: 30.0, top: 6.0),
                                                 child: Text(
                                                   response.data != null &&
                                                           response.data!
@@ -954,88 +939,32 @@ showDailog(
                                                           FontWeight.w400),
                                                 ),
                                               ),
-
-                                              // InkWell(
-                                              //                          onTap: (){},
-
-                                              //                         child: Container(
-                                              //                           height: 18.0,
-                                              //                           margin: const EdgeInsets.only(left: 20.0, top: 6.0),
-                                              //                            child:    DropdownButtonHideUnderline(
-                                              //                              child: DropdownButton(
-                                              //                                dropdownColor:
-                                              //                                ColorSelect.class_color,
-                                              //                                // Initial Value
-                                              //                                value: dropdownvalue,
-                                              //                                hint:  Text(
-                                              //                                  response!.data!.workingDays.toString(),
-                                              //                                  style: const TextStyle(
-                                              //                                      fontSize: 14.0,
-                                              //                                      color: Color(0xffFFFFFF),
-                                              //                                      fontFamily: 'Inter',
-                                              //                                      fontWeight:
-                                              //                                      FontWeight.w500),
-                                              //                                ),
-
-                                              //                                // Down Arrow Icon
-                                              //                                icon: Visibility (visible:false, child: Icon(Icons.arrow_downward)),
-
-                                              //                                // Array list of items
-                                              //                                items: items.map((String items) {
-                                              //                                  return DropdownMenuItem(
-                                              //                                    value: items,
-                                              //                                    child: Text(items,style: const TextStyle(
-                                              //                                        fontSize: 14.0,
-                                              //                                        color:
-                                              //                                        Color(0xffFFFFFF),
-                                              //                                        fontFamily: 'Inter',
-                                              //                                        fontWeight:
-                                              //                                        FontWeight.w400),),
-                                              //                                  );
-                                              //                                }).toList(),
-                                              //                                // After selecting the desired option,it will
-                                              //                                // change button value to selected value
-                                              //                                onChanged: (String? newValue) {
-                                              //                                  setState(() {
-                                              //                                    dropdownvalue = newValue!;
-                                              //                                  });
-                                              //                                },
-                                              //                              ),
-                                              //                            ),
-                                              //                         ),
-                                              //                       ),
                                             ],
                                           ),
-
-                                          // const Spacer(),
-
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.of(context).pop();
                                             },
                                             child: Container(
+                                              alignment: Alignment.center,
                                               margin: const EdgeInsets.only(
-                                                  top: 30.0,
-                                                  left: 40.0,
-                                                  bottom: 10),
-                                              height: 28.0,
+                                                  top: 0.0,
+                                                  left: 20.0,
+                                                  bottom: 20),
+                                              height: 40.0,
                                               width: 40.0,
                                               decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: Color(0xff334155),
                                                       width: 0.6),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(40))),
-                                              child: const Padding(
-                                                  padding: EdgeInsets.all(6.0),
-                                                  // child: SvgPicture.asset(
-                                                  //   "images/cross.svg",
-                                                  // ),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    color: Colors.white,
-                                                  )),
+                                                  shape: BoxShape.circle),
+                                              // child: const Icon(
+                                              //   Icons.close,
+                                              //   color: Colors.white,
+                                              // ),
+                                              child: SvgPicture.asset(
+                                                'images/cross.svg',
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -1045,19 +974,13 @@ showDailog(
                                 ],
                               ),
                             ),
-
-                            // Divider(
-                            //   color: Color(0xff94A3B8),
-                            //   thickness: 0.2,
-                            // )
                             SizedBox(
-                                height:
-                                    10.0, //MediaQuery.of(context).size.height * 0.10,
+                                height: 10.0,
                                 width:
                                     MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
                                   color: Color(0xff94A3B8),
-                                  thickness: 0.2,
+                                  thickness: 0.1,
                                 )),
                           ],
                         ),
@@ -1806,10 +1729,11 @@ showDailog(
                                     ],
                                   ),
                                   onTap: () async {
+                                    Navigator.pop(context);
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return NewPhase();
+                                          return NewPhase(id!);
                                         });
                                   },
                                 ),

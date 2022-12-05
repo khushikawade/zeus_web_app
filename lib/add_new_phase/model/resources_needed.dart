@@ -18,8 +18,8 @@ class ResourceNeededModel {
   });
 
   bool? status;
-  String? message;
-  String? error;
+  String? message="";
+  String? error="";
   int? statusCode;
   List<Details>? data;
 
