@@ -28,6 +28,26 @@ class ApiClient {
     return response;
   }
 
+
+
+  Future<http.Response> putMethod(String method, var body, {Map<String, String>? header1}) async {
+    Map<String, String>? header=Map();
+    try{
+      var token = storage.read("token");
+      var token1 = 'Bearer ' +token;
+      header['Authorization'] = token1;
+      header['Content-Type'] = "application/json";
+      print(header);
+      print(body);
+      print("HELLO");
+    }catch(e){
+      print(e);
+    }
+    http.Response response = await http.post(Uri.parse(BASE_URL + method), body: body, headers: header);
+    print('___${response.body.toString()}');
+    return response;
+  }
+
   // var response = await http.get(
   //   Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
   //   headers: {

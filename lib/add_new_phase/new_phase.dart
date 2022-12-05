@@ -120,14 +120,10 @@ class _NewPhaseState extends State<NewPhase> {
           getPhaseDetails!.data!.assignedResources!.forEach((element) {
             listResource.add(PhasesSortedResources(
                 details: Details(
-                  id: element.id ?? 0,
+                  id: element.resourceId ?? 0,
                   name: element.resource?.name ?? "",
-                  resource: resourceNeeded.Resource(
-                      id: element.id ?? 0,
-                      nickname: element.resource?.name ?? "",
-                      userId: element.id ?? 0),
                 ),
-                department: ''));
+                department: element.departmentId.toString()));
 
             selectedSource.add(element.resource?.name ?? "");
 
@@ -169,6 +165,7 @@ class _NewPhaseState extends State<NewPhase> {
   void initState() {
     // _getTag = getProject();
     // change();
+
     beforeScreenLoad();
     getDepartment();
     if (widget.type == 1) {
@@ -610,7 +607,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             ResourceData(
                                                 resource_name: item.name,
                                                 resource_id: item.id,
-                                                department_id: 1));
+                                                department_id: item.departmentId ?? 0));
                                         listResource.add(PhasesSortedResources(
                                             department: _depat['name'],
                                             details: item));
@@ -623,8 +620,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       _phaseDetails.resource!.add(ResourceData(
                                           resource_name: item.name,
                                           resource_id: item.id,
-                                          department_id: 1));
-
+                                          department_id: item.departmentId?? 0));
                                       selectedSource.add(item.name!);
                                     }
                                   });
@@ -918,6 +914,26 @@ class _NewPhaseState extends State<NewPhase> {
                 ],
               ),
             ),
+            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: const EdgeInsets.only(left: 30.0, top: 03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Please add subtask',
+                          style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox.shrink(),
             const SizedBox(
               height: 8.0,
             ),
@@ -992,26 +1008,6 @@ class _NewPhaseState extends State<NewPhase> {
                     ),
                   )
                 : const SizedBox.shrink(),
-            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
-                ? Container(
-                    width: MediaQuery.of(context).size.width * 0.26,
-                    margin: const EdgeInsets.only(left: 30.0, top: 03),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Please add subtask',
-                          style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.red,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
             clickAddSubTask
                 ? subTaskResourcesView()
                 : saveButtonClickForSubtask
@@ -1223,7 +1219,7 @@ class _NewPhaseState extends State<NewPhase> {
 
                         selectedSubTaskSource.clear();
                         selectedSubTaskSource.add(ResourceData(
-                            department_id: 1,
+                            department_id: item.departmentId,
                             resource_id: item.id,
                             resource_name: item.name));
 
@@ -1525,8 +1521,9 @@ class _NewPhaseState extends State<NewPhase> {
       getPhaseDetails = await api.getPhaseDetails(id);
       if (getPhaseDetails!.status == true &&
           getPhaseDetails!.statusCode == 200) {
-
-        setState(() {phaseInitialData();});
+        setState(() {
+          phaseInitialData();
+        });
       } else {
         print('');
       }

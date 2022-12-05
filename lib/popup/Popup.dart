@@ -2161,13 +2161,14 @@ showDailog(
                                   var date = phase.startDate;
                                   var endDate = phase.endDate;
 
-                                  var inputDate = DateTime.parse(date!);
-                                  var outputFormat = DateFormat('d MMM');
-                                  var _date = outputFormat.format(inputDate);
+                                  //var inputDate = DateTime.parse(date!);
+                                  //var outputFormat = DateFormat('dd/MM/yyyyy');
+                                  //var _date = outputFormat.format(inputDate);
+                                  var _date = date.toString();
 
-                                  var _reminderdate = DateTime.parse(endDate!);
-                                  var _remind = DateFormat('d MMM');
-                                  var _endDate = _remind.format(_reminderdate);
+                                  //var _reminderdate = DateTime.parse(endDate!);
+                                  //var _remind = DateFormat('dd/MM/yyyyy');
+                                  var _endDate = endDate.toString();
 
                                   return Column(
                                     crossAxisAlignment:
