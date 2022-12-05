@@ -6,6 +6,7 @@ import 'package:zeus/services/api_client.dart';
 
 import 'package:http/http.dart';
 import 'package:zeus/services/responce_model/create_phase_resp.dart';
+import 'package:zeus/services/responce_model/get_phase_details_resp.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/constants.dart';
 import 'package:zeus/utility/util.dart';
@@ -130,12 +131,12 @@ class Api {
       return CreatePhaseResp(message: Constants.noInternet, statusCode: 401);
     }
     Response? response;
-    try{
-       response = await _apiClient.postMethod(AppUrl.createPhase, key);
-       print('<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
-       print(response.body);
-    }
-    catch(e){
+    try {
+      response = await _apiClient.postMethod(AppUrl.createPhase, key);
+      print(
+          '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
+      print(response.body);
+    } catch (e) {
       print(e);
     }
 
@@ -146,8 +147,9 @@ class Api {
           return CreatePhaseResp(
               message: jsonResponse['error']['message'], statusCode: 500);
         } else {
-          CreatePhaseResp resourceNeededModel = createPhaseRespFromJson(response.body);
-          resourceNeededModel.statusCode=200;
+          CreatePhaseResp resourceNeededModel =
+              createPhaseRespFromJson(response.body);
+          resourceNeededModel.statusCode = 200;
           return resourceNeededModel;
         }
       } catch (e) {
@@ -157,7 +159,48 @@ class Api {
       }
     } else {
       return CreatePhaseResp(
-          message: Constants.somethingWentWorng, statusCode: response.statusCode);
+          message: Constants.somethingWentWorng,
+          statusCode: response.statusCode);
+    }
+  }
+
+  // //Call Api for Get Product Sub Categoruy
+  Future<GetPhaseDetails> getPhaseDetails(String key) async {
+    bool internet = await AppUtil.checkNetwork();
+    if (!internet) {
+      return GetPhaseDetails(message: Constants.noInternet, statusCode: 401);
+    }
+    Response? response;
+    try {
+      response = await _apiClient.getMethod(AppUrl.getPhase + key);
+      print('<<<<<<<<<<<<<<<<<<<<<<<<<<<URL>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      print(AppUrl.getPhase + key);
+      print(response.body);
+    } catch (e) {
+      print(e);
+    }
+
+    if (response!.statusCode == 200) {
+      try {
+        if (response.body.contains('error')) {
+          var jsonResponse = json.decode(response.body);
+          return GetPhaseDetails(
+              message: jsonResponse['error']['message'], statusCode: 500);
+        } else {
+          GetPhaseDetails resourceNeededModel =
+              getPhaseDetailsFromJson(response.body);
+          resourceNeededModel.statusCode = 200;
+          return resourceNeededModel;
+        }
+      } catch (e) {
+        print(e);
+        return GetPhaseDetails(
+            message: Constants.somethingWentWorng, statusCode: 500);
+      }
+    } else {
+      return GetPhaseDetails(
+          message: Constants.somethingWentWorng,
+          statusCode: response.statusCode);
     }
   }
 }

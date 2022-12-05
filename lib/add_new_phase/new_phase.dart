@@ -12,6 +12,8 @@ import 'package:zeus/add_new_phase/model/mileston_model.dart';
 import 'package:zeus/add_new_phase/model/phase_details.dart';
 import 'package:zeus/add_new_phase/model/resourcedata.dart';
 import 'package:zeus/add_new_phase/model/resources_needed.dart';
+import 'package:zeus/add_new_phase/model/resources_needed.dart'
+    as resourceNeeded;
 import 'package:zeus/add_new_phase/model/subtask_model.dart';
 import 'package:zeus/helper_widget/dropdown_textfield.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
@@ -23,6 +25,7 @@ import 'package:zeus/helper_widget/textformfield.dart';
 import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
 import 'package:zeus/services/api.dart';
 import 'package:zeus/services/responce_model/create_phase_resp.dart';
+import 'package:zeus/services/responce_model/get_phase_details_resp.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
@@ -32,8 +35,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class NewPhase extends StatefulWidget {
   String id;
-
-  NewPhase(this.id, {Key? key}) : super(key: key);
+  int type; // type==0 new, type ==1 edit
+  NewPhase(this.id, this.type, {Key? key}) : super(key: key);
 
   @override
   State<NewPhase> createState() => _NewPhaseState();
@@ -48,6 +51,7 @@ class _NewPhaseState extends State<NewPhase> {
   AutoCompleteTextField? searchTextField;
   AutoCompleteTextField? subTaskResourcesSearchTextField;
   ResourceNeededModel? resourceNeededModel;
+  GetPhaseDetails? getPhaseDetails;
   List<String> abc = [];
   static List<Details> users = <Details>[];
   static List<Details> resourceSuggestions = <Details>[];
@@ -100,12 +104,76 @@ class _NewPhaseState extends State<NewPhase> {
     });
   }
 
+  phaseInitialData() {
+    if (getPhaseDetails != null &&
+        getPhaseDetails!.statusCode == 200 &&
+        getPhaseDetails!.status == true) {
+      _phaseDetails.statusCode = 200;
+      if (getPhaseDetails!.data != null) {
+        _phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
+        _phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
+        controller_phase_type.text = getPhaseDetails?.data?.phaseType ?? "";
+        controller_next_phase.text = getPhaseDetails?.data?.title ?? "";
+        _phaseDetails.title = getPhaseDetails?.data?.title ?? "";
+        if (getPhaseDetails!.data!.assignedResources != null &&
+            getPhaseDetails!.data!.assignedResources!.isNotEmpty) {
+          getPhaseDetails!.data!.assignedResources!.forEach((element) {
+            listResource.add(PhasesSortedResources(
+                details: Details(
+                  id: element.id ?? 0,
+                  name: element.resource?.name ?? "",
+                  resource: resourceNeeded.Resource(
+                      id: element.id ?? 0,
+                      nickname: element.resource?.name ?? "",
+                      userId: element.id ?? 0),
+                ),
+                department: ''));
+
+            selectedSource.add(element.resource?.name ?? "");
+
+            _phaseDetails.resource!.add(ResourceData(
+                department_id: element.id ?? 0,
+                resource_id: element.resourceId ?? 0,
+                resource_name: element.resource?.name ?? ''));
+          });
+        }
+
+        if (getPhaseDetails!.data!.milestone != null &&
+            getPhaseDetails!.data!.milestone!.isNotEmpty) {
+          saveButtonClick = true;
+          getPhaseDetails!.data!.milestone!.forEach((element) {
+            _phaseDetails.milestone!
+                .add(Milestones(title: element.title, m_date: element.mDate));
+          });
+        }
+
+        if (getPhaseDetails!.data!.subTasks != null &&
+            getPhaseDetails!.data!.subTasks!.isNotEmpty) {
+          saveButtonClickForSubtask = true;
+          getPhaseDetails!.data!.subTasks!.forEach((element) {
+            _phaseDetails.sub_tasks!.add(SubTasksModel(
+                end_date: element.startDate,
+                start_date: element.endDate,
+                resource: ResourceData(
+                    department_id: element.assignResource?.departmentId ?? 0,
+                    resource_id: element.assignResource?.resourceId ?? 0,
+                    resource_name:
+                        element.assignResource?.resource?.name ?? '')));
+          });
+        }
+      }
+    }
+  }
+
   @override
   void initState() {
     // _getTag = getProject();
     // change();
     beforeScreenLoad();
     getDepartment();
+    if (widget.type == 1) {
+      getPhaseDetailsByID(widget.id);
+    }
 
     super.initState();
   }
@@ -975,6 +1043,8 @@ class _NewPhaseState extends State<NewPhase> {
       if (_phaseDetails.sub_tasks!.length >= index) {
         setState(() {
           _phaseDetails.sub_tasks!.removeAt(index);
+          subTaskStartDate = AppUtil.dateToString(DateTime.now());
+          subTaskEndDate = AppUtil.dateToString(DateTime.now());
         });
       }
     } catch (e) {}
@@ -1428,7 +1498,11 @@ class _NewPhaseState extends State<NewPhase> {
     allValidate = true;
     if (_formKey.currentState!.validate()) {
       if (allValidate && _phaseDetails.milestone!.isNotEmpty) {
-        addNewPhaseApi();
+        if (widget.type == 1) {
+          editPhaseApi();
+        } else {
+          addNewPhaseApi();
+        }
       }
     }
   }
@@ -1440,6 +1514,26 @@ class _NewPhaseState extends State<NewPhase> {
       setState(() {
         _department = department;
       });
+    }
+  }
+
+  getPhaseDetailsByID(String id) async {
+    try {
+      SmartDialog.showLoading(
+        msg: "Your request is in progress please wait for a while...",
+      );
+      getPhaseDetails = await api.getPhaseDetails(id);
+      if (getPhaseDetails!.status == true &&
+          getPhaseDetails!.statusCode == 200) {
+
+        setState(() {phaseInitialData();});
+      } else {
+        print('');
+      }
+      SmartDialog.dismiss();
+    } catch (e) {
+      SmartDialog.dismiss();
+      print(e);
     }
   }
 
@@ -1507,6 +1601,8 @@ class _NewPhaseState extends State<NewPhase> {
     subTaskStartDate = AppUtil.dateToString(DateTime.now());
     subTaskEndDate = AppUtil.dateToString(DateTime.now());
   }
+
+  void editPhaseApi() {}
 }
 
 class PhasesSortedResources {

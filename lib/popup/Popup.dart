@@ -2062,7 +2062,7 @@ showDailog(
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return NewPhase(id!);
+                                          return NewPhase(id!,0);
                                         });
                                   },
                                 ),
@@ -2253,6 +2253,15 @@ showDailog(
                                                         .removeAt(index);
                                                   });
                                                 },
+                                                onEditClick: () async {
+                                                  Navigator.pop(context);
+                                                   showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                    return NewPhase(response.data!.phase![index].id.toString(),1);
+                                                  });
+                                                },
+
                                                 setState: setState,
                                                 response: response,
                                                 data: phase,
