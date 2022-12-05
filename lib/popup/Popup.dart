@@ -1,3 +1,4 @@
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,8 @@ showDailog(
   var status = response.data!.status;
   //var id = response.data!.id;
   bool _submitted = false;
-  AutoCompleteTextField? searchTextField;
+  // AutoCompleteTextField? searchTextField;
+  TypeAheadFormField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<SkillsData>> key = new GlobalKey();
   List<SkillsData> users = <SkillsData>[];
   // String? setDate;
@@ -60,6 +62,8 @@ showDailog(
   final TextEditingController _description = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   var myFormat = DateFormat('yyyy-MM-dd');
+
+  final TextEditingController _typeAheadController = TextEditingController();
 
   //Edit project api
   Future<void> editProject() async {
@@ -377,6 +381,14 @@ showDailog(
       }
     }
     return DateTime.now();
+  }
+
+  List<SkillsData> getSuggestions(String query) {
+    List<SkillsData> matches = List.empty(growable: true);
+    matches.addAll(users);
+    matches.retainWhere(
+        (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
   }
 
   Future<void> _selectDate(setState, int calendarTapValue) async {
@@ -973,7 +985,7 @@ showDailog(
                             SizedBox(
                                 height: 10.0,
                                 width:
-                                   MediaQuery.of(context).size.width * 100.0,
+                                    MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
                                   color: Color(0xff94A3B8),
                                   thickness: 0.1,
@@ -1151,89 +1163,97 @@ showDailog(
                                                       100.0),
                                               items: [
                                                 PopupMenuItem(
+                                                  padding:
+                                                      const EdgeInsets.all(0),
                                                   value: 1,
                                                   child: GestureDetector(
                                                     onTap: () {
                                                       Navigator.pop(context);
                                                     },
                                                     child: Container(
-                                                      //height: 100,
                                                       width: 400,
-
+                                                      color: const Color(
+                                                          0xff1E293B),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
                                                           searchTextField =
-                                                              AutoCompleteTextField<
-                                                                  SkillsData>(
-                                                            clearOnSubmit:
+                                                              TypeAheadFormField(
+                                                            keepSuggestionsOnLoading:
                                                                 false,
-                                                            key: key,
-                                                            cursorColor:
-                                                                Colors.white,
-                                                            decoration:
-                                                                const InputDecoration(
-                                                              contentPadding:
-                                                                  EdgeInsets.only(
-                                                                      top:
-                                                                          15.0),
-                                                              prefixIcon:
-                                                                  Padding(
-                                                                      padding: EdgeInsets.only(
-                                                                          top:
-                                                                              4.0),
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .search,
-                                                                        color: Color(
-                                                                            0xff64748B),
-                                                                      )),
-                                                              hintText:
-                                                                  'Search',
-                                                              hintStyle: TextStyle(
+                                                            hideOnLoading: true,
+                                                            suggestionsCallback:
+                                                                (pattern) {
+                                                              return getSuggestions(
+                                                                  pattern);
+                                                            },
+                                                            textFieldConfiguration:
+                                                                TextFieldConfiguration(
+                                                              controller:
+                                                                  _typeAheadController,
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
                                                                   fontSize:
-                                                                      14.0,
-                                                                  color: Color(
-                                                                      0xff64748B),
-                                                                  fontFamily:
-                                                                      'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                            ),
-                                                            suggestions: users,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .white,
+                                                                      14.0),
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              cursorColor:
+                                                                  Colors.white,
+                                                              autofocus: true,
+                                                              decoration:
+                                                                  const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top:
+                                                                            15.0),
+                                                                prefixIcon:
+                                                                    Padding(
+                                                                        padding: EdgeInsets.only(
+                                                                            top:
+                                                                                4.0),
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .search,
+                                                                          color:
+                                                                              Color(0xff64748B),
+                                                                        )),
+                                                                hintText:
+                                                                    'Search',
+                                                                hintStyle: TextStyle(
                                                                     fontSize:
-                                                                        14.0),
-                                                            itemFilter:
-                                                                (item, query) {
-                                                              return item.name!
-                                                                  .toLowerCase()
-                                                                  .startsWith(query
-                                                                      .toLowerCase());
+                                                                        14.0,
+                                                                    color: Color(
+                                                                        0xff64748B),
+                                                                    fontFamily:
+                                                                        'Inter',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                              ),
+                                                            ),
+                                                            itemBuilder:
+                                                                (context,
+                                                                    item) {
+                                                              return rowProject(
+                                                                  item);
                                                             },
-                                                            itemSorter: (a, b) {
-                                                              return a.name!
-                                                                  .compareTo(
-                                                                      b.name!);
+                                                            transitionBuilder:
+                                                                (context,
+                                                                    suggestionsBox,
+                                                                    controller) {
+                                                              return suggestionsBox;
                                                             },
-                                                            itemSubmitted:
+                                                            onSuggestionSelected:
                                                                 (item) {
-                                                              searchTextField!
-                                                                  .textField!
-                                                                  .controller!
+                                                              _typeAheadController
                                                                   .text = '';
                                                               if (!abc.contains(
                                                                   item.name)) {
@@ -1249,14 +1269,7 @@ showDailog(
                                                               }
                                                               setState(() {});
                                                             },
-                                                            itemBuilder:
-                                                                (context,
-                                                                    item) {
-                                                              // ui for the autocompelete row
-                                                              return rowProject(
-                                                                  item);
-                                                            },
-                                                          )
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -1955,9 +1968,6 @@ showDailog(
                           ],
                         ),
                       )
-                  
-                  
-                  
                     ],
                   ),
                 )),
