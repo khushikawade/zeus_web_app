@@ -161,6 +161,12 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           onSubmit: (String value) {},
         );
       })));
+    } else if (response.statusCode == 401) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
+        return LoginScreen(
+          onSubmit: (String value) {},
+        );
+      })));
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
