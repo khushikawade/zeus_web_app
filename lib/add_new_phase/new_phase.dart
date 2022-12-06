@@ -1247,6 +1247,7 @@ class _NewPhaseState extends State<NewPhase> {
                       },
                       itemBuilder: (context, item) {
                         // ui for the autocompelete row
+
                         return rowResourceName(item);
                       },
                     ),
