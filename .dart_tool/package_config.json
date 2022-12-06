@@ -548,6 +548,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "show_more_text_popup",
+      "rootUri": "file:///Users/apple/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/show_more_text_popup-0.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "side_navigation",
       "rootUri": "file:///Users/apple/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/side_navigation-1.0.2",
       "packageUri": "lib/",
@@ -662,7 +668,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-12-06T06:38:43.839763Z",
+  "generated": "2022-12-06T11:45:45.027743Z",
   "generator": "pub",
   "generatorVersion": "2.18.4"
 }
