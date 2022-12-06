@@ -99,10 +99,13 @@ class ShowMoreTextPopups {
       // not enough space above, show popup under the widget.
       dy = arrowHeight + _showRect.height + _showRect.top;
       _isDownArrow = false;
-    } else if (_popupHeight == 25) {
-      dy -= arrowHeight;
-      _isDownArrow = true;
-    } else {
+    }
+    // else if (_popupHeight == 25) {
+    //   dy -= arrowHeight;
+    //   _isDownArrow = true;
+    // }
+    //
+    else {
       dy = arrowHeight + _showRect.height + _showRect.top;
       _isDownArrow = false;
       // dy -= arrowHeight;
@@ -127,9 +130,9 @@ class ShowMoreTextPopups {
               //triangle arrow
               Positioned(
                 left: _showRect.left + _showRect.width / 2.0 - 7.5,
-                // top: _isDownArrow
-                //     ? offset.dy + _popupHeight
-                //     : offset.dy - arrowHeight,
+                top: _isDownArrow
+                    ? offset.dy + _popupHeight
+                    : offset.dy - arrowHeight,
                 child: CustomPaint(
                   size: Size(15.0, arrowHeight),
                   painter: TrianglePainter(

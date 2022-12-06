@@ -78,6 +78,7 @@ class _NavigationRailState extends State<MyHomePage>
     'Item 4',
     'Item 5',
   ];
+  bool ishover = false;
   var startTime;
   var endTime;
   String validateName = '';
@@ -204,12 +205,8 @@ class _NavigationRailState extends State<MyHomePage>
     request.fields['associate'] = _association.text;
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
-    // request.fields['availibilty_day'] = _availableDay.text.toString();
-    // request.fields['availibilty_time'] = _availableTime.text.toString();
     request.fields['availibilty_day'] = commaSepratedString;
-    // request.fields['availibilty_day'] = [selectedDaysList.toString()];
-    request.fields['availibilty_time'] = "10AM-8PM";
-    // '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] = '${startTime1}-${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -277,62 +274,6 @@ class _NavigationRailState extends State<MyHomePage>
         msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
-    }
-  }
-
-  //Update project Api
-  updateProject() async {
-    try {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.post(
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource'),
-        body: jsonEncode({
-          "name": _name.text.toString(),
-          "nickname": _nickName.text.toString(),
-          "email": _emailAddress.text.toString(),
-          "phone_number": _phoneNumber.text.toString(),
-          "password": 'Nirmaljeet@123',
-          "bio": _bio.text.toString(),
-          "designation": 'Sr. developer',
-          "department_id": _depat,
-          "associate": _association.text.toString(),
-          "salary": '1900',
-          "salary_currency": 'USD',
-          "availibilty_day": 'asd',
-          "availibilty_time": '10-7',
-          "country": _country.text.toString(),
-          "city": _enterCity.text.toString(),
-          "time_zone": _time,
-          //"image":webImage,
-          "skills": _tag1,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      // ignore: unrelated_type_equality_checks
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes add people");
-        print(response.body);
-      } else {
-        print("failuree");
-        print(response.body);
-        Fluttertoast.showToast(
-          msg: 'Something Went Wrong',
-          backgroundColor: Colors.grey,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Something Went Wrong',
-        backgroundColor: Colors.grey,
-      );
-      print('error caught: $e');
     }
   }
 
@@ -1147,6 +1088,10 @@ class _NavigationRailState extends State<MyHomePage>
                                     ],
                                   ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -1244,169 +1189,9 @@ class _NavigationRailState extends State<MyHomePage>
                                           ],
                                         ),
                                       ),
-
-                                      /* const SizedBox(
-                                        width: 8.0,
-                                      ),*/
-                                      // Expanded(
-                                      //   flex: 1,
-                                      //   child: Container(
-                                      //     width: MediaQuery.of(context)
-                                      //             .size
-                                      //             .width *
-                                      //         0.13,
-                                      //     margin: const EdgeInsets.only(
-                                      //         top: 10.0, right: 30),
-                                      //     height: 56.0,
-                                      //     decoration: BoxDecoration(
-                                      //       color: const Color(0xff334155),
-                                      //       //border: Border.all(color:  const Color(0xff1E293B)),
-                                      //       borderRadius: BorderRadius.circular(
-                                      //         8.0,
-                                      //       ),
-                                      //     ),
-                                      //     child: Column(
-                                      //       crossAxisAlignment:
-                                      //           CrossAxisAlignment.start,
-                                      //       children: [
-                                      //         Container(
-                                      //             margin: const EdgeInsets.only(
-                                      //                 top: 6.0, left: 16.0),
-                                      //             child: const Text(
-                                      //               "Department",
-                                      //               style: TextStyle(
-                                      //                   fontSize: 13.0,
-                                      //                   color:
-                                      //                       Color(0xff64748B),
-                                      //                   fontFamily: 'Inter',
-                                      //                   fontWeight:
-                                      //                       FontWeight.w500),
-                                      //             )),
-                                      //         Container(
-                                      //           margin: const EdgeInsets.only(
-                                      //               left: 16.0, right: 16.0),
-                                      //           height: 20.0,
-                                      //           child: Container(
-
-                                      //               // padding: const EdgeInsets.all(2.0),
-                                      //               child: StatefulBuilder(
-                                      //             builder:
-                                      //                 (BuildContext context,
-                                      //                     StateSettersetState) {
-                                      //               return DropdownButtonHideUnderline(
-                                      //                 child:
-                                      //                     DropdownButtonFormField(
-                                      //                   dropdownColor:
-                                      //                       ColorSelect
-                                      //                           .class_color,
-                                      //                   value: _depat,
-                                      //                   // underline: Container(),
-                                      //                   hint: const Text(
-                                      //                     "Select",
-                                      //                     style: TextStyle(
-                                      //                         fontSize: 14.0,
-                                      //                         color: Color(
-                                      //                             0xffFFFFFF),
-                                      //                         fontFamily:
-                                      //                             'Inter',
-                                      //                         fontWeight:
-                                      //                             FontWeight
-                                      //                                 .w500),
-                                      //                   ),
-                                      //                   isExpanded: true,
-                                      //                   icon: const Icon(
-                                      //                     // Add this
-                                      //                     Icons.arrow_drop_down,
-                                      //                     // Add this
-                                      //                     color:
-                                      //                         Color(0xff64748B),
-
-                                      //                     // Add this
-                                      //                   ),
-                                      //                   items: _department
-                                      //                       .map((items) {
-                                      //                     return DropdownMenuItem(
-                                      //                       value: items['id']
-                                      //                           .toString(),
-                                      //                       child: Text(
-                                      //                         items['name'],
-                                      //                         style: const TextStyle(
-                                      //                             fontSize:
-                                      //                                 14.0,
-                                      //                             color: Color(
-                                      //                                 0xffFFFFFF),
-                                      //                             fontFamily:
-                                      //                                 'Inter',
-                                      //                             fontWeight:
-                                      //                                 FontWeight
-                                      //                                     .w400),
-                                      //                       ),
-                                      //                     );
-                                      //                   }).toList(),
-
-                                      //                   onChanged:
-                                      //                       (String? newValue) {
-                                      //                     setState(() {
-                                      //                       print(
-                                      //                           "---------newValue--------------${newValue}");
-                                      //                       _depat = newValue;
-                                      //                       print(
-                                      //                           "---------newValue--------------${_depat}");
-
-                                      //                       print(_depat);
-                                      //                     });
-                                      //                   },
-                                      //                   validator: (value) {
-                                      //                     value = _depat;
-                                      //                     if (value == null)
-                                      //                       return "Please select this field";
-                                      //                     else {
-                                      //                       return null;
-                                      //                     }
-                                      //                   },
-
-                                      //                   /* selectedItemBuilder:
-                                      //                                           (BuildContext
-                                      //                                       context) {
-                                      //                                         return _department.map(
-                                      //                                                 (
-                                      //                                                 value) {
-                                      //                                               return Container(
-                                      //                                                 margin: const EdgeInsets
-                                      //                                                     .only(
-                                      //                                                     top:
-                                      //                                                     15.0),
-                                      //                                                 child: Text(
-                                      //                                                     _depat!,
-                                      //                                                     style: const TextStyle(
-                                      //                                                         color: Color(
-                                      //                                                             0xffFFFFFF),
-                                      //                                                         fontFamily:
-                                      //                                                         'Inter',
-                                      //                                                         fontWeight: FontWeight
-                                      //                                                             .w400,
-                                      //                                                         fontSize:
-                                      //                                                         14.0)),
-                                      //                                               );
-                                      //                                             }).toList();
-                                      //                                       },*/
-                                      //                 ),
-                                      //               );
-                                      //             },
-                                      //           )),
-                                      //         )
-                                      //       ],
-                                      //     ),
-                                      //   ),
-                                      // ),
-
                                       Expanded(
                                         flex: 1,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                        child: Stack(
                                           children: [
                                             Container(
                                               width: MediaQuery.of(context)
@@ -1414,7 +1199,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       .width *
                                                   0.13,
                                               margin: const EdgeInsets.only(
-                                                  top: 10.0, right: 30),
+                                                  top: 16.0, right: 30),
                                               height: 56.0,
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
@@ -3294,16 +3079,19 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
-                            icon: Container(
-                              margin: const EdgeInsets.only(
-                                top: 40.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(9.0),
-                                child: SvgPicture.asset(
-                                  "images/notification_icon.svg",
+                            icon: Tooltip(
+                              message: 'Projects',
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  top: 40.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(9.0),
+                                  child: SvgPicture.asset(
+                                    "images/notification_icon.svg",
+                                  ),
                                 ),
                               ),
                             ),
@@ -3363,18 +3151,24 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
-                            icon: Container(
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(9.0),
-                                child: SvgPicture.asset(
-                                  "images/camera.svg",
+                            icon: Column(
+                              children: [
+                                Tooltip(
+                                  message: 'People',
+                                  child: Container(
+                                    width: 20.0,
+                                    height: 18.0,
+                                    margin: const EdgeInsets.only(
+                                      top: 0.0,
+                                      left: 20.0,
+                                      right: 0.0,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                             selectedIcon: Container(
                               width: 56.0,

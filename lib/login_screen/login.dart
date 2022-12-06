@@ -175,6 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           TextFormField(
+                     
                             autocorrect: false,
                             controller: emailController,
                             cursorColor: const Color(0xffFFFFFF),
@@ -195,7 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 14.0,
                                     color: Color(0xffFFFFFF),
                                     fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w400)),
+                                    fontWeight: FontWeight.w400)
+                            ),
                             autovalidateMode: _submitted
                                 ? AutovalidateMode.onUserInteraction
                                 : AutovalidateMode.disabled,

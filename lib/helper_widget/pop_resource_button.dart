@@ -434,7 +434,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 margin: const EdgeInsets.only(right: 20.0),
                                 child: Text(
                                   // / print("Time2 ----------------------${Time2}");
-                                  "Do you want to delete this ${widget.data!.name!} ?",
+                                  "Do you want to delete @${widget.data!.name!} ?",
 
                                   style: const TextStyle(
                                       fontSize: 20,
@@ -446,7 +446,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted,you will not find this person in people list anymore.",
+                                  "Once deleted, you will not find this person in people list anymore.",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -1018,6 +1018,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                 ],
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     flex: 1,
@@ -1097,10 +1100,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
-
-                  /* const SizedBox(
-                                              width: 8.0,
-                                            ),*/
                   Expanded(
                     flex: 1,
                     child: Container(
