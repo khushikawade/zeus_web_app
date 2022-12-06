@@ -23,6 +23,7 @@ import 'package:zeus/helper_widget/textformfield.dart';
 import 'package:zeus/services/api.dart';
 import 'package:zeus/services/responce_model/create_phase_resp.dart';
 import 'package:zeus/services/responce_model/get_phase_details_resp.dart';
+import 'package:zeus/services/responce_model/update_phase_resp.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -108,6 +109,7 @@ class _NewPhaseState extends State<NewPhase> {
       if (getPhaseDetails!.data != null) {
         _phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
         _phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
+        _phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
         controller_phase_type.text = getPhaseDetails?.data?.phaseType ?? "";
         controller_next_phase.text = getPhaseDetails?.data?.title ?? "";
         _phaseDetails.title = getPhaseDetails?.data?.title ?? "";
@@ -116,19 +118,16 @@ class _NewPhaseState extends State<NewPhase> {
           getPhaseDetails!.data!.assignedResources!.forEach((element) {
             listResource.add(PhasesSortedResources(
                 details: Details(
-                  id: element.id ?? 0,
+                  id: element.resourceId ?? 0,
                   name: element.resource?.name ?? "",
-                  resource: resourceNeeded.Resource(
-                      id: element.id ?? 0,
-                      nickname: element.resource?.name ?? "",
-                      userId: element.id ?? 0),
+                  departmentId: element.departmentId,
                 ),
-                department: ''));
+                department: element.department?.name ?? ""));
 
             selectedSource.add(element.resource?.name ?? "");
 
             _phaseDetails.resource!.add(ResourceData(
-                department_id: element.id ?? 0,
+                department_id: element.departmentId ?? 0,
                 resource_id: element.resourceId ?? 0,
                 resource_name: element.resource?.name ?? ''));
           });
@@ -165,6 +164,7 @@ class _NewPhaseState extends State<NewPhase> {
   void initState() {
     // _getTag = getProject();
     // change();
+
     beforeScreenLoad();
     getDepartment();
     if (widget.type == 1) {
@@ -615,15 +615,17 @@ class _NewPhaseState extends State<NewPhase> {
                               },
                               onSuggestionSelected: (item) {
                                 setState(() {
-                                  _typeAheadController.text = '';
+                                  searchTextField!.textFieldConfiguration
+                                      .controller!.text = '';
+
                                   if (selectedSource.isNotEmpty) {
                                     if (selectedSource.contains(item.name)) {
                                     } else {
-                                      _phaseDetails.resource!.add(
-                                          ResourceData(
-                                              resource_name: item.name,
-                                              resource_id: item.id,
-                                              department_id: 1));
+                                      _phaseDetails.resource!.add(ResourceData(
+                                          resource_name: item.name,
+                                          resource_id: item.id,
+                                          department_id:
+                                              item.departmentId ?? 0));
                                       listResource.add(PhasesSortedResources(
                                           department: _depat['name'],
                                           details: item));
@@ -636,8 +638,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     _phaseDetails.resource!.add(ResourceData(
                                         resource_name: item.name,
                                         resource_id: item.id,
-                                        department_id: 1));
-
+                                        department_id: item.departmentId ?? 0));
                                     selectedSource.add(item.name!);
                                   }
                                 });
@@ -926,6 +927,26 @@ class _NewPhaseState extends State<NewPhase> {
                 ],
               ),
             ),
+            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: const EdgeInsets.only(left: 30.0, top: 03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Please add subtask',
+                          style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox.shrink(),
             const SizedBox(
               height: 8.0,
             ),
@@ -1000,26 +1021,6 @@ class _NewPhaseState extends State<NewPhase> {
                     ),
                   )
                 : const SizedBox.shrink(),
-            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
-                ? Container(
-                    width: MediaQuery.of(context).size.width * 0.26,
-                    margin: const EdgeInsets.only(left: 30.0, top: 03),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Please add subtask',
-                          style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.red,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
             clickAddSubTask
                 ? subTaskResourcesView()
                 : saveButtonClickForSubtask
@@ -1197,8 +1198,7 @@ class _NewPhaseState extends State<NewPhase> {
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _subTaskResourcesController,
-                    style:
-                        const TextStyle(color: Colors.white, fontSize: 14.0),
+                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.white,
                     autofocus: true,
@@ -1553,7 +1553,7 @@ class _NewPhaseState extends State<NewPhase> {
     if (_formKey.currentState!.validate()) {
       if (allValidate && _phaseDetails.milestone!.isNotEmpty) {
         if (widget.type == 1) {
-          editPhaseApi();
+          updatePhaseApi();
         } else {
           addNewPhaseApi();
         }
@@ -1601,6 +1601,28 @@ class _NewPhaseState extends State<NewPhase> {
       CreatePhaseResp createPhaseResp =
           await api.createNewPhase(json.encode(_phaseDetails));
       if (createPhaseResp.status == true) {
+        Navigator.pop(context);
+      }
+      SmartDialog.dismiss();
+    } catch (e) {
+      SmartDialog.dismiss();
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        backgroundColor: Colors.grey,
+      );
+      print(e);
+    }
+  }
+
+  updatePhaseApi() async {
+    SmartDialog.showLoading(
+      msg: "Your request is in progress please wait for a while...",
+    );
+    try {
+      //CreatePhaseResp createPhaseResp = await api.createNewPhase(phaseDetailsToJson(_phaseDetails));
+      UpdatePhaseResp updatePhaseResp =
+          await api.updatePhase(json.encode(_phaseDetails), widget.id);
+      if (updatePhaseResp.status == true) {
         Navigator.pop(context);
       }
       SmartDialog.dismiss();

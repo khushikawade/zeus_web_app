@@ -39,6 +39,7 @@ class AppUtil {
         DateFormat dateFormat = DateFormat('d MMM yyyy');
         return dateFormat.format(dateTime).toString();
       } catch (_) {
+
         return 'N/A';
       }
     } else {
@@ -66,8 +67,14 @@ class AppUtil {
   }
 
   static dateToString(DateTime date) {
-    DateFormat formatter = DateFormat('dd/MM/yyyy');
-    String formatted = formatter.format(date);
-    return formatted;
+    try{
+      DateFormat formatter = DateFormat('dd/MM/yyyy');
+      String formatted = formatter.format(date);
+      return formatted;
+    }
+    catch(e){
+      return date.toString();
+    }
+
   }
 }
