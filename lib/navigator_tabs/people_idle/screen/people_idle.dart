@@ -118,7 +118,8 @@ class _PeopleIdleState extends State<PeopleIdle> {
     return AdaptiveScrollbar(
       underSpacing: EdgeInsets.only(bottom: width),
       controller: horizontalScroll,
-      width: width,
+      // width: width,
+      width: 10,
       position: ScrollbarPosition.bottom,
       sliderDecoration: const BoxDecoration(
           color: Color(0xff4B5563),
@@ -740,8 +741,10 @@ class _PeopleIdleState extends State<PeopleIdle> {
                 bool result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            ProfileDetail(list: _peopleList)));
+                        builder: (context) => ProfileDetail(
+                              list: _peopleList,
+                              index: index = 5,
+                            )));
 
                 if (result != null && result) {
                   Provider.of<PeopleIdelClass>(context, listen: false)
@@ -984,7 +987,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        padding: const EdgeInsets.only(left: 0, right: 0),
                         child: Theme(
                           data: Theme.of(context)
                               .copyWith(dividerColor: Color(0xff525f72)),

@@ -39,6 +39,7 @@ class AppUtil {
         DateFormat dateFormat = DateFormat('d MMM yyyy');
         return dateFormat.format(dateTime).toString();
       } catch (_) {
+
         return 'N/A';
       }
     } else {
@@ -56,20 +57,24 @@ class AppUtil {
     }
   }
 
-  static stringToDate(String date){
-    try{
-      DateTime parseDate =  DateFormat("dd/MM/yyyy").parse(date);
+  static DateTime stringToDate(String date) {
+    try {
+      DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
       return parseDate;
-    }
-    catch(e){
+    } catch (e) {
       return DateTime.now();
     }
-      }
+  }
 
+  static dateToString(DateTime date) {
+    try{
+      DateFormat formatter = DateFormat('dd/MM/yyyy');
+      String formatted = formatter.format(date);
+      return formatted;
+    }
+    catch(e){
+      return date.toString();
+    }
 
-  static dateToString(DateTime date){
-     DateFormat formatter = DateFormat('dd/MM/yyyy');
-     String formatted = formatter.format(date);
-    return formatted;
   }
 }

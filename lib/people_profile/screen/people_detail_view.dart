@@ -27,10 +27,12 @@ import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
 class ProfileDetail extends StatefulWidget {
   PeopleData list;
+  int index;
 
   ProfileDetail({
     Key? key,
     required this.list,
+    required this.index
   });
 
   @override
@@ -210,8 +212,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
   }
 
   void change() async {
+    print("lkdfglkdsghklshglksdhgldjlhsgk;;lgjh;");
     var prefs = await SharedPreferences.getInstance();
     prefs.setString('val', 'r');
+    print("After calling-----------------------");
   }
 
   @override

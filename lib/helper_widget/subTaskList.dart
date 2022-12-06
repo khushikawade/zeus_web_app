@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zeus/add_new_phase/model/phase_details.dart';
+import 'package:zeus/add_new_phase/model/subtask_model.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 Widget subTaskList(context, PhaseDetails phaseDetails,
-    {required Null Function(dynamic values) callback}) =>
+        {required Null Function(SubTasksModel values, int index, String action)
+            callback}) =>
     ListView.builder(
         shrinkWrap: true,
         // physics: BouncingScrollPhysics,
@@ -98,11 +100,12 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                   width: 5,
                                 ),
                                 Column(
-                                  children:  [
-                                    Text(phaseDetails.sub_tasks?[index]
-                                        .resource?.resource_name ??
-                                        '',
-                                        style:const TextStyle(
+                                  children: [
+                                    Text(
+                                        phaseDetails.sub_tasks?[index].resource
+                                                ?.resource_name ??
+                                            '',
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 13,
                                             fontWeight: FontWeight.w900))
@@ -130,51 +133,63 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                           Row(
                             children: [
                               Column(
-                                children: const [
-                                  Padding(
-                                      padding:
-                                      EdgeInsets.only(left: 20.0, top: 7),
-                                      child: CircleAvatar(
-                                          backgroundColor: Color(0xff475569),
-                                          radius: 20,
-                                          child: Icon(Icons.edit,
-                                              color: Colors.white, size: 20)
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      callback(phaseDetails.sub_tasks![index],
+                                          index, 'Edit');
+                                    },
+                                    child: const Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 20.0, top: 7),
+                                        child: CircleAvatar(
+                                            backgroundColor: Color(0xff475569),
+                                            radius: 20,
+                                            child: Icon(Icons.edit,
+                                                color: Colors.white, size: 20)
 
-                                        // SvgPicture.asset(
+                                            // SvgPicture.asset(
 
-                                        //   'images/photo.svg',
+                                            //   'images/photo.svg',
 
-                                        //   width: 24.0,
+                                            //   width: 24.0,
 
-                                        //   height: 24.0,
+                                            //   height: 24.0,
 
-                                        // ),
+                                            // ),
 
-                                      )),
+                                            )),
+                                  ),
                                 ],
                               ),
                               Column(
-                                children: const [
-                                  Padding(
-                                      padding:
-                                      EdgeInsets.only(left: 20.0, top: 7),
-                                      child: CircleAvatar(
-                                          backgroundColor: Color(0xff475569),
-                                          radius: 20,
-                                          child: Icon(Icons.delete,
-                                              color: Colors.white, size: 20)
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      callback(phaseDetails.sub_tasks![index],
+                                          index, 'Delete');
+                                    },
+                                    child: const Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 20.0, top: 7),
+                                        child: CircleAvatar(
+                                            backgroundColor: Color(0xff475569),
+                                            radius: 20,
+                                            child: Icon(Icons.delete,
+                                                color: Colors.white, size: 20)
 
-                                        // SvgPicture.asset(
+                                            // SvgPicture.asset(
 
-                                        //   'images/photo.svg',
+                                            //   'images/photo.svg',
 
-                                        //   width: 24.0,
+                                            //   width: 24.0,
 
-                                        //   height: 24.0,
+                                            //   height: 24.0,
 
-                                        // ),
+                                            // ),
 
-                                      )),
+                                            )),
+                                  ),
                                 ],
                               )
                             ],

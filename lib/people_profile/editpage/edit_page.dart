@@ -1356,7 +1356,8 @@ class _EditPageState extends State<EditPage> {
                         if (selectAccountablePerson == true &&
                             selectCustomer == true &&
                             selectCurrency == true &&
-                            selectStatus == true) {
+                            selectStatus == true &&
+                            selectDeliveryDate == true) {
                           SmartDialog.showLoading(
                             msg:
                                 "Your request is in progress please wait for a while...",

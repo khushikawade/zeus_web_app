@@ -28,6 +28,7 @@ import 'project_idel_model/project_idel_response.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
+import 'package:cross_scroll/cross_scroll.dart';
 
 class Idle extends StatefulWidget {
   const Idle({Key? key}) : super(key: key);
@@ -55,7 +56,10 @@ class _IdleState extends State<Idle> {
   final ScrollController horizontalScroll = ScrollController();
   final double width = 18;
 
-  final ScrollController vertical_scrollcontroller = ScrollController();
+  final ScrollController verticalScrollcontroller = ScrollController();
+
+  final _verticalScrollController = ScrollController();
+  final _horizontalScrollController = ScrollController();
 
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
@@ -746,16 +750,17 @@ class _IdleState extends State<Idle> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: FittedBox(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(dividerColor: Color(0xff525f72)),
+                // child: FittedBox(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  child: Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Color(0xff525f72)),
+                    child: Builder(builder: (context) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
                           child: DataTable(
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
@@ -874,11 +879,12 @@ class _IdleState extends State<Idle> {
                               ],
                               rows: rows),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ),
               ),
+              // ),
             ],
           );
   }
@@ -886,69 +892,118 @@ class _IdleState extends State<Idle> {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
+    return Scaffold(
+      backgroundColor: ColorSelect.class_color,
+      body: Container(
+        width: MediaQuery.of(context).size.width < 950
+            ? MediaQuery.of(context).size.width * 2
+            : MediaQuery.of(context).size.width - 160,
 
-    return AdaptiveScrollbar(
-      underSpacing: EdgeInsets.only(bottom: width),
-      controller: horizontalScroll,
-      width: width,
-      position: ScrollbarPosition.bottom,
-      sliderDecoration: const BoxDecoration(
-          color: Color(0xff4B5563),
-          borderRadius: BorderRadius.all(Radius.circular(12.0))),
-      sliderActiveDecoration: const BoxDecoration(
-          color: Color.fromRGBO(206, 206, 206, 100),
-          borderRadius: BorderRadius.all(Radius.circular(12.0))),
-      underColor: Colors.transparent,
-      child: MediaQuery(
-        data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-        child: Scaffold(
-          backgroundColor: ColorSelect.class_color,
-          body: SingleChildScrollView(
-            controller: horizontalScroll,
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              width: MediaQuery.of(context).size.width < 950
-                  ? MediaQuery.of(context).size.width * 2
-                  : MediaQuery.of(context).size.width - 160,
+        // height: MediaQuery.of(context).size.height * 0.83,
+        // height: MediaQuery.of(context).size.height * 0.83,
 
-              // height: MediaQuery.of(context).size.height * 0.83,
-              // height: MediaQuery.of(context).size.height * 0.83,
+        height: 969,
 
-              height: 969,
-              margin: const EdgeInsets.only(
-                  left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
-              decoration: BoxDecoration(
-                color: const Color(0xff1E293B),
-                border: Border.all(color: const Color(0xff1E293B)),
-                borderRadius: BorderRadius.circular(
-                  12.0,
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Consumer<DataIdelClass?>(builder: (context, data, _) {
-                    return data!.loading
-                        ? const Expanded(
-                            child: Center(child: CircularProgressIndicator()))
-                        : Expanded(
-                            child: ListView(
-                            shrinkWrap: true,
-                            children: [
-                              makeProjectList(data),
-                            ],
-                          ));
-                    //return Container();
-                  }),
-                ],
-              ),
-            ),
+        margin: const EdgeInsets.only(
+            left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+        decoration: BoxDecoration(
+          color: const Color(0xff1E293B),
+          border: Border.all(color: const Color(0xff1E293B)),
+          borderRadius: BorderRadius.circular(
+            12.0,
           ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Consumer<DataIdelClass?>(builder: (context, data, _) {
+              return data!.loading
+                  ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
+                  : Expanded(
+                      child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        makeProjectList(data),
+                      ],
+                    ));
+              //return Container();
+            }),
+          ],
         ),
       ),
     );
+
+    // return AdaptiveScrollbar(
+    //   // underSpacing: EdgeInsets.only(bottom: width),
+    //   controller: horizontalScroll,
+    //   // sliderSpacing: const EdgeInsets.all(5),
+    //   underSpacing:
+    //       const EdgeInsets.only(left: 10, right: 10, top: 37, bottom: 27),
+    //   width: 10,
+    //   position: ScrollbarPosition.bottom,
+    //   //  bottomPadding: EdgeInsets.only(bottom: verticalWidth),
+    //   sliderDecoration: const BoxDecoration(
+    //       color: Color(0xff4B5563),
+    //       borderRadius: BorderRadius.all(Radius.circular(20.0))),
+    //   sliderActiveDecoration: const BoxDecoration(
+    //       color: Color.fromRGBO(206, 206, 206, 100),
+    //       borderRadius: BorderRadius.all(Radius.circular(20.0))),
+    //   underColor: Colors.transparent,
+    //   child: MediaQuery(
+    //     data: mediaQueryData.copyWith(textScaleFactor: 1.0),
+    //     child: Scaffold(
+    //       backgroundColor: ColorSelect.class_color,
+    //       body: SingleChildScrollView(
+    //         // padding: EdgeInsets.only(left: 50),
+    //         controller: horizontalScroll,
+    //         scrollDirection: Axis.horizontal,
+    //         child: Container(
+    //           width: MediaQuery.of(context).size.width < 950
+    //               ? MediaQuery.of(context).size.width * 2
+    //               : MediaQuery.of(context).size.width - 160,
+
+    //           // height: MediaQuery.of(context).size.height * 0.83,
+    //           // height: MediaQuery.of(context).size.height * 0.83,
+
+    //           height: 969,
+    //           // height: 500,
+    //           margin: const EdgeInsets.only(
+    //               left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+    //           decoration: BoxDecoration(
+    //             color: const Color(0xff1E293B),
+    //             border: Border.all(color: const Color(0xff1E293B)),
+    //             borderRadius: BorderRadius.circular(
+    //               12.0,
+    //             ),
+    //           ),
+    //           child: Column(
+    //             mainAxisSize: MainAxisSize.max,
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: [
+    //               Consumer<DataIdelClass?>(builder: (context, data, _) {
+    //                 return data!.loading
+    //                     ? const Expanded(
+    //                         child: Center(child: CircularProgressIndicator()))
+    //                     : Expanded(
+    //                         child: ListView(
+    //                         shrinkWrap: true,
+    //                         children: [
+    //                           makeProjectList(data),
+    //                         ],
+    //                       ));
+    //                 //return Container();
+    //               }),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Future<void> api() async {

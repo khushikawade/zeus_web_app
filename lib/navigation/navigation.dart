@@ -202,13 +202,8 @@ class _NavigationRailState extends State<MyHomePage>
     request.fields['associate'] = _association.text;
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
-    // request.fields['availibilty_day'] = _availableDay.text.toString();
-    // request.fields['availibilty_time'] = _availableTime.text.toString();
     request.fields['availibilty_day'] = commaSepratedString;
-    // request.fields['availibilty_day'] = [selectedDaysList.toString()];
-    request.fields['availibilty_time'] =
-        //  "10AM-8PM";
-        '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] = '${startTime1}-${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -279,62 +274,6 @@ class _NavigationRailState extends State<MyHomePage>
     }
   }
 
-  //Update project Api
-  updateProject() async {
-    try {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.post(
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource'),
-        body: jsonEncode({
-          "name": _name.text.toString(),
-          "nickname": _nickName.text.toString(),
-          "email": _emailAddress.text.toString(),
-          "phone_number": _phoneNumber.text.toString(),
-          "password": 'Nirmaljeet@123',
-          "bio": _bio.text.toString(),
-          "designation": 'Sr. developer',
-          "department_id": _depat,
-          "associate": _association.text.toString(),
-          "salary": '1900',
-          "salary_currency": 'USD',
-          "availibilty_day": 'asd',
-          "availibilty_time": '10-7',
-          "country": _country.text.toString(),
-          "city": _enterCity.text.toString(),
-          "time_zone": _time,
-          //"image":webImage,
-          "skills": _tag1,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      // ignore: unrelated_type_equality_checks
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes add people");
-        print(response.body);
-      } else {
-        print("failuree");
-        print(response.body);
-        Fluttertoast.showToast(
-          msg: 'Something Went Wrong',
-          backgroundColor: Colors.grey,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Something Went Wrong',
-        backgroundColor: Colors.grey,
-      );
-      print('error caught: $e');
-    }
-  }
-
   //Create project Api
   createProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -392,6 +331,7 @@ class _NavigationRailState extends State<MyHomePage>
   // bool _submitted = false;
   bool _addSubmitted = true;
   String name = '';
+  int profileIndex = 5;
 
   // var _formKey = GlobalKey<FormState>();
 
@@ -2835,7 +2775,7 @@ class _NavigationRailState extends State<MyHomePage>
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 64.0,
+          toolbarHeight: 80.0,
           backgroundColor: const Color(0xff0F172A),
           elevation: 0,
           title: Row(
@@ -2867,7 +2807,7 @@ class _NavigationRailState extends State<MyHomePage>
                     return Visibility(
                       visible: snapshot.data as bool,
                       child: Container(
-                          margin: const EdgeInsets.only(top: 35.0, left: 6.0),
+                          margin: const EdgeInsets.only(top: 30.0, left: 6.0),
                           child: Column(
                             children: [
                               /*  Text(prefs.getString('val')=='q'?'List':prefs.getString('val')=='r'?'Profile':'List', style: const TextStyle(
@@ -2883,42 +2823,78 @@ class _NavigationRailState extends State<MyHomePage>
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Text("List",
-                                            style: TextStyle(
-                                                color: Color(0xff93C5FD),
-                                                fontSize: 14.0,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 20),
+                                              child: Text("List",
+                                                  style: TextStyle(
+                                                      color: Color(0xff93C5FD),
+                                                      fontSize: 14.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Container(
+                                              width: 25,
+                                              height: 3,
+                                              decoration: const BoxDecoration(
+                                                  color: Color(0xff93C5FD),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  3))),
+                                            )
+                                          ],
+                                        ),
                                       ],
                                     )
                                   : Container(),
                               //] else
-                              if (prefs.getString('val') == 'r') ...[
-                                const Text("Profile",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 22.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700))
-                              ],
+                              // if (prefs.getString('val') == 'r') ...[
+                              //   const Text("Profile",
+                              //       style: TextStyle(
+                              //           color: Color(0xffFFFFFF),
+                              //           fontSize: 22.0,
+                              //           fontFamily: 'Inter',
+                              //           fontWeight: FontWeight.w700))
+                              // ],
+
+                              profileIndex == 5 && _selectedIndex != 1
+                                  ? const Text("Profile",
+                                      style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontSize: 22.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700))
+                                  : Container(),
 
                               const SizedBox(height: 10),
 
                               // prefs.getString('val')=='q'?'List':prefs.getString('val')=='r'?'Profile':'List'
-                              if (prefs.getString('val') == 'q') ...[
-                                Container(
-                                  width: 25,
-                                  height: 3,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xff93C5FD),
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(3),
-                                          topRight: Radius.circular(3))),
-                                )
-                              ] else if (prefs.getString('val') == 'r') ...[
-                                SizedBox(),
-                              ]
+
+                              // if (prefs.getString('val') == 'q') ...[
+                              //   Container(
+                              //     width: 25,
+                              //     height: 3,
+                              //     decoration: const BoxDecoration(
+                              //         color: Color(0xff93C5FD),
+                              //         borderRadius: BorderRadius.only(
+                              //             topLeft: Radius.circular(3),
+                              //             topRight: Radius.circular(3))),
+                              //   )
+                              // ]
+                              // else if (prefs.getString('val') == 'r') ...[
+                              //   SizedBox(),
+                              // ]
                             ],
                           )),
                     );
@@ -2927,7 +2903,7 @@ class _NavigationRailState extends State<MyHomePage>
               // if (prefs.getString('val')! == 'q') ...[
               _selectedIndex == 1
                   ? const Padding(
-                      padding: EdgeInsets.only(top: 26.0, left: 0.0),
+                      padding: EdgeInsets.only(top: 14.0, left: 0.0),
                       child: Text("Timeline",
                           style: TextStyle(
                               color: Color(0xffffffff),

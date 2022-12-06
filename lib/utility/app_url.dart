@@ -33,6 +33,9 @@ class AppUrl {
   static const String deleteForphase = "$baseUrl/phase/";
   static const String logOut = "$baseUrl/signout";
   static const String createPhase = "/phase";
+  static const String getPhase = "/phase/";
+static const String updatePhase = "/phase/";
+
 // static const String forgotPassword = baseUrl +
 
   // Future<String?> getAccountable() async {
