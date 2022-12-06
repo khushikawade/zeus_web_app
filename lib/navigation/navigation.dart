@@ -75,6 +75,7 @@ class _NavigationRailState extends State<MyHomePage>
     'Item 4',
     'Item 5',
   ];
+  bool ishover = false;
   var startTime;
   var endTime;
   String validateName = '';
@@ -201,12 +202,9 @@ class _NavigationRailState extends State<MyHomePage>
     request.fields['associate'] = _association.text;
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
-    // request.fields['availibilty_day'] = _availableDay.text.toString();
-    // request.fields['availibilty_time'] = _availableTime.text.toString();
     request.fields['availibilty_day'] = commaSepratedString;
-    // request.fields['availibilty_day'] = [selectedDaysList.toString()];
-    request.fields['availibilty_time'] = "10AM-8PM";
-    // '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] =
+     '${startTime1}-${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -236,9 +234,25 @@ class _NavigationRailState extends State<MyHomePage>
     print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
       SmartDialog.dismiss();
-      Navigator.pop(context, true);
+      // ignore: use_build_context_synchronously
+      Navigator.pop(
+        context,
+      );
       setState(() {
         _selectedIndex = 2;
+        clearContoller();
+        selectDays = false;
+        selectSkill = false;
+        selectTime = false;
+        selectTimeZone = false;
+        selectDepartment = false;
+        selectSalary = false;
+        selectImage = false;
+        commaSepratedString = '';
+        imageavail = false;
+
+        _selectedFile = [];
+        request.files.clear();
       });
 
       print("add people created");
@@ -260,63 +274,7 @@ class _NavigationRailState extends State<MyHomePage>
       );
     }
   }
-
-  //Update project Api
-  updateProject() async {
-    try {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.post(
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource'),
-        body: jsonEncode({
-          "name": _name.text.toString(),
-          "nickname": _nickName.text.toString(),
-          "email": _emailAddress.text.toString(),
-          "phone_number": _phoneNumber.text.toString(),
-          "password": 'Nirmaljeet@123',
-          "bio": _bio.text.toString(),
-          "designation": 'Sr. developer',
-          "department_id": _depat,
-          "associate": _association.text.toString(),
-          "salary": '1900',
-          "salary_currency": 'USD',
-          "availibilty_day": 'asd',
-          "availibilty_time": '10-7',
-          "country": _country.text.toString(),
-          "city": _enterCity.text.toString(),
-          "time_zone": _time,
-          //"image":webImage,
-          "skills": _tag1,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      // ignore: unrelated_type_equality_checks
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes add people");
-        print(response.body);
-      } else {
-        print("failuree");
-        print(response.body);
-        Fluttertoast.showToast(
-          msg: 'Something Went Wrong',
-          backgroundColor: Colors.grey,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Something Went Wrong',
-        backgroundColor: Colors.grey,
-      );
-      print('error caught: $e');
-    }
-  }
-
+  
   //Create project Api
   createProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -368,15 +326,8 @@ class _NavigationRailState extends State<MyHomePage>
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Item 1';
   ImagePicker picker = ImagePicker();
-  String? _depat,
-      _account,
-      _custome,
-      _curren,
-      _status,
-      _time,
-      _tag,
-      _day,
-      _shortday;
+  String? _depat;
+  String? _account, _custome, _curren, _status, _time, _tag, _day, _shortday;
 
   // bool _submitted = false;
   bool _addSubmitted = true;
@@ -430,6 +381,7 @@ class _NavigationRailState extends State<MyHomePage>
     //_getProjectDetail=getProject();
     //-----------sayyam
     getAddpeople();
+
     getTagpeople();
     getDepartment();
     getAccountable();
@@ -565,6 +517,13 @@ class _NavigationRailState extends State<MyHomePage>
     showDialog(
         context: context,
         builder: (context) {
+          abc.clear();
+          //---------------sayyam
+          imageavail = false;
+
+          _day = '';
+
+          selectedDaysList.clear();
           return StatefulBuilder(
             builder: (context, setStateView) => AlertDialog(
               shape: RoundedRectangleBorder(
@@ -1127,6 +1086,10 @@ class _NavigationRailState extends State<MyHomePage>
                                     ],
                                   ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -1224,169 +1187,9 @@ class _NavigationRailState extends State<MyHomePage>
                                           ],
                                         ),
                                       ),
-
-                                      /* const SizedBox(
-                                        width: 8.0,
-                                      ),*/
-                                      // Expanded(
-                                      //   flex: 1,
-                                      //   child: Container(
-                                      //     width: MediaQuery.of(context)
-                                      //             .size
-                                      //             .width *
-                                      //         0.13,
-                                      //     margin: const EdgeInsets.only(
-                                      //         top: 10.0, right: 30),
-                                      //     height: 56.0,
-                                      //     decoration: BoxDecoration(
-                                      //       color: const Color(0xff334155),
-                                      //       //border: Border.all(color:  const Color(0xff1E293B)),
-                                      //       borderRadius: BorderRadius.circular(
-                                      //         8.0,
-                                      //       ),
-                                      //     ),
-                                      //     child: Column(
-                                      //       crossAxisAlignment:
-                                      //           CrossAxisAlignment.start,
-                                      //       children: [
-                                      //         Container(
-                                      //             margin: const EdgeInsets.only(
-                                      //                 top: 6.0, left: 16.0),
-                                      //             child: const Text(
-                                      //               "Department",
-                                      //               style: TextStyle(
-                                      //                   fontSize: 13.0,
-                                      //                   color:
-                                      //                       Color(0xff64748B),
-                                      //                   fontFamily: 'Inter',
-                                      //                   fontWeight:
-                                      //                       FontWeight.w500),
-                                      //             )),
-                                      //         Container(
-                                      //           margin: const EdgeInsets.only(
-                                      //               left: 16.0, right: 16.0),
-                                      //           height: 20.0,
-                                      //           child: Container(
-
-                                      //               // padding: const EdgeInsets.all(2.0),
-                                      //               child: StatefulBuilder(
-                                      //             builder:
-                                      //                 (BuildContext context,
-                                      //                     StateSettersetState) {
-                                      //               return DropdownButtonHideUnderline(
-                                      //                 child:
-                                      //                     DropdownButtonFormField(
-                                      //                   dropdownColor:
-                                      //                       ColorSelect
-                                      //                           .class_color,
-                                      //                   value: _depat,
-                                      //                   // underline: Container(),
-                                      //                   hint: const Text(
-                                      //                     "Select",
-                                      //                     style: TextStyle(
-                                      //                         fontSize: 14.0,
-                                      //                         color: Color(
-                                      //                             0xffFFFFFF),
-                                      //                         fontFamily:
-                                      //                             'Inter',
-                                      //                         fontWeight:
-                                      //                             FontWeight
-                                      //                                 .w500),
-                                      //                   ),
-                                      //                   isExpanded: true,
-                                      //                   icon: const Icon(
-                                      //                     // Add this
-                                      //                     Icons.arrow_drop_down,
-                                      //                     // Add this
-                                      //                     color:
-                                      //                         Color(0xff64748B),
-
-                                      //                     // Add this
-                                      //                   ),
-                                      //                   items: _department
-                                      //                       .map((items) {
-                                      //                     return DropdownMenuItem(
-                                      //                       value: items['id']
-                                      //                           .toString(),
-                                      //                       child: Text(
-                                      //                         items['name'],
-                                      //                         style: const TextStyle(
-                                      //                             fontSize:
-                                      //                                 14.0,
-                                      //                             color: Color(
-                                      //                                 0xffFFFFFF),
-                                      //                             fontFamily:
-                                      //                                 'Inter',
-                                      //                             fontWeight:
-                                      //                                 FontWeight
-                                      //                                     .w400),
-                                      //                       ),
-                                      //                     );
-                                      //                   }).toList(),
-
-                                      //                   onChanged:
-                                      //                       (String? newValue) {
-                                      //                     setState(() {
-                                      //                       print(
-                                      //                           "---------newValue--------------${newValue}");
-                                      //                       _depat = newValue;
-                                      //                       print(
-                                      //                           "---------newValue--------------${_depat}");
-
-                                      //                       print(_depat);
-                                      //                     });
-                                      //                   },
-                                      //                   validator: (value) {
-                                      //                     value = _depat;
-                                      //                     if (value == null)
-                                      //                       return "Please select this field";
-                                      //                     else {
-                                      //                       return null;
-                                      //                     }
-                                      //                   },
-
-                                      //                   /* selectedItemBuilder:
-                                      //                                           (BuildContext
-                                      //                                       context) {
-                                      //                                         return _department.map(
-                                      //                                                 (
-                                      //                                                 value) {
-                                      //                                               return Container(
-                                      //                                                 margin: const EdgeInsets
-                                      //                                                     .only(
-                                      //                                                     top:
-                                      //                                                     15.0),
-                                      //                                                 child: Text(
-                                      //                                                     _depat!,
-                                      //                                                     style: const TextStyle(
-                                      //                                                         color: Color(
-                                      //                                                             0xffFFFFFF),
-                                      //                                                         fontFamily:
-                                      //                                                         'Inter',
-                                      //                                                         fontWeight: FontWeight
-                                      //                                                             .w400,
-                                      //                                                         fontSize:
-                                      //                                                         14.0)),
-                                      //                                               );
-                                      //                                             }).toList();
-                                      //                                       },*/
-                                      //                 ),
-                                      //               );
-                                      //             },
-                                      //           )),
-                                      //         )
-                                      //       ],
-                                      //     ),
-                                      //   ),
-                                      // ),
-
                                       Expanded(
                                         flex: 1,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                        child: Stack(
                                           children: [
                                             Container(
                                               width: MediaQuery.of(context)
@@ -1394,7 +1197,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       .width *
                                                   0.13,
                                               margin: const EdgeInsets.only(
-                                                  top: 10.0, right: 30),
+                                                  top: 16.0, right: 30),
                                               height: 56.0,
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
@@ -1496,7 +1299,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                                 print(
                                                                     "---------newValue--------------${newValue}");
                                                                 _depat =
-                                                                    newValue;
+                                                                    newValue!;
                                                                 selectDepartment =
                                                                     true;
                                                               });
@@ -3288,26 +3091,46 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                             ),
                             selectedIcon: Container(
-                              width: 46.0,
+                              width: 56.0,
                               height: 32.0,
                               margin: const EdgeInsets.only(
                                 top: 40.0,
                                 left: 20.0,
                                 right: 0.0,
                               ),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 border:
                                     Border.all(color: const Color(0xff334155)),
                                 borderRadius: BorderRadius.circular(
-                                  16.0,
+                                  18.0,
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(
-                                  "images/notification_icon.svg",
-                                ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      "images/notification_icon.svg",
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 3,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                        minHeight: 8,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             label: const Align(
@@ -3338,39 +3161,90 @@ class _NavigationRailState extends State<MyHomePage>
                           //     label: Text('')),
 
                           NavigationRailDestination(
-                            icon: Container(
-                              width: 20.0,
-                              height: 18.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: SvgPicture.asset(
-                                "images/camera.svg",
-                              ),
+                            icon: Column(
+                              children: [
+                                Container(
+                                  width: 20.0,
+                                  height: 18.0,
+                                  margin: const EdgeInsets.only(
+                                    top: 0.0,
+                                    left: 20.0,
+                                    right: 0.0,
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {},
+                                    onHover: (ishover) {
+                                      print(ishover);
+                                      print("99999999999999999999999999999");
+                                      setState(() {
+                                        ishover = true;
+                                      });
+                                      //
+                                    },
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
+                                    ),
+                                  ),
+                                ),
+                                ishover
+                                    ? Text("People",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.white))
+                                    : Text('')
+                              ],
                             ),
                             selectedIcon: Container(
-                              width: 46.0,
+                              width: 56.0,
                               height: 32.0,
                               margin: const EdgeInsets.only(
                                 top: 0.0,
                                 left: 20.0,
                                 right: 0.0,
                               ),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 border:
                                     Border.all(color: const Color(0xff334155)),
                                 borderRadius: BorderRadius.circular(
-                                  16.0,
+                                  18.0,
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(
-                                  "images/camera.svg",
-                                ),
+                              child: Stack(
+                                children: [
+                                  // Positioned(
+                                  //   child: Container(
+                                  //       height: 8,
+                                  //       width: 8,
+                                  //       decoration: BoxDecoration(
+                                  //           color: Color(0xffEF4444),
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(100))),
+                                  // ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 6,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                        minHeight: 8,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             label: const Align(
@@ -3397,26 +3271,46 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                             ),
                             selectedIcon: Container(
-                              width: 46.0,
+                              width: 56.0,
                               height: 32.0,
                               margin: const EdgeInsets.only(
                                 top: 0.0,
                                 left: 20.0,
                                 right: 0.0,
                               ),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 border:
                                     Border.all(color: const Color(0xff334155)),
                                 borderRadius: BorderRadius.circular(
-                                  16.0,
+                                  18.0,
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(
-                                  "images/people.svg",
-                                ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      "images/people.svg",
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 6,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                        minHeight: 8,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             label: const Text(''),
@@ -3436,8 +3330,9 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                             ),
                             selectedIcon: Container(
-                              width: 46.0,
+                              width: 56.0,
                               height: 32.0,
+                              alignment: Alignment.center,
                               margin: const EdgeInsets.only(
                                 top: 0.0,
                                 left: 20.0,
@@ -3448,14 +3343,33 @@ class _NavigationRailState extends State<MyHomePage>
                                 border:
                                     Border.all(color: const Color(0xff334155)),
                                 borderRadius: BorderRadius.circular(
-                                  16.0,
+                                  18.0,
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(
-                                  "images/button.svg",
-                                ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      "images/button.svg",
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 2,
+                                    top: 6,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                        minHeight: 8,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             label: const Text(''),
@@ -3475,8 +3389,9 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                             ),
                             selectedIcon: Container(
-                              width: 46.0,
+                              width: 56.0,
                               height: 32.0,
+                              alignment: Alignment.center,
                               margin: const EdgeInsets.only(
                                 top: 0.0,
                                 left: 20.0,
@@ -3487,14 +3402,33 @@ class _NavigationRailState extends State<MyHomePage>
                                 border:
                                     Border.all(color: const Color(0xff334155)),
                                 borderRadius: BorderRadius.circular(
-                                  16.0,
+                                  18.0,
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(
-                                  "images/bell.svg",
-                                ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      "images/bell.svg",
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 3,
+                                    top: 4,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                        minHeight: 8,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             label: const Text(''),
@@ -3514,13 +3448,14 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                             ),
                             selectedIcon: Container(
-                              width: 46.0,
+                              width: 56.0,
                               height: 32.0,
                               margin: const EdgeInsets.only(
                                 top: 0.0,
                                 left: 20.0,
                                 right: 0.0,
                               ),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 border:
@@ -3529,11 +3464,30 @@ class _NavigationRailState extends State<MyHomePage>
                                   16.0,
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: SvgPicture.asset(
-                                  "images/setting.svg",
-                                ),
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      "images/setting.svg",
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 6,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                        minHeight: 8,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             label: const Text(''),
@@ -3557,32 +3511,6 @@ class _NavigationRailState extends State<MyHomePage>
         ),
       ),
     );
-  }
-
-  //dropdown apis
-
-  Future<String?> getDepartment() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _department = mdata;
-        });
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
   }
 
   Future<String?> getAccountable() async {
@@ -3823,5 +3751,56 @@ class _NavigationRailState extends State<MyHomePage>
             : Text(''),
       ],
     );
+  }
+
+  clearContoller() {
+    _name.clear();
+    _nickName.clear();
+    _emailAddress.clear();
+    _phoneNumber.clear();
+
+    _bio.clear();
+    _designation.clear();
+
+    _association.clear();
+    _salary.clear();
+    startTime1 = '';
+    endTime2 = '';
+    _department.clear();
+    getDepartment();
+    // '${startTime1}-${endTime2}';
+    _country.clear();
+    _enterCity.clear();
+
+    webImage!.clear();
+
+    abc.clear();
+  }
+
+//dropdown apis
+
+  Future<String?> getDepartment() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          _department.clear();
+          _department = mdata;
+        });
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
   }
 }

@@ -728,18 +728,18 @@ class _IdleState extends State<Idle> {
             // height: MediaQuery.of(context).size.height * 0.83,
             // height: MediaQuery.of(context).size.height * 0.83,
 
-                height: 969,
-          
-          child: const Center(
-              child: Text(
-            "No Records Found!",
-            style: TextStyle(
-                color: Color(0xffFFFFFF),
-                fontSize: 22.0,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500),
-          )),
-        )
+            height: 969,
+
+            child: const Center(
+                child: Text(
+              "No Records Found!",
+              style: TextStyle(
+                  color: Color(0xffFFFFFF),
+                  fontSize: 22.0,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500),
+            )),
+          )
         : Row(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -912,7 +912,7 @@ class _IdleState extends State<Idle> {
               child: Container(
                 width: MediaQuery.of(context).size.width < 950
                     ? MediaQuery.of(context).size.width * 2
-                    : MediaQuery.of(context).size.width - 200,
+                    : MediaQuery.of(context).size.width - 160,
 
                 // height: MediaQuery.of(context).size.height * 0.83,
                 // height: MediaQuery.of(context).size.height * 0.83,
