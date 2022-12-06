@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:zeus/DemoContainer.dart';
 import 'package:zeus/add_new_phase/model/mileston_model.dart';
 import 'package:zeus/add_new_phase/model/phase_details.dart';
@@ -15,23 +16,16 @@ import 'package:zeus/add_new_phase/model/resources_needed.dart';
 import 'package:zeus/add_new_phase/model/resources_needed.dart'
     as resourceNeeded;
 import 'package:zeus/add_new_phase/model/subtask_model.dart';
-import 'package:zeus/helper_widget/dropdown_textfield.dart';
-import 'package:zeus/helper_widget/labeltextfield.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
 import 'package:zeus/helper_widget/subTaskList.dart';
-import 'package:zeus/helper_widget/textfield_milestone.dart';
 import 'package:zeus/helper_widget/textformfield.dart';
-import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
 import 'package:zeus/services/api.dart';
 import 'package:zeus/services/responce_model/create_phase_resp.dart';
 import 'package:zeus/services/responce_model/get_phase_details_resp.dart';
 import 'package:zeus/services/responce_model/update_phase_resp.dart';
 import 'package:zeus/utility/colors.dart';
-import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
-import 'package:zeus/utility/validations.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class NewPhase extends StatefulWidget {
@@ -49,8 +43,6 @@ class _NewPhaseState extends State<NewPhase> {
   TextEditingController controller_next_phase = TextEditingController();
   TextEditingController controllerMilestoneTitle = TextEditingController();
   TextEditingController controller_phase_type = TextEditingController();
-  AutoCompleteTextField? searchTextField;
-  AutoCompleteTextField? subTaskResourcesSearchTextField;
   ResourceNeededModel? resourceNeededModel;
   GetPhaseDetails? getPhaseDetails;
   List<String> abc = [];
@@ -70,8 +62,6 @@ class _NewPhaseState extends State<NewPhase> {
   bool clickAddSubTask = false;
   bool saveButtonClick = false;
   bool saveButtonClickForSubtask = false;
-  GlobalKey<AutoCompleteTextFieldState<Details>> key = new GlobalKey();
-  GlobalKey<AutoCompleteTextFieldState<Details>> subtaskKey = new GlobalKey();
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
   List<ResourceData> selectedSubTaskSource = [];
@@ -96,6 +86,12 @@ class _NewPhaseState extends State<NewPhase> {
   bool allValidate = true;
   bool savePhaseClick = false;
   bool saveSubtaskClick = false;
+
+  TypeAheadFormField? searchTextField;
+  TypeAheadFormField? subTaskResourcesSearchTextField;
+  final TextEditingController _typeAheadController = TextEditingController();
+  final TextEditingController _subTaskResourcesController =
+      TextEditingController();
 
   //VS --------------------------------------------------------------------------------
 
@@ -328,6 +324,22 @@ class _NewPhaseState extends State<NewPhase> {
         ));
   }
 
+  List<Details> getSuggestions(String query) {
+    List<Details> matches = List.empty(growable: true);
+    matches.addAll(users);
+    matches.retainWhere(
+        (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
+  List<Details> getSuggestionsForSubTask(String query) {
+    List<Details> matches = List.empty(growable: true);
+    matches.addAll(resourceSuggestions);
+    matches.retainWhere(
+        (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
   // Phase view
   Widget phaseView() {
     return Expanded(
@@ -555,24 +567,32 @@ class _NewPhaseState extends State<NewPhase> {
                       width: MediaQuery.of(context).size.width * 0.26,
                       margin: const EdgeInsets.only(top: 16, left: 30),
                       decoration: BoxDecoration(),
-                      child: Expanded(
-                        child: Container(
-                          //padding: EdgeInsets.only(left: 5, right: 5),
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            //border: Border.all(color:  const Color(0xff1E293B)),
+                      child: Container(
+                        //padding: EdgeInsets.only(left: 5, right: 5),
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff334155),
+                          //border: Border.all(color:  const Color(0xff1E293B)),
 
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
+                          borderRadius: BorderRadius.circular(
+                            8.0,
                           ),
-                          child: Column(
-                            children: [
-                              searchTextField = AutoCompleteTextField<Details>(
-                                clearOnSubmit: false,
-                                key: key,
+                        ),
+                        child: Column(
+                          children: [
+                            searchTextField = TypeAheadFormField(
+                              keepSuggestionsOnLoading: false,
+                              hideOnLoading: true,
+                              suggestionsCallback: (pattern) {
+                                return getSuggestions(pattern);
+                              },
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: _typeAheadController,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 14.0),
+                                keyboardType: TextInputType.text,
                                 cursorColor: Colors.white,
+                                autofocus: true,
                                 decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.only(top: 15.0),
                                   prefixIcon: Padding(
@@ -589,21 +609,18 @@ class _NewPhaseState extends State<NewPhase> {
                                       fontWeight: FontWeight.w400),
                                   border: InputBorder.none,
                                 ),
-                                suggestions: users,
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 14.0),
-                                itemFilter: (item, query) {
-                                  return item.name!
-                                      .toLowerCase()
-                                      .startsWith(query.toLowerCase());
-                                },
-                                itemSorter: (a, b) {
-                                  return a.name!.compareTo(b.name!);
-                                },
-                                itemSubmitted: (item) {
-                                  setState(() {
-                                    //print(item.title);
+                              ),
+                              itemBuilder: (context, item) {
+                                return rowResourceName(item);
+                              },
+                              transitionBuilder:
+                                  (context, suggestionsBox, controller) {
+                                return suggestionsBox;
+                              },
+                              onSuggestionSelected: (item) {
+                                setState(() {
+                                  searchTextField!.textFieldConfiguration
+                                      .controller!.text = '';
 
                                     searchTextField!
                                         .textField!.controller!.text = '';
@@ -1173,60 +1190,58 @@ class _NewPhaseState extends State<NewPhase> {
           width: MediaQuery.of(context).size.width * 0.26,
           margin: const EdgeInsets.only(top: 16, left: 30),
           decoration: BoxDecoration(),
-          child: Expanded(
-            child: Container(
-              //padding: EdgeInsets.only(left: 5, right: 5),
-              height: 50.0,
-              decoration: BoxDecoration(
-                color: const Color(0xff334155),
-                //border: Border.all(color:  const Color(0xff1E293B)),
+          child: Container(
+            //padding: EdgeInsets.only(left: 5, right: 5),
+            height: 50.0,
+            decoration: BoxDecoration(
+              color: const Color(0xff334155),
+              //border: Border.all(color:  const Color(0xff1E293B)),
 
-                borderRadius: BorderRadius.circular(
-                  8.0,
-                ),
+              borderRadius: BorderRadius.circular(
+                8.0,
               ),
-              child: Column(
-                children: [
-
-                  Container(
-                      width: MediaQuery.of(context).size.width * 0.26,
-                    child: subTaskResourcesSearchTextField = AutoCompleteTextField<Details>(
-                      clearOnSubmit: false,
-                      suggestionsAmount: 100,
-                      key: subtaskKey,
-                      cursorColor: Colors.white,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 15.0),
-                        prefixIcon: Padding(
-                            padding: EdgeInsets.only(top: 4.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Color(0xff64748B),
-                            )),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                            fontSize: 14.0,
+            ),
+            child: Column(
+              children: [
+                subTaskResourcesSearchTextField = TypeAheadFormField(
+                  keepSuggestionsOnLoading: false,
+                  hideOnLoading: true,
+                  suggestionsCallback: (pattern) {
+                    return getSuggestionsForSubTask(pattern);
+                  },
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _subTaskResourcesController,
+                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
+                    keyboardType: TextInputType.text,
+                    cursorColor: Colors.white,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 15.0),
+                      prefixIcon: Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: Icon(
+                            Icons.search,
                             color: Color(0xff64748B),
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400),
-                        border: InputBorder.none,
-                      ),
-                      suggestions: resourceSuggestions,
-                      keyboardType: TextInputType.text,
-                      style: const TextStyle(color: Colors.white, fontSize: 14.0),
-                      itemFilter: (item, query) {
-                        return item.name!
-                            .toLowerCase()
-                            .startsWith(query.toLowerCase());
-                      },
-                      itemSorter: (a, b) {
-                        return a.name!.compareTo(b.name!);
-                      },
-                      itemSubmitted: (item) {
-                        setState(() {
-                          subTaskResourceName = item.name!;
-                          subTaskResourcesSearchTextField!
-                              .textField!.controller!.text = '';
+                          )),
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Color(0xff64748B),
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                  itemBuilder: (context, item) {
+                    return rowResourceName(item);
+                  },
+                  transitionBuilder: (context, suggestionsBox, controller) {
+                    return suggestionsBox;
+                  },
+                  onSuggestionSelected: (item) {
+                    setState(() {
+                      subTaskResourceName = item.name!;
+                      _subTaskResourcesController.text = '';
 
                           selectedSubTaskSource.clear();
                           selectedSubTaskSource.add(ResourceData(

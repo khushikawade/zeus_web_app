@@ -316,13 +316,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          SmartDialog.showLoading(
-                            msg:
-                                "Your request is in progress please wait for a while...",
-                          );
-                          Future.delayed(const Duration(seconds: 2), () {
-                            login();
-                          });
+                          if (emailController.text.isEmpty &&
+                              passwordController.text.isEmpty) {
+                            _submit();
+                          } else {
+                            SmartDialog.showLoading(
+                              msg:
+                                  "Your request is in progress please wait for a while...",
+                            );
+                            Future.delayed(const Duration(seconds: 2), () {
+                              login();
+                            });
+                          }
                         },
                         child: Align(
                           alignment: Alignment.topRight,
@@ -384,7 +389,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "Content-Encoding": "gzip",
         },
       );
-     
+
       print(response.body);
       print(response.statusCode);
       // ignore: unrelated_type_equality_checks
