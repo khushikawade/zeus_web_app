@@ -130,6 +130,7 @@ class _NewPhaseState extends State<NewPhase> {
 
             selectedSource.add(element.resource?.name ?? "");
 
+
             _phaseDetails.resource!.add(ResourceData(
                 department_id: element.departmentId ?? 0,
                 resource_id: element.resourceId ?? 0,
@@ -137,15 +138,18 @@ class _NewPhaseState extends State<NewPhase> {
           });
         }
 
+
+        // get milestone data form details API
         if (getPhaseDetails!.data!.milestone != null &&
             getPhaseDetails!.data!.milestone!.isNotEmpty) {
           saveButtonClick = true;
           getPhaseDetails!.data!.milestone!.forEach((element) {
             _phaseDetails.milestone!
-                .add(Milestones(title: element.title, m_date: element.mDate));
+                .add(Milestones(title: element.title, m_date: element.mDate,id: element.id));
           });
         }
 
+        // get Task data form details API
         if (getPhaseDetails!.data!.subTasks != null &&
             getPhaseDetails!.data!.subTasks!.isNotEmpty) {
           saveButtonClickForSubtask = true;
@@ -609,7 +613,7 @@ class _NewPhaseState extends State<NewPhase> {
                                         _phaseDetails.resource!.add(
                                             ResourceData(
                                                 resource_name: item.name,
-                                                resource_id: item.id,
+                                                resource_id: item.userId,
                                                 department_id:
                                                     item.departmentId ?? 0));
                                         listResource.add(PhasesSortedResources(
@@ -623,7 +627,7 @@ class _NewPhaseState extends State<NewPhase> {
                                           details: item));
                                       _phaseDetails.resource!.add(ResourceData(
                                           resource_name: item.name,
-                                          resource_id: item.id,
+                                          resource_id: item.userId,
                                           department_id:
                                               item.departmentId ?? 0));
                                       selectedSource.add(item.name!);
@@ -1183,67 +1187,70 @@ class _NewPhaseState extends State<NewPhase> {
               ),
               child: Column(
                 children: [
-                  subTaskResourcesSearchTextField =
-                      AutoCompleteTextField<Details>(
-                    clearOnSubmit: false,
-                    suggestionsAmount: 100,
-                    key: subtaskKey,
-                    cursorColor: Colors.white,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 15.0),
-                      prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 4.0),
-                          child: Icon(
-                            Icons.search,
+
+                  Container(
+                      width: MediaQuery.of(context).size.width * 0.26,
+                    child: subTaskResourcesSearchTextField = AutoCompleteTextField<Details>(
+                      clearOnSubmit: false,
+                      suggestionsAmount: 100,
+                      key: subtaskKey,
+                      cursorColor: Colors.white,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 15.0),
+                        prefixIcon: Padding(
+                            padding: EdgeInsets.only(top: 4.0),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(0xff64748B),
+                            )),
+                        hintText: 'Search',
+                        hintStyle: TextStyle(
+                            fontSize: 14.0,
                             color: Color(0xff64748B),
-                          )),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Color(0xff64748B),
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400),
+                        border: InputBorder.none,
+                      ),
+                      suggestions: resourceSuggestions,
+                      keyboardType: TextInputType.text,
+                      style: const TextStyle(color: Colors.white, fontSize: 14.0),
+                      itemFilter: (item, query) {
+                        return item.name!
+                            .toLowerCase()
+                            .startsWith(query.toLowerCase());
+                      },
+                      itemSorter: (a, b) {
+                        return a.name!.compareTo(b.name!);
+                      },
+                      itemSubmitted: (item) {
+                        setState(() {
+                          subTaskResourceName = item.name!;
+                          subTaskResourcesSearchTextField!
+                              .textField!.controller!.text = '';
+
+                          selectedSubTaskSource.clear();
+                          selectedSubTaskSource.add(ResourceData(
+                              department_id: item.departmentId,
+                              resource_id: item.userId,
+                              resource_name: item.name));
+
+                          //
+                          // if (selectedSubTaskSource.isNotEmpty) {
+                          //   if (selectedSubTaskSource.contains(item.name)) {
+                          //   } else {
+                          //     selectedSubTaskSource.add(item.name!);
+                          //   }
+                          // } else {
+                          //   selectedSubTaskSource.add(item.name!);
+                          // }
+                        });
+                      },
+                      itemBuilder: (context, item) {
+                        // ui for the autocompelete row
+                        return rowResourceName(item);
+                      },
                     ),
-                    suggestions: resourceSuggestions,
-                    keyboardType: TextInputType.text,
-                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
-                    itemFilter: (item, query) {
-                      return item.name!
-                          .toLowerCase()
-                          .startsWith(query.toLowerCase());
-                    },
-                    itemSorter: (a, b) {
-                      return a.name!.compareTo(b.name!);
-                    },
-                    itemSubmitted: (item) {
-                      setState(() {
-                        subTaskResourceName = item.name!;
-                        subTaskResourcesSearchTextField!
-                            .textField!.controller!.text = '';
-
-                        selectedSubTaskSource.clear();
-                        selectedSubTaskSource.add(ResourceData(
-                            department_id: item.departmentId,
-                            resource_id: item.id,
-                            resource_name: item.name));
-
-                        //
-                        // if (selectedSubTaskSource.isNotEmpty) {
-                        //   if (selectedSubTaskSource.contains(item.name)) {
-                        //   } else {
-                        //     selectedSubTaskSource.add(item.name!);
-                        //   }
-                        // } else {
-                        //   selectedSubTaskSource.add(item.name!);
-                        // }
-                      });
-                    },
-                    itemBuilder: (context, item) {
-                      // ui for the autocompelete row
-                      return rowResourceName(item);
-                    },
-                  ),
+                  )
                 ],
               ),
             ),
@@ -1626,7 +1633,7 @@ class _NewPhaseState extends State<NewPhase> {
     subTaskEndDate = AppUtil.dateToString(DateTime.now());
   }
 
-  void editPhaseApi() {}
+
 }
 
 class PhasesSortedResources {
