@@ -460,7 +460,7 @@ class _NewPhaseState extends State<NewPhase> {
                         child: CircleAvatar(
                           backgroundColor: Color(0xff334155),
                           radius: 30,
-                          child: Icon(Icons.person_outline),
+                          child: Icon(Icons.person_outline,size: 40),
                           // SvgPicture.asset(
                           //   'images/photo.svg',
                           //   width: 24.0,
@@ -469,13 +469,14 @@ class _NewPhaseState extends State<NewPhase> {
                         ),
                       ),
                       Positioned(
-                          right: 10,bottom: 10,
-                          child:Container(decoration: BoxDecoration(
+                        bottom: 0,right: 0,
+                          child:Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
                             color: Color(0xff10B981),
                             borderRadius: BorderRadius.circular(100),
-
                           ),
-                            child: Icon(Icons.add,color: Colors.white,size: 20),
+                            child: Center(child: Icon(Icons.add,color: Colors.white,size: 18)),
 
                           ))
                     ],
@@ -1112,20 +1113,39 @@ class _NewPhaseState extends State<NewPhase> {
              Padding(
               padding: EdgeInsets.only(left: 20.0, top: 7),
               child:  Container(
-                decoration:  BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(100)
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
 
                 ),
-                child: const CircleAvatar(
-                  backgroundColor: Color(0xff334155),
-                  radius: 30,
-                  child: Icon(Icons.person_outline),
-                  // SvgPicture.asset(
-                  //   'images/photo.svg',
-                  //   width: 24.0,
-                  //   height: 24.0,
-                  // ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,right: 0,top: 0,bottom: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xff334155),
+                        radius: 30,
+                        child: Icon(Icons.person_outline,size: 40),
+                        // SvgPicture.asset(
+                        //   'images/photo.svg',
+                        //   width: 24.0,
+                        //   height: 24.0,
+                        // ),
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 0,right: 0,
+                        child:Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Color(0xff10B981),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(child: Icon(Icons.add,color: Colors.white,size: 18)),
+
+                        ))
+                  ],
+
                 ),
               ),
             ),

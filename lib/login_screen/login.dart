@@ -16,6 +16,7 @@ import '../utility/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   final ValueChanged<String> onSubmit;
+
   LoginScreen({Key? key, required this.onSubmit}) : super(key: key);
 
   @override
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _name = '';
 
   var _formKey = GlobalKey<FormState>();
+
   // TextEditingController emailController =
   //     TextEditingController(text: 'omkar@omkar.com');
   // TextEditingController passwordController =
@@ -175,7 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           TextFormField(
-                     
                             autocorrect: false,
                             controller: emailController,
                             cursorColor: const Color(0xffFFFFFF),
@@ -196,8 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 14.0,
                                     color: Color(0xffFFFFFF),
                                     fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w400)
-                            ),
+                                    fontWeight: FontWeight.w400)),
                             autovalidateMode: _submitted
                                 ? AutovalidateMode.onUserInteraction
                                 : AutovalidateMode.disabled,
@@ -329,11 +329,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           }
                         },
+                        onLongPress: () {
+                          emailController.text = "vishal.zt@mailinator.com";
+                          passwordController.text = "Password@123";
+                          _submit();
+                        },
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
-                            width:
-                                87, //MediaQuery.of(context).size.width * 0.22,
+                            width: 87,
+                            //MediaQuery.of(context).size.width * 0.22,
                             margin: const EdgeInsets.only(
                               top: 25.0,
                               right: 30.0,
