@@ -1940,6 +1940,7 @@ showDailog(
                                                 },
                                                 onEditClick: () async {
                                                   Navigator.pop(context);
+
                                                   showDialog(
                                                       context: context,
                                                       builder: (context) {
