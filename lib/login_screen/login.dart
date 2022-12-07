@@ -53,319 +53,325 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: const Color(0xff0F172A),
         body: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 26.0, left: 0.0),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SvgPicture.asset(
-                    'images/logo.svg',
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 0.0, top: 42.0),
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Welcome to",
-                    style: TextStyle(
-                        color: Color(0xff94A3B8),
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 0.0, top: 10.0),
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Zestful Empowering Utilization System",
-                    style: TextStyle(
-                        color: Color(0xffFFFFFF),
-                        fontSize: 20.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.55,
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  margin: const EdgeInsets.only(left: 0.0, top: 49.0),
-                  decoration: BoxDecoration(
-                    color: const Color(0xff1E293B),
-                    //border: Border.all(color: const Color(0xff0E7490)),
-                    borderRadius: BorderRadius.circular(
-                      8.0,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 26.0, left: 0.0),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: SvgPicture.asset(
+                      'images/logo.svg',
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 0.0, top: 30.0),
-                        child: const Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                                color: Color(0xffFFFFFF),
-                                fontSize: 20.0,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.99,
-                            margin: const EdgeInsets.only(
-                                top: 40.0, left: 30.0, right: 30.0),
-                            height: 56.0,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff334155),
-                              //border: Border.all(color:  const Color(0xff1E293B)),
-                              borderRadius: BorderRadius.circular(
-                                8.0,
-                              ),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0xff475569),
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
-                                ), //BoxShadow
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 16.0,
-                                margin: const EdgeInsets.only(
-                                    top: 50.0, left: 50.0),
-                                child: const Text(
-                                  "Email address",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xff64748B),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-
-                              /*  Container(
-                                alignment: Alignment.centerLeft,
-                                height:20.0,
-                                margin:
-                                const EdgeInsets.only(top: 10.0, left: 2.0,bottom: 0.0),
-
-                                child:
-                              ),*/
-                            ],
-                          ),
-                          TextFormField(
-                     
-                            autocorrect: false,
-                            controller: emailController,
-                            cursorColor: const Color(0xffFFFFFF),
-                            style: const TextStyle(color: Color(0xffFFFFFF)),
-                            textAlignVertical: TextAlignVertical.bottom,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                                //errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                contentPadding: EdgeInsets.only(
-                                  bottom: 0.0,
-                                  top: 82.0,
-                                  right: 10,
-                                  left: 50.0,
-                                ),
-                                border: InputBorder.none,
-                                hintText: 'Enter email address',
-                                hintStyle: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xffFFFFFF),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w400)
-                            ),
-                            autovalidateMode: _submitted
-                                ? AutovalidateMode.onUserInteraction
-                                : AutovalidateMode.disabled,
-                            validator: (value) {
-                              RegExp regex = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                              if (value!.isEmpty) {
-                                return 'Please enter email';
-                              }
-                              if (!regex.hasMatch(value)) {
-                                return 'Enter valid Email';
-                              }
-                              if (regex.hasMatch(values)) {
-                                return 'please enter valid email';
-                              }
-                              if (value.length > 50) {
-                                return 'No more length 50';
-                              }
-                              return null;
-                            },
-                            onChanged: (text) => setState(() => _name = text),
-                          ),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.99,
-                            margin: const EdgeInsets.only(
-                                top: 24.0, left: 30.0, right: 30.0),
-                            height: 56.0,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff334155),
-                              //border: Border.all(color:  const Color(0xff1E293B)),
-                              borderRadius: BorderRadius.circular(
-                                8.0,
-                              ),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0xff475569),
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
-                                ), //BoxShadow
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 16.0,
-                                margin: const EdgeInsets.only(
-                                    top: 33.0, left: 50.0),
-                                child: const Text(
-                                  "Password",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xff64748B),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-
-                              /*  Container(
-                                alignment: Alignment.centerLeft,
-                                height:20.0,
-                                margin:
-                                const EdgeInsets.only(top: 10.0, left: 2.0,bottom: 0.0),
-
-                                child:
-                              ),*/
-                            ],
-                          ),
-                          TextFormField(
-                            autocorrect: false,
-                            controller: passwordController,
-                            obscureText: !_showPassword,
-                            cursorColor: const Color(0xffFFFFFF),
-                            style: const TextStyle(color: Color(0xffFFFFFF)),
-                            textAlignVertical: TextAlignVertical.bottom,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                                //errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                contentPadding: EdgeInsets.only(
-                                  bottom: 0.0,
-                                  top: 66.0,
-                                  right: 10,
-                                  left: 50.0,
-                                ),
-                                border: InputBorder.none,
-                                hintText: 'Enter password',
-                                hintStyle: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xffFFFFFF),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w400)),
-                            autovalidateMode: _submitted
-                                ? AutovalidateMode.onUserInteraction
-                                : AutovalidateMode.disabled,
-                            validator: (value) {
-//  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                              if (value!.isEmpty) {
-                                return 'Please enter Password';
-                              } else if (value.length < 5) {
-                                return 'Minimum length 5';
-                              }
-                              return null;
-                            },
-                            onChanged: (text) => setState(() => _name = text),
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          if (emailController.text.isEmpty &&
-                              passwordController.text.isEmpty) {
-                            _submit();
-                          } else {
-                            SmartDialog.showLoading(
-                              msg:
-                                  "Your request is in progress please wait for a while...",
-                            );
-                            Future.delayed(const Duration(seconds: 2), () {
-                              login();
-                            });
-                          }
-                        },
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            width:
-                                87, //MediaQuery.of(context).size.width * 0.22,
-                            margin: const EdgeInsets.only(
-                              top: 25.0,
-                              right: 30.0,
-                            ),
-                            height: 40.0,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff7DD3FC),
-                              //border: Border.all(color:  const Color(0xff1E293B)),
-                              borderRadius: BorderRadius.circular(
-                                40.0,
-                              ),
-                            ),
-
-                            child: const Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: ColorSelect.black_color,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 0.0, top: 42.0),
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Welcome to",
+                      style: TextStyle(
+                          color: Color(0xff94A3B8),
+                          fontSize: 14.0,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  margin: const EdgeInsets.only(left: 0.0, top: 10.0),
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Zestful Empowering Utilization System",
+                      style: TextStyle(
+                          color: Color(0xffFFFFFF),
+                          fontSize: 20.0,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    //  height: MediaQuery.of(context).size.height * 0.34,
+                    width: MediaQuery.of(context).size.width * 0.30,
+                    margin: const EdgeInsets.only(
+                      top: 49.0,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff1E293B),
+                      //border: Border.all(color: const Color(0xff0E7490)),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                            left: 0.0,
+                            top: 30.0,
+                          ),
+                          child: const Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                  color: Color(0xffFFFFFF),
+                                  fontSize: 20.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.99,
+                              margin: const EdgeInsets.only(
+                                top: 40.0,
+                                left: 30.0,
+                                right: 30.0,
+                              ),
+                              height: 56.0,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                //border: Border.all(color:  const Color(0xff1E293B)),
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0xff475569),
+                                    offset: Offset(
+                                      0.0,
+                                      2.0,
+                                    ),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ), //BoxShadow
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 16.0,
+                                  margin: const EdgeInsets.only(
+                                      top: 50.0, left: 50.0),
+                                  child: const Text(
+                                    "Email address",
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xff64748B),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+
+                                /*  Container(
+                                  alignment: Alignment.centerLeft,
+                                  height:20.0,
+                                  margin:
+                                  const EdgeInsets.only(top: 10.0, left: 2.0,bottom: 0.0),
+                  
+                                  child:
+                                ),*/
+                              ],
+                            ),
+                            TextFormField(
+                              autocorrect: false,
+                              controller: emailController,
+                              cursorColor: const Color(0xffFFFFFF),
+                              style: const TextStyle(color: Color(0xffFFFFFF)),
+                              textAlignVertical: TextAlignVertical.bottom,
+                              keyboardType: TextInputType.text,
+                              decoration: const InputDecoration(
+                                  //errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                  contentPadding: EdgeInsets.only(
+                                    bottom: 0.0,
+                                    top: 82.0,
+                                    right: 10,
+                                    left: 50.0,
+                                  ),
+                                  border: InputBorder.none,
+                                  hintText: 'Enter email address',
+                                  hintStyle: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400)),
+                              autovalidateMode: _submitted
+                                  ? AutovalidateMode.onUserInteraction
+                                  : AutovalidateMode.disabled,
+                              validator: (value) {
+                                RegExp regex = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                if (value!.isEmpty) {
+                                  return 'Please enter email';
+                                }
+                                if (!regex.hasMatch(value)) {
+                                  return 'Enter valid Email';
+                                }
+                                if (regex.hasMatch(values)) {
+                                  return 'please enter valid email';
+                                }
+                                if (value.length > 50) {
+                                  return 'No more length 50';
+                                }
+                                return null;
+                              },
+                              onChanged: (text) => setState(() => _name = text),
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.99,
+                              margin: const EdgeInsets.only(
+                                  top: 24.0, left: 30.0, right: 30.0),
+                              height: 56.0,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                //border: Border.all(color:  const Color(0xff1E293B)),
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0xff475569),
+                                    offset: Offset(
+                                      0.0,
+                                      2.0,
+                                    ),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ), //BoxShadow
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 16.0,
+                                  margin: const EdgeInsets.only(
+                                      top: 33.0, left: 50.0),
+                                  child: const Text(
+                                    "Password",
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xff64748B),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+
+                                /*  Container(
+                                  alignment: Alignment.centerLeft,
+                                  height:20.0,
+                                  margin:
+                                  const EdgeInsets.only(top: 10.0, left: 2.0,bottom: 0.0),
+                  
+                                  child:
+                                ),*/
+                              ],
+                            ),
+                            TextFormField(
+                              autocorrect: false,
+                              controller: passwordController,
+                              obscureText: !_showPassword,
+                              cursorColor: const Color(0xffFFFFFF),
+                              style: const TextStyle(color: Color(0xffFFFFFF)),
+                              textAlignVertical: TextAlignVertical.bottom,
+                              keyboardType: TextInputType.text,
+                              decoration: const InputDecoration(
+                                  //errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                  contentPadding: EdgeInsets.only(
+                                    bottom: 0.0,
+                                    top: 66.0,
+                                    right: 10,
+                                    left: 50.0,
+                                  ),
+                                  border: InputBorder.none,
+                                  hintText: 'Enter password',
+                                  hintStyle: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400)),
+                              autovalidateMode: _submitted
+                                  ? AutovalidateMode.onUserInteraction
+                                  : AutovalidateMode.disabled,
+                              validator: (value) {
+                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                if (value!.isEmpty) {
+                                  return 'Please enter Password';
+                                } else if (value.length < 5) {
+                                  return 'Minimum length 5';
+                                }
+                                return null;
+                              },
+                              onChanged: (text) => setState(() => _name = text),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (emailController.text.isEmpty &&
+                                passwordController.text.isEmpty) {
+                              _submit();
+                            } else {
+                              SmartDialog.showLoading(
+                                msg:
+                                    "Your request is in progress please wait for a while...",
+                              );
+                              Future.delayed(const Duration(seconds: 2), () {
+                                login();
+                              });
+                            }
+                          },
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              width:
+                                  87, //MediaQuery.of(context).size.width * 0.22,
+                              margin: const EdgeInsets.only(
+                                  top: 38.0, right: 30.0, bottom: 38),
+                              height: 40.0,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff7DD3FC),
+                                //border: Border.all(color:  const Color(0xff1E293B)),
+                                borderRadius: BorderRadius.circular(
+                                  40.0,
+                                ),
+                              ),
+
+                              child: const Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: ColorSelect.black_color,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
