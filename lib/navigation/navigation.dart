@@ -11,7 +11,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
+import 'package:show_more_text_popup/show_more_text_popup.dart';
+import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
+import 'package:zeus/helper_widget/mytooltip.dart';
 import 'package:zeus/helper_widget/searchbar.dart';
 import 'package:zeus/navigation/tag_model/tag_user.dart';
 import 'package:zeus/navigation/tag_model/tagresponse.dart';
@@ -203,8 +206,7 @@ class _NavigationRailState extends State<MyHomePage>
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
     request.fields['availibilty_day'] = commaSepratedString;
-    request.fields['availibilty_time'] =
-     '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] = '${startTime1}-${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -274,7 +276,7 @@ class _NavigationRailState extends State<MyHomePage>
       );
     }
   }
-  
+
   //Create project Api
   createProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -3077,16 +3079,19 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
-                            icon: Container(
-                              margin: const EdgeInsets.only(
-                                top: 40.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(9.0),
-                                child: SvgPicture.asset(
-                                  "images/notification_icon.svg",
+                            icon: Tooltip(
+                              message: 'Projects',
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  top: 40.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(9.0),
+                                  child: SvgPicture.asset(
+                                    "images/notification_icon.svg",
+                                  ),
                                 ),
                               ),
                             ),
@@ -3145,53 +3150,24 @@ class _NavigationRailState extends State<MyHomePage>
                                 )),
                           ),
 
-                          // NavigationRailDestination(
-                          //     icon: Container(
-                          //       width: 20.0,
-                          //       height: 18.0,
-                          //       margin: const EdgeInsets.only(
-                          //         top: 0.0,
-                          //         left: 20.0,
-                          //         right: 0.0,
-                          //       ),
-                          //       child: SvgPicture.asset(
-                          //         "images/camera.svg",
-                          //       ),
-                          //     ),
-                          //     label: Text('')),
-
                           NavigationRailDestination(
                             icon: Column(
                               children: [
-                                Container(
-                                  width: 20.0,
-                                  height: 18.0,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {},
-                                    onHover: (ishover) {
-                                      print(ishover);
-                                      print("99999999999999999999999999999");
-                                      setState(() {
-                                        ishover = true;
-                                      });
-                                      //
-                                    },
+                                Tooltip(
+                                  message: 'People',
+                                  child: Container(
+                                    width: 20.0,
+                                    height: 18.0,
+                                    margin: const EdgeInsets.only(
+                                      top: 0.0,
+                                      left: 20.0,
+                                      right: 0.0,
+                                    ),
                                     child: SvgPicture.asset(
                                       "images/camera.svg",
                                     ),
                                   ),
                                 ),
-                                ishover
-                                    ? Text("People",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.white))
-                                    : Text('')
                               ],
                             ),
                             selectedIcon: Container(
@@ -3213,16 +3189,6 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                               child: Stack(
                                 children: [
-                                  // Positioned(
-                                  //   child: Container(
-                                  //       height: 8,
-                                  //       width: 8,
-                                  //       decoration: BoxDecoration(
-                                  //           color: Color(0xffEF4444),
-                                  //           borderRadius:
-                                  //               BorderRadius.circular(100))),
-                                  // ),
-
                                   Padding(
                                     padding: const EdgeInsets.all(6.0),
                                     child: SvgPicture.asset(
@@ -3231,7 +3197,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Positioned(
                                     right: 0,
-                                    top: 6,
+                                    top: 3,
                                     child: Container(
                                       padding: const EdgeInsets.all(1),
                                       decoration: BoxDecoration(
@@ -3258,6 +3224,83 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                 )),
                           ),
+                          // NavigationRailDestination(
+                          //   icon: Container(
+                          //     width: 20.0,
+                          //     height: 18.0,
+                          //     margin: const EdgeInsets.only(
+                          //       top: 0.0,
+                          //       left: 20.0,
+                          //       right: 0.0,
+                          //     ),
+                          //     child: SvgPicture.asset(
+                          //       "images/camera.svg",
+                          //     ),
+                          //   ),
+                          //   selectedIcon: Container(
+                          //     width: 56.0,
+                          //     height: 32.0,
+                          //     margin: const EdgeInsets.only(
+                          //       top: 0.0,
+                          //       left: 20.0,
+                          //       right: 0.0,
+                          //     ),
+                          //     alignment: Alignment.center,
+                          //     decoration: BoxDecoration(
+                          //       color: const Color(0xff334155),
+                          //       border:
+                          //           Border.all(color: const Color(0xff334155)),
+                          //       borderRadius: BorderRadius.circular(
+                          //         18.0,
+                          //       ),
+                          //     ),
+                          //     child: Stack(
+                          //       children: [
+                          //         // Positioned(
+                          //         //   child: Container(
+                          //         //       height: 8,
+                          //         //       width: 8,
+                          //         //       decoration: BoxDecoration(
+                          //         //           color: Color(0xffEF4444),
+                          //         //           borderRadius:
+                          //         //               BorderRadius.circular(100))),
+                          //         // ),
+
+                          //         Padding(
+                          //           padding: const EdgeInsets.all(6.0),
+                          //           child: SvgPicture.asset(
+                          //             "images/camera.svg",
+                          //           ),
+                          //         ),
+                          //         Positioned(
+                          //           right: 0,
+                          //           top: 6,
+                          //           child: Container(
+                          //             padding: const EdgeInsets.all(1),
+                          //             decoration: BoxDecoration(
+                          //               color: Colors.red,
+                          //               borderRadius: BorderRadius.circular(6),
+                          //             ),
+                          //             constraints: const BoxConstraints(
+                          //               minWidth: 8,
+                          //               minHeight: 8,
+                          //             ),
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          //   label: const Align(
+                          //       alignment: Alignment.center,
+                          //       child: Padding(
+                          //         padding: EdgeInsets.only(left: 25, top: 5),
+                          //         child: Text(
+                          //           'People',
+                          //           textAlign: TextAlign.center,
+                          //           style: TextStyle(fontSize: 12),
+                          //         ),
+                          //       )),
+                          // ),
 
                           NavigationRailDestination(
                             icon: Container(

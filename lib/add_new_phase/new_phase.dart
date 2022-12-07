@@ -1488,9 +1488,9 @@ class _NewPhaseState extends State<NewPhase> {
                     try {
                       if (subtaskActionType.isEmpty) {
                         _phaseDetails.sub_tasks!.add(SubTasksModel(
-                            resource: selectedSubTaskSource[0],
-                            end_date: subTaskEndDate,
-                            start_date: subTaskStartDate,
+                          resource: selectedSubTaskSource[0],
+                          end_date: subTaskEndDate,
+                          start_date: subTaskStartDate,
 
                         ));
                         subtaskActionType = '';
