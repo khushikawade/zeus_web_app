@@ -175,8 +175,10 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
         );
       })));
     } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
       AppUtil.showErrorDialog(context);
     } else {
+      SmartDialog.dismiss();
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
         msg: user.message != null ? user.message! : 'Something Went Wrong',
