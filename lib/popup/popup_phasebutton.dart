@@ -32,6 +32,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -64,7 +65,6 @@ class MenuPhase extends StatefulWidget {
   VoidCallback onDeleteSuccess;
   VoidCallback? onEditClick;
 
-
   MenuPhase(
       {required this.index,
       required this.title,
@@ -75,9 +75,8 @@ class MenuPhase extends StatefulWidget {
       this.data,
       required this.buildContext,
       required this.setState,
-        this.onEditClick,
+      this.onEditClick,
       this.returnValue,
-
       Key? key})
       : super(key: key);
 
@@ -216,7 +215,6 @@ class _MenuPhaseState extends State<MenuPhase>
           child: InkWell(
             // hoverColor: Colors.red,
             onTap: () {
-
               //Navigator.pop(context);
               widget.onEditClick!();
             },
@@ -378,6 +376,8 @@ class _MenuPhaseState extends State<MenuPhase>
         setState(() {
           _department = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -410,6 +410,8 @@ class _MenuPhaseState extends State<MenuPhase>
 
         // final stringRes = JsonEncoder.withIndent('').convert(res);
         //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -437,6 +439,8 @@ class _MenuPhaseState extends State<MenuPhase>
       setState(() {
         loading = false;
       });
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
 
@@ -486,6 +490,12 @@ class _MenuPhaseState extends State<MenuPhase>
       //           )),
       // );
       //(Route<dynamic> route) => false);
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -513,6 +523,8 @@ class _MenuPhaseState extends State<MenuPhase>
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:zeus/add_new_phase/model/phase_details.dart';
 import 'package:zeus/add_new_phase/model/resources_needed.dart';
 import 'package:zeus/services/api_client.dart';
@@ -52,7 +53,7 @@ class Api {
     }
   }
 
-  getDeparment() async {
+  getDeparment(BuildContext context) async {
     List department = [];
     bool internet = await AppUtil.checkNetwork();
     // if (!internet) {
@@ -87,6 +88,8 @@ class Api {
       List<dynamic> mdata = map["data"];
       department = mdata;
       return department;
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print('department error===========>>>>>>>>');
       print("failed to much");
@@ -94,7 +97,8 @@ class Api {
   }
 
   // //Call Api for Get Product Sub Categoruy
-  Future<ResourceNeededModel> getResourceNeeded(String key) async {
+  Future<ResourceNeededModel> getResourceNeeded(
+      String key, BuildContext context) async {
     bool internet = await AppUtil.checkNetwork();
     if (!internet) {
       return ResourceNeededModel(error: Constants.noInternet, statusCode: 401);
@@ -119,6 +123,8 @@ class Api {
         return ResourceNeededModel(
             error: Constants.somethingWentWorng, statusCode: 500);
       }
+    } else if (response.statusCode == 401) {
+      return AppUtil.showErrorDialog(context);
     } else {
       return ResourceNeededModel(
           error: Constants.somethingWentWorng, statusCode: response.statusCode);
@@ -126,7 +132,8 @@ class Api {
   }
 
   // //Call Api for Get Product Sub Categoruy
-  Future<CreatePhaseResp> createNewPhase(String key) async {
+  Future<CreatePhaseResp> createNewPhase(
+      String key, BuildContext context) async {
     bool internet = await AppUtil.checkNetwork();
     if (!internet) {
       return CreatePhaseResp(message: Constants.noInternet, statusCode: 401);
@@ -158,6 +165,8 @@ class Api {
         return CreatePhaseResp(
             message: Constants.somethingWentWorng, statusCode: 500);
       }
+    } else if (response.statusCode == 401) {
+      return AppUtil.showErrorDialog(context);
     } else {
       return CreatePhaseResp(
           message: Constants.somethingWentWorng,
@@ -166,7 +175,8 @@ class Api {
   }
 
   // //Call Api for Get Product Sub Categoruy
-  Future<GetPhaseDetails> getPhaseDetails(String key) async {
+  Future<GetPhaseDetails> getPhaseDetails(
+      String key, BuildContext context) async {
     bool internet = await AppUtil.checkNetwork();
     if (!internet) {
       return GetPhaseDetails(message: Constants.noInternet, statusCode: 401);
@@ -198,6 +208,8 @@ class Api {
         return GetPhaseDetails(
             message: Constants.somethingWentWorng, statusCode: 500);
       }
+    } else if (response.statusCode == 401) {
+      return AppUtil.showErrorDialog(context);
     } else {
       return GetPhaseDetails(
           message: Constants.somethingWentWorng,
@@ -205,15 +217,16 @@ class Api {
     }
   }
 
- // //Call Api for Get Product Sub Categoruy
-  Future<UpdatePhaseResp> updatePhase(String key,String id) async {
+  // //Call Api for Get Product Sub Categoruy
+  Future<UpdatePhaseResp> updatePhase(
+      String key, String id, BuildContext context) async {
     bool internet = await AppUtil.checkNetwork();
     if (!internet) {
       return UpdatePhaseResp(message: Constants.noInternet, statusCode: 401);
     }
     Response? response;
     try {
-      response = await _apiClient.putMethod(AppUrl.updatePhase+id, key);
+      response = await _apiClient.putMethod(AppUrl.updatePhase + id, key);
       print(
           '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
       print(response.body);
@@ -228,7 +241,8 @@ class Api {
           return UpdatePhaseResp(
               message: jsonResponse['error']['message'], statusCode: 500);
         } else {
-          UpdatePhaseResp resourceNeededModel =updatePhaseRespFromJson(response.body);
+          UpdatePhaseResp resourceNeededModel =
+              updatePhaseRespFromJson(response.body);
           resourceNeededModel.statusCode = 200;
           return resourceNeededModel;
         }
@@ -237,16 +251,12 @@ class Api {
         return UpdatePhaseResp(
             message: Constants.somethingWentWorng, statusCode: 500);
       }
+    } else if (response.statusCode == 401) {
+      return AppUtil.showErrorDialog(context);
     } else {
       return UpdatePhaseResp(
           message: Constants.somethingWentWorng,
           statusCode: response.statusCode);
     }
   }
-
- 
-
 }
-
-
-

@@ -32,6 +32,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -1775,6 +1776,12 @@ class _ProjectEditState extends State<ProjectEdit>
         print("Error in navigating ------------------------------");
         print(e);
       }
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -1833,6 +1840,9 @@ class _ProjectEditState extends State<ProjectEdit>
                         adOnSubmit: (String value) {},
                       )),
               (Route<dynamic> route) => false);
+        } else if (response.statusCode == 401) {
+          SmartDialog.dismiss();
+          AppUtil.showErrorDialog(context);
         } else {
           SmartDialog.dismiss();
           Navigator.pop(context);
@@ -1860,71 +1870,6 @@ class _ProjectEditState extends State<ProjectEdit>
         backgroundColor: Colors.grey,
       );
     }
-
-    // var response;
-    // setState(() {
-    //   loadingEditeddata = true;
-    // });
-    // var token = 'Bearer ' + storage.read("token");
-    // try {
-    //   response = await http.put(
-    //     Uri.parse('${AppUrl.baseUrl}/project/${widget.id}'),
-    //     body: jsonEncode({
-    //       "title": _projecttitle.text.toString(),
-    //       // "accountable_person_id": _account,
-    //       "accountable_person_id": "1",
-    //       "customer_id": _custome,
-    //       "crm_task_id": _crmtask.text.toString(),
-    //       "work_folder_id": _warkfolderId.text.toString(),
-    //       "budget": _budget.text.toString(),
-    //       "currency": _curren,
-    //       "estimation_hours": _estimatehours.text.toString(),
-    //       "status": _status,
-    //     }),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "Authorization": token,
-    //     },
-    //   );
-    //   // ignore: unrelated_type_equality_checks
-    //   if (response.statusCode == 200) {
-    //     var responseJson =
-    //         jsonDecode(response.body.toString()) as Map<String, dynamic>;
-    //     final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-    //     // ignore: use_build_context_synchronously
-    //     setState(() {
-    //       loadingEditeddata = false;
-    //       Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //               builder: (context) => MyHomePage(
-    //                     onSubmit: (String value) {},
-    //                     adOnSubmit: (String value) {},
-    //                   )));
-    //     });
-    //   } else {
-    //     setState(() {
-    //       loadingEditeddata = false;
-    //     });
-    //     print("failuree");
-    //     Fluttertoast.showToast(
-    //       msg: 'Something Went Wrong',
-    //       backgroundColor: Colors.grey,
-    //     );
-    //   }
-    // } catch (e) {
-    //   setState(() {
-    //     loadingEditeddata = false;
-    //   });
-    //   print('error caught: $e');
-
-    //   var user = userFromJson(response.body.toString());
-    //   Fluttertoast.showToast(
-    //     msg: user.message ?? 'Something Went Wrong',
-    //     backgroundColor: Colors.grey,
-    //   );
-    //   return loadingEditeddata;
-    // }
   }
 
   errorWidget() {

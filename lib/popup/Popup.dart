@@ -105,6 +105,8 @@ showDailog(
                       adOnSubmit: (String value) {},
                     )),
             (Route<dynamic> route) => false);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
       }
@@ -137,6 +139,8 @@ showDailog(
 
         // ignore: use_build_context_synchronously
 
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
 
@@ -182,6 +186,8 @@ showDailog(
 
         // ignore: use_build_context_synchronously
 
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
 
@@ -234,6 +240,8 @@ showDailog(
         print(stringRes);
         print("yes description");
         print(apiResponse.body);
+      } else if (apiResponse.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print(apiResponse.body);
         var responseJson =

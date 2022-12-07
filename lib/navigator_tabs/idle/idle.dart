@@ -1235,6 +1235,8 @@ class _IdleState extends State<Idle> {
         setState(() {
           _statusList = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1259,6 +1261,8 @@ class _IdleState extends State<Idle> {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1283,6 +1287,8 @@ class _IdleState extends State<Idle> {
         setState(() {
           _accountableId = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1307,6 +1313,8 @@ class _IdleState extends State<Idle> {
       print('Users: ${skills.data}');
       skillsData.addAll(skills.data!);
       print(skillsData);
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
       // print(response.body);
@@ -1331,6 +1339,8 @@ class _IdleState extends State<Idle> {
         setState(() {
           _customerName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

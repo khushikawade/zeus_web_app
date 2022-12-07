@@ -26,6 +26,7 @@ import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/util/validation.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import '../logout_module/logout_view.dart';
 import '../navigator_tabs/idle/data/project_detail_data/ProjectDetailData.dart';
@@ -176,7 +177,10 @@ class _NavigationRailState extends State<MyHomePage>
       setState(() {
         loading = false;
       });
-    } else {
+    }else if (response.statusCode == 401) {
+        
+        AppUtil.showErrorDialog(context);
+      } else {
       print("Error getting users.");
       // print(response.body);
     }
@@ -259,18 +263,15 @@ class _NavigationRailState extends State<MyHomePage>
       });
 
       print("add people created");
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       Map<String, dynamic> responseJson = json.decode(responseString);
       print("Error response ------------------------ ${responseJson}");
 
       SmartDialog.dismiss();
 
-      // Fluttertoast.showToast(
-      //   msg: 'Something Went Wrong',
-      //   backgroundColor: Colors.grey,
-      // );
-
-      //var user = userFromJson(response.body);
       Fluttertoast.showToast(
         msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
@@ -308,6 +309,8 @@ class _NavigationRailState extends State<MyHomePage>
         print(stringRes);
         print("yes Creaete");
         print(response.body);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
         Fluttertoast.showToast(
@@ -456,17 +459,17 @@ class _NavigationRailState extends State<MyHomePage>
     ),
     Idle(),
     Container(
-      child: const Navigator(
-        onGenerateRoute: generateRoute,
-        initialRoute: '/peopleList',
-      ),
-    ),
-    Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,
       child: const Text(
         'Coming Soon',
         style: TextStyle(fontSize: 40, color: Colors.white),
+      ),
+    ),
+    Container(
+      child: const Navigator(
+        onGenerateRoute: generateRoute,
+        initialRoute: '/peopleList',
       ),
     ),
     Container(
@@ -2994,11 +2997,11 @@ class _NavigationRailState extends State<MyHomePage>
                               Provider.of<DataIdelClass>(context, listen: false)
                                   .getPeopleIdel(searchText: val);
                             } else if (_selectedIndex == 2) {
+                              print(_selectedIndex);
+                            } else if (_selectedIndex == 3) {
                               Provider.of<PeopleIdelClass>(context,
                                       listen: false)
                                   .getPeopleDataList(searchText: val);
-                            } else if (_selectedIndex == 3) {
-                              print(_selectedIndex);
                             }
                           });
                         } catch (e) {
@@ -3017,7 +3020,7 @@ class _NavigationRailState extends State<MyHomePage>
                             )),
                         hintText: _selectedIndex == 1
                             ? 'Search Project'
-                            : _selectedIndex == 2
+                            : _selectedIndex == 3
                                 ? 'Search People'
                                 : 'Search',
                         hintStyle: const TextStyle(
@@ -3704,6 +3707,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _accountableId = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3728,6 +3733,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _customerName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3752,6 +3759,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3776,6 +3785,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _statusList = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3800,13 +3811,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _timeline = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3831,13 +3837,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           addTag = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3865,6 +3866,8 @@ class _NavigationRailState extends State<MyHomePage>
           print('ghjhjhjh' + _addtag.length.toString());
         });
         print("yes to much");
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3971,6 +3974,8 @@ class _NavigationRailState extends State<MyHomePage>
           _department.clear();
           _department = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

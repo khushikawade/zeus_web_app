@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 // import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/constant.dart';
+import 'package:zeus/utility/util.dart';
 import '../../utility/upertextformate.dart';
 
 class EditPage extends StatefulWidget {
@@ -114,13 +115,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _statusList = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -145,6 +141,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _accountableId = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -170,6 +168,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _customerName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1482,6 +1482,9 @@ class _EditPageState extends State<EditPage> {
                       adOnSubmit: (String value) {},
                     )),
             (Route<dynamic> route) => false);
+      }else if (response.statusCode == 401) {
+        SmartDialog.dismiss();
+        AppUtil.showErrorDialog(context);
       } else {
         SmartDialog.dismiss();
         Navigator.of(context)
@@ -1514,6 +1517,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1541,60 +1546,14 @@ class _EditPageState extends State<EditPage> {
           // print('ghjhjhjh' + _addtag.length.toString());
         });
         print("yes to much");
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
       return value;
     }
   }
-
-  // Future<String?> getSelectStatus() async {
-  //   String? value;
-  //   if (value == null) {
-  //     var token = 'Bearer ' + storage.read("token");
-  //     var response = await http.get(
-  //       Uri.parse("${AppUrl.baseUrl}/status"),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": token,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
-  //       List<dynamic> mdata = map["data"];
-  //       setState(() {
-  //         _statusList = mdata;
-  //       });
-  //     } else {
-  //       print("failed to much");
-  //     }
-  //     return value;
-  //   }
-  // }
-
-  // Future<String?> getAccountable() async {
-  //   String? value;
-  //   if (value == null) {
-  //     var token = 'Bearer ' + storage.read("token");
-  //     var response = await http.get(
-  //       Uri.parse(AppUrl.accountable_person),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": token,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
-  //       List<dynamic> mdata = map["data"];
-  //       setState(() {
-  //         _accountableId = mdata;
-  //       });
-  //     } else {
-  //       print("failed to much");
-  //     }
-  //     return value;
-  //   }
-  // }
 
   Future<String?> getAddpeople() async {
     String? value;
@@ -1613,13 +1572,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           addTag = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

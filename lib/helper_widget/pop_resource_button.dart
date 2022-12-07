@@ -33,6 +33,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -276,10 +277,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     // fullName = _peopleList.name!.substring(0, 1).toUpperCase();
                   }
 
-                  _name.text = widget.data!.name != null &&
-                          widget.data!.name!.isNotEmpty
-                      ? widget.data!.name!
-                      : '';
+                  _name.text =
+                      widget.data!.name != null && widget.data!.name!.isNotEmpty
+                          ? widget.data!.name!
+                          : '';
 
                   _nickName.text = widget.data!.resource != null
                       ? widget.data!.resource!.nickname != null &&
@@ -317,16 +318,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                   _availableDay.text = widget.data!.resource != null
                       ? widget.data!.resource!.availibiltyDay != null &&
-                              widget
-                                  .data!.resource!.availibiltyDay!.isNotEmpty
+                              widget.data!.resource!.availibiltyDay!.isNotEmpty
                           ? widget.data!.resource!.availibiltyDay!
                           : ''
                       : '';
 
                   _availableTime.text = widget.data!.resource != null
                       ? widget.data!.resource!.availibiltyTime != null &&
-                              widget
-                                  .data!.resource!.availibiltyTime!.isNotEmpty
+                              widget.data!.resource!.availibiltyTime!.isNotEmpty
                           ? widget.data!.resource!.availibiltyTime!
                           : ''
                       : '';
@@ -355,10 +354,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ? widget.data!.email!
                       : '';
                   if (widget.data!.resource != null) {
-                    _depat =
-                        widget.data!.resource!.department!.name!.isNotEmpty
-                            ? widget.data!.resource!.departmentId.toString()
-                            : '';
+                    _depat = widget.data!.resource!.department!.name!.isNotEmpty
+                        ? widget.data!.resource!.departmentId.toString()
+                        : '';
                   }
 
                   _time = widget.data!.resource != null &&
@@ -366,12 +364,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ? widget.data!.resource!.timeZone!.id.toString()
                       : '';
                   if (widget.data!.resource != null) {
-                    _salaryCurrency.text =
-                        widget.data!.resource!.salaryCurrency != null &&
-                                widget.data!.resource!.salaryCurrency!
-                                    .isNotEmpty
-                            ? widget.data!.resource!.salaryCurrency!
-                            : '';
+                    _salaryCurrency
+                        .text = widget.data!.resource!.salaryCurrency != null &&
+                            widget.data!.resource!.salaryCurrency!.isNotEmpty
+                        ? widget.data!.resource!.salaryCurrency!
+                        : '';
                   }
 
                   var image = widget.data!.image;
@@ -430,8 +427,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.0),
                         ),
-                        backgroundColor:
-                            ColorSelect.peoplelistbackgroundcolor,
+                        backgroundColor: ColorSelect.peoplelistbackgroundcolor,
                         content: Container(
                           height: 110.0,
                           child: Column(
@@ -480,8 +476,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
-                                                color:
-                                                    ColorSelect.delete_text),
+                                                color: ColorSelect.delete_text),
                                           ),
                                         ),
                                       ),
@@ -2399,8 +2394,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _department = mdata;
         });
-      }else if(response.statusCode == 401) {
-        // bdbdbdbfbd
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -2433,6 +2428,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
         // final stringRes = JsonEncoder.withIndent('').convert(res);
         //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -2460,6 +2457,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       setState(() {
         loading = false;
       });
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
 
@@ -2478,8 +2477,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     // var userId = storage.read("user_id");
     // AppUrl
-    var request = http.MultipartRequest('POST',
-        Uri.parse('${AppUrl.baseUrl}/resource/update'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
     request.headers
         .addAll({"Content-Type": "application/json", "Authorization": token});
     request.fields['user_id'] = userId;
@@ -2549,6 +2548,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
 
       widget.returnValue!();
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       SmartDialog.dismiss();
 
@@ -2586,6 +2588,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       //           )),
       // );
       //(Route<dynamic> route) => false);
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -2613,6 +2617,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
