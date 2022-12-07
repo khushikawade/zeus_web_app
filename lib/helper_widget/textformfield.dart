@@ -9,7 +9,6 @@ Widget formField({
   required controller,
   required Function(String values) callback,
   Function(String values)? validateCallback,
-  Function(bool valid)? isFormValid,
 }) {
   String errorText = '';
 
@@ -81,14 +80,7 @@ Widget formField({
                   validator: (value) {
                     setState(() {
                       errorText = validateCallback!(value!) ?? "";
-                      // if(validateCallback(value)==null){
-                      //   isFormValid!(true);
-                      // }
-                      // else{
-                      //   isFormValid!(false);
-                      // }
-
-
+                    
                     });
                     return null;
                     //return validateCallback!(value!);
