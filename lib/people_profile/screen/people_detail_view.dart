@@ -27,11 +27,9 @@ import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
 class ProfileDetail extends StatefulWidget {
   PeopleData list;
+  int index;
 
-  ProfileDetail({
-    Key? key,
-    required this.list,
-  });
+  ProfileDetail({Key? key, required this.list, required this.index});
 
   @override
   State<ProfileDetail> createState() => _ProfileDetailState(list);
@@ -210,8 +208,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
   }
 
   void change() async {
+    print("lkdfglkdsghklshglksdhgldjlhsgk;;lgjh;");
     var prefs = await SharedPreferences.getInstance();
     prefs.setString('val', 'r');
+    print("After calling-----------------------");
   }
 
   @override
@@ -426,7 +426,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                         width: 134.0,
                                         height: 134.0,
                                         margin: const EdgeInsets.only(
-                                            left: 16.0, top: 20.0),
+                                            left: 16.0, top: 35.0),
                                         decoration: BoxDecoration(
                                           //color: const Color(0xff334155),
                                           borderRadius: BorderRadius.circular(
@@ -441,7 +441,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
                                     Container(
                                       margin: const EdgeInsets.only(
-                                          left: 16.0, top: 10.0),
+                                          left: 16.0, top: 25.0),
                                       child: Text(
                                         "@$nickname",
                                         // list.resource != null

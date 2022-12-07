@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -58,6 +59,14 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           builder: FlutterSmartDialog.init(),
           home: MaterialApp(
+            scrollBehavior: MaterialScrollBehavior().copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+                PointerDeviceKind.stylus,
+                PointerDeviceKind.unknown
+              },
+            ),
             builder: (context, child) => ResponsiveWrapper.builder(
               BouncingScrollWrapper.builder(context, child!),
               maxWidth: 2000,

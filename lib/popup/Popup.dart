@@ -61,6 +61,7 @@ showDailog(
   final TextEditingController _estimatehours = TextEditingController();
   final TextEditingController _description = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
+  ScrollController _ScrollController = ScrollController();
   var myFormat = DateFormat('yyyy-MM-dd');
 
   final TextEditingController _typeAheadController = TextEditingController();
@@ -781,7 +782,7 @@ showDailog(
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 20.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Reminder date",
                                                   style: TextStyle(
@@ -799,7 +800,7 @@ showDailog(
                                                 },
                                                 child: Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
+                                                      left: 30.0, top: 6.0),
                                                   child: Text(
                                                     // reminderDate1 == null
                                                     //     ?
@@ -826,7 +827,7 @@ showDailog(
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 20.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Delivery date",
                                                   style: TextStyle(
@@ -844,7 +845,7 @@ showDailog(
                                                 },
                                                 child: Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
+                                                      left: 30.0, top: 6.0),
                                                   child: Text(
                                                     // deliveryDate == null
                                                     //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
@@ -871,7 +872,7 @@ showDailog(
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 20.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Deadline",
                                                   style: TextStyle(
@@ -889,7 +890,7 @@ showDailog(
                                                 },
                                                 child: Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
+                                                      left: 30.0, top: 6.0),
                                                   child: Text(
                                                     // deadlineDate == null
                                                     //  ?
@@ -916,7 +917,7 @@ showDailog(
                                             children: [
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 20.0),
+                                                    left: 30.0, top: 20.0),
                                                 child: const Text(
                                                   "Working days",
                                                   style: TextStyle(
@@ -929,7 +930,7 @@ showDailog(
                                               ),
                                               Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 6.0),
+                                                    left: 30.0, top: 6.0),
                                                 child: Text(
                                                   response.data != null &&
                                                           response.data!
@@ -960,8 +961,8 @@ showDailog(
                                               alignment: Alignment.center,
                                               margin: const EdgeInsets.only(
                                                   top: 0.0,
-                                                  left: 40.0,
-                                                  bottom: 10),
+                                                  left: 20.0,
+                                                  bottom: 20),
                                               height: 40.0,
                                               width: 40.0,
                                               decoration: BoxDecoration(
@@ -969,9 +970,12 @@ showDailog(
                                                       color: Color(0xff334155),
                                                       width: 0.6),
                                                   shape: BoxShape.circle),
-                                              child: const Icon(
-                                                Icons.close,
-                                                color: Colors.white,
+                                              // child: const Icon(
+                                              //   Icons.close,
+                                              //   color: Colors.white,
+                                              // ),
+                                              child: SvgPicture.asset(
+                                                'images/cross.svg',
                                               ),
                                             ),
                                           ),
@@ -1171,9 +1175,8 @@ showDailog(
                                                       Navigator.pop(context);
                                                     },
                                                     child: Container(
+                                                      height: 50,
                                                       width: 400,
-                                                      color: const Color(
-                                                          0xff1E293B),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -1462,8 +1465,13 @@ showDailog(
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(top: 3.0),
-                                        child: Scrollbar(
+                                        child: RawScrollbar(
+                                          controller: _ScrollController,
+                                          thumbColor: Color(0xff4b5563),
+                                          radius: Radius.circular(20),
+                                          thickness: 10,
                                           child: ListView.builder(
+                                            controller: _ScrollController,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: 13,
@@ -1738,7 +1746,7 @@ showDailog(
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return NewPhase(id!,0);
+                                          return NewPhase(id!, 0);
                                         });
                                   },
                                 ),
@@ -1932,13 +1940,18 @@ showDailog(
                                                 },
                                                 onEditClick: () async {
                                                   Navigator.pop(context);
-                                                   showDialog(
+                                                  showDialog(
                                                       context: context,
                                                       builder: (context) {
-                                                    return NewPhase(response.data!.phase![index].id.toString(),1);
-                                                  });
+                                                        return NewPhase(
+                                                            response
+                                                                .data!
+                                                                .phase![index]
+                                                                .id
+                                                                .toString(),
+                                                            1);
+                                                      });
                                                 },
-
                                                 setState: setState,
                                                 response: response,
                                                 data: phase,

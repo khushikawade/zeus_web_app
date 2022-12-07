@@ -74,8 +74,13 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      offset: const Offset(0, 59),
+      position: PopupMenuPosition.under,
+      offset: widget.offset,
       color: const Color(0xff334155),
+      // padding: const EdgeInsets.only(
+      //   left: 50,
+      //   top: 20,
+      // ),
       tooltip: '',
       child: Container(
         width: 24.0,
@@ -88,7 +93,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           ),
         ),
         margin: const EdgeInsets.only(
-          top: 26.0,
+          top: 16.0,
           left: 8.0,
           right: 20.0,
         ),
@@ -102,9 +107,10 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
 
       itemBuilder: (context) => [
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 1,
           child: InkWell(
-            // hoverColor: Colors.red,
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Colors.red;
               SmartDialog.showLoading(
@@ -114,21 +120,27 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
                 LogOut();
               });
             },
-            child: Row(
-              children: const [
-                Icon(Icons.logout),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "LogOut",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Inter',
-                      color: ColorSelect.white_color),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: const [
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Icon(Icons.logout),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "LogOut",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Inter',
+                        color: ColorSelect.white_color),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
