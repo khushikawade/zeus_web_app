@@ -821,7 +821,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: _name,
-                    inputFormatters: [UpperCaseTextFormatter()],
+                    // inputFormatters: [UpperCaseTextFormatter()],
                     //   autovalidateMode: AutovalidateMode.onUserInteraction,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),

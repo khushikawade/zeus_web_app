@@ -759,9 +759,10 @@ class _PeopleIdleState extends State<PeopleIdle> {
                   children: [
                     image != null && image.isNotEmpty
                         ? Container(
-                            width: 32.0,
-                            height: 32.0,
-                            margin: const EdgeInsets.only(left: 0.0, top: 0.0),
+                            width: 38.0,
+                            height: 36.0,
+                            margin:
+                                const EdgeInsets.only(left: 0.0, bottom: 2.0),
                             decoration: BoxDecoration(
                               color: const Color(0xff334155),
                               borderRadius: BorderRadius.circular(
@@ -792,14 +793,17 @@ class _PeopleIdleState extends State<PeopleIdle> {
                                   color: Color(0xff8B8B8B)),
                             ),
                           ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 16.0, top: 7.5),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              left: 16.0,
+                            ),
                             child: Text(
                               "$name",
                               style: const TextStyle(
@@ -809,10 +813,11 @@ class _PeopleIdleState extends State<PeopleIdle> {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 16.0, top: 0),
+                          SizedBox(height: 4),
+                          Container(
+                            padding: EdgeInsets.zero,
+                            margin:
+                                const EdgeInsets.only(left: 16.0, bottom: 0),
                             child: Text(
                               "$designation,$associate",
                               style: const TextStyle(
@@ -822,8 +827,8 @@ class _PeopleIdleState extends State<PeopleIdle> {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 )),

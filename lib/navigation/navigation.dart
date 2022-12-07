@@ -890,9 +890,10 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       TextFormField(
                                         controller: _name,
-                                        inputFormatters: [
-                                          UpperCaseTextFormatter()
-                                        ],
+                                        // inputFormatters: [
+
+                                        //   // UpperCaseTextFormatter()
+                                        // ],
                                         //   autovalidateMode: AutovalidateMode.onUserInteraction,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -928,8 +929,10 @@ class _NavigationRailState extends State<MyHomePage>
 
                                         validator: (value) {
                                           // validateName = nameValidation(value);
-                                          RegExp regex =
-                                              RegExp(r'^[a-z A-Z]+$');
+                                          RegExp regex = RegExp(r'^[a-z A-Z]+$',
+                                              // r'^[a-z]+$',
+                                              // r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$",
+                                              caseSensitive: false);
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           } else if (!regex.hasMatch(value)) {
@@ -1175,7 +1178,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               inputFormatters: [
                                                 UpperCaseTextFormatter()
                                               ],
-                                              maxLength: 18,
+                                              maxLength: 25,
                                               cursorColor:
                                                   const Color(0xffFFFFFF),
                                               style: const TextStyle(
