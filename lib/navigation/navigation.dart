@@ -572,7 +572,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   margin: const EdgeInsets.only(
                                       left: 30.0, top: 10.0, bottom: 10.0),
                                   child: const Text(
-                                    "Add people",
+                                    "Add People",
                                     style: TextStyle(
                                         color: Color(0xffFFFFFF),
                                         fontSize: 18.0,
