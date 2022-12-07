@@ -11,7 +11,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
-import 'package:show_more_text_popup/show_more_text_popup.dart';
 import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/mytooltip.dart';
