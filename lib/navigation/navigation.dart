@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 
 import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
@@ -188,8 +189,8 @@ class _NavigationRailState extends State<MyHomePage>
     print("add People---------------------------------------------------");
     var token = 'Bearer ' + storage.read("token");
 
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('${AppUrl.baseUrl}/resource'));
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${AppUrl.baseUrl}/resource'));
     request.headers.addAll({
       "Content-Type": "application/json",
       "Authorization": token,
@@ -1281,7 +1282,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                             right: 16.0),
                                                         height: 20.0,
                                                         child: Container(
-
                                                             // padding: const EdgeInsets.all(2.0),
                                                             child:
                                                                 StatefulBuilder(
@@ -1290,7 +1290,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                               StateSettersetState) {
                                                             return DropdownButtonHideUnderline(
                                                               child:
-                                                                  DropdownButton(
+                                                                  CustomDropdownButton(
                                                                 dropdownColor:
                                                                     ColorSelect
                                                                         .class_color,
@@ -1311,8 +1311,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                                           FontWeight
                                                                               .w500),
                                                                 ),
-                                                                isExpanded:
-                                                                    true,
+                                                                // isExpanded: true,
                                                                 icon:
                                                                     const Icon(
                                                                   // Add this
@@ -1321,7 +1320,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                                   // Add this
                                                                   color: Color(
                                                                       0xff64748B),
-
                                                                   // Add this
                                                                 ),
                                                                 items: _department

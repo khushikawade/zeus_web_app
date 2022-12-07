@@ -175,34 +175,37 @@ class _DropdownMenuState<T> extends State<_DropdownMenu<T>> {
       ));
     }
 
-    return FadeTransition(
-      opacity: _fadeOpacity,
-      child: CustomPaint(
-        painter: _DropdownMenuPainter(
-          // color: Theme.of(context).canvasColor,
-          color: Color(0xff0F172A),
-          elevation: route.elevation,
-          selectedIndex: route.selectedIndex,
-          resize: _resize,
-        ),
-        child: Semantics(
-          scopesRoute: true,
-          namesRoute: true,
-          explicitChildNodes: true,
-          label: localizations.popupMenuLabel,
-          child: Material(
-            type: MaterialType.transparency,
-            textStyle: route.style,
-            child: ScrollConfiguration(
-              behavior: const _DropdownScrollBehavior(),
-              child: Scrollbar(
-                thumbVisibility: true,
-                child: ListView(
-                  controller: widget.route.scrollController,
-                  padding: kMaterialListPadding,
-                  itemExtent: _kMenuItemHeight,
-                  shrinkWrap: true,
-                  children: children,
+    return Padding(
+      padding: const EdgeInsets.only(right: 19),
+      child: FadeTransition(
+        opacity: _fadeOpacity,
+        child: CustomPaint(
+          painter: _DropdownMenuPainter(
+            // color: Theme.of(context).canvasColor,
+            color: Color(0xff0F172A),
+            elevation: route.elevation,
+            selectedIndex: route.selectedIndex,
+            resize: _resize,
+          ),
+          child: Semantics(
+            scopesRoute: true,
+            namesRoute: true,
+            explicitChildNodes: true,
+            label: localizations.popupMenuLabel,
+            child: Material(
+              type: MaterialType.transparency,
+              textStyle: route.style,
+              child: ScrollConfiguration(
+                behavior: const _DropdownScrollBehavior(),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  child: ListView(
+                    controller: widget.route.scrollController,
+                    padding: kMaterialListPadding,
+                    itemExtent: _kMenuItemHeight,
+                    shrinkWrap: true,
+                    children: children,
+                  ),
                 ),
               ),
             ),
@@ -664,6 +667,7 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
           children: <Widget>[
             // If value is null (then _selectedIndex is null) then we display
             // the hint or nothing at all.
+
             Expanded(
               child: IndexedStack(
                 index: _selectedIndex ?? hintIndex,
