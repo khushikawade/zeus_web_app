@@ -569,7 +569,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   margin: const EdgeInsets.only(
                                       left: 30.0, top: 10.0, bottom: 10.0),
                                   child: const Text(
-                                    "Add people",
+                                    "Add People",
                                     style: TextStyle(
                                         color: Color(0xffFFFFFF),
                                         fontSize: 18.0,
@@ -837,7 +837,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 8.0,
+                                    height: 16.0,
                                   ),
                                   Stack(
                                     children: [
@@ -921,7 +921,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                                fontWeight: FontWeight.w400)),
                                         //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
@@ -958,11 +958,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                 0.99,
                                             margin: const EdgeInsets.only(
                                                 left: 30.0,
-                                                top: 16.0,
-                                                right: 25.0),
+                                                top: 5.0,
+                                                right: 25.0,
+                                                bottom: 10),
                                             height: 56.0,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
+                                              color:
+                                                  // Colors.red,
+                                                  const Color(0xff334155),
                                               //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
@@ -986,7 +989,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 14.0, left: 45.0),
                                           child: const Text(
                                             "Nickname",
                                             style: TextStyle(
@@ -1009,7 +1012,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             counterText: "",
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 52.0,
+                                              top: 45.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -1021,7 +1024,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                                fontWeight: FontWeight.w400)),
                                         //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
@@ -1095,7 +1098,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
                                               // bottom: 10.0,
-                                              top: 47.0,
+                                              top: 50.0,
                                               right: 40,
                                               left: 45.0,
                                             ),
@@ -1105,7 +1108,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                                fontWeight: FontWeight.w400)),
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
@@ -1121,270 +1124,288 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.12,
-                                              margin: const EdgeInsets.only(
-                                                  left: 30.0,
-                                                  top: 16.0,
-                                                  right: 16.0),
-                                              height: 56.0,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  8.0,
-                                                ),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Color(0xff475569),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                    blurRadius: 0.0,
-                                                    spreadRadius: 0.0,
-                                                  ), //BoxShadow
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          // flex: 2,
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.12,
                                                 margin: const EdgeInsets.only(
-                                                    top: 23.0, left: 45.0),
-                                                child: const Text(
-                                                  "Designation",
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      color: Color(0xff64748B),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )),
-                                            TextFormField(
-                                              controller: _designation,
-                                              inputFormatters: [
-                                                UpperCaseTextFormatter()
-                                              ],
-                                              maxLength: 25,
-                                              cursorColor:
-                                                  const Color(0xffFFFFFF),
-                                              style: const TextStyle(
-                                                  color: Color(0xffFFFFFF)),
-                                              textAlignVertical:
-                                                  TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  counterText: "",
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 53.0,
-                                                    right: 10,
-                                                    left: 45.0,
+                                                    left: 30.0,
+                                                    top: 16.0,
+                                                    right: 16.0),
+                                                height: 56.0,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  //border: Border.all(color:  const Color(0xff1E293B)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.0,
                                                   ),
-                                                  border: InputBorder.none,
-                                                  hintText: 'Enter',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              autovalidateMode: _addSubmitted
-                                                  ? AutovalidateMode
-                                                      .onUserInteraction
-                                                  : AutovalidateMode.disabled,
-                                              validator: (value) {
-                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter';
-                                                }
-                                                return null;
-                                              },
-                                              onChanged: (text) => setStateView(
-                                                  () => name1 = text),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Stack(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.13,
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Color(0xff475569),
+                                                      offset: Offset(
+                                                        0.0,
+                                                        2.0,
+                                                      ),
+                                                      blurRadius: 0.0,
+                                                      spreadRadius: 0.0,
+                                                    ), //BoxShadow
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
                                                   margin: const EdgeInsets.only(
-                                                      top: 16.0, right: 30),
-                                                  height: 56.0,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff334155),
-                                                    //border: Border.all(color:  const Color(0xff1E293B)),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      8.0,
+                                                      top: 23.0, left: 45.0),
+                                                  child: const Text(
+                                                    "Designation",
+                                                    style: TextStyle(
+                                                        fontSize: 11.0,
+                                                        color:
+                                                            Color(0xff64748B),
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )),
+                                              TextFormField(
+                                                controller: _designation,
+                                                inputFormatters: [
+                                                  UpperCaseTextFormatter()
+                                                ],
+                                                maxLength: 25,
+                                                cursorColor:
+                                                    const Color(0xffFFFFFF),
+                                                style: const TextStyle(
+                                                    color: Color(0xffFFFFFF)),
+                                                textAlignVertical:
+                                                    TextAlignVertical.bottom,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        counterText: "",
+                                                        errorStyle: TextStyle(
+                                                            fontSize: 14,
+                                                            height: 0.20),
+                                                        contentPadding:
+                                                            EdgeInsets.only(
+                                                          bottom: 16.0,
+                                                          top: 53.0,
+                                                          right: 10,
+                                                          left: 45.0,
+                                                        ),
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText: 'Enter',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
+                                                autovalidateMode: _addSubmitted
+                                                    ? AutovalidateMode
+                                                        .onUserInteraction
+                                                    : AutovalidateMode.disabled,
+                                                validator: (value) {
+                                                  //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                                  if (value!.isEmpty) {
+                                                    return 'Please enter';
+                                                  }
+                                                  return null;
+                                                },
+                                                onChanged: (text) =>
+                                                    setStateView(
+                                                        () => name1 = text),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          // flex: 2,
+                                          child: Stack(
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.13,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 16.0,
+                                                            right: 30),
+                                                    height: 56.0,
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xff334155),
+                                                      //border: Border.all(color:  const Color(0xff1E293B)),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        8.0,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 6.0,
+                                                                    left: 16.0),
+                                                            child: const Text(
+                                                              "Department",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      13.0,
+                                                                  color: Color(
+                                                                      0xff64748B),
+                                                                  fontFamily:
+                                                                      'Inter',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            )),
+                                                        Container(
                                                           margin:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  top: 6.0,
-                                                                  left: 16.0),
-                                                          child: const Text(
-                                                            "Department",
-                                                            style: TextStyle(
-                                                                fontSize: 13.0,
-                                                                color: Color(
-                                                                    0xff64748B),
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          )),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            left: 16.0,
-                                                            right: 16.0),
-                                                        height: 20.0,
-                                                        child: Container(
+                                                                  left: 16.0,
+                                                                  right: 16.0),
+                                                          height: 20.0,
+                                                          child: Container(
 
-                                                            // padding: const EdgeInsets.all(2.0),
-                                                            child:
-                                                                StatefulBuilder(
-                                                          builder: (BuildContext
-                                                                  context,
-                                                              StateSettersetState) {
-                                                            return DropdownButtonHideUnderline(
+                                                              // padding: const EdgeInsets.all(2.0),
                                                               child:
-                                                                  DropdownButton(
-                                                                dropdownColor:
-                                                                    ColorSelect
-                                                                        .class_color,
-                                                                value: _depat,
-                                                                underline:
-                                                                    Container(),
-                                                                hint:
-                                                                    const Text(
-                                                                  "Select",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          14.0,
-                                                                      color: Color(
-                                                                          0xffFFFFFF),
-                                                                      fontFamily:
-                                                                          'Inter',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                                isExpanded:
-                                                                    true,
-                                                                icon:
-                                                                    const Icon(
-                                                                  // Add this
-                                                                  Icons
-                                                                      .arrow_drop_down,
-                                                                  // Add this
-                                                                  color: Color(
-                                                                      0xff64748B),
+                                                                  StatefulBuilder(
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                StateSettersetState) {
+                                                              return DropdownButtonHideUnderline(
+                                                                child:
+                                                                    DropdownButton(
+                                                                  dropdownColor:
+                                                                      ColorSelect
+                                                                          .class_color,
+                                                                  value: _depat,
+                                                                  underline:
+                                                                      Container(),
+                                                                  hint:
+                                                                      const Text(
+                                                                    "Select",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            14.0,
+                                                                        color: Color(
+                                                                            0xffFFFFFF),
+                                                                        fontFamily:
+                                                                            'Inter',
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                  ),
+                                                                  isExpanded:
+                                                                      true,
+                                                                  icon:
+                                                                      const Icon(
+                                                                    // Add this
+                                                                    Icons
+                                                                        .arrow_drop_down,
+                                                                    // Add this
+                                                                    color: Color(
+                                                                        0xff64748B),
 
-                                                                  // Add this
+                                                                    // Add this
+                                                                  ),
+                                                                  items: _department
+                                                                      .map(
+                                                                          (items) {
+                                                                    return DropdownMenuItem(
+                                                                      value: items[
+                                                                              'id']
+                                                                          .toString(),
+                                                                      child:
+                                                                          Text(
+                                                                        items[
+                                                                            'name'],
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            color: Color(
+                                                                                0xffFFFFFF),
+                                                                            fontFamily:
+                                                                                'Inter',
+                                                                            fontWeight:
+                                                                                FontWeight.w400),
+                                                                      ),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged:
+                                                                      (String?
+                                                                          newValue) {
+                                                                    setStateView(
+                                                                        () {
+                                                                      print(
+                                                                          "---------newValue--------------${newValue}");
+                                                                      _depat =
+                                                                          newValue!;
+                                                                      selectDepartment =
+                                                                          true;
+                                                                    });
+                                                                  },
                                                                 ),
-                                                                items: _department
-                                                                    .map(
-                                                                        (items) {
-                                                                  return DropdownMenuItem(
-                                                                    value: items[
-                                                                            'id']
-                                                                        .toString(),
-                                                                    child: Text(
-                                                                      items[
-                                                                          'name'],
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          color: Color(
-                                                                              0xffFFFFFF),
-                                                                          fontFamily:
-                                                                              'Inter',
-                                                                          fontWeight:
-                                                                              FontWeight.w400),
-                                                                    ),
-                                                                  );
-                                                                }).toList(),
-                                                                onChanged: (String?
-                                                                    newValue) {
-                                                                  setStateView(
-                                                                      () {
-                                                                    print(
-                                                                        "---------newValue--------------${newValue}");
-                                                                    _depat =
-                                                                        newValue!;
-                                                                    selectDepartment =
-                                                                        true;
-                                                                  });
-                                                                },
-                                                              ),
-                                                            );
-                                                          },
-                                                        )),
-                                                      )
-                                                    ],
+                                                              );
+                                                            },
+                                                          )),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                                saveButtonClick
-                                                    ? selectDepartment
-                                                        ? const Text(
-                                                            " ",
-                                                          )
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              top: 8,
-                                                              left: 15,
-                                                            ),
-                                                            child:
-                                                                errorWidget())
-                                                    : Text(''),
-                                              ],
-                                            ),
-                                            // Text("Red"),
-                                          ],
+                                                  saveButtonClick
+                                                      ? selectDepartment
+                                                          ? const Text(
+                                                              " ",
+                                                            )
+                                                          : Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                top: 8,
+                                                                left: 15,
+                                                              ),
+                                                              child:
+                                                                  errorWidget())
+                                                      : Text(''),
+                                                ],
+                                              ),
+                                              // Text("Red"),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   Stack(
                                     children: [
@@ -1393,7 +1414,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.99,
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0, right: 26.0),
+                                            left: 30.0, top: 10.0, right: 26.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2075,7 +2096,10 @@ class _NavigationRailState extends State<MyHomePage>
                                           height: 40.0,
                                           margin: const EdgeInsets.only(
                                               right: 20.0, top: 25.0),
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
+                                            // borderRadius: BorderRadius.circular(
+                                            //   50.0,
+                                            // ),
                                             color: Color(0xff334155),
                                             shape: BoxShape.circle,
                                           ),
@@ -2103,12 +2127,12 @@ class _NavigationRailState extends State<MyHomePage>
                                                 0.26,
                                         margin: const EdgeInsets.only(
                                             left: 30.0, top: 16.0),
-                                        height: 50.0,
+                                        height: 55.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
-                                            8.0,
+                                            50.0,
                                           ),
                                         ),
                                         child: Column(
@@ -2407,7 +2431,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     .width *
                                                 0.26,
                                             margin: const EdgeInsets.only(
-                                                left: 30.0, top: 16.0),
+                                                left: 30.0, top: 7.0),
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
@@ -2434,7 +2458,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 12.0, left: 45.0),
                                           child: const Text(
                                             "City",
                                             style: TextStyle(
@@ -2458,7 +2482,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 50.0,
+                                              top: 40.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -2496,7 +2520,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
+                                            left: 30.0, top: 7.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2519,7 +2543,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 12.0, left: 45.0),
                                           child: const Text(
                                             "Phone number",
                                             style: TextStyle(
@@ -2543,7 +2567,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 50.0,
+                                              top: 40.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -2579,11 +2603,12 @@ class _NavigationRailState extends State<MyHomePage>
                                   Stack(
                                     children: [
                                       Container(
+                                        // padding: const EdgeInsets.only(top: 20),
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
+                                            left: 30.0, top: 20.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2606,7 +2631,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 25.0, left: 45.0),
                                           child: const Text(
                                             "Email address",
                                             style: TextStyle(
@@ -2676,7 +2701,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            top: 20.0, left: 30.0),
+                                            top: 26.0, left: 30.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2699,7 +2724,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     value: _time,
                                                     underline: Container(),
                                                     hint: const Text(
-                                                      "Select TimeZone",
+                                                      "Select timezone",
                                                       style: TextStyle(
                                                           fontSize: 14.0,
                                                           color:

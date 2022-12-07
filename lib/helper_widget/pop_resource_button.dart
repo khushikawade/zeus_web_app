@@ -274,10 +274,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     // fullName = _peopleList.name!.substring(0, 1).toUpperCase();
                   }
 
-                  _name.text = widget.data!.name != null &&
-                          widget.data!.name!.isNotEmpty
-                      ? widget.data!.name!
-                      : '';
+                  _name.text =
+                      widget.data!.name != null && widget.data!.name!.isNotEmpty
+                          ? widget.data!.name!
+                          : '';
 
                   _nickName.text = widget.data!.resource != null
                       ? widget.data!.resource!.nickname != null &&
@@ -315,16 +315,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                   _availableDay.text = widget.data!.resource != null
                       ? widget.data!.resource!.availibiltyDay != null &&
-                              widget
-                                  .data!.resource!.availibiltyDay!.isNotEmpty
+                              widget.data!.resource!.availibiltyDay!.isNotEmpty
                           ? widget.data!.resource!.availibiltyDay!
                           : ''
                       : '';
 
                   _availableTime.text = widget.data!.resource != null
                       ? widget.data!.resource!.availibiltyTime != null &&
-                              widget
-                                  .data!.resource!.availibiltyTime!.isNotEmpty
+                              widget.data!.resource!.availibiltyTime!.isNotEmpty
                           ? widget.data!.resource!.availibiltyTime!
                           : ''
                       : '';
@@ -353,10 +351,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ? widget.data!.email!
                       : '';
                   if (widget.data!.resource != null) {
-                    _depat =
-                        widget.data!.resource!.department!.name!.isNotEmpty
-                            ? widget.data!.resource!.departmentId.toString()
-                            : '';
+                    _depat = widget.data!.resource!.department!.name!.isNotEmpty
+                        ? widget.data!.resource!.departmentId.toString()
+                        : '';
                   }
 
                   _time = widget.data!.resource != null &&
@@ -364,12 +361,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ? widget.data!.resource!.timeZone!.id.toString()
                       : '';
                   if (widget.data!.resource != null) {
-                    _salaryCurrency.text =
-                        widget.data!.resource!.salaryCurrency != null &&
-                                widget.data!.resource!.salaryCurrency!
-                                    .isNotEmpty
-                            ? widget.data!.resource!.salaryCurrency!
-                            : '';
+                    _salaryCurrency
+                        .text = widget.data!.resource!.salaryCurrency != null &&
+                            widget.data!.resource!.salaryCurrency!.isNotEmpty
+                        ? widget.data!.resource!.salaryCurrency!
+                        : '';
                   }
 
                   var image = widget.data!.image;
@@ -428,8 +424,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.0),
                         ),
-                        backgroundColor:
-                            ColorSelect.peoplelistbackgroundcolor,
+                        backgroundColor: ColorSelect.peoplelistbackgroundcolor,
                         content: Container(
                           height: 110.0,
                           child: Column(
@@ -471,15 +466,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                         },
                                         child: Container(
                                           margin: const EdgeInsets.only(
-                                              right: 35.0),
+                                              right: 56.0),
                                           child: const Text(
                                             "Cancel",
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
-                                                color:
-                                                    ColorSelect.delete_text),
+                                                color: ColorSelect.delete_text),
                                           ),
                                         ),
                                       ),
@@ -498,13 +492,16 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 widget.buildContext);
                                           });
                                         },
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: 'Inter',
-                                              color: ColorSelect.red_color),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(left: 16.0),
+                                          child: Text(
+                                            "Delete",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: 'Inter',
+                                                color: ColorSelect.red_color),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -976,7 +973,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.only(top: 22.0, left: 45.0),
+                      margin: const EdgeInsets.only(
+                          top: 22.0, left: 45.0, bottom: 20),
                       child: const Text(
                         "Your bio",
                         style: TextStyle(
@@ -987,7 +985,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       )),
                   TextFormField(
                     maxLines: 5,
-                    maxLength: 152,
+                    // maxLength: 200,
                     controller: _bio,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
@@ -997,11 +995,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
-                          // bottom: 10.0,
-                          top: 47.0,
-                          right: 40,
-                          left: 45.0,
-                        ),
+                            // bottom: 10.0,
+                            top: 47.0,
+                            right: 40,
+                            left: 45.0,
+                            bottom: 50),
                         border: InputBorder.none,
                         hintText: 'Enter your bio',
                         hintStyle: TextStyle(
