@@ -87,6 +87,8 @@ class _NewPhaseState extends State<NewPhase> {
   bool savePhaseClick = false;
   bool saveSubtaskClick = false;
 
+  // Merging code with phase module
+
   TypeAheadFormField? searchTextField;
   TypeAheadFormField? subTaskResourcesSearchTextField;
   final TextEditingController _typeAheadController = TextEditingController();
