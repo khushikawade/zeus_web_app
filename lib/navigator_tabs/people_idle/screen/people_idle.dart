@@ -302,7 +302,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             margin:
                                 const EdgeInsets.only(left: 16.0, bottom: 0),
                             child: Text(
-                              "$designation,$associate",
+                              "$designation, $associate",
                               style: const TextStyle(
                                   color: ColorSelect.designation_color,
                                   fontSize: 14.0,
@@ -327,7 +327,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                 ),
                 DataCell(
                   Text(
-                    "$capacity",
+                    "$capacity" "h/week",
                     style: const TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,
@@ -373,7 +373,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             return Container(
                               height: 25.0,
                               margin: const EdgeInsets.only(
-                                  top: 10.0, bottom: 10, right: 12),
+                                  top: 16.0, bottom: 16, right: 12),
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 borderRadius: BorderRadius.circular(
@@ -410,7 +410,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             fontWeight: FontWeight.w500))),
                 DataCell(
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0, bottom: 12),
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 15),
                     child: Stack(children: [
                       MyMenu(
                         peopleList: data.peopleList!.data,

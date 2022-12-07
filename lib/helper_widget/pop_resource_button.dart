@@ -216,7 +216,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         height: 30,
         width: 30,
         decoration: BoxDecoration(
-            // color: Colors.pinkAccent,
+            color: const Color(0xff334155),
             border: Border.all(
               color: ColorSelect.box_decoration,
             ),
@@ -276,10 +276,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     // fullName = _peopleList.name!.substring(0, 1).toUpperCase();
                   }
 
-                  _name.text =
-                      widget.data!.name != null && widget.data!.name!.isNotEmpty
-                          ? widget.data!.name!
-                          : '';
+                  _name.text = widget.data!.name != null &&
+                          widget.data!.name!.isNotEmpty
+                      ? widget.data!.name!
+                      : '';
 
                   _nickName.text = widget.data!.resource != null
                       ? widget.data!.resource!.nickname != null &&
@@ -317,14 +317,16 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                   _availableDay.text = widget.data!.resource != null
                       ? widget.data!.resource!.availibiltyDay != null &&
-                              widget.data!.resource!.availibiltyDay!.isNotEmpty
+                              widget
+                                  .data!.resource!.availibiltyDay!.isNotEmpty
                           ? widget.data!.resource!.availibiltyDay!
                           : ''
                       : '';
 
                   _availableTime.text = widget.data!.resource != null
                       ? widget.data!.resource!.availibiltyTime != null &&
-                              widget.data!.resource!.availibiltyTime!.isNotEmpty
+                              widget
+                                  .data!.resource!.availibiltyTime!.isNotEmpty
                           ? widget.data!.resource!.availibiltyTime!
                           : ''
                       : '';
@@ -353,9 +355,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ? widget.data!.email!
                       : '';
                   if (widget.data!.resource != null) {
-                    _depat = widget.data!.resource!.department!.name!.isNotEmpty
-                        ? widget.data!.resource!.departmentId.toString()
-                        : '';
+                    _depat =
+                        widget.data!.resource!.department!.name!.isNotEmpty
+                            ? widget.data!.resource!.departmentId.toString()
+                            : '';
                   }
 
                   _time = widget.data!.resource != null &&
@@ -363,11 +366,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       ? widget.data!.resource!.timeZone!.id.toString()
                       : '';
                   if (widget.data!.resource != null) {
-                    _salaryCurrency
-                        .text = widget.data!.resource!.salaryCurrency != null &&
-                            widget.data!.resource!.salaryCurrency!.isNotEmpty
-                        ? widget.data!.resource!.salaryCurrency!
-                        : '';
+                    _salaryCurrency.text =
+                        widget.data!.resource!.salaryCurrency != null &&
+                                widget.data!.resource!.salaryCurrency!
+                                    .isNotEmpty
+                            ? widget.data!.resource!.salaryCurrency!
+                            : '';
                   }
 
                   var image = widget.data!.image;
@@ -426,7 +430,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.0),
                         ),
-                        backgroundColor: ColorSelect.peoplelistbackgroundcolor,
+                        backgroundColor:
+                            ColorSelect.peoplelistbackgroundcolor,
                         content: Container(
                           height: 110.0,
                           child: Column(
@@ -475,7 +480,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
-                                                color: ColorSelect.delete_text),
+                                                color:
+                                                    ColorSelect.delete_text),
                                           ),
                                         ),
                                       ),
