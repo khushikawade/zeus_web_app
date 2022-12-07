@@ -825,7 +825,7 @@ class _IdleState extends State<Idle> {
                                     child: Text(
                                       "Project name",
                                       key: key6,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: ColorSelect.text_color,
                                           fontSize: 14.0,
                                           fontFamily: 'Inter',

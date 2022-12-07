@@ -2625,6 +2625,7 @@ class _DashboardScreenState extends State<DashBoard>
                                                           color:
                                                               Color(0xff94A3B8),
                                                           fontSize: 14.0,
+                                                          letterSpacing: 0.1,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w500),

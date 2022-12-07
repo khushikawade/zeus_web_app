@@ -11,7 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
-import 'package:show_more_text_popup/show_more_text_popup.dart';
+
 import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/mytooltip.dart';
@@ -3080,6 +3080,19 @@ class _NavigationRailState extends State<MyHomePage>
 
                           NavigationRailDestination(
                             icon: Tooltip(
+                              verticalOffset: 40,
+                              // textStyle: const TextStyle(
+                              //     fontSize: 15,
+                              //     color: Colors.white,
+                              //     fontWeight: FontWeight.normal),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
                               message: 'Projects',
                               child: Container(
                                 margin: const EdgeInsets.only(
@@ -3154,6 +3167,20 @@ class _NavigationRailState extends State<MyHomePage>
                             icon: Column(
                               children: [
                                 Tooltip(
+                                  verticalOffset: 17,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 5.0),
+                                  textAlign: TextAlign.center,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff334155),
+                                    border: Border.all(
+                                        color: const Color(0xff334155)),
+                                    borderRadius: BorderRadius.circular(
+                                      18.0,
+                                    ),
+                                  ),
+                                  excludeFromSemantics: true,
+                                  preferBelow: true,
                                   message: 'People',
                                   child: Container(
                                     width: 20.0,
@@ -3548,7 +3575,7 @@ class _NavigationRailState extends State<MyHomePage>
                 ),
               );
             }),
-            const VerticalDivider(thickness: 0, width: 0),
+            // sayyamm
             Expanded(child: _mainContents[_selectedIndex]),
           ],
         ),
