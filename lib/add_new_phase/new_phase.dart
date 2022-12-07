@@ -445,17 +445,42 @@ class _NewPhaseState extends State<NewPhase> {
           titleHeadlineWidget("Resources needed", 16.0),
           Row(
             children: [
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 7),
-                child: CircleAvatar(
-                  backgroundColor: Color(0xff334155),
-                  radius: 30,
-                  child: Icon(Icons.person_outline),
-                  // SvgPicture.asset(
-                  //   'images/photo.svg',
-                  //   width: 24.0,
-                  //   height: 24.0,
-                  // ),
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,right: 0,top: 0,bottom: 0,
+                        child: CircleAvatar(
+                          backgroundColor: Color(0xff334155),
+                          radius: 30,
+                          child: Icon(Icons.person_outline),
+                          // SvgPicture.asset(
+                          //   'images/photo.svg',
+                          //   width: 24.0,
+                          //   height: 24.0,
+                          // ),
+                        ),
+                      ),
+                      Positioned(
+                          right: 10,bottom: 10,
+                          child:Container(decoration: BoxDecoration(
+                            color: Color(0xff10B981),
+                            borderRadius: BorderRadius.circular(100),
+
+                          ),
+                            child: Icon(Icons.add,color: Colors.white,size: 20),
+
+                          ))
+                    ],
+
+                  ),
                 ),
               ),
               Container(
@@ -1084,17 +1109,24 @@ class _NewPhaseState extends State<NewPhase> {
       children: [
         Row(
           children: [
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(left: 20.0, top: 7),
-              child: CircleAvatar(
-                backgroundColor: Color(0xff334155),
-                radius: 30,
-                child: Icon(Icons.person_outline),
-                // SvgPicture.asset(
-                //   'images/photo.svg',
-                //   width: 24.0,
-                //   height: 24.0,
-                // ),
+              child:  Container(
+                decoration:  BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(100)
+
+                ),
+                child: const CircleAvatar(
+                  backgroundColor: Color(0xff334155),
+                  radius: 30,
+                  child: Icon(Icons.person_outline),
+                  // SvgPicture.asset(
+                  //   'images/photo.svg',
+                  //   width: 24.0,
+                  //   height: 24.0,
+                  // ),
+                ),
               ),
             ),
             Container(
