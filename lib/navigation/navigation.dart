@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 
 import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
@@ -1243,7 +1244,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                               context,
                                                           StateSettersetState) {
                                                         return DropdownButtonHideUnderline(
-                                                          child: DropdownButton(
+                                                          child:
+                                                              CustomDropdownButton(
                                                             dropdownColor:
                                                                 ColorSelect
                                                                     .class_color,
@@ -1263,7 +1265,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                                       FontWeight
                                                                           .w500),
                                                             ),
-                                                            isExpanded: true,
+                                                            // isExpanded: true,
                                                             icon: const Icon(
                                                               // Add this
                                                               Icons

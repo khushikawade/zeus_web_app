@@ -343,146 +343,148 @@ class _EditPageState extends State<EditPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        // width: double.infinity / 2,
-                        width: MediaQuery.of(context).size.width * 0.13,
-                        margin: const EdgeInsets.only(top: 15.0, left: 10.0),
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          color:
-                              // Colors.red,
-                              const Color(0xff334155),
-                          //border: Border.all(color:  const Color(0xff1E293B)),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          // width: double.infinity / 2,
+                          width: MediaQuery.of(context).size.width * 0.13,
+                          margin: const EdgeInsets.only(top: 15.0, left: 10.0),
+                          height: 60.0,
+                          decoration: BoxDecoration(
+                            color:
+                                // Colors.red,
+                                const Color(0xff334155),
+                            //border: Border.all(color:  const Color(0xff1E293B)),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
+                                ),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ), //BoxShadow
+                            ],
                           ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ), //BoxShadow
-                          ],
-                        ),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 4.0, left: 16.0),
-                                  child: const Text(
-                                    "AP",
-                                    style: TextStyle(
-                                        fontSize: 13.0,
-                                        color: Color(0xff64748B),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  )),
-                              StatefulBuilder(builder:
-                                  (BuildContext context, StateSettersetState) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 4, top: 2),
-                                  child: DropdownButtonHideUnderline(
-                                      child: CustomDropdownButton(
-                                    isDense: true,
-
-                                    dropdownColor: Color(0xff0F172A),
-                                    value: _account,
-                                    underline: Container(),
-                                    hint: const Text(
-                                      "Select Accountable Person",
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 4.0, left: 16.0),
+                                    child: const Text(
+                                      "AP",
                                       style: TextStyle(
-                                          fontSize: 15.0,
-                                          color: Color(0xffFFFFFF),
+                                          fontSize: 13.0,
+                                          color: Color(0xff64748B),
                                           fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w300),
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                StatefulBuilder(builder: (BuildContext context,
+                                    StateSettersetState) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 4, top: 2),
+                                    child: DropdownButtonHideUnderline(
+                                        child: CustomDropdownButton(
+                                      isDense: true,
+
+                                      dropdownColor: Color(0xff0F172A),
+                                      value: _account,
+                                      underline: Container(),
+                                      hint: const Text(
+                                        "Select Accountable Person",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      // isExpanded: true,
+                                      icon: const Icon(
+                                        // Add this
+                                        Icons.arrow_drop_down, // Add this
+                                        color: Color(0xff64748B),
+
+                                        // Add this
+                                      ),
+                                      elevation: 12,
+                                      items: _accountableId.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items['id'].toString(),
+                                          child: Text(
+                                            items['name'],
+                                            style: const TextStyle(
+                                                fontSize: 15.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          //  validator: (value) => value == null ? 'field required' : null,
+                                          //               onSaved: (value) => name = value,
+
+                                          _account = newValue;
+                                          print("account:$_account");
+                                          selectAccountablePerson = true;
+                                        });
+                                      },
+                                    )),
+                                  );
+                                }),
+                                // CustomDropdownButton(
+                                //   value: _account,
+                                //   items: _accountableId.map((items) {
+                                //     return DropdownMenuItem(
+                                //       value: items['id'].toString(),
+                                //       child: Text(
+                                //         items['name'],
+                                //         style: const TextStyle(
+                                //             fontSize: 15.0,
+                                //             color: Color(0xffFFFFFF),
+                                //             fontFamily: 'Inter',
+                                //             fontWeight: FontWeight.w500),
+                                //       ),
+                                //     );
+                                //   }).toList(),
+                                //   onChanged: ((value) {
+                                //     setState(() {
+                                //       //  validator: (value) => value == null ? 'field required' : null,
+                                //       //               onSaved: (value) => name = value,
+
+                                //       _account = value.toString();
+                                //       print("account:$_account");
+                                //       selectAccountablePerson = true;
+                                //     });
+                                //   }),
+                                // ),
+                              ]),
+                        ),
+                        createButtonClick
+                            ? selectAccountablePerson
+                                ? const Text(
+                                    " ",
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 8,
+                                      left: 26,
                                     ),
-                                    // isExpanded: true,
-                                    icon: const Icon(
-                                      // Add this
-                                      Icons.arrow_drop_down, // Add this
-                                      color: Color(0xff64748B),
-
-                                      // Add this
-                                    ),
-                                    elevation: 12,
-                                    items: _accountableId.map((items) {
-                                      return DropdownMenuItem(
-                                        value: items['id'].toString(),
-                                        child: Text(
-                                          items['name'],
-                                          style: const TextStyle(
-                                              fontSize: 15.0,
-                                              color: Color(0xffFFFFFF),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        //  validator: (value) => value == null ? 'field required' : null,
-                                        //               onSaved: (value) => name = value,
-
-                                        _account = newValue;
-                                        print("account:$_account");
-                                        selectAccountablePerson = true;
-                                      });
-                                    },
-                                  )),
-                                );
-                              }),
-                              // CustomDropdownButton(
-                              //   value: _account,
-                              //   items: _accountableId.map((items) {
-                              //     return DropdownMenuItem(
-                              //       value: items['id'].toString(),
-                              //       child: Text(
-                              //         items['name'],
-                              //         style: const TextStyle(
-                              //             fontSize: 15.0,
-                              //             color: Color(0xffFFFFFF),
-                              //             fontFamily: 'Inter',
-                              //             fontWeight: FontWeight.w500),
-                              //       ),
-                              //     );
-                              //   }).toList(),
-                              //   onChanged: ((value) {
-                              //     setState(() {
-                              //       //  validator: (value) => value == null ? 'field required' : null,
-                              //       //               onSaved: (value) => name = value,
-
-                              //       _account = value.toString();
-                              //       print("account:$_account");
-                              //       selectAccountablePerson = true;
-                              //     });
-                              //   }),
-                              // ),
-                            ]),
-                      ),
-                      createButtonClick
-                          ? selectAccountablePerson
-                              ? const Text(
-                                  " ",
-                                )
-                              : Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 8,
-                                    left: 26,
-                                  ),
-                                  child: errorWidget())
-                          : Container(),
-                    ],
+                                    child: errorWidget())
+                            : Container(),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     width: 10,
@@ -551,7 +553,7 @@ class _EditPageState extends State<EditPage> {
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w300),
                                       ),
-                                      //isExpanded: true,
+                                      // isExpanded: true,
                                       icon: const Icon(
                                         // Add this
                                         Icons.arrow_drop_down, // Add this
@@ -1059,7 +1061,7 @@ class _EditPageState extends State<EditPage> {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w300),
                                     ),
-                                    isExpanded: true,
+                                    //  isExpanded: true,
                                     icon: const Icon(
                                       // Add this
                                       Icons.arrow_drop_down, // Add this

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
@@ -64,7 +65,7 @@ class MyMenu extends StatefulWidget {
       {required this.title,
       required this.alignment,
       this.peopleList,
-      this.offset = const Offset(0, 0),
+      this.offset = const Offset(0, 48),
       this.data,
       required this.buildContext,
       this.returnValue,
@@ -195,6 +196,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
+      tooltip: '',
       offset: widget.offset,
       color:
           // Colors.red,
@@ -1138,7 +1140,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               builder:
                                   (BuildContext context, StateSettersetState) {
                                 return DropdownButtonHideUnderline(
-                                  child: DropdownButton(
+                                  child: CustomDropdownButton(
                                     dropdownColor: ColorSelect.class_color,
                                     value: _depat,
                                     underline: Container(),
@@ -1150,7 +1152,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    isExpanded: true,
+                                    // isExpanded: true,
                                     icon: const Icon(
                                       // Add this
                                       Icons.arrow_drop_down, // Add this
