@@ -112,7 +112,7 @@ class AppUtil {
                           builder: (context) => LoginScreen(
                                 onSubmit: (String value) {},
                               )),
-                      (Route<dynamic> route) => false);
+                      (Route<dynamic> route) => route is LoginScreen);
                 },
                 child: const Text(
                   'Ok',
