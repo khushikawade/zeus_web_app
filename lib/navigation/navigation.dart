@@ -189,7 +189,7 @@ class _NavigationRailState extends State<MyHomePage>
     var token = 'Bearer ' + storage.read("token");
 
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://zeus-api.zehntech.net/api/v1/resource'));
+        'POST', Uri.parse('${AppUrl.baseUrl}/resource'));
     request.headers.addAll({
       "Content-Type": "application/json",
       "Authorization": token,
@@ -3718,7 +3718,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/customer"),
+        Uri.parse("${AppUrl.baseUrl}/customer"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3742,7 +3742,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/currencies"),
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3766,7 +3766,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/status"),
+        Uri.parse("${AppUrl.baseUrl}/status"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3790,7 +3790,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/time-zone/list"),
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3821,7 +3821,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/tags"),
+        Uri.parse("${AppUrl.baseUrl}/tags"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3852,7 +3852,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
+        Uri.parse("${AppUrl.baseUrl}/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3960,7 +3960,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,

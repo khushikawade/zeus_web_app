@@ -449,11 +449,6 @@ class _IdleState extends State<Idle> {
                     skillsData,
                   );
                 });
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             ProfileDetail(list: _peopleList)));
               },
               cells: [
                 DataCell(Container(
@@ -1240,13 +1235,6 @@ class _IdleState extends State<Idle> {
         setState(() {
           _statusList = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
       } else {
         print("failed to much");
       }

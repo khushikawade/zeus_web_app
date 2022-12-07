@@ -366,7 +366,7 @@ class _MenuPhaseState extends State<MenuPhase>
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -391,7 +391,7 @@ class _MenuPhaseState extends State<MenuPhase>
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/time-zone/list"),
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -501,7 +501,7 @@ class _MenuPhaseState extends State<MenuPhase>
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/currencies"),
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,

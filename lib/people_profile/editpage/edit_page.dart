@@ -1524,7 +1524,7 @@ class _EditPageState extends State<EditPage> {
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
+        Uri.parse("${AppUrl.baseUrl}/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -1551,7 +1551,7 @@ class _EditPageState extends State<EditPage> {
   //   if (value == null) {
   //     var token = 'Bearer ' + storage.read("token");
   //     var response = await http.get(
-  //       Uri.parse("https://zeus-api.zehntech.net/api/v1/status"),
+  //       Uri.parse("${AppUrl.baseUrl}/status"),
   //       headers: {
   //         "Accept": "application/json",
   //         "Authorization": token,
@@ -1599,7 +1599,7 @@ class _EditPageState extends State<EditPage> {
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/tags"),
+        Uri.parse("${AppUrl.baseUrl}/tags"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,

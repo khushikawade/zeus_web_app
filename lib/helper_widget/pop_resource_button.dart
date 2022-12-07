@@ -2379,7 +2379,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2391,6 +2391,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _department = mdata;
         });
+      }else if(response.statusCode == 401) {
+        // bdbdbdbfbd
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -2404,7 +2406,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/time-zone/list"),
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2469,7 +2471,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     // var userId = storage.read("user_id");
     // AppUrl
     var request = http.MultipartRequest('POST',
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource/update'));
+        Uri.parse('${AppUrl.baseUrl}/resource/update'));
     request.headers
         .addAll({"Content-Type": "application/json", "Authorization": token});
     request.fields['user_id'] = userId;
@@ -2591,7 +2593,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/currencies"),
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,

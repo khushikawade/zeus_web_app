@@ -35,6 +35,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -173,6 +174,8 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           onSubmit: (String value) {},
         );
       })));
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
