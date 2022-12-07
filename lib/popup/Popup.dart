@@ -982,13 +982,15 @@ showDailog(
                                 ],
                               ),
                             ),
+
+                            //---------------------SAYYAM YADAV
                             SizedBox(
                                 height: 10.0,
                                 width:
                                     MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.1,
+                                  color: Color(0xff424D5F),
+                                  thickness: 0.7,
                                 )),
                           ],
                         ),
@@ -1223,7 +1225,7 @@ showDailog(
                                                                               Color(0xff64748B),
                                                                         )),
                                                                 hintText:
-                                                                    'Search',
+                                                                    'Searchsss',
                                                                 hintStyle: TextStyle(
                                                                     fontSize:
                                                                         14.0,
@@ -1662,8 +1664,8 @@ showDailog(
                                 height: 30.0,
                                 width: MediaQuery.of(context).size.width,
                                 child: const Divider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
+                                  color: Color(0xff424D5F),
+                                  thickness: 0.7,
                                 )),
                             Row(
                               children: [
@@ -1738,7 +1740,7 @@ showDailog(
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return NewPhase(id!,0);
+                                          return NewPhase(id!, 0);
                                         });
                                   },
                                 ),
@@ -1932,13 +1934,18 @@ showDailog(
                                                 },
                                                 onEditClick: () async {
                                                   Navigator.pop(context);
-                                                   showDialog(
+                                                  showDialog(
                                                       context: context,
                                                       builder: (context) {
-                                                    return NewPhase(response.data!.phase![index].id.toString(),1);
-                                                  });
+                                                        return NewPhase(
+                                                            response
+                                                                .data!
+                                                                .phase![index]
+                                                                .id
+                                                                .toString(),
+                                                            1);
+                                                      });
                                                 },
-
                                                 setState: setState,
                                                 response: response,
                                                 data: phase,

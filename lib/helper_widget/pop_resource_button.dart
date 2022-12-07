@@ -201,16 +201,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       color:
           // Colors.red,
           Color(0xFF0F172A),
-      // icon: const Padding(
-      //   padding: EdgeInsets.only(bottom: 15.0),
-      //   child: Icon(
-      //     Icons.more_vert,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      // icon: SvgPicture.asset(
-      //   "images/edit.svg",
-      // ),
+
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 16.0),
         height: 30,
@@ -1839,7 +1830,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       color: const Color(0xff334155),
                       //border: Border.all(color:  const Color(0xff1E293B)),
                       borderRadius: BorderRadius.circular(
-                        8.0,
+                        48.0,
                       ),
                     ),
                     child: Column(
@@ -1853,7 +1844,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.only(top: 15.0),
                             prefixIcon: Padding(
-                                padding: EdgeInsets.only(top: 4.0),
+                                padding: EdgeInsets.only(
+                                    top: 4.0, left: 27.0, right: 21),
                                 child: Icon(
                                   Icons.search,
                                   color: Color(0xff64748B),
