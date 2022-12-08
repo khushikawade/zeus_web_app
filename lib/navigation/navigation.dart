@@ -11,6 +11,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
+
 import 'package:zeus/helper_widget/custom_popups.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/mytooltip.dart';
@@ -24,6 +26,7 @@ import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/util/validation.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import '../logout_module/logout_view.dart';
 import '../navigator_tabs/idle/data/project_detail_data/ProjectDetailData.dart';
@@ -174,6 +177,8 @@ class _NavigationRailState extends State<MyHomePage>
       setState(() {
         loading = false;
       });
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
       // print(response.body);
@@ -187,8 +192,8 @@ class _NavigationRailState extends State<MyHomePage>
     print("add People---------------------------------------------------");
     var token = 'Bearer ' + storage.read("token");
 
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('https://zeus-api.zehntech.net/api/v1/resource'));
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${AppUrl.baseUrl}/resource'));
     request.headers.addAll({
       "Content-Type": "application/json",
       "Authorization": token,
@@ -257,18 +262,15 @@ class _NavigationRailState extends State<MyHomePage>
       });
 
       print("add people created");
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       Map<String, dynamic> responseJson = json.decode(responseString);
       print("Error response ------------------------ ${responseJson}");
 
       SmartDialog.dismiss();
 
-      // Fluttertoast.showToast(
-      //   msg: 'Something Went Wrong',
-      //   backgroundColor: Colors.grey,
-      // );
-
-      //var user = userFromJson(response.body);
       Fluttertoast.showToast(
         msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
@@ -306,6 +308,8 @@ class _NavigationRailState extends State<MyHomePage>
         print(stringRes);
         print("yes Creaete");
         print(response.body);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
         Fluttertoast.showToast(
@@ -333,6 +337,7 @@ class _NavigationRailState extends State<MyHomePage>
   // bool _submitted = false;
   bool _addSubmitted = true;
   String name = '';
+  int profileIndex = 5;
 
   // var _formKey = GlobalKey<FormState>();
 
@@ -453,17 +458,17 @@ class _NavigationRailState extends State<MyHomePage>
     ),
     Idle(),
     Container(
-      child: const Navigator(
-        onGenerateRoute: generateRoute,
-        initialRoute: '/peopleList',
-      ),
-    ),
-    Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,
       child: const Text(
         'Coming Soon',
         style: TextStyle(fontSize: 40, color: Colors.white),
+      ),
+    ),
+    Container(
+      child: const Navigator(
+        onGenerateRoute: generateRoute,
+        initialRoute: '/peopleList',
       ),
     ),
     Container(
@@ -570,10 +575,10 @@ class _NavigationRailState extends State<MyHomePage>
                                   margin: const EdgeInsets.only(
                                       left: 30.0, top: 10.0, bottom: 10.0),
                                   child: const Text(
-                                    "Add people",
+                                    "Add People",
                                     style: TextStyle(
                                         color: Color(0xffFFFFFF),
-                                        fontSize: 18.0,
+                                        fontSize: 22.0,
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w700),
                                   ),
@@ -594,10 +599,43 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
+                                      _name.clear();
+                                      _nickName.clear();
+                                      _bio.clear();
+                                      _password.clear();
+                                      _designation.clear();
+                                      _association.clear();
+                                      _salary.clear();
+                                      _salaryCurrency.clear();
+                                      _availableDay.clear();
+                                      _availableTime.clear();
+                                      _search.clear();
+                                      _country.clear();
+                                      _enterCity.clear();
+                                      _phoneNumber.clear();
+                                      _emailAddress.clear();
+                                      _depat = null;
+                                      _curren = null;
+                                      _time = null;
+                                      startTime1 = null;
+                                      endTime2 = null;
+                                      webImage = null;
+                                      webImage = null;
+                                      selectImage = false;
+                                      selectTimeZone = false;
+                                      selectSalary = false;
+                                      selectSkill = false;
+                                      selectDepartment = false;
+                                      selectDays = false;
+                                      selectTime = false;
+
                                       if (selectDepartment == false ||
                                           selectSalary == false ||
                                           selectSkill == false ||
-                                          selectTimeZone == false) {
+                                          selectTimeZone == false ||
+                                          selectImage == false ||
+                                          selectDays == false ||
+                                          selectTime == false) {
                                         saveButtonClick = false;
                                       }
                                       Navigator.of(context).pop();
@@ -730,7 +768,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       .width *
                                                   0.11,
                                               margin: const EdgeInsets.only(
-                                                  left: 48.0, top: 20.0),
+                                                  left: 48.0, top: 57.0),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
                                                 //border: Border.all(color: const Color(0xff0E7490)),
@@ -745,8 +783,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                     margin:
                                                         const EdgeInsets.only(
                                                             left: 16.0),
-                                                    child: SvgPicture.asset(
-                                                        'images/camera_pic.svg'),
+                                                    child: const Icon(
+                                                        Icons.camera_alt,
+                                                        size: 18,
+                                                        color:
+                                                            Color(0xffFFFFFF)),
+
+                                                    //  SvgPicture.asset(
+                                                    //     'images/camera_pic.svg'),
                                                   ),
                                                   Container(
                                                     margin:
@@ -794,18 +838,18 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(
-                                        left: 30.0, top: 20.0),
+                                        left: 30.0, top: 23.0),
                                     child: const Text(
                                       "About you",
                                       style: TextStyle(
                                           color: Color(0xffFFFFFF),
-                                          fontSize: 14.0,
+                                          fontSize: 18.0,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 8.0,
+                                    height: 16.0,
                                   ),
                                   Stack(
                                     children: [
@@ -858,9 +902,10 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       TextFormField(
                                         controller: _name,
-                                        inputFormatters: [
-                                          UpperCaseTextFormatter()
-                                        ],
+                                        // inputFormatters: [
+
+                                        //   // UpperCaseTextFormatter()
+                                        // ],
                                         //   autovalidateMode: AutovalidateMode.onUserInteraction,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -888,7 +933,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                                fontWeight: FontWeight.w400)),
                                         //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
@@ -896,8 +941,10 @@ class _NavigationRailState extends State<MyHomePage>
 
                                         validator: (value) {
                                           // validateName = nameValidation(value);
-                                          RegExp regex =
-                                              RegExp(r'^[a-z A-Z]+$');
+                                          RegExp regex = RegExp(r'^[a-z A-Z]+$',
+                                              // r'^[a-z]+$',
+                                              // r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$",
+                                              caseSensitive: false);
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           } else if (!regex.hasMatch(value)) {
@@ -923,11 +970,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                 0.99,
                                             margin: const EdgeInsets.only(
                                                 left: 30.0,
-                                                top: 16.0,
-                                                right: 25.0),
+                                                top: 5.0,
+                                                right: 25.0,
+                                                bottom: 10),
                                             height: 56.0,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
+                                              color:
+                                                  // Colors.red,
+                                                  const Color(0xff334155),
                                               //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
@@ -951,7 +1001,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 14.0, left: 45.0),
                                           child: const Text(
                                             "Nickname",
                                             style: TextStyle(
@@ -974,7 +1024,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             counterText: "",
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 52.0,
+                                              top: 45.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -986,7 +1036,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                                fontWeight: FontWeight.w400)),
                                         //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
@@ -1060,7 +1110,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
                                               // bottom: 10.0,
-                                              top: 47.0,
+                                              top: 50.0,
                                               right: 40,
                                               left: 45.0,
                                             ),
@@ -1070,7 +1120,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                                fontWeight: FontWeight.w400)),
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
@@ -1086,166 +1136,199 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.12,
-                                              margin: const EdgeInsets.only(
-                                                  left: 30.0,
-                                                  top: 16.0,
-                                                  right: 16.0),
-                                              height: 56.0,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  8.0,
-                                                ),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Color(0xff475569),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                    blurRadius: 0.0,
-                                                    spreadRadius: 0.0,
-                                                  ), //BoxShadow
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          // flex: 2,
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.12,
                                                 margin: const EdgeInsets.only(
-                                                    top: 23.0, left: 45.0),
-                                                child: const Text(
-                                                  "Designation",
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      color: Color(0xff64748B),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )),
-                                            TextFormField(
-                                              controller: _designation,
-                                              inputFormatters: [
-                                                UpperCaseTextFormatter()
-                                              ],
-                                              maxLength: 18,
-                                              cursorColor:
-                                                  const Color(0xffFFFFFF),
-                                              style: const TextStyle(
-                                                  color: Color(0xffFFFFFF)),
-                                              textAlignVertical:
-                                                  TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  counterText: "",
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 53.0,
-                                                    right: 10,
-                                                    left: 45.0,
+                                                    left: 30.0,
+                                                    top: 16.0,
+                                                    right: 16.0),
+                                                height: 56.0,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  //border: Border.all(color:  const Color(0xff1E293B)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.0,
                                                   ),
-                                                  border: InputBorder.none,
-                                                  hintText: 'Enter',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              autovalidateMode: _addSubmitted
-                                                  ? AutovalidateMode
-                                                      .onUserInteraction
-                                                  : AutovalidateMode.disabled,
-                                              validator: (value) {
-                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter';
-                                                }
-                                                return null;
-                                              },
-                                              onChanged: (text) => setStateView(
-                                                  () => name1 = text),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.13,
-                                              margin: const EdgeInsets.only(
-                                                  top: 16.0, right: 30),
-                                              height: 56.0,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  8.0,
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Color(0xff475569),
+                                                      offset: Offset(
+                                                        0.0,
+                                                        2.0,
+                                                      ),
+                                                      blurRadius: 0.0,
+                                                      spreadRadius: 0.0,
+                                                    ), //BoxShadow
+                                                  ],
                                                 ),
                                               ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              top: 6.0,
-                                                              left: 16.0),
-                                                      child: const Text(
-                                                        "Department",
-                                                        style: TextStyle(
-                                                            fontSize: 13.0,
+                                              Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 23.0, left: 45.0),
+                                                  child: const Text(
+                                                    "Designation",
+                                                    style: TextStyle(
+                                                        fontSize: 11.0,
+                                                        color:
+                                                            Color(0xff64748B),
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )),
+                                              TextFormField(
+                                                controller: _designation,
+                                                inputFormatters: [
+                                                  UpperCaseTextFormatter()
+                                                ],
+                                                maxLength: 25,
+                                                cursorColor:
+                                                    const Color(0xffFFFFFF),
+                                                style: const TextStyle(
+                                                    color: Color(0xffFFFFFF)),
+                                                textAlignVertical:
+                                                    TextAlignVertical.bottom,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        counterText: "",
+                                                        errorStyle: TextStyle(
+                                                            fontSize: 14,
+                                                            height: 0.20),
+                                                        contentPadding:
+                                                            EdgeInsets.only(
+                                                          bottom: 16.0,
+                                                          top: 53.0,
+                                                          right: 10,
+                                                          left: 45.0,
+                                                        ),
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText: 'Enter',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 14.0,
                                                             color: Color(
-                                                                0xff64748B),
+                                                                0xffFFFFFF),
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
-                                                                    .w500),
-                                                      )),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0,
-                                                            right: 16.0),
-                                                    height: 20.0,
-                                                    child: Container(
+                                                                    .w500)),
+                                                autovalidateMode: _addSubmitted
+                                                    ? AutovalidateMode
+                                                        .onUserInteraction
+                                                    : AutovalidateMode.disabled,
+                                                validator: (value) {
+                                                  //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                                  if (value!.isEmpty) {
+                                                    return 'Please enter';
+                                                  }
+                                                  return null;
+                                                },
+                                                onChanged: (text) =>
+                                                    setStateView(
+                                                        () => name1 = text),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                // width: double.infinity / 2,
 
-                                                        // padding: const EdgeInsets.all(2.0),
-                                                        child: StatefulBuilder(
-                                                      builder: (BuildContext
-                                                              context,
-                                                          StateSettersetState) {
-                                                        return DropdownButtonHideUnderline(
-                                                          child: DropdownButton(
+                                                margin: const EdgeInsets.only(
+                                                    top: 16.0, right: 30),
+                                                height: 56.0,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      // Colors.red,
+                                                      const Color(0xff334155),
+                                                  //border: Border.all(color:  const Color(0xff1E293B)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.0,
+                                                  ),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Color(0xff475569),
+                                                      offset: Offset(
+                                                        0.0,
+                                                        2.0,
+                                                      ),
+                                                      blurRadius: 0.0,
+                                                      spreadRadius: 0.0,
+                                                    ), //BoxShadow
+                                                  ],
+                                                ),
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 4.0,
+                                                                  left: 16.0),
+                                                          child: const Text(
+                                                            "Department",
+                                                            style: TextStyle(
+                                                                fontSize: 13.0,
+                                                                color: Color(
+                                                                    0xff64748B),
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          )),
+                                                      StatefulBuilder(builder:
+                                                          (BuildContext context,
+                                                              StateSettersetState) {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 4,
+                                                                  top: 2),
+                                                          child:
+                                                              DropdownButtonHideUnderline(
+                                                                  child:
+                                                                      CustomDropdownButton(
+                                                            isDense: true,
+
                                                             dropdownColor:
-                                                                ColorSelect
-                                                                    .class_color,
+                                                                Color(
+                                                                    0xff0F172A),
                                                             value: _depat,
                                                             underline:
                                                                 Container(),
@@ -1253,26 +1336,26 @@ class _NavigationRailState extends State<MyHomePage>
                                                               "Select",
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      14.0,
+                                                                      15.0,
                                                                   color: Color(
                                                                       0xffFFFFFF),
                                                                   fontFamily:
                                                                       'Inter',
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w500),
+                                                                          .w300),
                                                             ),
-                                                            isExpanded: true,
+                                                            // isExpanded: true,
                                                             icon: const Icon(
                                                               // Add this
                                                               Icons
-                                                                  .arrow_drop_down,
-                                                              // Add this
+                                                                  .arrow_drop_down, // Add this
                                                               color: Color(
                                                                   0xff64748B),
 
                                                               // Add this
                                                             ),
+                                                            elevation: 12,
                                                             items: _department
                                                                 .map((items) {
                                                               return DropdownMenuItem(
@@ -1283,14 +1366,14 @@ class _NavigationRailState extends State<MyHomePage>
                                                                   items['name'],
                                                                   style: const TextStyle(
                                                                       fontSize:
-                                                                          14.0,
+                                                                          15.0,
                                                                       color: Color(
                                                                           0xffFFFFFF),
                                                                       fontFamily:
                                                                           'Inter',
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .w400),
+                                                                              .w500),
                                                                 ),
                                                               );
                                                             }).toList(),
@@ -1305,33 +1388,155 @@ class _NavigationRailState extends State<MyHomePage>
                                                                     true;
                                                               });
                                                             },
-                                                          ),
+                                                          )),
                                                         );
-                                                      },
-                                                    )),
-                                                  )
-                                                ],
+                                                      }),
+                                                    ]),
                                               ),
-                                            ),
-                                            // Text("Red"),
-                                            saveButtonClick
-                                                ? selectDepartment
-                                                    ? const Text(
-                                                        " ",
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          top: 8,
-                                                          left: 15,
-                                                        ),
-                                                        child: errorWidget())
-                                                : Text(''),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+
+                                              // Container(
+                                              //   // width: MediaQuery.of(context)
+                                              //   //         .size
+                                              //   //         .width *
+                                              //   //     0.13,
+                                              //   margin: const EdgeInsets.only(
+                                              //       top: 16.0, right: 30),
+                                              //   height: 56.0,
+                                              //   decoration: BoxDecoration(
+                                              //     color: const Color(0xff334155),
+                                              //     //border: Border.all(color:  const Color(0xff1E293B)),
+                                              //     borderRadius:
+                                              //         BorderRadius.circular(
+                                              //       8.0,
+                                              //     ),
+                                              //   ),
+                                              //   child: Column(
+                                              //     crossAxisAlignment:
+                                              //         CrossAxisAlignment.start,
+                                              //     children: [
+                                              //       Container(
+                                              //           margin:
+                                              //               const EdgeInsets.only(
+                                              //                   top: 6.0,
+                                              //                   left: 16.0),
+                                              //           child: const Text(
+                                              //             "Department",
+                                              //             style: TextStyle(
+                                              //                 fontSize: 13.0,
+                                              //                 color: Color(
+                                              //                     0xff64748B),
+                                              //                 fontFamily: 'Inter',
+                                              //                 fontWeight:
+                                              //                     FontWeight
+                                              //                         .w500),
+                                              //           )),
+                                              //       Container(
+                                              //         margin:
+                                              //             const EdgeInsets.only(
+                                              //                 left: 16.0,
+                                              //                 right: 16.0),
+                                              //         height: 20.0,
+                                              //         child: Container(
+
+                                              //             // padding: const EdgeInsets.all(2.0),
+                                              //             child: StatefulBuilder(
+                                              //           builder: (BuildContext
+                                              //                   context,
+                                              //               StateSettersetState) {
+                                              //             return DropdownButtonHideUnderline(
+                                              //               child:
+                                              //                   CustomDropdownButton(
+                                              //                 dropdownColor:
+                                              //                     ColorSelect
+                                              //                         .class_color,
+                                              //                 value: _depat,
+                                              //                 underline:
+                                              //                     Container(),
+                                              //                 hint: const Text(
+                                              //                   "Select",
+                                              //                   style: TextStyle(
+                                              //                       fontSize:
+                                              //                           14.0,
+                                              //                       color: Color(
+                                              //                           0xffFFFFFF),
+                                              //                       fontFamily:
+                                              //                           'Inter',
+                                              //                       fontWeight:
+                                              //                           FontWeight
+                                              //                               .w500),
+                                              //                 ),
+                                              //                 // isExpanded: true,
+                                              //                 icon: const Icon(
+                                              //                   // Add this
+                                              //                   Icons
+                                              //                       .arrow_drop_down,
+                                              //                   // Add this
+                                              //                   color: Color(
+                                              //                       0xff64748B),
+
+                                              //                   // Add this
+                                              //                 ),
+                                              //                 items: _department
+                                              //                     .map((items) {
+                                              //                   return DropdownMenuItem(
+                                              //                     value: items[
+                                              //                             'id']
+                                              //                         .toString(),
+                                              //                     child: Text(
+                                              //                       items['name'],
+                                              //                       style: const TextStyle(
+                                              //                           fontSize:
+                                              //                               14.0,
+                                              //                           color: Color(
+                                              //                               0xffFFFFFF),
+                                              //                           fontFamily:
+                                              //                               'Inter',
+                                              //                           fontWeight:
+                                              //                               FontWeight
+                                              //                                   .w400),
+                                              //                     ),
+                                              //                   );
+                                              //                 }).toList(),
+                                              // onChanged: (String?
+                                              //     newValue) {
+                                              //   setStateView(() {
+                                              //     print(
+                                              //         "---------newValue--------------${newValue}");
+                                              //     _depat =
+                                              //         newValue!;
+                                              //     selectDepartment =
+                                              //         true;
+                                              //  });
+                                              //  },
+                                              //      ),
+                                              //             );
+                                              //           },
+                                              //         )),
+                                              //       )
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              // // Text("Red"),
+
+                                              saveButtonClick
+                                                  ? selectDepartment
+                                                      ? const Text(
+                                                          " ",
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 8,
+                                                            left: 15,
+                                                          ),
+                                                          child: errorWidget())
+                                                  : Text(''),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   Stack(
                                     children: [
@@ -1340,7 +1545,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.99,
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0, right: 26.0),
+                                            left: 30.0, top: 10.0, right: 26.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -1591,6 +1796,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                           FontWeight.w500),
                                                 )),
                                             TextFormField(
+                                              maxLength: 15,
                                               controller: _salary,
                                               cursorColor:
                                                   const Color(0xffFFFFFF),
@@ -1600,6 +1806,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   TextAlignVertical.bottom,
                                               keyboardType: TextInputType.text,
                                               decoration: const InputDecoration(
+                                                  counterText: "",
                                                   errorStyle: TextStyle(
                                                       fontSize: 14,
                                                       height: 0.20),
@@ -1928,7 +2135,9 @@ class _NavigationRailState extends State<MyHomePage>
                                           ),
                                           child: Text(
                                             startTime1 != null &&
-                                                    endTime2 != null
+                                                    startTime1.isNotEmpty &&
+                                                    endTime2 != null &&
+                                                    endTime2.isNotEmpty
                                                 ? "$startTime1 - $endTime2"
                                                 : '',
                                             style: TextStyle(
@@ -2018,7 +2227,10 @@ class _NavigationRailState extends State<MyHomePage>
                                           height: 40.0,
                                           margin: const EdgeInsets.only(
                                               right: 20.0, top: 25.0),
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
+                                            // borderRadius: BorderRadius.circular(
+                                            //   50.0,
+                                            // ),
                                             color: Color(0xff334155),
                                             shape: BoxShape.circle,
                                           ),
@@ -2046,12 +2258,12 @@ class _NavigationRailState extends State<MyHomePage>
                                                 0.26,
                                         margin: const EdgeInsets.only(
                                             left: 30.0, top: 16.0),
-                                        height: 50.0,
+                                        height: 55.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
-                                            8.0,
+                                            48.0,
                                           ),
                                         ),
                                         child: Column(
@@ -2074,7 +2286,9 @@ class _NavigationRailState extends State<MyHomePage>
                                                       prefixIcon: Padding(
                                                           padding:
                                                               EdgeInsets.only(
-                                                                  top: 4.0),
+                                                                  top: 4.0,
+                                                                  right: 21,
+                                                                  left: 27),
                                                           child: Icon(
                                                             Icons.search,
                                                             color: Color(
@@ -2290,6 +2504,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontWeight: FontWeight.w500),
                                           )),
                                       TextFormField(
+                                        maxLength: 20,
                                         controller: _country,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -2298,6 +2513,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
+                                            counterText: "",
                                             errorStyle: TextStyle(
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
@@ -2348,7 +2564,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     .width *
                                                 0.26,
                                             margin: const EdgeInsets.only(
-                                                left: 30.0, top: 16.0),
+                                                left: 30.0, top: 7.0),
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
@@ -2375,7 +2591,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 12.0, left: 45.0),
                                           child: const Text(
                                             "City",
                                             style: TextStyle(
@@ -2385,6 +2601,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontWeight: FontWeight.w500),
                                           )),
                                       TextFormField(
+                                        maxLength: 20,
                                         controller: _enterCity,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -2393,11 +2610,12 @@ class _NavigationRailState extends State<MyHomePage>
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
+                                            counterText: "",
                                             errorStyle: TextStyle(
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 50.0,
+                                              top: 40.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -2435,7 +2653,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
+                                            left: 30.0, top: 7.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2458,7 +2676,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 12.0, left: 45.0),
                                           child: const Text(
                                             "Phone number",
                                             style: TextStyle(
@@ -2468,6 +2686,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontWeight: FontWeight.w500),
                                           )),
                                       TextFormField(
+                                        maxLength: 10,
                                         controller: _phoneNumber,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -2476,11 +2695,12 @@ class _NavigationRailState extends State<MyHomePage>
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
+                                            counterText: "",
                                             errorStyle: TextStyle(
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 50.0,
+                                              top: 40.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -2516,11 +2736,12 @@ class _NavigationRailState extends State<MyHomePage>
                                   Stack(
                                     children: [
                                       Container(
+                                        // padding: const EdgeInsets.only(top: 20),
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
+                                            left: 30.0, top: 20.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2543,7 +2764,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                              top: 25.0, left: 45.0),
                                           child: const Text(
                                             "Email address",
                                             style: TextStyle(
@@ -2553,6 +2774,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 fontWeight: FontWeight.w500),
                                           )),
                                       TextFormField(
+                                        maxLength: 20,
                                         controller: _emailAddress,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -2561,6 +2783,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
+                                            counterText: "",
                                             errorStyle: TextStyle(
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
@@ -2611,7 +2834,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            top: 20.0, left: 30.0),
+                                            top: 26.0, left: 30.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2634,7 +2857,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     value: _time,
                                                     underline: Container(),
                                                     hint: const Text(
-                                                      "Select TimeZone",
+                                                      "Select timezone",
                                                       style: TextStyle(
                                                           fontSize: 14.0,
                                                           color:
@@ -2713,11 +2936,12 @@ class _NavigationRailState extends State<MyHomePage>
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 64.0,
+          toolbarHeight: 80.0,
           backgroundColor: const Color(0xff0F172A),
           elevation: 0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: () {
@@ -2744,7 +2968,7 @@ class _NavigationRailState extends State<MyHomePage>
                     return Visibility(
                       visible: snapshot.data as bool,
                       child: Container(
-                          margin: const EdgeInsets.only(top: 35.0, left: 6.0),
+                          margin: const EdgeInsets.only(top: 30.0, left: 6.0),
                           child: Column(
                             children: [
                               /*  Text(prefs.getString('val')=='q'?'List':prefs.getString('val')=='r'?'Profile':'List', style: const TextStyle(
@@ -2760,42 +2984,78 @@ class _NavigationRailState extends State<MyHomePage>
                                           CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Text("List",
-                                            style: TextStyle(
-                                                color: Color(0xff93C5FD),
-                                                fontSize: 14.0,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
+                                      children: [
+                                        Column(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 20),
+                                              child: Text("List",
+                                                  style: TextStyle(
+                                                      color: Color(0xff93C5FD),
+                                                      fontSize: 14.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Container(
+                                              width: 25,
+                                              height: 3,
+                                              decoration: const BoxDecoration(
+                                                  color: Color(0xff93C5FD),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  3))),
+                                            )
+                                          ],
+                                        ),
                                       ],
                                     )
                                   : Container(),
                               //] else
-                              if (prefs.getString('val') == 'r') ...[
-                                const Text("Profile",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 22.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700))
-                              ],
+                              // if (prefs.getString('val') == 'r') ...[
+                              //   const Text("Profile",
+                              //       style: TextStyle(
+                              //           color: Color(0xffFFFFFF),
+                              //           fontSize: 22.0,
+                              //           fontFamily: 'Inter',
+                              //           fontWeight: FontWeight.w700))
+                              // ],
+
+                              profileIndex == 5 && _selectedIndex != 1
+                                  ? const Text("Profile",
+                                      style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontSize: 22.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700))
+                                  : Container(),
 
                               const SizedBox(height: 10),
 
                               // prefs.getString('val')=='q'?'List':prefs.getString('val')=='r'?'Profile':'List'
-                              if (prefs.getString('val') == 'q') ...[
-                                Container(
-                                  width: 25,
-                                  height: 3,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xff93C5FD),
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(3),
-                                          topRight: Radius.circular(3))),
-                                )
-                              ] else if (prefs.getString('val') == 'r') ...[
-                                SizedBox(),
-                              ]
+
+                              // if (prefs.getString('val') == 'q') ...[
+                              //   Container(
+                              //     width: 25,
+                              //     height: 3,
+                              //     decoration: const BoxDecoration(
+                              //         color: Color(0xff93C5FD),
+                              //         borderRadius: BorderRadius.only(
+                              //             topLeft: Radius.circular(3),
+                              //             topRight: Radius.circular(3))),
+                              //   )
+                              // ]
+                              // else if (prefs.getString('val') == 'r') ...[
+                              //   SizedBox(),
+                              // ]
                             ],
                           )),
                     );
@@ -2804,7 +3064,7 @@ class _NavigationRailState extends State<MyHomePage>
               // if (prefs.getString('val')! == 'q') ...[
               _selectedIndex == 1
                   ? const Padding(
-                      padding: EdgeInsets.only(top: 26.0, left: 0.0),
+                      padding: EdgeInsets.only(top: 14.0, left: 0.0),
                       child: Text("Timeline",
                           style: TextStyle(
                               color: Color(0xffffffff),
@@ -2869,7 +3129,9 @@ class _NavigationRailState extends State<MyHomePage>
                 margin: const EdgeInsets.only(left: 30.0, top: 16.0),
                 height: 48.0,
                 decoration: BoxDecoration(
-                  color: const Color(0xff334155),
+                  color: const Color(0xff1e293b),
+
+                  // const Color(0xff334155),
                   //border: Border.all(color:  const Color(0xff1E293B)),
                   borderRadius: BorderRadius.circular(
                     42.0,
@@ -2889,11 +3151,11 @@ class _NavigationRailState extends State<MyHomePage>
                               Provider.of<DataIdelClass>(context, listen: false)
                                   .getPeopleIdel(searchText: val);
                             } else if (_selectedIndex == 2) {
+                              print(_selectedIndex);
+                            } else if (_selectedIndex == 3) {
                               Provider.of<PeopleIdelClass>(context,
                                       listen: false)
                                   .getPeopleDataList(searchText: val);
-                            } else if (_selectedIndex == 3) {
-                              print(_selectedIndex);
                             }
                           });
                         } catch (e) {
@@ -2912,7 +3174,7 @@ class _NavigationRailState extends State<MyHomePage>
                             )),
                         hintText: _selectedIndex == 1
                             ? 'Search Project'
-                            : _selectedIndex == 2
+                            : _selectedIndex == 3
                                 ? 'Search People'
                                 : 'Search',
                         hintStyle: const TextStyle(
@@ -3079,6 +3341,19 @@ class _NavigationRailState extends State<MyHomePage>
 
                           NavigationRailDestination(
                             icon: Tooltip(
+                              verticalOffset: 40,
+                              // textStyle: const TextStyle(
+                              //     fontSize: 15,
+                              //     color: Colors.white,
+                              //     fontWeight: FontWeight.normal),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
                               message: 'Projects',
                               child: Container(
                                 margin: const EdgeInsets.only(
@@ -3119,21 +3394,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/notification_icon.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 3,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 3,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3153,6 +3428,20 @@ class _NavigationRailState extends State<MyHomePage>
                             icon: Column(
                               children: [
                                 Tooltip(
+                                  verticalOffset: 17,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 5.0),
+                                  //textAlign: TextAlign.center,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff334155),
+                                    border: Border.all(
+                                        color: const Color(0xff334155)),
+                                    borderRadius: BorderRadius.circular(
+                                      18.0,
+                                    ),
+                                  ),
+                                  excludeFromSemantics: true,
+                                  preferBelow: true,
                                   message: 'People',
                                   child: Container(
                                     width: 20.0,
@@ -3194,21 +3483,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/camera.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 3,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 3,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3337,21 +3626,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/people.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 6,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3396,21 +3685,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/button.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 2,
-                                    top: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 2,
+                                  //   top: 6,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3455,21 +3744,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/bell.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 3,
-                                    top: 4,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 3,
+                                  //   top: 4,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3514,21 +3803,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/setting.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 6,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3547,7 +3836,7 @@ class _NavigationRailState extends State<MyHomePage>
                 ),
               );
             }),
-            const VerticalDivider(thickness: 0, width: 0),
+            // sayyamm
             Expanded(child: _mainContents[_selectedIndex]),
           ],
         ),
@@ -3572,6 +3861,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _accountableId = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3584,7 +3875,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/customer"),
+        Uri.parse("${AppUrl.baseUrl}/customer"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3596,6 +3887,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _customerName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3608,7 +3901,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/currencies"),
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3620,6 +3913,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3632,7 +3927,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/status"),
+        Uri.parse("${AppUrl.baseUrl}/status"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3644,6 +3939,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _statusList = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3656,7 +3953,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/time-zone/list"),
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3668,13 +3965,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           _timeline = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3687,7 +3979,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/tags"),
+        Uri.parse("${AppUrl.baseUrl}/tags"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3699,13 +3991,8 @@ class _NavigationRailState extends State<MyHomePage>
         setState(() {
           addTag = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3718,7 +4005,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
+        Uri.parse("${AppUrl.baseUrl}/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3733,6 +4020,8 @@ class _NavigationRailState extends State<MyHomePage>
           print('ghjhjhjh' + _addtag.length.toString());
         });
         print("yes to much");
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -3826,7 +4115,7 @@ class _NavigationRailState extends State<MyHomePage>
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -3839,6 +4128,8 @@ class _NavigationRailState extends State<MyHomePage>
           _department.clear();
           _department = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

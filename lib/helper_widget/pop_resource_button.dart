@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
@@ -32,6 +33,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -64,7 +66,7 @@ class MyMenu extends StatefulWidget {
       {required this.title,
       required this.alignment,
       this.peopleList,
-      this.offset = const Offset(0, 0),
+      this.offset = const Offset(0, 48),
       this.data,
       required this.buildContext,
       this.returnValue,
@@ -110,8 +112,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   var postion;
   SharedPreferences? sharedPreferences;
   GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
-  final ScrollController _scrollController =
-      ScrollController(initialScrollOffset: 50.0);
+  // final ScrollController _scrollController =
+  //     ScrollController(initialScrollOffset: 50.0);
   List<int>? _selectedFile;
   var name;
   String name1 = '';
@@ -195,26 +197,18 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
+      tooltip: '',
       offset: widget.offset,
       color:
           // Colors.red,
           Color(0xFF0F172A),
-      // icon: const Padding(
-      //   padding: EdgeInsets.only(bottom: 15.0),
-      //   child: Icon(
-      //     Icons.more_vert,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      // icon: SvgPicture.asset(
-      //   "images/edit.svg",
-      // ),
+
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 16.0),
         height: 30,
         width: 30,
         decoration: BoxDecoration(
-            // color: Colors.pinkAccent,
+            color: const Color(0xff334155),
             border: Border.all(
               color: ColorSelect.box_decoration,
             ),
@@ -434,7 +428,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 margin: const EdgeInsets.only(right: 20.0),
                                 child: Text(
                                   // / print("Time2 ----------------------${Time2}");
-                                  "Do you want to delete @${widget.data!.name!} ?",
+                                  "Do you want to delete @${widget.data!.resource!.nickname!} ?",
 
                                   style: const TextStyle(
                                       fontSize: 20,
@@ -466,7 +460,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                         },
                                         child: Container(
                                           margin: const EdgeInsets.only(
-                                              right: 35.0),
+                                              right: 56.0),
                                           child: const Text(
                                             "Cancel",
                                             style: TextStyle(
@@ -492,13 +486,16 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 widget.buildContext);
                                           });
                                         },
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: 'Inter',
-                                              color: ColorSelect.red_color),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(left: 16.0),
+                                          child: Text(
+                                            "Delete",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: 'Inter',
+                                                color: ColorSelect.red_color),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -821,7 +818,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: _name,
-                    inputFormatters: [UpperCaseTextFormatter()],
+                    // inputFormatters: [UpperCaseTextFormatter()],
                     //   autovalidateMode: AutovalidateMode.onUserInteraction,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
@@ -970,7 +967,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.only(top: 22.0, left: 45.0),
+                      margin: const EdgeInsets.only(
+                          top: 22.0, left: 45.0, bottom: 20),
                       child: const Text(
                         "Your bio",
                         style: TextStyle(
@@ -981,7 +979,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       )),
                   TextFormField(
                     maxLines: 5,
-                    maxLength: 152,
+                    // maxLength: 200,
                     controller: _bio,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
@@ -991,11 +989,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
-                          // bottom: 10.0,
-                          top: 47.0,
-                          right: 40,
-                          left: 45.0,
-                        ),
+                            // bottom: 10.0,
+                            top: 47.0,
+                            right: 40,
+                            left: 45.0,
+                            bottom: 50),
                         border: InputBorder.none,
                         hintText: 'Enter your bio',
                         hintStyle: TextStyle(
@@ -1138,7 +1136,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               builder:
                                   (BuildContext context, StateSettersetState) {
                                 return DropdownButtonHideUnderline(
-                                  child: DropdownButton(
+                                  child: CustomDropdownButton(
                                     dropdownColor: ColorSelect.class_color,
                                     value: _depat,
                                     underline: Container(),
@@ -1150,7 +1148,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    isExpanded: true,
+                                    // isExpanded: true,
                                     icon: const Icon(
                                       // Add this
                                       Icons.arrow_drop_down, // Add this
@@ -1405,12 +1403,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                   fontWeight: FontWeight.w500),
                             )),
                         TextFormField(
+                          maxLength: 15,
                           controller: _salary,
                           cursorColor: const Color(0xffFFFFFF),
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
+                              counterText: "",
                               errorStyle: TextStyle(fontSize: 14, height: 0.20),
                               contentPadding: EdgeInsets.only(
                                 bottom: 16.0,
@@ -1837,7 +1837,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       color: const Color(0xff334155),
                       //border: Border.all(color:  const Color(0xff1E293B)),
                       borderRadius: BorderRadius.circular(
-                        8.0,
+                        48.0,
                       ),
                     ),
                     child: Column(
@@ -1851,7 +1851,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.only(top: 15.0),
                             prefixIcon: Padding(
-                                padding: EdgeInsets.only(top: 4.0),
+                                padding: EdgeInsets.only(
+                                    top: 4.0, left: 27.0, right: 21),
                                 child: Icon(
                                   Icons.search,
                                   color: Color(0xff64748B),
@@ -2019,12 +2020,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 20,
                     controller: _country,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2092,12 +2095,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 20,
                     controller: _enterCity,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2165,12 +2170,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 10,
                     controller: _phoneNumber,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2241,12 +2248,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontWeight: FontWeight.w500),
                       )),
                   TextFormField(
+                    maxLength: 20,
                     controller: _emailAddress,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -2369,7 +2378,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2381,6 +2390,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _department = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -2394,7 +2405,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/time-zone/list"),
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2413,6 +2424,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
         // final stringRes = JsonEncoder.withIndent('').convert(res);
         //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -2440,6 +2453,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       setState(() {
         loading = false;
       });
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
 
@@ -2458,8 +2473,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     // var userId = storage.read("user_id");
     // AppUrl
-    var request = http.MultipartRequest('POST',
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource/update'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
     request.headers
         .addAll({"Content-Type": "application/json", "Authorization": token});
     request.fields['user_id'] = userId;
@@ -2529,6 +2544,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
 
       widget.returnValue!();
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       SmartDialog.dismiss();
 
@@ -2566,6 +2584,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       //           )),
       // );
       //(Route<dynamic> route) => false);
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -2581,7 +2601,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/currencies"),
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2593,6 +2613,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
