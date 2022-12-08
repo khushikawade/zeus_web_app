@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'dart:core';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/services/api_client.dart';
 
 class AppUrl {

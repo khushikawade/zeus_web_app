@@ -1,47 +1,18 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:time_range/time_range.dart';
-import 'package:zeus/helper_widget/delete_dialog.dart';
-import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
 import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
-import 'package:zeus/navigator_tabs/people_idle/model/model_class.dart';
-import 'package:zeus/people_profile/screen/people_detail_view.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'dart:typed_data';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zeus/helper_widget/pop_resource_button.dart';
-import 'package:zeus/helper_widget/searchbar.dart';
-import 'package:zeus/navigation/tag_model/tag_user.dart';
-import 'package:zeus/navigation/tag_model/tagresponse.dart';
-import 'package:zeus/people_profile/editpage/edit_page.dart';
-import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/utility/constant.dart';
-import 'package:zeus/utility/dropdrowndata.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:zeus/utility/upertextformate.dart';
 import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:flutter/material.dart';
 import 'package:zeus/utility/app_url.dart';
 
 class ProjectEdit extends StatefulWidget {
@@ -143,7 +114,7 @@ class _ProjectEditState extends State<ProjectEdit>
     //     ? response.data!.status.toString()
     //     : '';
 
-    if (widget.statusList != null && widget.statusList.isNotEmpty) {
+    if (widget.statusList.isNotEmpty) {
       widget.statusList.asMap().forEach((index, element) {
         if (element['title'] == widget.response.data!.status) {
           _status = element['id'].toString();
@@ -151,7 +122,7 @@ class _ProjectEditState extends State<ProjectEdit>
       });
     }
 
-    if (widget.accountableId != null && widget.accountableId.isNotEmpty) {
+    if (widget.accountableId.isNotEmpty) {
       widget.accountableId.asMap().forEach((index, element) {
         if (element['id'].toString() ==
             widget.response.data!.accountablePersonId.toString()) {
@@ -160,15 +131,14 @@ class _ProjectEditState extends State<ProjectEdit>
       });
     }
 
-    if (widget.currencyList != null && widget.currencyList.isNotEmpty) {
+    if (widget.currencyList.isNotEmpty) {
       widget.currencyList.asMap().forEach((index, element) {
         if (element['id'].toString() == widget.response.data!.currency) {
           _curren = element['id'].toString();
         }
       });
     }
-    if (widget.response != null &&
-        widget.response.data != null &&
+    if (widget.response.data != null &&
         widget.response.data!.deliveryDate!.isNotEmpty &&
         widget.response.data!.deliveryDate! != "0000-00-00 00:00:00") {
       deliveryDate =
@@ -187,11 +157,8 @@ class _ProjectEditState extends State<ProjectEdit>
           return Theme(
             data: ThemeData.light().copyWith(
                 primaryColor: const Color(0xff0F172A),
-                accentColor: const Color(0xff0F172A),
-                colorScheme:
-                    ColorScheme.light(primary: const Color(0xff0F172A)),
                 buttonTheme:
-                    ButtonThemeData(textTheme: ButtonTextTheme.primary)),
+                    ButtonThemeData(textTheme: ButtonTextTheme.primary), colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)).copyWith(secondary: const Color(0xff0F172A))),
             child: child!,
           );
         },

@@ -13,7 +13,6 @@ import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/constants.dart';
 import 'package:zeus/utility/util.dart';
 
-import '../utility/constant.dart';
 
 class Api {
   AppUrl appUrl = AppUrl();

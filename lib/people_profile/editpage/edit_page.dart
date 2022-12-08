@@ -1,22 +1,14 @@
 import 'dart:convert';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
-import 'package:zeus/helper_widget/delete_dialog.dart';
-import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
-import 'package:zeus/people_profile/editpage/edit_profile_model.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:http/http.dart' as http;
 // import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import '../../utility/upertextformate.dart';
@@ -122,6 +114,7 @@ class _EditPageState extends State<EditPage> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getAccountable() async {
@@ -148,6 +141,7 @@ class _EditPageState extends State<EditPage> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getCustomer() async {
@@ -175,6 +169,7 @@ class _EditPageState extends State<EditPage> {
       }
       return value;
     }
+    return null;
   }
 
   @override
@@ -1556,6 +1551,7 @@ class _EditPageState extends State<EditPage> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getAddpeople() async {
@@ -1582,6 +1578,7 @@ class _EditPageState extends State<EditPage> {
       }
       return value;
     }
+    return null;
   }
 
   errorWidget() {

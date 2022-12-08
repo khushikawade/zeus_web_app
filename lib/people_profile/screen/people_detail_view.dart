@@ -1,6 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:typed_data';
-import 'package:intl/intl.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,16 +9,12 @@ import 'package:zeus/utility/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:zeus/utility/util.dart';
 import '../../DemoContainer.dart';
-import '../../helper_widget/responsive.dart';
-import '../../navigation/department_model/department_model/department_responce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../navigation/tag_model/tag_user.dart';
-import '../../navigation/tag_model/tagresponse.dart';
 import '../../navigator_tabs/idle/data/project_detail_data/ProjectDetailData.dart';
 import '../../navigator_tabs/people_idle/model/model_class.dart';
 import '../../utility/app_url.dart';
@@ -1033,6 +1028,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getCurrency() async {
@@ -1060,6 +1056,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getDepartment() async {
@@ -1087,5 +1084,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
       }
       return value;
     }
+    return null;
   }
 }

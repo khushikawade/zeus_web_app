@@ -1,6 +1,5 @@
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -18,7 +17,6 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import '../navigation/navigation.dart';
 import '../navigator_tabs/idle/project_detail_model/project_detail_response.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -408,11 +406,8 @@ showDailog(
           return Theme(
             data: ThemeData.light().copyWith(
                 primaryColor: const Color(0xff0F172A),
-                accentColor: const Color(0xff0F172A),
-                colorScheme:
-                    ColorScheme.light(primary: const Color(0xff0F172A)),
                 buttonTheme:
-                    ButtonThemeData(textTheme: ButtonTextTheme.primary)),
+                    ButtonThemeData(textTheme: ButtonTextTheme.primary), colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)).copyWith(secondary: const Color(0xff0F172A))),
             child: child!,
           );
         },
@@ -965,9 +960,6 @@ showDailog(
                                                       left: 30.0, top: 6.0),
                                                   child: Text(
                                                     response.data != null &&
-                                                            response.data!
-                                                                    .workingDays! !=
-                                                                null &&
                                                             response
                                                                 .data!
                                                                 .workingDays!

@@ -1,56 +1,27 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
-import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
-import 'package:zeus/navigation/navigation.dart';
 import 'package:zeus/navigator_tabs/people_idle/model/model_class.dart';
-import 'package:zeus/navigator_tabs/people_idle/screen/people_idle.dart';
-import 'package:zeus/people_profile/screen/people_detail_view.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zeus/helper_widget/pop_resource_button.dart';
-import 'package:zeus/helper_widget/searchbar.dart';
-import 'package:zeus/navigation/tag_model/tag_user.dart';
-import 'package:zeus/navigation/tag_model/tagresponse.dart';
-import 'package:zeus/people_profile/editpage/edit_page.dart';
-import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/utility/constant.dart';
-import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
 import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:flutter/material.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'dart:async';
-import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zeus/helper_widget/scrollbar_helper_widget.dart';
 import 'package:zeus/utility/app_url.dart';
 
 class MyMenu extends StatefulWidget {
@@ -366,8 +337,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   // searchTextField!.textField!.controller!.text =
                   //     widget.data!.resource!.skills![0].resourceId.toString();
 
-                  if (widget.data!.resource!.skills! != null &&
-                      widget.data!.resource!.skills!.isNotEmpty) {
+                  if (widget.data!.resource!.skills!.isNotEmpty) {
                     widget.data!.resource!.skills!.forEach((element) {
                       abc.add(element.title!);
                     });
@@ -2398,6 +2368,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getTimeline() async {
@@ -2431,6 +2402,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
       return value;
     }
+    return null;
   }
 
   void getUsers() async {
@@ -2620,6 +2592,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
       return value;
     }
+    return null;
   }
 
   errorWidget() {

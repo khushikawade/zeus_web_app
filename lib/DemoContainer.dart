@@ -2,7 +2,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:zeus/add_new_phase/model/resources_needed.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/util.dart';
@@ -118,7 +117,7 @@ Widget row(Datum user) {
     child: Row(
       children: <Widget>[
         Text(
-          user!.title!,
+          user.title!,
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         SizedBox(
@@ -176,7 +175,7 @@ Widget row1(Datum user) {
     child: Row(
       children: <Widget>[
         Text(
-          user!.title!,
+          user.title!,
           style: TextStyle(fontSize: 16.0, color: Colors.white),
         ),
         SizedBox(

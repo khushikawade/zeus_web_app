@@ -68,16 +68,16 @@ class _AutocompleteClassState extends State<AutocompleteClass> {
               hintStyle: TextStyle(color: Colors.black),
             ),
             itemFilter: (item, query) {
-              return item!.name
+              return item.name
                   !.toLowerCase()
                   .startsWith(query.toLowerCase());
             },
             itemSorter: (a, b) {
-              return a.name!.compareTo(b!.name!);
+              return a.name!.compareTo(b.name!);
             },
             itemSubmitted: (item) {
               setState(() {
-                searchTextField!.textField!.controller!.text = item!.name!;
+                searchTextField!.textField!.controller!.text = item.name!;
               });
             },
             itemBuilder: (context, item) {
@@ -96,14 +96,14 @@ Widget row(User user) {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
       Text(
-        user!.name!,
+        user.name!,
         style: TextStyle(fontSize: 16.0),
       ),
       SizedBox(
         width: 10.0,
       ),
       Text(
-        user!.email!,
+        user.email!,
       ),
     ],
   );

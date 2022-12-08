@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
   String? title;
@@ -195,7 +193,7 @@ class _DatePickerState extends State<DatePicker> {
       //String formattedDate = DateFormat('dd-MM-yyyy').format(startPickedDate);
       setState(() {
         widget.callback!(
-            "${startPickedDate!.day}/${startPickedDate!.month}/${startPickedDate!.year}");
+            "${startPickedDate.day}/${startPickedDate.month}/${startPickedDate.year}");
         startDate = startPickedDate;
       });
     }

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -13,17 +11,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 
-import 'package:zeus/helper_widget/custom_popups.dart';
-import 'package:zeus/helper_widget/delete_dialog.dart';
-import 'package:zeus/helper_widget/mytooltip.dart';
-import 'package:zeus/helper_widget/searchbar.dart';
-import 'package:zeus/navigation/tag_model/tag_user.dart';
-import 'package:zeus/navigation/tag_model/tagresponse.dart';
 import 'package:zeus/navigator_tabs/idle/data/DataClass.dart';
 import 'package:zeus/navigator_tabs/people_idle/data/getdata_provider.dart';
 import 'package:zeus/people_profile/editpage/edit_page.dart';
 import 'package:zeus/routers/routers_class.dart';
-import 'package:zeus/util/validation.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:zeus/utility/util.dart';
@@ -36,14 +27,10 @@ import 'dart:convert';
 import '../utility/app_url.dart';
 import '../utility/colors.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:flutter/material.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:http_parser/http_parser.dart';
 import '../utility/constant.dart';
 import '../utility/upertextformate.dart';
-import 'package:responsive_table/responsive_table.dart';
-import 'package:flutter/src/foundation/change_notifier.dart';
-import 'package:flutter/cupertino.dart' show ChangeNotifier;
 
 class MyHomePage extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -428,9 +415,7 @@ class _NavigationRailState extends State<MyHomePage>
           return Theme(
             data: ThemeData.light().copyWith(
               primaryColor: const Color(0xff0F172A),
-              accentColor: const Color(0xff0F172A),
-              colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)),
-              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)).copyWith(secondary: const Color(0xff0F172A)),
             ),
             child: child!,
           );
@@ -3868,6 +3853,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getCustomer() async {
@@ -3894,6 +3880,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getCurrency() async {
@@ -3920,6 +3907,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getSelectStatus() async {
@@ -3946,6 +3934,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getTimeline() async {
@@ -3972,6 +3961,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getAddpeople() async {
@@ -3998,6 +3988,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getTagpeople() async {
@@ -4027,6 +4018,7 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 
   onItemChanged(String value) {
@@ -4135,5 +4127,6 @@ class _NavigationRailState extends State<MyHomePage>
       }
       return value;
     }
+    return null;
   }
 }

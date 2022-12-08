@@ -1,46 +1,20 @@
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'dart:typed_data';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart';
-import 'package:zeus/helper_widget/scrollbar_helper_widget.dart';
-import 'package:zeus/helper_widget/searchbar.dart';
-import 'package:zeus/navigation/tag_model/tag_user.dart';
-import 'package:zeus/navigation/tag_model/tagresponse.dart';
-import 'package:zeus/people_profile/editpage/edit_page.dart';
-import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/utility/app_url.dart';
-import 'package:zeus/utility/dropdrowndata.dart';
 
 import 'package:provider/provider.dart';
 import 'dart:convert';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:flutter/material.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http_parser/http_parser.dart';
-import 'package:flutter/material.dart';
 import 'package:zeus/utility/util.dart';
 import '../../../utility/colors.dart';
 import '../../../people_profile/screen/people_detail_view.dart';
-import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 import '../../../utility/constant.dart';
 import '../../idle/data/project_detail_data/ProjectDetailData.dart';
 import '../data/getdata_provider.dart';
 import '../model/model_class.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
 class PeopleIdle extends StatefulWidget {
   final ValueChanged<String>? onSubmit;
@@ -230,7 +204,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                               index: index = 5,
                             )));
 
-                if (result != null && result) {
+                if (result) {
                   Provider.of<PeopleIdelClass>(context, listen: false)
                       .getPeopleDataList();
                 }
@@ -265,7 +239,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                                 shape: BoxShape.circle,
                                 color: Color(0xffF2F2F2)),
                             child: Text(
-                              fullName != null && fullName.isNotEmpty
+                              fullName.isNotEmpty
                                   ? fullName
                                   : '',
                               style: const TextStyle(
@@ -593,5 +567,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
       }
       return value;
     }
+    return null;
   }
 }

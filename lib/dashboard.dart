@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
-import 'package:side_navigation/side_navigation.dart';
-import 'package:zeus/utility/colors.dart';
 
-import 'list.dart';
 import 'navigator_tabs/idle/idle.dart';
 import 'people_profile/editpage/edit_page.dart';
-import 'people_profile/screen/people_detail_view.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key});

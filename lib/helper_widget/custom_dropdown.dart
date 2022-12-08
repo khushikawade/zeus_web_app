@@ -425,8 +425,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
     this.value,
     this.dropdownColor,
   })  : assert(
-          items == null ||
-              items.isEmpty ||
+          items.isEmpty ||
               value == null ||
               items.where((DropdownMenuItem<T> item) {
                     return item.value == value;
@@ -533,12 +532,12 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
       ),
     };
     _updateSelectedIndex();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _removeDropdownRoute();
     super.dispose();
   }
@@ -563,23 +562,20 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
   }
 
   void _updateSelectedIndex() {
-    if (widget.items == null ||
-        widget.items!.isEmpty ||
+    if (widget.items.isEmpty ||
         (widget.value == null &&
-            widget.items!
-                .where((DropdownMenuItem<T> item) =>
+            widget.items.where((DropdownMenuItem<T> item) =>
                     item.enabled && item.value == widget.value)
                 .isEmpty)) {
       _selectedIndex = null;
       return;
     }
 
-    assert(widget.items!
-            .where((DropdownMenuItem<T> item) => item.value == widget.value)
+    assert(widget.items.where((DropdownMenuItem<T> item) => item.value == widget.value)
             .length ==
         1);
-    for (int itemIndex = 0; itemIndex < widget.items!.length; itemIndex++) {
-      if (widget.items![itemIndex].value == widget.value) {
+    for (int itemIndex = 0; itemIndex < widget.items.length; itemIndex++) {
+      if (widget.items[itemIndex].value == widget.value) {
         _selectedIndex = itemIndex;
         return;
       }

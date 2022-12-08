@@ -6,7 +6,7 @@ import 'dart:convert';
 
 CreatePhaseResp createPhaseRespFromJson(String str) => CreatePhaseResp.fromJson(json.decode(str));
 
-String createPhaseRespToJson(CreatePhaseResp data) => json.encode(data!.toJson());
+String createPhaseRespToJson(CreatePhaseResp data) => json.encode(data.toJson());
 
 class CreatePhaseResp {
   CreatePhaseResp({
@@ -95,10 +95,10 @@ class Data {
     "deleted_at": deletedAt,
     "created_at": createdAt == null ? null : createdAt,
     "updated_at": updatedAt == null ? null : updatedAt,
-    "sub_tasks": subTasks == null ? null : List<dynamic>.from(subTasks!.map((x) => x!.toJson())),
+    "sub_tasks": subTasks == null ? null : List<dynamic>.from(subTasks!.map((x) => x.toJson())),
     "project": project == null ? null : project!.toJson(),
-    "assigned_resources": assignedResources == null ? null : List<dynamic>.from(assignedResources!.map((x) => x!.toJson())),
-    "milestone": milestone == null ? null : List<dynamic>.from(milestone!.map((x) => x!.toJson())),
+    "assigned_resources": assignedResources == null ? null : List<dynamic>.from(assignedResources!.map((x) => x.toJson())),
+    "milestone": milestone == null ? null : List<dynamic>.from(milestone!.map((x) => x.toJson())),
   };
 }
 
@@ -242,7 +242,7 @@ class Resource {
     "updated_at": updatedAt == null ? null : updatedAt,
     "project": project == null ? null : project!.toJson(),
     "resource": resource,
-    "tasks": tasks == null ? null : List<dynamic>.from(tasks!.map((x) => x!.toJson())),
+    "tasks": tasks == null ? null : List<dynamic>.from(tasks!.map((x) => x.toJson())),
   };
 }
 
