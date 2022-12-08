@@ -3,7 +3,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:zeus/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AppUtil {
   static Color getStatusContainerColor(String status) {
@@ -48,15 +48,15 @@ class AppUtil {
     }
   }
 
-  static Future<bool> checkNetwork() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // static Future<bool> checkNetwork() async {
+  //   var connectivityResult = await (Connectivity().checkConnectivity());
+  //   if (connectivityResult == ConnectivityResult.mobile ||
+  //       connectivityResult == ConnectivityResult.wifi) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   static DateTime stringToDate(String date) {
     try {

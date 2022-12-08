@@ -23,10 +23,10 @@ class Api {
     //createPhase
     var body,
   ) async {
-    bool internet = await AppUtil.checkNetwork();
-    if (!internet) {
-      return PhaseDetails(error: Constants.noInternet, statusCode: 401);
-    }
+    // bool internet = await AppUtil.checkNetwork();
+    // if (!internet) {
+    //   return PhaseDetails(error: Constants.noInternet, statusCode: 401);
+    // }
 
     Response response =
         await _apiClient.postMethod(AppUrl.create_project, body);
@@ -55,7 +55,7 @@ class Api {
 
   getDeparment(BuildContext context) async {
     List department = [];
-    bool internet = await AppUtil.checkNetwork();
+    //bool internet = await AppUtil.checkNetwork();
     // if (!internet) {
     //   return SearchResponse(error: Constants.noInternet, statusCode: 501);
     // }
@@ -99,10 +99,10 @@ class Api {
   // //Call Api for Get Product Sub Categoruy
   Future<ResourceNeededModel> getResourceNeeded(
       String key, BuildContext context) async {
-    bool internet = await AppUtil.checkNetwork();
-    if (!internet) {
-      return ResourceNeededModel(error: Constants.noInternet, statusCode: 401);
-    }
+    // bool internet = await AppUtil.checkNetwork();
+    // if (!internet) {
+    //   return ResourceNeededModel(error: Constants.noInternet, statusCode: 401);
+    // }
     print('<<<<<<<<<<<<<<<<<<<<<resource data>>>>>>>>>>>>>>>>>>>>>');
     print(AppUrl.resourceNeeded + "search?type=$key");
     Response response =
@@ -134,10 +134,10 @@ class Api {
   // //Call Api for Get Product Sub Categoruy
   Future<CreatePhaseResp> createNewPhase(
       String key, BuildContext context) async {
-    bool internet = await AppUtil.checkNetwork();
-    if (!internet) {
-      return CreatePhaseResp(message: Constants.noInternet, statusCode: 401);
-    }
+    // bool internet = await AppUtil.checkNetwork();
+    // if (!internet) {
+    //   return CreatePhaseResp(message: Constants.noInternet, statusCode: 401);
+    // }
     Response? response;
     try {
       response = await _apiClient.postMethod(AppUrl.createPhase, key);
@@ -177,10 +177,10 @@ class Api {
   // //Call Api for Get Product Sub Categoruy
   Future<GetPhaseDetails> getPhaseDetails(
       String key, BuildContext context) async {
-    bool internet = await AppUtil.checkNetwork();
-    if (!internet) {
-      return GetPhaseDetails(message: Constants.noInternet, statusCode: 401);
-    }
+    // bool internet = await AppUtil.checkNetwork();
+    // if (!internet) {
+    //   return GetPhaseDetails(message: Constants.noInternet, statusCode: 401);
+    // }
     Response? response;
     try {
       response = await _apiClient.getMethod(AppUrl.getPhase + key);
@@ -220,10 +220,10 @@ class Api {
   // //Call Api for Get Product Sub Categoruy
   Future<UpdatePhaseResp> updatePhase(
       String key, String id, BuildContext context) async {
-    bool internet = await AppUtil.checkNetwork();
-    if (!internet) {
-      return UpdatePhaseResp(message: Constants.noInternet, statusCode: 401);
-    }
+    // bool internet = await AppUtil.checkNetwork();
+    // if (!internet) {
+    //   return UpdatePhaseResp(message: Constants.noInternet, statusCode: 401);
+    // }
     Response? response;
     try {
       response = await _apiClient.putMethod(AppUrl.updatePhase + id, key);
