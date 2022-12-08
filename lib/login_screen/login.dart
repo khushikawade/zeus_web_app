@@ -16,6 +16,7 @@ import '../utility/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   final ValueChanged<String> onSubmit;
+
   LoginScreen({Key? key, required this.onSubmit}) : super(key: key);
 
   @override
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _name = '';
 
   var _formKey = GlobalKey<FormState>();
+
   // TextEditingController emailController =
   //     TextEditingController(text: 'omkar@omkar.com');
   // TextEditingController passwordController =

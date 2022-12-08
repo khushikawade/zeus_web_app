@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 // import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/constant.dart';
+import 'package:zeus/utility/util.dart';
 import '../../utility/upertextformate.dart';
 
 class EditPage extends StatefulWidget {
@@ -114,13 +115,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _statusList = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -145,6 +141,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _accountableId = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -170,6 +168,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _customerName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -300,6 +300,7 @@ class _EditPageState extends State<EditPage> {
                     ],
                   ),
                   TextFormField(
+                    maxLength: 20,
                     controller: _projecttitle,
                     inputFormatters: [UpperCaseTextFormatter()],
                     textCapitalization: TextCapitalization.characters,
@@ -309,6 +310,7 @@ class _EditPageState extends State<EditPage> {
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
                           top: 54.0,
@@ -649,12 +651,14 @@ class _EditPageState extends State<EditPage> {
                     ],
                   ),
                   TextFormField(
+                    maxLength: 20,
                     controller: _crmtask,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -725,12 +729,14 @@ class _EditPageState extends State<EditPage> {
                     ],
                   ),
                   TextFormField(
+                    maxLength: 20,
                     controller: _warkfolderId,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
+                        counterText: "",
                         errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
                         contentPadding: EdgeInsets.only(
                           bottom: 16.0,
@@ -807,12 +813,14 @@ class _EditPageState extends State<EditPage> {
                           ],
                         ),
                         TextFormField(
+                          maxLength: 8,
                           controller: _budget,
                           cursorColor: const Color(0xffFFFFFF),
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
+                              counterText: "",
                               errorStyle:
                                   TextStyle(fontSize: 15.0, height: 0.20),
                               contentPadding: EdgeInsets.only(
@@ -983,12 +991,14 @@ class _EditPageState extends State<EditPage> {
                           ],
                         ),
                         TextFormField(
+                          maxLength: 10,
                           controller: _estimatehours,
                           cursorColor: const Color(0xffFFFFFF),
                           style: const TextStyle(color: Color(0xffFFFFFF)),
                           textAlignVertical: TextAlignVertical.bottom,
                           keyboardType: TextInputType.text,
                           decoration: const InputDecoration(
+                              counterText: "",
                               errorStyle: TextStyle(
                                   fontSize: 14.0,
                                   // ScreenUtil().setSp(ScreenUtil().setSp(14.0)),
@@ -1380,7 +1390,8 @@ class _EditPageState extends State<EditPage> {
                         if (selectAccountablePerson == true &&
                             selectCustomer == true &&
                             selectCurrency == true &&
-                            selectStatus == true) {
+                            selectStatus == true &&
+                            selectDeliveryDate == true) {
                           SmartDialog.showLoading(
                             msg:
                                 "Your request is in progress please wait for a while...",
@@ -1474,6 +1485,9 @@ class _EditPageState extends State<EditPage> {
                       adOnSubmit: (String value) {},
                     )),
             (Route<dynamic> route) => false);
+      }else if (response.statusCode == 401) {
+        SmartDialog.dismiss();
+        AppUtil.showErrorDialog(context);
       } else {
         SmartDialog.dismiss();
         Navigator.of(context)
@@ -1506,6 +1520,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1518,7 +1534,7 @@ class _EditPageState extends State<EditPage> {
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
+        Uri.parse("${AppUrl.baseUrl}/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -1533,6 +1549,8 @@ class _EditPageState extends State<EditPage> {
           // print('ghjhjhjh' + _addtag.length.toString());
         });
         print("yes to much");
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1540,60 +1558,12 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
-  // Future<String?> getSelectStatus() async {
-  //   String? value;
-  //   if (value == null) {
-  //     var token = 'Bearer ' + storage.read("token");
-  //     var response = await http.get(
-  //       Uri.parse("https://zeus-api.zehntech.net/api/v1/status"),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": token,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
-  //       List<dynamic> mdata = map["data"];
-  //       setState(() {
-  //         _statusList = mdata;
-  //       });
-  //     } else {
-  //       print("failed to much");
-  //     }
-  //     return value;
-  //   }
-  // }
-
-  // Future<String?> getAccountable() async {
-  //   String? value;
-  //   if (value == null) {
-  //     var token = 'Bearer ' + storage.read("token");
-  //     var response = await http.get(
-  //       Uri.parse(AppUrl.accountable_person),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": token,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
-  //       List<dynamic> mdata = map["data"];
-  //       setState(() {
-  //         _accountableId = mdata;
-  //       });
-  //     } else {
-  //       print("failed to much");
-  //     }
-  //     return value;
-  //   }
-  // }
-
   Future<String?> getAddpeople() async {
     String? value;
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/tags"),
+        Uri.parse("${AppUrl.baseUrl}/tags"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -1605,13 +1575,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           addTag = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

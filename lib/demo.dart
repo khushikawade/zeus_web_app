@@ -1052,8 +1052,6 @@ showDailog(
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -1063,12 +1061,6 @@ showDailog(
                                               MainAxisAlignment.start,
                                           children: [
                                             Container(
-                                              width: abc.isEmpty
-                                                  ? 0
-                                                  : MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      3,
                                               child: Wrap(
                                                 //SizedBox
                                                 spacing: 8,
@@ -1276,7 +1268,7 @@ showDailog(
                                                               //         .data!.id
                                                               //         .toString(),
                                                               //     item.name!);
-                                                              //  }
+                                                              // }
                                                               setState(() {
                                                                 Navigator.of(
                                                                         context)
@@ -1295,46 +1287,38 @@ showDailog(
                                           ],
                                         ),
                                         Spacer(),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Container(
-                                            child: const Text(
-                                              'Work folder',
-                                              style: TextStyle(
-                                                  color:
-                                                      ColorSelect.cermany_color,
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                        Container(
+                                          child: const Text(
+                                            'Work folder',
+                                            style: TextStyle(
+                                                color:
+                                                    ColorSelect.cermany_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                         Container(
                                           margin: const EdgeInsets.only(
-                                              left: 10.0, right: 35.0, top: 8),
+                                              left: 10.0, right: 35.0),
                                           child: SvgPicture.asset(
                                             'images/cermony.svg',
                                           ),
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: Container(
-                                            child: const Text(
-                                              'CRM',
-                                              style: TextStyle(
-                                                  color:
-                                                      ColorSelect.cermany_color,
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                        Container(
+                                          child: const Text(
+                                            'CRM',
+                                            style: TextStyle(
+                                                color:
+                                                    ColorSelect.cermany_color,
+                                                fontSize: 14.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                         Container(
                                           margin: const EdgeInsets.only(
-                                              left: 10.0, right: 16.0, top: 8),
+                                              left: 10.0, right: 16.0),
                                           child: SvgPicture.asset(
                                             'images/cermony.svg',
                                           ),

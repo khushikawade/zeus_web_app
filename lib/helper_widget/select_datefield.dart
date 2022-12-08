@@ -43,13 +43,13 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 0),
       child: Column(
         children: [
           Container(
               width: MediaQuery.of(context).size.width * 0.26,
               margin: const EdgeInsets.only(left: 30.0),
-              height: 56.0,
+              height: 56.0, 
               decoration: BoxDecoration(
                 color: const Color(0xff334155),
                 //border: Border.all(color:  const Color(0xff1E293B)),
