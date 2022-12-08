@@ -452,132 +452,130 @@ class _NewPhaseState extends State<NewPhase> {
             Container(
               width: MediaQuery.of(context).size.width * 0.26,
               margin: const EdgeInsets.only(left: 30.0),
-              child: Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            top: 0,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: CircleAvatar(
+                            backgroundColor: Color(0xff334155),
+                            radius: 30,
+                            child: Icon(Icons.person_outline, size: 40),
+                            // SvgPicture.asset(
+                            //   'images/photo.svg',
+                            //   width: 24.0,
+                            //   height: 24.0,
+                            // ),
+                          ),
+                        ),
+                        Positioned(
                             bottom: 0,
-                            child: CircleAvatar(
-                              backgroundColor: Color(0xff334155),
-                              radius: 30,
-                              child: Icon(Icons.person_outline, size: 40),
-                              // SvgPicture.asset(
-                              //   'images/photo.svg',
-                              //   width: 24.0,
-                              //   height: 24.0,
-                              // ),
-                            ),
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  color: Color(0xff10B981),
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Center(
-                                    child: Icon(Icons.add,
-                                        color: Colors.white, size: 18)),
-                              ))
-                        ],
-                      ),
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Color(0xff10B981),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                  child: Icon(Icons.add,
+                                      color: Colors.white, size: 18)),
+                            ))
+                      ],
                     ),
-                    Expanded(
+                  ),
+                  Expanded(
+                    child: Container(
+                      // width: 305, //MediaQuery.of(context).size.width * 0.22,
+
+                      margin: const EdgeInsets.only(left: 30.0),
+                      height: 56.0,
+                      //width: MediaQuery.of(context).size.width * 0.20,
+                      // margin: const EdgeInsets.only(right: 30.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        //border: Border.all(color:  const Color(0xff1E293B)),
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                      ),
                       child: Container(
-                        // width: 305, //MediaQuery.of(context).size.width * 0.22,
-
-                        margin: const EdgeInsets.only(left: 30.0),
-                        height: 56.0,
-                        //width: MediaQuery.of(context).size.width * 0.20,
-                        // margin: const EdgeInsets.only(right: 30.0),
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          //border: Border.all(color:  const Color(0xff1E293B)),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                        ),
+                        margin:
+                            const EdgeInsets.only(left: 16.0, right: 16.0),
+                        height: 20.0,
                         child: Container(
-                          margin:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
-                          height: 20.0,
-                          child: Container(
 
-                              // padding: const EdgeInsets.all(2.0),
-                              child: StatefulBuilder(
-                            builder:
-                                (BuildContext context, StateSettersetState) {
-                              return DropdownButtonHideUnderline(
-                                child: DropdownButton(
-                                  dropdownColor: ColorSelect.class_color,
-                                  value: _depat,
-                                  underline: Container(),
-                                  hint: const Text(
-                                    "Select",
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  isExpanded: true,
-                                  icon: const Icon(
-                                    // Add this
-                                    Icons.arrow_drop_down,
-                                    // Add this
-                                    color: Color(0xff64748B),
-
-                                    // Add this
-                                  ),
-                                  items: _department.map((items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(
-                                        items['name'],
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (dynamic newValue) {
-                                    setState(() {
-                                      print(newValue);
-
-                                      print(newValue);
-                                      _depat = newValue;
-                                      print(newValue);
-
-                                      if (newValue != null) {
-                                        startloading = true;
-                                        getResourcesNeeded(
-                                            newValue['id'].toString());
-                                      }
-                                    });
-                                  },
+                            // padding: const EdgeInsets.all(2.0),
+                            child: StatefulBuilder(
+                          builder:
+                              (BuildContext context, StateSettersetState) {
+                            return DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                dropdownColor: ColorSelect.class_color,
+                                value: _depat,
+                                underline: Container(),
+                                hint: const Text(
+                                  "Select",
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                              );
-                            },
-                          )),
-                        ),
+                                isExpanded: true,
+                                icon: const Icon(
+                                  // Add this
+                                  Icons.arrow_drop_down,
+                                  // Add this
+                                  color: Color(0xff64748B),
+
+                                  // Add this
+                                ),
+                                items: _department.map((items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items['name'],
+                                      style: const TextStyle(
+                                          fontSize: 14.0,
+                                          color: Color(0xffFFFFFF),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (dynamic newValue) {
+                                  setState(() {
+                                    print(newValue);
+
+                                    print(newValue);
+                                    _depat = newValue;
+                                    print(newValue);
+
+                                    if (newValue != null) {
+                                      startloading = true;
+                                      getResourcesNeeded(
+                                          newValue['id'].toString());
+                                    }
+                                  });
+                                },
+                              ),
+                            );
+                          },
+                        )),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             savePhaseClick && selectedSource.isEmpty
