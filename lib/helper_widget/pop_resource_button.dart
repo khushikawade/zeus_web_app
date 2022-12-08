@@ -460,7 +460,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                         },
                                         child: Container(
                                           margin: const EdgeInsets.only(
-                                              right: 35.0),
+                                              right: 56.0),
                                           child: const Text(
                                             "Cancel",
                                             style: TextStyle(
@@ -486,13 +486,16 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 widget.buildContext);
                                           });
                                         },
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: 'Inter',
-                                              color: ColorSelect.red_color),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(left: 16.0),
+                                          child: Text(
+                                            "Delete",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: 'Inter',
+                                                color: ColorSelect.red_color),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -964,7 +967,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.only(top: 22.0, left: 45.0),
+                      margin: const EdgeInsets.only(
+                          top: 22.0, left: 45.0, bottom: 20),
                       child: const Text(
                         "Your bio",
                         style: TextStyle(
@@ -975,7 +979,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       )),
                   TextFormField(
                     maxLines: 5,
-                    maxLength: 152,
+                    // maxLength: 200,
                     controller: _bio,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
@@ -985,11 +989,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
-                          // bottom: 10.0,
-                          top: 47.0,
-                          right: 40,
-                          left: 45.0,
-                        ),
+                            // bottom: 10.0,
+                            top: 47.0,
+                            right: 40,
+                            left: 45.0,
+                            bottom: 50),
                         border: InputBorder.none,
                         hintText: 'Enter your bio',
                         hintStyle: TextStyle(

@@ -62,6 +62,7 @@ showDailog(
   final TextEditingController _description = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   ScrollController _ScrollController = ScrollController();
+  ScrollController _horizontalScrollController = ScrollController();
   var myFormat = DateFormat('yyyy-MM-dd');
 
   final TextEditingController _typeAheadController = TextEditingController();
@@ -739,174 +740,241 @@ showDailog(
                                     child: Container(
                                       height: 80.0,
                                       decoration: const BoxDecoration(),
-                                      child: ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        physics: const BouncingScrollPhysics(),
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 20.0, top: 20.0),
-                                                child: const Text(
-                                                  "Start date",
-                                                  style: TextStyle(
-                                                      color: Color(0xff94A3B8),
-                                                      fontSize: 11.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  //setDate = "2";
-                                                  _selectDate(setState, 1);
-                                                },
-                                                child: Container(
+                                      child: RawScrollbar(
+                                        thumbVisibility: true,
+                                        controller: _horizontalScrollController,
+                                        thumbColor: const Color(0xff4b5563),
+                                        radius: Radius.circular(10),
+                                        thickness: 10,
+                                        child: ListView(
+                                          controller:
+                                              _horizontalScrollController,
+                                          scrollDirection: Axis.horizontal,
+                                          // physics:
+                                          //     const BouncingScrollPhysics(),
+                                          physics: ClampingScrollPhysics(),
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 20.0, top: 6.0),
-                                                  child: Text(
-                                                    AppUtil.formattedDateYear(
-                                                        selectedDate
-                                                            .toString()), // "$startDate",
-                                                    style: const TextStyle(
+                                                      left: 20.0, top: 20.0),
+                                                  child: const Text(
+                                                    "Start date",
+                                                    style: TextStyle(
                                                         color:
-                                                            Color(0xffFFFFFF),
-                                                        fontSize: 14.0,
+                                                            Color(0xff94A3B8),
+                                                        fontSize: 11.0,
                                                         fontFamily: 'Inter',
                                                         fontWeight:
                                                             FontWeight.w400),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 30.0, top: 20.0),
-                                                child: const Text(
-                                                  "Reminder date",
-                                                  style: TextStyle(
-                                                      color: Color(0xff94A3B8),
-                                                      fontSize: 11.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                InkWell(
+                                                  onTap: () {
+                                                    //setDate = "2";
+                                                    _selectDate(setState, 1);
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 20.0,
+                                                            top: 6.0),
+                                                    child: Text(
+                                                      AppUtil.formattedDateYear(
+                                                          selectedDate
+                                                              .toString()), // "$startDate",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontSize: 14.0,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  //setDate = "3";
-                                                  _selectDate(setState, 2);
-                                                },
-                                                child: Container(
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 30.0, top: 6.0),
-                                                  child: Text(
-                                                    // reminderDate1 == null
-                                                    //     ?
-                                                    AppUtil.formattedDateYear(
-                                                        selectedDateReminder
-                                                            .toString()),
-                                                    //   "${selectedDateReminder.day}${selectedDateReminder.month}${selectedDateReminder.year}",
-                                                    // : "$reminderDate1",
-                                                    style: const TextStyle(
+                                                      left: 30.0, top: 20.0),
+                                                  child: const Text(
+                                                    "Reminder date",
+                                                    style: TextStyle(
                                                         color:
-                                                            Color(0xffFFFFFF),
-                                                        fontSize: 14.0,
+                                                            Color(0xff94A3B8),
+                                                        fontSize: 11.0,
                                                         fontFamily: 'Inter',
                                                         fontWeight:
                                                             FontWeight.w400),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 30.0, top: 20.0),
-                                                child: const Text(
-                                                  "Delivery date",
-                                                  style: TextStyle(
-                                                      color: Color(0xff94A3B8),
-                                                      fontSize: 11.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                InkWell(
+                                                  onTap: () {
+                                                    //setDate = "3";
+                                                    _selectDate(setState, 2);
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 30.0,
+                                                            top: 6.0),
+                                                    child: Text(
+                                                      // reminderDate1 == null
+                                                      //     ?
+                                                      AppUtil.formattedDateYear(
+                                                          selectedDateReminder
+                                                              .toString()),
+                                                      //   "${selectedDateReminder.day}${selectedDateReminder.month}${selectedDateReminder.year}",
+                                                      // : "$reminderDate1",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontSize: 14.0,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  //setDate = "4";
-                                                  _selectDate(setState, 3);
-                                                },
-                                                child: Container(
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
                                                   margin: const EdgeInsets.only(
-                                                      left: 30.0, top: 6.0),
-                                                  child: Text(
-                                                    // deliveryDate == null
-                                                    //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
-                                                    AppUtil.formattedDateYear(
-                                                        selectedDateDevlivery
-                                                            .toString()),
+                                                      left: 30.0, top: 20.0),
+                                                  child: const Text(
+                                                    "Delivery date",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff94A3B8),
+                                                        fontSize: 11.0,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    //setDate = "4";
+                                                    _selectDate(setState, 3);
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 30.0,
+                                                            top: 6.0),
+                                                    child: Text(
+                                                      // deliveryDate == null
+                                                      //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
+                                                      AppUtil.formattedDateYear(
+                                                          selectedDateDevlivery
+                                                              .toString()),
 
-                                                    // : "$deliveryDate",
-                                                    style: const TextStyle(
+                                                      // : "$deliveryDate",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontSize: 14.0,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0, top: 20.0),
+                                                  child: const Text(
+                                                    "Deadline",
+                                                    style: TextStyle(
                                                         color:
-                                                            Color(0xffFFFFFF),
-                                                        fontSize: 14.0,
+                                                            Color(0xff94A3B8),
+                                                        fontSize: 11.0,
                                                         fontFamily: 'Inter',
                                                         fontWeight:
                                                             FontWeight.w400),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 30.0, top: 20.0),
-                                                child: const Text(
-                                                  "Deadline",
-                                                  style: TextStyle(
-                                                      color: Color(0xff94A3B8),
-                                                      fontSize: 11.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                InkWell(
+                                                  onTap: () {
+                                                    //setDate = "5";
+                                                    _selectDate(setState, 4);
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 30.0,
+                                                            top: 6.0),
+                                                    child: Text(
+                                                      // deadlineDate == null
+                                                      //  ?
+                                                      AppUtil.formattedDateYear(
+                                                          selectedDateDeadline
+                                                              .toString()),
+
+                                                      // : '$deadlineDate',
+                                                      style: const TextStyle(
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontSize: 14.0,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  //setDate = "5";
-                                                  _selectDate(setState, 4);
-                                                },
-                                                child: Container(
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 30.0, top: 20.0),
+                                                  child: const Text(
+                                                    "Working days",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xff94A3B8),
+                                                        fontSize: 11.0,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ),
+                                                Container(
                                                   margin: const EdgeInsets.only(
                                                       left: 30.0, top: 6.0),
                                                   child: Text(
-                                                    // deadlineDate == null
-                                                    //  ?
-                                                    AppUtil.formattedDateYear(
-                                                        selectedDateDeadline
-                                                            .toString()),
-
-                                                    // : '$deadlineDate',
+                                                    response.data != null &&
+                                                            response.data!
+                                                                    .workingDays! !=
+                                                                null &&
+                                                            response
+                                                                .data!
+                                                                .workingDays!
+                                                                .isNotEmpty
+                                                        ? response
+                                                            .data!.workingDays!
+                                                        : 'N/A',
                                                     style: const TextStyle(
                                                         color:
                                                             Color(0xffFFFFFF),
@@ -916,78 +984,38 @@ showDailog(
                                                             FontWeight.w400),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
+                                              ],
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
                                                 margin: const EdgeInsets.only(
-                                                    left: 30.0, top: 20.0),
-                                                child: const Text(
-                                                  "Working days",
-                                                  style: TextStyle(
-                                                      color: Color(0xff94A3B8),
-                                                      fontSize: 11.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                    top: 0.0,
+                                                    left: 20.0,
+                                                    bottom: 20),
+                                                height: 40.0,
+                                                width: 40.0,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color:
+                                                            Color(0xff334155),
+                                                        width: 0.6),
+                                                    shape: BoxShape.circle),
+                                                // child: const Icon(
+                                                //   Icons.close,
+                                                //   color: Colors.white,
+                                                // ),
+                                                child: SvgPicture.asset(
+                                                  'images/cross.svg',
                                                 ),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 30.0, top: 6.0),
-                                                child: Text(
-                                                  response.data != null &&
-                                                          response.data!
-                                                                  .workingDays! !=
-                                                              null &&
-                                                          response
-                                                              .data!
-                                                              .workingDays!
-                                                              .isNotEmpty
-                                                      ? response
-                                                          .data!.workingDays!
-                                                      : 'N/A',
-                                                  style: const TextStyle(
-                                                      color: Color(0xffFFFFFF),
-                                                      fontSize: 14.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              margin: const EdgeInsets.only(
-                                                  top: 0.0,
-                                                  left: 20.0,
-                                                  bottom: 20),
-                                              height: 40.0,
-                                              width: 40.0,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Color(0xff334155),
-                                                      width: 0.6),
-                                                  shape: BoxShape.circle),
-                                              // child: const Icon(
-                                              //   Icons.close,
-                                              //   color: Colors.white,
-                                              // ),
-                                              child: SvgPicture.asset(
-                                                'images/cross.svg',
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                         
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   )
@@ -1241,7 +1269,7 @@ showDailog(
                                                                     fontSize:
                                                                         14.0,
                                                                     color: Color(
-                                                                        0xff64748B),
+                                                                        0xffffffff),
                                                                     fontFamily:
                                                                         'Inter',
                                                                     fontWeight:
@@ -1383,9 +1411,8 @@ showDailog(
                                         textAlignVertical:
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.only(
+                                        decoration: const InputDecoration(
+                                            contentPadding: EdgeInsets.only(
                                               bottom: 13.0,
                                               top: 14.0,
                                               right: 10,
