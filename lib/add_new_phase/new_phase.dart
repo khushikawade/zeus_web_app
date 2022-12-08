@@ -45,7 +45,6 @@ class _NewPhaseState extends State<NewPhase> {
   TextEditingController controller_phase_type = TextEditingController();
   ResourceNeededModel? resourceNeededModel;
   GetPhaseDetails? getPhaseDetails;
-  List<String> abc = [];
   static List<Details> users = <Details>[];
   static List<Details> resourceSuggestions = <Details>[];
   bool loading = true;
@@ -120,10 +119,11 @@ class _NewPhaseState extends State<NewPhase> {
           getPhaseDetails!.data!.assignedResources!.forEach((element) {
             listResource.add(PhasesSortedResources(
                 details: Details(
-                  id: element.resourceId ?? 0,
-                  name: element.resource?.name ?? "",
-                  departmentId: element.departmentId,
-                ),
+                    id: element.resourceId ?? 0,
+                    name: element.resource?.name ?? "",
+                    departmentId: element.departmentId,
+                    departmentName: element?.department?.name ?? '',
+                    image: element?.resource?.image ?? ""),
                 department: element.department?.name ?? ""));
 
             selectedSource.add(element.resource?.name ?? "");
@@ -154,9 +154,13 @@ class _NewPhaseState extends State<NewPhase> {
                 resource: ResourceData(
                     department_id: element.assignResource?.departmentId ?? 0,
                     resource_id: element.assignResource?.resourceId ?? 0,
-                    resource_name:
-                        element.assignResource?.resource?.name ?? '')));
+                    resource_name: element.assignResource?.resource?.name ?? '',
+                    department_name:
+                        element.assignResource?.department?.name ?? '',
+                    profileImage:
+                        element.assignResource?.resource?.image ?? '')));
           });
+          print(_phaseDetails);
         }
       }
     }
@@ -662,6 +666,8 @@ class _NewPhaseState extends State<NewPhase> {
                                             ResourceData(
                                                 resource_name: item.name,
                                                 resource_id: item.userId,
+                                                department_name:
+                                                    item.departmentName,
                                                 department_id:
                                                     item.departmentId ?? 0));
                                         listResource.add(PhasesSortedResources(
@@ -676,8 +682,9 @@ class _NewPhaseState extends State<NewPhase> {
                                       _phaseDetails.resource!.add(ResourceData(
                                           resource_name: item.name,
                                           resource_id: item.userId,
-                                          department_id:
-                                              item.departmentId ?? 0));
+                                          department_name: item.departmentName,
+                                          department_id: item.departmentId ?? 0,
+                                          profileImage: item.image));
                                       selectedSource.add(item.name!);
                                     }
                                   });
@@ -1219,6 +1226,9 @@ class _NewPhaseState extends State<NewPhase> {
                               }).toList(),
                               onChanged: (newValue) {
                                 setState(() {
+                                  selectedSubTaskSource.clear();
+                                });
+                                setState(() {
                                   resourceSuggestions.clear();
                                   for (var element in listResource) {
                                     if (element.department!.toLowerCase() ==
@@ -1306,7 +1316,9 @@ class _NewPhaseState extends State<NewPhase> {
                       selectedSubTaskSource.add(ResourceData(
                           department_id: item.departmentId,
                           resource_id: item.userId,
-                          resource_name: item.name));
+                          resource_name: item.name,
+                          profileImage: item.image,
+                          department_name: item.departmentName));
                     });
                   },
                 ),
@@ -1713,7 +1725,6 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   getResourcesNeeded(String newValue) async {
-    abc.clear();
     setState(() {
       loading = true;
     });
@@ -1721,16 +1732,11 @@ class _NewPhaseState extends State<NewPhase> {
     if (resourceNeededModel != null && resourceNeededModel!.data != null) {
       if (resourceNeededModel!.data!.isNotEmpty) {
         users = resourceNeededModel!.data!;
-        for (int i = 0; i < resourceNeededModel!.data!.length; i++) {
-          abc.add(resourceNeededModel!.data![i].name.toString());
-        }
       } else {}
     }
     setState(() {
       loading = false;
     });
-    print(abc);
-    print(abc);
   }
 
   List<PhasesSortedResources> removeDuplicate() {

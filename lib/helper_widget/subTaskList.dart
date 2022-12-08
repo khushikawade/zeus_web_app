@@ -63,10 +63,12 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                         Radius.circular(8),
                                       ),
                                     ),
-                                    child: const Align(
+                                    child: Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          "Design",
+                                          phaseDetails.sub_tasks?[index]
+                                                  .resource?.department_name ??
+                                              '',
                                           style: TextStyle(
                                               fontSize: 14,
                                               color: Color(0xffFFFFFF),
@@ -89,9 +91,12 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                         //   top: 26.0,
                                         //   left: 10.0,
                                         // ),
-                                        child: const CircleAvatar(
+                                        child: CircleAvatar(
                                           radius: 13,
-                                          backgroundImage: NetworkImage(
+                                          backgroundImage: NetworkImage(phaseDetails
+                                                  .sub_tasks?[index]
+                                                  .resource
+                                                  ?.profileImage ??
                                               'https://picsum.photos/id/237/200/300'),
                                         )),
                                   ],
@@ -117,7 +122,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                             Row(
                               children: [
                                 Text(
-                                    "${phaseDetails.sub_tasks?[index].start_date ?? ''} - ${phaseDetails.sub_tasks?[index].start_date ?? ''}",
+                                    "${phaseDetails.sub_tasks?[index].start_date ?? ''} - ${phaseDetails.sub_tasks?[index].end_date ?? ''}",
                                     style: const TextStyle(
                                         fontSize: 14.0,
                                         color: Color(0xff8897ac),
