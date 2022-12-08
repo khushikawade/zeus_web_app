@@ -195,10 +195,14 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      offset: widget.offset,
+      offset: const Offset(-15, 12),
+      position: PopupMenuPosition.under,
+      // offset: widget.offset,
       color:
           // Colors.red,
-          Color(0xFF0F172A),
+          const Color(0xFF0F172A),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+
       // icon: const Padding(
       //   padding: EdgeInsets.only(bottom: 15.0),
       //   child: Icon(
@@ -235,175 +239,182 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         PopupMenuItem(
           padding: EdgeInsets.zero,
           value: 1,
-          child: InkWell(
-            hoverColor: Color(0xff1e293b),
-            onTap: () {
-              if (widget.data != null) {
-                setState(() {
-                  selectedColor = true;
-                  final splitNames =
-                      widget.data!.resource!.availibiltyDay!.split(", ");
+          child: Container(
+            // width: 114,
+            child: InkWell(
+              hoverColor: Color(0xff1e293b),
+              onTap: () {
+                if (widget.data != null) {
+                  setState(() {
+                    selectedColor = true;
+                    final splitNames =
+                        widget.data!.resource!.availibiltyDay!.split(", ");
 
-                  for (int i = 0; i < splitNames.length; i++) {
-                    selectedDaysList.add(splitNames[i]);
-                  }
+                    for (int i = 0; i < splitNames.length; i++) {
+                      selectedDaysList.add(splitNames[i]);
+                    }
 
-                  // String finaltime;
-                  // // var finaltime = '${startTime1}-${endTime2}';
-                  widget.data!.resource!.availibiltyTime != null
-                      ? finalTime = widget.data!.resource!.availibiltyTime!
-                      : " ";
+                    // String finaltime;
+                    // // var finaltime = '${startTime1}-${endTime2}';
+                    widget.data!.resource!.availibiltyTime != null
+                        ? finalTime = widget.data!.resource!.availibiltyTime!
+                        : " ";
 
-                  var names;
-                  //var Time1;
-                  //var Time2;
-                  print("--------------------------");
-                  finalTime.toString().trim();
-                  if (finalTime.contains("-")) {
-                    print("here");
-                    List<String> splitedList = finalTime!.split("-");
-                    Time1 = splitedList[0].trim();
-                    Time2 = splitedList[1].trim();
-                    print(Time1);
-                    print(Time2);
-                    setState(() {});
+                    var names;
+                    //var Time1;
+                    //var Time2;
+                    print("--------------------------");
+                    finalTime.toString().trim();
+                    if (finalTime.contains("-")) {
+                      print("here");
+                      List<String> splitedList = finalTime!.split("-");
+                      Time1 = splitedList[0].trim();
+                      Time2 = splitedList[1].trim();
+                      print(Time1);
+                      print(Time2);
+                      setState(() {});
 
-                    // fullName = firstName.substring(0, 1).toUpperCase() +
-                    //     lastName.substring(0, 1).toUpperCase();
-                  } else {
-                    // fullName = _peopleList.name!.substring(0, 1).toUpperCase();
-                  }
+                      // fullName = firstName.substring(0, 1).toUpperCase() +
+                      //     lastName.substring(0, 1).toUpperCase();
+                    } else {
+                      // fullName = _peopleList.name!.substring(0, 1).toUpperCase();
+                    }
 
-                  _name.text =
-                      widget.data!.name != null && widget.data!.name!.isNotEmpty
-                          ? widget.data!.name!
+                    _name.text = widget.data!.name != null &&
+                            widget.data!.name!.isNotEmpty
+                        ? widget.data!.name!
+                        : '';
+
+                    _nickName.text = widget.data!.resource != null
+                        ? widget.data!.resource!.nickname != null &&
+                                widget.data!.resource!.nickname!.isNotEmpty
+                            ? widget.data!.resource!.nickname!
+                            : ''
+                        : '';
+
+                    _bio.text = widget.data!.resource != null
+                        ? widget.data!.resource!.bio != null &&
+                                widget.data!.resource!.bio!.isNotEmpty
+                            ? widget.data!.resource!.bio!
+                            : ''
+                        : '';
+
+                    _designation.text = widget.data!.resource != null
+                        ? widget.data!.resource!.designation != null &&
+                                widget.data!.resource!.designation!.isNotEmpty
+                            ? widget.data!.resource!.designation!
+                            : ''
+                        : '';
+
+                    _association.text = widget.data!.resource != null
+                        ? widget.data!.resource!.associate != null &&
+                                widget.data!.resource!.associate!.isNotEmpty
+                            ? widget.data!.resource!.associate!
+                            : ''
+                        : '';
+
+                    _salary.text = widget.data!.resource != null
+                        ? widget.data!.resource!.salary != null
+                            ? widget.data!.resource!.salary!.toString()
+                            : ''
+                        : '';
+
+                    _availableDay.text = widget.data!.resource != null
+                        ? widget.data!.resource!.availibiltyDay != null &&
+                                widget
+                                    .data!.resource!.availibiltyDay!.isNotEmpty
+                            ? widget.data!.resource!.availibiltyDay!
+                            : ''
+                        : '';
+
+                    _availableTime.text = widget.data!.resource != null
+                        ? widget.data!.resource!.availibiltyTime != null &&
+                                widget
+                                    .data!.resource!.availibiltyTime!.isNotEmpty
+                            ? widget.data!.resource!.availibiltyTime!
+                            : ''
+                        : '';
+
+                    if (widget.data!.resource != null) {
+                      _country.text = widget.data!.resource!.country != null &&
+                              widget.data!.resource!.country!.isNotEmpty
+                          ? widget.data!.resource!.country!
                           : '';
+                    }
 
-                  _nickName.text = widget.data!.resource != null
-                      ? widget.data!.resource!.nickname != null &&
-                              widget.data!.resource!.nickname!.isNotEmpty
-                          ? widget.data!.resource!.nickname!
-                          : ''
-                      : '';
+                    if (widget.data!.resource != null) {
+                      _enterCity.text = widget.data!.resource!.city != null &&
+                              widget.data!.resource!.city!.isNotEmpty
+                          ? widget.data!.resource!.city!
+                          : '';
+                    }
 
-                  _bio.text = widget.data!.resource != null
-                      ? widget.data!.resource!.bio != null &&
-                              widget.data!.resource!.bio!.isNotEmpty
-                          ? widget.data!.resource!.bio!
-                          : ''
-                      : '';
-
-                  _designation.text = widget.data!.resource != null
-                      ? widget.data!.resource!.designation != null &&
-                              widget.data!.resource!.designation!.isNotEmpty
-                          ? widget.data!.resource!.designation!
-                          : ''
-                      : '';
-
-                  _association.text = widget.data!.resource != null
-                      ? widget.data!.resource!.associate != null &&
-                              widget.data!.resource!.associate!.isNotEmpty
-                          ? widget.data!.resource!.associate!
-                          : ''
-                      : '';
-
-                  _salary.text = widget.data!.resource != null
-                      ? widget.data!.resource!.salary != null
-                          ? widget.data!.resource!.salary!.toString()
-                          : ''
-                      : '';
-
-                  _availableDay.text = widget.data!.resource != null
-                      ? widget.data!.resource!.availibiltyDay != null &&
-                              widget.data!.resource!.availibiltyDay!.isNotEmpty
-                          ? widget.data!.resource!.availibiltyDay!
-                          : ''
-                      : '';
-
-                  _availableTime.text = widget.data!.resource != null
-                      ? widget.data!.resource!.availibiltyTime != null &&
-                              widget.data!.resource!.availibiltyTime!.isNotEmpty
-                          ? widget.data!.resource!.availibiltyTime!
-                          : ''
-                      : '';
-
-                  if (widget.data!.resource != null) {
-                    _country.text = widget.data!.resource!.country != null &&
-                            widget.data!.resource!.country!.isNotEmpty
-                        ? widget.data!.resource!.country!
+                    _phoneNumber.text = widget.data!.phoneNumber != null &&
+                            widget.data!.phoneNumber!.isNotEmpty
+                        ? widget.data!.phoneNumber!
                         : '';
-                  }
 
-                  if (widget.data!.resource != null) {
-                    _enterCity.text = widget.data!.resource!.city != null &&
-                            widget.data!.resource!.city!.isNotEmpty
-                        ? widget.data!.resource!.city!
+                    _emailAddress.text = widget.data!.email != null &&
+                            widget.data!.email!.isNotEmpty
+                        ? widget.data!.email!
                         : '';
-                  }
+                    if (widget.data!.resource != null) {
+                      _depat =
+                          widget.data!.resource!.department!.name!.isNotEmpty
+                              ? widget.data!.resource!.departmentId.toString()
+                              : '';
+                    }
 
-                  _phoneNumber.text = widget.data!.phoneNumber != null &&
-                          widget.data!.phoneNumber!.isNotEmpty
-                      ? widget.data!.phoneNumber!
-                      : '';
-
-                  _emailAddress.text = widget.data!.email != null &&
-                          widget.data!.email!.isNotEmpty
-                      ? widget.data!.email!
-                      : '';
-                  if (widget.data!.resource != null) {
-                    _depat = widget.data!.resource!.department!.name!.isNotEmpty
-                        ? widget.data!.resource!.departmentId.toString()
+                    _time = widget.data!.resource != null &&
+                            widget.data!.resource!.timeZone!.name!.isNotEmpty
+                        ? widget.data!.resource!.timeZone!.id.toString()
                         : '';
-                  }
+                    if (widget.data!.resource != null) {
+                      _salaryCurrency.text =
+                          widget.data!.resource!.salaryCurrency != null &&
+                                  widget.data!.resource!.salaryCurrency!
+                                      .isNotEmpty
+                              ? widget.data!.resource!.salaryCurrency!
+                              : '';
+                    }
 
-                  _time = widget.data!.resource != null &&
-                          widget.data!.resource!.timeZone!.name!.isNotEmpty
-                      ? widget.data!.resource!.timeZone!.id.toString()
-                      : '';
-                  if (widget.data!.resource != null) {
-                    _salaryCurrency
-                        .text = widget.data!.resource!.salaryCurrency != null &&
-                            widget.data!.resource!.salaryCurrency!.isNotEmpty
-                        ? widget.data!.resource!.salaryCurrency!
-                        : '';
-                  }
+                    var image = widget.data!.image;
+                    // searchTextField!.textField!.controller!.text =
+                    //     widget.data!.resource!.skills![0].resourceId.toString();
 
-                  var image = widget.data!.image;
-                  // searchTextField!.textField!.controller!.text =
-                  //     widget.data!.resource!.skills![0].resourceId.toString();
+                    if (widget.data!.resource!.skills! != null &&
+                        widget.data!.resource!.skills!.isNotEmpty) {
+                      widget.data!.resource!.skills!.forEach((element) {
+                        abc.add(element.title!);
+                      });
+                    }
 
-                  if (widget.data!.resource!.skills! != null &&
-                      widget.data!.resource!.skills!.isNotEmpty) {
-                    widget.data!.resource!.skills!.forEach((element) {
-                      abc.add(element.title!);
-                    });
-                  }
-
-                  // for (int i = 0;
-                  //     i < widget.data!.resource!.skills!.length;
-                  //     i++) {
-                  //   // request.fields['skills[$i]'] = '${abc[i]}';
-                  //   abc[i] =
-                  //       widget.data!.resource!.skills![i].title!.toString();
-                  // }
-                });
-              }
-              showAddPeople(context);
-              Navigator.pop(context);
-            },
-            child: Container(
-              width: double.infinity,
-              height: 50,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 5.0, top: 15),
-                child: Text(
-                  "Edit",
-                  // textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Inter',
-                      color: ColorSelect.white_color),
+                    // for (int i = 0;
+                    //     i < widget.data!.resource!.skills!.length;
+                    //     i++) {
+                    //   // request.fields['skills[$i]'] = '${abc[i]}';
+                    //   abc[i] =
+                    //       widget.data!.resource!.skills![i].title!.toString();
+                    // }
+                  });
+                }
+                showAddPeople(context);
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 20.0, top: 15),
+                  child: Text(
+                    "Edit",
+                    // textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Inter',
+                        color: ColorSelect.white_color),
+                  ),
                 ),
               ),
             ),
@@ -520,7 +531,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
               width: double.infinity,
               height: 50,
               child: const Padding(
-                padding: EdgeInsets.only(left: 5, top: 15),
+                padding: EdgeInsets.only(left: 20, top: 15),
                 child: Text(
                   "Delete",
                   style: TextStyle(

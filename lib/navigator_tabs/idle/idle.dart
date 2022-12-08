@@ -762,6 +762,7 @@ class _IdleState extends State<Idle> {
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
+                              horizontalMargin: 0,
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
                               dividerThickness: 0.7,
@@ -923,11 +924,16 @@ class _IdleState extends State<Idle> {
                   ? const Expanded(
                       child: Center(child: CircularProgressIndicator()))
                   : Expanded(
+                      child: RawScrollbar(
+                      thumbColor: Color(0xff4b5563),
+                      radius: Radius.circular(20),
+                      thickness: 10,
                       child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        makeProjectList(data),
-                      ],
+                        shrinkWrap: true,
+                        children: [
+                          makeProjectList(data),
+                        ],
+                      ),
                     ));
               //return Container();
             }),

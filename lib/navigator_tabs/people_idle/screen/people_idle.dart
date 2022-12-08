@@ -927,7 +927,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             fontWeight: FontWeight.w500))),
                 DataCell(
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0, bottom: 15),
+                    padding: const EdgeInsets.only(left: 5.0, bottom: 15),
                     child: Stack(children: [
                       MyMenu(
                         peopleList: data.peopleList!.data,
@@ -992,12 +992,12 @@ class _PeopleIdleState extends State<PeopleIdle> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
+                        padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Theme(
                           data: Theme.of(context)
                               .copyWith(dividerColor: Color(0xff525f72)),
                           child: DataTable(
-                              horizontalMargin: 6,
+                              horizontalMargin: 0,
                               // showBottomBorder: true,
                               showCheckboxColumn: false,
                               dataRowHeight: 60,

@@ -496,8 +496,7 @@ showDailog(
                       Container(
                         width: MediaQuery.of(context).size.width * 0.99,
                         padding: EdgeInsets.only(),
-
-                        //color: Colors.green,
+                        // color: Colors.green,
                         child: Column(
                           children: [
                             Padding(
@@ -730,14 +729,16 @@ showDailog(
                                   ),
                                   Expanded(
                                     child: Container(
-                                      height: 80.0,
-                                      decoration: const BoxDecoration(),
+                                      padding: const EdgeInsets.only(top: 20),
+                                      // color: Colors.green,
+                                      height: 120,
+                                      // decoration: const BoxDecoration(),
                                       child: RawScrollbar(
                                         thumbVisibility: true,
                                         controller: _horizontalScrollController,
                                         thumbColor: const Color(0xff4b5563),
                                         radius: Radius.circular(10),
-                                        thickness: 10,
+                                        thickness: 8,
                                         child: ListView(
                                           controller:
                                               _horizontalScrollController,
@@ -987,7 +988,7 @@ showDailog(
                                                 margin: const EdgeInsets.only(
                                                     top: 0.0,
                                                     left: 20.0,
-                                                    bottom: 20),
+                                                    bottom: 30),
                                                 height: 40.0,
                                                 width: 40.0,
                                                 decoration: BoxDecoration(
@@ -1005,12 +1006,19 @@ showDailog(
                                                 ),
                                               ),
                                             ),
-                                         
                                           ],
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
+                                  // SizedBox(
+                                  //     height: 10.0,
+                                  //     width: MediaQuery.of(context).size.width *
+                                  //         100.0,
+                                  //     child: const Divider(
+                                  //       color: Color(0xff94A3B8),
+                                  //       thickness: 0.1,
+                                  //     )),
                                 ],
                               ),
                             ),
@@ -1394,13 +1402,16 @@ showDailog(
                                         ),
                                       ),
                                       child: TextFormField(
+                                        keyboardType: TextInputType.text,
+                                        // textInputAction: TextInputAction.send,
+                                        // autofocus: false,
                                         controller: _description,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
                                             color: Color(0xffFFFFFF)),
                                         textAlignVertical:
                                             TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
+                                        // keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                             contentPadding: EdgeInsets.only(
                                               bottom: 13.0,
