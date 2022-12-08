@@ -86,6 +86,9 @@ class _NewPhaseState extends State<NewPhase> {
   bool savePhaseClick = false;
   bool saveSubtaskClick = false;
 
+  bool addMilestoneBtnClick=false;
+  bool addSubtaskBtnClick=false;
+
   // Merging code with phase module
 
   TypeAheadFormField? searchTextField;
@@ -955,9 +958,7 @@ class _NewPhaseState extends State<NewPhase> {
                               : clickAddSubtask()),
                       onTap: () {
                         setState(() {
-                          setState(() {
-                            savePhaseClick = true;
-                          });
+                          savePhaseClick = true;
                           Future.delayed(const Duration(microseconds: 500), () {
                             if (_formKey.currentState!.validate()) {
                               if (allValidate && selectedSource.isNotEmpty) {

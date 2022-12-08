@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zeus/helper_widget/labeltextfield.dart';
 
-Widget formField({
+Widget formField( {
   required String labelText,
   required BuildContext context,
   dynamic hintText,
@@ -76,11 +76,10 @@ Widget formField({
                     controller = value;
                     callback(controller);
                   },
-
                   validator: (value) {
                     setState(() {
                       errorText = validateCallback!(value!) ?? "";
-                    
+
                     });
                     return null;
                     //return validateCallback!(value!);
