@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, sort_child_properties_last
+
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -1088,201 +1090,10 @@ showDailog(
                                             ),
                                           ),
                                         ),
-                                        // SizedBox(
-                                        //   height: 32,
-                                        //   child: Padding(
-                                        //     padding:
-                                        //         EdgeInsets.only(left: 26),
-                                        //     child: ListView.builder(
-                                        //       scrollDirection:
-                                        //           Axis.horizontal,
-                                        //       itemCount: abc.length,
-                                        //       //.tagResponse!.data!.length,
-                                        //       itemBuilder: (context, index) {
-                                        //         return Container(
-                                        //           margin:
-                                        //               const EdgeInsets.only(
-                                        //                   left: 5.0,
-                                        //                   right: 5.0),
-                                        //           child: InputChip(
-                                        //             shape: RoundedRectangleBorder(
-                                        //                 borderRadius:
-                                        //                     BorderRadius.all(
-                                        //                         Radius
-                                        //                             .circular(
-                                        //                                 8))),
-                                        //             deleteIcon: Icon(
-                                        //               Icons.close,
-                                        //               color: Colors.white,
-                                        //               size: 20,
-                                        //             ),
-                                        //             backgroundColor:
-                                        //                 Color(0xff334155),
-                                        //             visualDensity:
-                                        //                 VisualDensity.compact,
-                                        //             materialTapTargetSize:
-                                        //                 MaterialTapTargetSize
-                                        //                     .shrinkWrap,
-                                        //             label: Text(
-                                        //               abc[index],
-                                        //               style: TextStyle(
-                                        //                   color:
-                                        //                       Colors.white),
-                                        //             ),
-                                        //             selected: _isSelected!,
-                                        //             //  selectedColor: Color(0xff334155),
-                                        //             onSelected:
-                                        //                 (bool selected) {
-                                        //               setState(() {
-                                        //                 _isSelected =
-                                        //                     selected;
-                                        //               });
-                                        //             },
-                                        //             onDeleted: () {
-                                        //               setState(() {
-                                        //                 abc.removeAt(index);
-                                        //               });
-                                        //             },
-
-                                        //             showCheckmark: false,
-                                        //           ),
-                                        //         );
-                                        //       },
-                                        //     ),
-                                        //   ),
-                                        // ),
-
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await showMenu(
-                                              context: context,
-                                              color: ColorSelect.class_color,
-                                              position:
-                                                  const RelativeRect.fromLTRB(
-                                                      160.0,
-                                                      200.0,
-                                                      160.0,
-                                                      100.0),
-                                              items: [
-                                                PopupMenuItem(
-                                                  padding:
-                                                      const EdgeInsets.all(0),
-                                                  value: 1,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Container(
-                                                      width: 400,
-                                                      color: const Color(
-                                                          0xff1E293B),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          searchTextField =
-                                                              TypeAheadFormField(
-                                                            keepSuggestionsOnLoading:
-                                                                false,
-                                                            hideOnLoading: true,
-                                                            suggestionsCallback:
-                                                                (pattern) {
-                                                              return getSuggestions(
-                                                                  pattern);
-                                                            },
-                                                            textFieldConfiguration:
-                                                                TextFieldConfiguration(
-                                                              controller:
-                                                                  _typeAheadController,
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      14.0),
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              cursorColor:
-                                                                  Colors.white,
-                                                              autofocus: true,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                contentPadding:
-                                                                    EdgeInsets.only(
-                                                                        top:
-                                                                            15.0),
-                                                                prefixIcon:
-                                                                    Padding(
-                                                                        padding: EdgeInsets.only(
-                                                                            top:
-                                                                                4.0),
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .search,
-                                                                          color:
-                                                                              Color(0xff64748B),
-                                                                        )),
-                                                                hintText:
-                                                                    'Searchsss',
-                                                                hintStyle: TextStyle(
-                                                                    fontSize:
-                                                                        14.0,
-                                                                    color: Color(
-                                                                        0xff64748B),
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                              ),
-                                                            ),
-                                                            itemBuilder:
-                                                                (context,
-                                                                    item) {
-                                                              return rowProject(
-                                                                  item);
-                                                            },
-                                                            transitionBuilder:
-                                                                (context,
-                                                                    suggestionsBox,
-                                                                    controller) {
-                                                              return suggestionsBox;
-                                                            },
-                                                            onSuggestionSelected:
-                                                                (item) {
-                                                              _typeAheadController
-                                                                  .text = '';
-                                                              if (!abc.contains(
-                                                                  item.name)) {
-                                                                abc.add(
-                                                                    item.name!);
-
-                                                                saveTagApi(
-                                                                    response
-                                                                        .data!
-                                                                        .id
-                                                                        .toString(),
-                                                                    item.name!);
-                                                              }
-                                                              setState(() {});
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                              elevation: 8.0,
-                                            ).then((value) {
-                                              if (value != null) print(value);
-                                            });
-                                          },
+                                        PopupMenuButton<int>(
+                                          tooltip: '',
+                                          offset: const Offset(25, 38),
+                                          color: Color(0xFF0F172A),
                                           child: Container(
                                               width: 35.0,
                                               height: 35.0,
@@ -1303,6 +1114,118 @@ showDailog(
                                               )
                                               //SvgPicture.asset('images/list.svg'),
                                               ),
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              padding: const EdgeInsets.all(0),
+                                              value: 1,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                  width: 400,
+                                                  color:
+                                                      const Color(0xff1E293B),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      searchTextField =
+                                                          TypeAheadFormField(
+                                                        keepSuggestionsOnLoading:
+                                                            false,
+                                                        hideOnLoading: true,
+                                                        suggestionsCallback:
+                                                            (pattern) {
+                                                          return getSuggestions(
+                                                              pattern);
+                                                        },
+                                                        textFieldConfiguration:
+                                                            TextFieldConfiguration(
+                                                          controller:
+                                                              _typeAheadController,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      14.0),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          cursorColor:
+                                                              Colors.white,
+                                                          autofocus: true,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            contentPadding:
+                                                                EdgeInsets.only(
+                                                              top: 15.0,
+                                                            ),
+                                                            prefixIcon: Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        top:
+                                                                            4.0),
+                                                                child: Icon(
+                                                                  Icons.search,
+                                                                  color: Color(
+                                                                      0xff64748B),
+                                                                )),
+                                                            hintText: 'Search',
+                                                            hintStyle: TextStyle(
+                                                                fontSize: 14.0,
+                                                                color: Color(
+                                                                    0xff64748B),
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            border: InputBorder
+                                                                .none,
+                                                          ),
+                                                        ),
+                                                        itemBuilder:
+                                                            (context, item) {
+                                                          return rowProject(
+                                                              item);
+                                                        },
+                                                        transitionBuilder:
+                                                            (context,
+                                                                suggestionsBox,
+                                                                controller) {
+                                                          return suggestionsBox;
+                                                        },
+                                                        onSuggestionSelected:
+                                                            (item) {
+                                                          _typeAheadController
+                                                              .text = '';
+                                                          if (!abc.contains(
+                                                              item.name)) {
+                                                            abc.add(item.name!);
+
+                                                            saveTagApi(
+                                                                response
+                                                                    .data!.id
+                                                                    .toString(),
+                                                                item.name!);
+                                                          }
+                                                          setState(() {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                          elevation: 8.0,
                                         ),
                                         Spacer(),
                                         Container(
@@ -1372,17 +1295,17 @@ showDailog(
                                         textAlignVertical:
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                              bottom: 13.0,
+                                        maxLines: 10,
+                                        decoration: const InputDecoration(
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 20.0,
                                               top: 14.0,
                                               right: 10,
                                               left: 14.0,
                                             ),
                                             border: InputBorder.none,
                                             hintText: '',
-                                            hintStyle: const TextStyle(
+                                            hintStyle: TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',

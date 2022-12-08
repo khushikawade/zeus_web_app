@@ -822,10 +822,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.99,
                                             margin: const EdgeInsets.only(
                                                 left: 30.0, right: 25.0),
                                             height: 56.0,
@@ -854,11 +850,14 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            top: 6.0, left: 45.0),
+                                          top: 11.0,
+                                          left: 45.0,
+                                        ),
                                         child: const Text(
                                           "Name",
                                           style: TextStyle(
                                               fontSize: 11.0,
+                                              letterSpacing: 0.5,
                                               color: Color(0xff64748B),
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.w500),
@@ -884,7 +883,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             counterText: "",
                                             contentPadding: EdgeInsets.only(
                                               bottom: 16.0,
-                                              top: 35.0,
+                                              top: 36.0,
                                               right: 10,
                                               left: 45.0,
                                             ),
@@ -894,6 +893,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             hintText: 'Enter name',
                                             hintStyle: TextStyle(
                                                 fontSize: 14.0,
+                                                letterSpacing: 0.25,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500)),
@@ -1054,7 +1054,6 @@ class _NavigationRailState extends State<MyHomePage>
                                           )),
                                       TextFormField(
                                         maxLines: 5,
-                                        maxLength: 152,
                                         controller: _bio,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
@@ -1067,7 +1066,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             errorStyle: TextStyle(
                                                 fontSize: 14, height: 0.20),
                                             contentPadding: EdgeInsets.only(
-                                              // bottom: 10.0,
+                                              bottom: 10.0,
                                               top: 47.0,
                                               right: 40,
                                               left: 45.0,
@@ -1874,7 +1873,10 @@ class _NavigationRailState extends State<MyHomePage>
                                           )),
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, right: 30.0, top: 30),
+                                            left: 30.0,
+                                            right: 30.0,
+                                            top: 26,
+                                            bottom: 10),
                                         height: 20.0,
                                         child: Container(
 
@@ -1955,66 +1957,72 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
-
-                                  SizedBox(
-                                    height: 30,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 26),
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: selectedDaysList.length,
-                                        //.tagResponse!.data!.length,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 12.0),
-                                            child: InputChip(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(8))),
-                                              deleteIcon: Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                              backgroundColor:
-                                                  Color(0xff334155),
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              label: Text(
-                                                selectedDaysList[index],
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-
-                                              selected: _isSelected!,
-
-                                              //  selectedColor: Color(0xff334155),
-                                              onSelected: (bool selected) {
-                                                setStateView(() {
-                                                  _isSelected = selected;
-                                                  print(
-                                                      "_isSelected--------------------------${_isSelected}");
-                                                });
+                                  selectedDaysList.isNotEmpty
+                                      ? SizedBox(
+                                          height: 30,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 26),
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  selectedDaysList.length,
+                                              //.tagResponse!.data!.length,
+                                              itemBuilder: (context, index) {
+                                                return Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 12.0),
+                                                  child: InputChip(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    8))),
+                                                    deleteIcon: Icon(
+                                                      Icons.close,
+                                                      color: Colors.white,
+                                                      size: 20,
+                                                    ),
+                                                    backgroundColor:
+                                                        Color(0xff334155),
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    label: Text(
+                                                      selectedDaysList[index],
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    selected: _isSelected!,
+                                                    //  selectedColor: Color(0xff334155),
+                                                    onSelected:
+                                                        (bool selected) {
+                                                      setStateView(() {
+                                                        _isSelected = selected;
+                                                        print(
+                                                            "_isSelected--------------------------${_isSelected}");
+                                                      });
+                                                    },
+                                                    onDeleted: () {
+                                                      setStateView(() {
+                                                        selectedDaysList
+                                                            .removeAt(index);
+                                                      });
+                                                    },
+                                                    showCheckmark: false,
+                                                  ),
+                                                );
                                               },
-                                              onDeleted: () {
-                                                setStateView(() {
-                                                  selectedDaysList
-                                                      .removeAt(index);
-                                                });
-                                              },
-
-                                              showCheckmark: false,
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
+                                          ),
+                                        )
+                                      : Container(),
+                                  selectedDaysList.isNotEmpty
+                                      ? const SizedBox(
+                                          height: 15,
+                                        )
+                                      : Container(),
                                   Stack(
                                     children: [
                                       Column(
@@ -2029,7 +2037,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     .width *
                                                 0.26,
                                             margin: const EdgeInsets.only(
-                                                left: 30.0, top: 16.0),
+                                                left: 30.0, top: 0.0),
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
@@ -2133,23 +2141,21 @@ class _NavigationRailState extends State<MyHomePage>
                                         }),
                                   ),
                                   const SizedBox(
-                                    height: 25.0,
+                                    height: 20.0,
                                   ),
                                   // Text(
                                   //   'Selected Range: ${_timeRange!.start.format(context)} - ${_timeRange!.end.format(context)}',
                                   //   style: TextStyle(
                                   //       fontSize: 20, color: Colors.white),
                                   // ),
-                                  const SizedBox(
-                                    height: 25.0,
-                                  ),
+
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            left: 30.0, top: 27.0),
+                                            left: 30.0, bottom: 12),
                                         child: const Text(
                                           "Skills",
                                           style: TextStyle(
@@ -2163,7 +2169,8 @@ class _NavigationRailState extends State<MyHomePage>
                                           width: 40.0,
                                           height: 40.0,
                                           margin: const EdgeInsets.only(
-                                              right: 20.0, top: 25.0),
+                                            right: 60,
+                                          ),
                                           decoration: const BoxDecoration(
                                             color: Color(0xff334155),
                                             shape: BoxShape.circle,
@@ -2178,6 +2185,9 @@ class _NavigationRailState extends State<MyHomePage>
                                           //SvgPicture.asset('images/list.svg'),
                                           ),
                                     ],
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
