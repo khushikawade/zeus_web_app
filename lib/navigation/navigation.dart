@@ -3280,21 +3280,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/notification_icon.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 3,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 3,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3369,21 +3369,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/camera.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 3,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 3,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3512,21 +3512,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/people.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 6,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3571,21 +3571,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/button.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 2,
-                                    top: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 2,
+                                  //   top: 6,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3630,21 +3630,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/bell.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 3,
-                                    top: 4,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 3,
+                                  //   top: 4,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -3689,21 +3689,21 @@ class _NavigationRailState extends State<MyHomePage>
                                       "images/setting.svg",
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                        minHeight: 8,
-                                      ),
-                                    ),
-                                  )
+                                  // Positioned(
+                                  //   right: 0,
+                                  //   top: 6,
+                                  //   child: Container(
+                                  //     padding: const EdgeInsets.all(1),
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.red,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     constraints: const BoxConstraints(
+                                  //       minWidth: 8,
+                                  //       minHeight: 8,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
