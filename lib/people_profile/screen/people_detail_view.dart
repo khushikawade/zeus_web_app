@@ -13,6 +13,7 @@ import 'dart:async';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
+import 'package:zeus/utility/util.dart';
 import '../../DemoContainer.dart';
 import '../../helper_widget/responsive.dart';
 import '../../navigation/department_model/department_model/department_responce.dart';
@@ -77,7 +78,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
       setState(() {
         loading = false;
       });
-    } else {
+    }else if (response.statusCode == 401) {
+       
+        AppUtil.showErrorDialog(context);
+      } else {
       print("Error getting users.");
       // print(response.body);
     }
@@ -140,6 +144,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
       print(stringRes);
       print("yes");
       print("===============================???UPdated Successfully");
+    }else if (response.statusCode == 401) {
+     
+      AppUtil.showErrorDialog(context);
     } else {
       print(responseString);
       print("failed");
@@ -1018,7 +1025,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
         // final stringRes = JsonEncoder.withIndent('').convert(res);
         //  print(stringRes);
-      } else {
+      }else if (response.statusCode == 401) {
+      
+      AppUtil.showErrorDialog(context);
+    } else {
         print("failed to much");
       }
       return value;
@@ -1042,7 +1052,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
         setState(() {
           _currencyName = mdata;
         });
-      } else {
+      }else if (response.statusCode == 401) {
+      
+      AppUtil.showErrorDialog(context);
+    } else {
         print("failed to much");
       }
       return value;
@@ -1066,7 +1079,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
         setState(() {
           _department = mdata;
         });
-      } else {
+      }else if (response.statusCode == 401) {
+      
+      AppUtil.showErrorDialog(context);
+    } else {
         print("failed to much");
       }
       return value;

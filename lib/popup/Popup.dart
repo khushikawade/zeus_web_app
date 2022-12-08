@@ -106,6 +106,8 @@ showDailog(
                       adOnSubmit: (String value) {},
                     )),
             (Route<dynamic> route) => false);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
       }
@@ -138,6 +140,8 @@ showDailog(
 
         // ignore: use_build_context_synchronously
 
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
 
@@ -183,6 +187,8 @@ showDailog(
 
         // ignore: use_build_context_synchronously
 
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
 
@@ -235,6 +241,8 @@ showDailog(
         print(stringRes);
         print("yes description");
         print(apiResponse.body);
+      } else if (apiResponse.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print(apiResponse.body);
         var responseJson =
@@ -1022,13 +1030,15 @@ showDailog(
                                 ],
                               ),
                             ),
+
+                            //---------------------SAYYAM YADAV
                             SizedBox(
                                 height: 10.0,
                                 width:
                                     MediaQuery.of(context).size.width * 100.0,
                                 child: const Divider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.1,
+                                  color: Color(0xff424D5F),
+                                  thickness: 0.7,
                                 )),
                           ],
                         ),
@@ -1262,7 +1272,7 @@ showDailog(
                                                                               Color(0xff64748B),
                                                                         )),
                                                                 hintText:
-                                                                    'Search',
+                                                                    'Searchsss',
                                                                 hintStyle: TextStyle(
                                                                     fontSize:
                                                                         14.0,
@@ -1708,8 +1718,8 @@ showDailog(
                                 height: 30.0,
                                 width: MediaQuery.of(context).size.width,
                                 child: const Divider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
+                                  color: Color(0xff424D5F),
+                                  thickness: 0.7,
                                 )),
                             Row(
                               children: [

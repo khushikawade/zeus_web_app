@@ -35,6 +35,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -168,12 +169,17 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       storage.erase();
       sharedPreferences.clear();
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
-        return LoginScreen(
-          onSubmit: (String value) {},
-        );
-      })));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) => LoginScreen(
+                    onSubmit: (String value) {},
+                  )),
+          (Route<dynamic> route) => route is LoginScreen);
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
+      SmartDialog.dismiss();
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
         msg: user.message != null ? user.message! : 'Something Went Wrong',

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
@@ -32,6 +33,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/upertextformate.dart';
+import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -64,7 +66,7 @@ class MyMenu extends StatefulWidget {
       {required this.title,
       required this.alignment,
       this.peopleList,
-      this.offset = const Offset(0, 0),
+      this.offset = const Offset(0, 48),
       this.data,
       required this.buildContext,
       this.returnValue,
@@ -1153,7 +1155,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               builder:
                                   (BuildContext context, StateSettersetState) {
                                 return DropdownButtonHideUnderline(
-                                  child: DropdownButton(
+                                  child: CustomDropdownButton(
                                     dropdownColor: ColorSelect.class_color,
                                     value: _depat,
                                     underline: Container(),
@@ -1165,7 +1167,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    isExpanded: true,
+                                    // isExpanded: true,
                                     icon: const Icon(
                                       // Add this
                                       Icons.arrow_drop_down, // Add this
@@ -1854,7 +1856,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       color: const Color(0xff334155),
                       //border: Border.all(color:  const Color(0xff1E293B)),
                       borderRadius: BorderRadius.circular(
-                        8.0,
+                        48.0,
                       ),
                     ),
                     child: Column(
@@ -1868,7 +1870,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.only(top: 15.0),
                             prefixIcon: Padding(
-                                padding: EdgeInsets.only(top: 4.0),
+                                padding: EdgeInsets.only(
+                                    top: 4.0, left: 27.0, right: 21),
                                 child: Icon(
                                   Icons.search,
                                   color: Color(0xff64748B),
@@ -2394,7 +2397,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/departments"),
+        Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2406,6 +2409,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _department = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -2419,7 +2424,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/time-zone/list"),
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2438,6 +2443,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
         // final stringRes = JsonEncoder.withIndent('').convert(res);
         //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -2465,6 +2472,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       setState(() {
         loading = false;
       });
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
 
@@ -2483,8 +2492,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     // var userId = storage.read("user_id");
     // AppUrl
-    var request = http.MultipartRequest('POST',
-        Uri.parse('https://zeus-api.zehntech.net/api/v1/resource/update'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
     request.headers
         .addAll({"Content-Type": "application/json", "Authorization": token});
     request.fields['user_id'] = userId;
@@ -2554,6 +2563,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
 
       widget.returnValue!();
+    } else if (response.statusCode == 401) {
+      SmartDialog.dismiss();
+      AppUtil.showErrorDialog(context);
     } else {
       SmartDialog.dismiss();
 
@@ -2591,6 +2603,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       //           )),
       // );
       //(Route<dynamic> route) => false);
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -2606,7 +2620,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var token = 'Bearer ' + storage.read("token");
     if (value == null) {
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/currencies"),
+        Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -2618,6 +2632,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

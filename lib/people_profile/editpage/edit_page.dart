@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/delete_dialog.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/navigation/navigation.dart';
@@ -17,6 +18,7 @@ import 'package:http/http.dart' as http;
 // import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/constant.dart';
+import 'package:zeus/utility/util.dart';
 import '../../utility/upertextformate.dart';
 
 class EditPage extends StatefulWidget {
@@ -113,13 +115,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _statusList = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -144,6 +141,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _accountableId = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -169,6 +168,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _customerName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -344,118 +345,151 @@ class _EditPageState extends State<EditPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        // width: double.infinity / 2,
-                        width: MediaQuery.of(context).size.width * 0.13,
-                        margin: const EdgeInsets.only(top: 15.0, left: 10.0),
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          color:
-                              // Colors.red,
-                              const Color(0xff334155),
-                          //border: Border.all(color:  const Color(0xff1E293B)),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          // width: double.infinity / 2,
+                          width: MediaQuery.of(context).size.width * 0.13,
+                          margin: const EdgeInsets.only(top: 15.0, left: 10.0),
+                          height: 60.0,
+                          decoration: BoxDecoration(
+                            color:
+                                // Colors.red,
+                                const Color(0xff334155),
+                            //border: Border.all(color:  const Color(0xff1E293B)),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
+                                ),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ), //BoxShadow
+                            ],
                           ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ), //BoxShadow
-                          ],
-                        ),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 4.0, left: 16.0),
-                                  child: const Text(
-                                    "AP",
-                                    style: TextStyle(
-                                        fontSize: 13.0,
-                                        color: Color(0xff64748B),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  )),
-                              StatefulBuilder(builder:
-                                  (BuildContext context, StateSettersetState) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 4, top: 2),
-                                  child: DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                    isDense: true,
-                                    dropdownColor: ColorSelect.class_color,
-                                    value: _account,
-                                    underline: Container(),
-                                    hint: const Text(
-                                      "Select Accountable Person",
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 4.0, left: 16.0),
+                                    child: const Text(
+                                      "AP",
                                       style: TextStyle(
-                                          fontSize: 15.0,
-                                          color: Color(0xffFFFFFF),
+                                          fontSize: 13.0,
+                                          color: Color(0xff64748B),
                                           fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    isExpanded: true,
-                                    icon: const Icon(
-                                      // Add this
-                                      Icons.arrow_drop_down, // Add this
-                                      color: Color(0xff64748B),
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                StatefulBuilder(builder: (BuildContext context,
+                                    StateSettersetState) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 4, top: 2),
+                                    child: DropdownButtonHideUnderline(
+                                        child: CustomDropdownButton(
+                                      isDense: true,
 
-                                      // Add this
-                                    ),
-                                    items: _accountableId.map((items) {
-                                      return DropdownMenuItem(
-                                        value: items['id'].toString(),
-                                        child: Text(
-                                          items['name'],
-                                          style: const TextStyle(
-                                              fontSize: 15.0,
-                                              color: Color(0xffFFFFFF),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        //  validator: (value) => value == null ? 'field required' : null,
-                                        //               onSaved: (value) => name = value,
+                                      dropdownColor: Color(0xff0F172A),
+                                      value: _account,
+                                      underline: Container(),
+                                      hint: const Text(
+                                        "Select Accountable Person",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      // isExpanded: true,
+                                      icon: const Icon(
+                                        // Add this
+                                        Icons.arrow_drop_down, // Add this
+                                        color: Color(0xff64748B),
 
-                                        _account = newValue;
-                                        print("account:$_account");
-                                        selectAccountablePerson = true;
-                                      });
-                                    },
-                                  )),
-                                );
-                              })
-                            ]),
-                      ),
-                      createButtonClick
-                          ? selectAccountablePerson
-                              ? const Text(
-                                  " ",
-                                )
-                              : Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 8,
-                                    left: 26,
-                                  ),
-                                  child: errorWidget())
-                          : Container(),
-                    ],
+                                        // Add this
+                                      ),
+                                      elevation: 12,
+                                      items: _accountableId.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items['id'].toString(),
+                                          child: Text(
+                                            items['name'],
+                                            style: const TextStyle(
+                                                fontSize: 15.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          //  validator: (value) => value == null ? 'field required' : null,
+                                          //               onSaved: (value) => name = value,
+
+                                          _account = newValue;
+                                          print("account:$_account");
+                                          selectAccountablePerson = true;
+                                        });
+                                      },
+                                    )),
+                                  );
+                                }),
+                                // CustomDropdownButton(
+                                //   value: _account,
+                                //   items: _accountableId.map((items) {
+                                //     return DropdownMenuItem(
+                                //       value: items['id'].toString(),
+                                //       child: Text(
+                                //         items['name'],
+                                //         style: const TextStyle(
+                                //             fontSize: 15.0,
+                                //             color: Color(0xffFFFFFF),
+                                //             fontFamily: 'Inter',
+                                //             fontWeight: FontWeight.w500),
+                                //       ),
+                                //     );
+                                //   }).toList(),
+                                //   onChanged: ((value) {
+                                //     setState(() {
+                                //       //  validator: (value) => value == null ? 'field required' : null,
+                                //       //               onSaved: (value) => name = value,
+
+                                //       _account = value.toString();
+                                //       print("account:$_account");
+                                //       selectAccountablePerson = true;
+                                //     });
+                                //   }),
+                                // ),
+                              ]),
+                        ),
+                      
+                      
+                      
+                        createButtonClick
+                            ? selectAccountablePerson
+                                ? const Text(
+                                    " ",
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 8,
+                                      left: 26,
+                                    ),
+                                    child: errorWidget())
+                            : Container(),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     width: 10,
@@ -511,7 +545,7 @@ class _EditPageState extends State<EditPage> {
                                     padding: const EdgeInsets.only(
                                         left: 15, right: 4, top: 2),
                                     child: DropdownButtonHideUnderline(
-                                        child: DropdownButton(
+                                        child: CustomDropdownButton(
                                       isDense: true,
                                       dropdownColor: ColorSelect.class_color,
                                       value: _custome,
@@ -524,7 +558,7 @@ class _EditPageState extends State<EditPage> {
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w300),
                                       ),
-                                      isExpanded: true,
+                                      // isExpanded: true,
                                       icon: const Icon(
                                         // Add this
                                         Icons.arrow_drop_down, // Add this
@@ -858,8 +892,8 @@ class _EditPageState extends State<EditPage> {
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w300),
                                       ),
-                                      isExpanded: true,
-                                      icon: Icon(
+                                      // isExpanded: true,
+                                      icon: const Icon(
                                         // Add this
                                         Icons.arrow_drop_down,
                                         // Add this
@@ -1040,7 +1074,7 @@ class _EditPageState extends State<EditPage> {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w300),
                                     ),
-                                    isExpanded: true,
+                                    //  isExpanded: true,
                                     icon: const Icon(
                                       // Add this
                                       Icons.arrow_drop_down, // Add this
@@ -1451,6 +1485,9 @@ class _EditPageState extends State<EditPage> {
                       adOnSubmit: (String value) {},
                     )),
             (Route<dynamic> route) => false);
+      }else if (response.statusCode == 401) {
+        SmartDialog.dismiss();
+        AppUtil.showErrorDialog(context);
       } else {
         SmartDialog.dismiss();
         Navigator.of(context)
@@ -1483,6 +1520,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _currencyName = mdata;
         });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1495,7 +1534,7 @@ class _EditPageState extends State<EditPage> {
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/skills"),
+        Uri.parse("${AppUrl.baseUrl}/skills"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -1510,6 +1549,8 @@ class _EditPageState extends State<EditPage> {
           // print('ghjhjhjh' + _addtag.length.toString());
         });
         print("yes to much");
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
@@ -1517,60 +1558,12 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
-  // Future<String?> getSelectStatus() async {
-  //   String? value;
-  //   if (value == null) {
-  //     var token = 'Bearer ' + storage.read("token");
-  //     var response = await http.get(
-  //       Uri.parse("https://zeus-api.zehntech.net/api/v1/status"),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": token,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
-  //       List<dynamic> mdata = map["data"];
-  //       setState(() {
-  //         _statusList = mdata;
-  //       });
-  //     } else {
-  //       print("failed to much");
-  //     }
-  //     return value;
-  //   }
-  // }
-
-  // Future<String?> getAccountable() async {
-  //   String? value;
-  //   if (value == null) {
-  //     var token = 'Bearer ' + storage.read("token");
-  //     var response = await http.get(
-  //       Uri.parse(AppUrl.accountable_person),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Authorization": token,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
-  //       List<dynamic> mdata = map["data"];
-  //       setState(() {
-  //         _accountableId = mdata;
-  //       });
-  //     } else {
-  //       print("failed to much");
-  //     }
-  //     return value;
-  //   }
-  // }
-
   Future<String?> getAddpeople() async {
     String? value;
     if (value == null) {
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
-        Uri.parse("https://zeus-api.zehntech.net/api/v1/tags"),
+        Uri.parse("${AppUrl.baseUrl}/tags"),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -1582,13 +1575,8 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           addTag = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }

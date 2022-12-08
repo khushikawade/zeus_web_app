@@ -10,6 +10,7 @@ class ListSearch extends StatefulWidget {
   final ValueChanged<String> onSubmit;
 
   const ListSearch({Key? key, required this.onSubmit});
+
   ListSearchState createState() => ListSearchState();
 }
 

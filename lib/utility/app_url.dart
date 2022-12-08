@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:core';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zeus/services/api_client.dart';
 
 class AppUrl {
-  static const String baseUrl = 'https://zeus-api.zehntech.net/api/v1';
+  static const String baseUrl = ApiClient.BASE_URL;
   // 'http://zeusapitst.crebos.online/api/v1';
 
   static const String login = '$baseUrl/user/signin';

@@ -5,6 +5,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/add_new_phase/model/resources_needed.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
+import 'package:zeus/utility/util.dart';
 
 class SearchTextClass extends StatefulWidget {
   const SearchTextClass({Key? key}) : super(key: key);
@@ -42,7 +43,10 @@ class _SearchTextClassState extends State<SearchTextClass> {
       setState(() {
         loading = false;
       });
-    } else {
+    }else if (response.statusCode == 401) {
+        
+        AppUtil.showErrorDialog(context);
+      } else {
       print("Error getting users.");
       // print(response.body);
     }

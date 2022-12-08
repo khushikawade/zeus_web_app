@@ -28,6 +28,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
+import 'package:zeus/utility/util.dart';
 import '../../../utility/colors.dart';
 import '../../../people_profile/screen/people_detail_view.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,10 @@ class _PeopleIdleState extends State<PeopleIdle> {
   SharedPreferences? sharedPreferences;
 
   final ScrollController horizontalScroll = ScrollController();
+  final ScrollController verticalScroll = ScrollController();
+
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 50.0);
   final double width = 18;
   final double widthVertical = 10;
 
@@ -115,560 +120,50 @@ class _PeopleIdleState extends State<PeopleIdle> {
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
 
-    return AdaptiveScrollbar(
-      underSpacing: EdgeInsets.only(bottom: width),
-      controller: horizontalScroll,
-      // width: width,
-      width: 10,
-      position: ScrollbarPosition.bottom,
-      sliderDecoration: const BoxDecoration(
-          color: Color(0xff4B5563),
-          borderRadius: BorderRadius.all(Radius.circular(12.0))),
-      sliderActiveDecoration: const BoxDecoration(
-          color: Color.fromRGBO(206, 206, 206, 100),
-          borderRadius: BorderRadius.all(Radius.circular(12.0))),
-      underColor: Colors.transparent,
-      child: MediaQuery(
-        data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-        child: Scaffold(
-          backgroundColor: ColorSelect.class_color,
-          body: SingleChildScrollView(
-            controller: horizontalScroll,
-            scrollDirection: Axis.horizontal,
-            //controller: vertical_scrollcontroller,
-            // scrollDirection: Axis.vertical,
-            child: Container(
-              width: MediaQuery.of(context).size.width < 950
-                  ? MediaQuery.of(context).size.width * 2
-                  : MediaQuery.of(context).size.width - 160,
-
-              // height: MediaQuery.of(context).size.height * 0.83,
-              // height: MediaQuery.of(context).size.height * 0.83,
-
-              height: 969,
-              margin: const EdgeInsets.only(
-                  left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
-              decoration: BoxDecoration(
-                color: const Color(0xff1E293B),
-                border: Border.all(color: const Color(0xff1E293B)),
-                borderRadius: BorderRadius.circular(
-                  12.0,
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Consumer<PeopleIdelClass>(builder: (context, data, _) {
-                    return data.loading
-                        ? const Expanded(
-                            child: Center(child: CircularProgressIndicator()))
-                        : Expanded(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                makePeopleList(data),
-                              ],
-                            ),
-                          );
-                    //return Container();
-                  }),
-                  //   FutureBuilder(
-                  //       //future: _getList,
-                  //       //future: getPeopleData(),
-                  //       future:
-                  //           Provider.of<PeopleIdelClass>(context, listen: true)
-                  //               .getPeopleDataList(),
-                  //       builder: (context, snapshot) {
-                  //         if (snapshot.connectionState ==
-                  //             ConnectionState.waiting) {
-                  //           return const Expanded(
-                  //               child:
-                  //                   Center(child: CircularProgressIndicator()));
-                  //         } else {
-                  //           return Consumer<PeopleIdelClass>(
-                  //               builder: (context, data, _) {
-                  //             List<DataRow> rows = [];
-
-                  //             if (data.peopleList != null) {
-                  //               if (data.peopleList!.data!.isNotEmpty) {
-                  //                 data.peopleList!.data!
-                  //                     .asMap()
-                  //                     .forEach((index, element) {
-                  //                   PeopleData _peopleList =
-                  //                       data.peopleList!.data![index];
-
-                  //                   postion = [index];
-                  //                   var designation = '';
-                  //                   var associate = '';
-                  //                   var nickname = '';
-                  //                   var capacity = '';
-
-                  //                   var name = _peopleList.name;
-                  //                   if (_peopleList.resource != null) {
-                  //                     designation =
-                  //                         _peopleList.resource!.designation!;
-                  //                   } else {
-                  //                     designation = 'TBD';
-                  //                   }
-
-                  //                   if (_peopleList.resource != null) {
-                  //                     associate =
-                  //                         _peopleList.resource!.associate!;
-                  //                   } else {
-                  //                     associate = 'TBD';
-                  //                   }
-
-                  //                   if (_peopleList.resource != null) {
-                  //                     nickname =
-                  //                         _peopleList.resource!.nickname!;
-                  //                   } else {
-                  //                     nickname = 'TBD';
-                  //                   }
-
-                  //                   if (_peopleList.resource != null) {
-                  //                     capacity =
-                  //                         _peopleList.resource!.capacity!;
-                  //                   } else {
-                  //                     capacity = 'TBD';
-                  //                   }
-
-                  //                   var image = _peopleList.image;
-
-                  //                   String firstName = "";
-                  //                   String lastName = "";
-                  //                   String fullName = '';
-
-                  //                   var names;
-                  //                   if (_peopleList.name != null &&
-                  //                       _peopleList.name!.isNotEmpty) {
-                  //                     if (_peopleList.name!.contains(" ")) {
-                  //                       List<String> splitedList =
-                  //                           _peopleList.name!.split(" ");
-
-                  //                       firstName = splitedList[0];
-                  //                       lastName = splitedList[1];
-
-                  //                       fullName = firstName
-                  //                               .substring(0, 1)
-                  //                               .toUpperCase() +
-                  //                           lastName
-                  //                               .substring(0, 1)
-                  //                               .toUpperCase();
-                  //                     } else {
-                  //                       fullName = _peopleList.name!
-                  //                           .substring(0, 1)
-                  //                           .toUpperCase();
-                  //                     }
-                  //                   }
-
-                  //                   rows.add(DataRow(
-                  //                       onSelectChanged: (newValue) {
-                  //                         Navigator.push(
-                  //                             context,
-                  //                             MaterialPageRoute(
-                  //                                 builder: (context) =>
-                  //                                     ProfileDetail(
-                  //                                         list: _peopleList)));
-                  //                       },
-                  //                       cells: [
-                  //                         DataCell(Row(
-                  //                           mainAxisAlignment:
-                  //                               MainAxisAlignment.start,
-                  //                           mainAxisSize: MainAxisSize.max,
-                  //                           crossAxisAlignment:
-                  //                               CrossAxisAlignment.center,
-                  //                           children: [
-                  //                             image != null && image.isNotEmpty
-                  //                                 ? Container(
-                  //                                     width: 32.0,
-                  //                                     height: 32.0,
-                  //                                     margin:
-                  //                                         const EdgeInsets.only(
-                  //                                             left: 0.0,
-                  //                                             top: 0.0),
-                  //                                     decoration: BoxDecoration(
-                  //                                       color: const Color(
-                  //                                           0xff334155),
-                  //                                       borderRadius:
-                  //                                           BorderRadius
-                  //                                               .circular(
-                  //                                         40.0,
-                  //                                       ),
-                  //                                     ),
-                  //                                     child: CircleAvatar(
-                  //                                       radius: 20,
-                  //                                       backgroundImage:
-                  //                                           NetworkImage(image),
-                  //                                     ))
-                  //                                 : Container(
-                  //                                     width: 32,
-                  //                                     height: 50,
-                  //                                     alignment:
-                  //                                         Alignment.center,
-                  //                                     decoration:
-                  //                                         const BoxDecoration(
-                  //                                             shape: BoxShape
-                  //                                                 .circle,
-                  //                                             color: Color(
-                  //                                                 0xffF2F2F2)),
-                  //                                     child: Text(
-                  //                                       fullName != null &&
-                  //                                               fullName
-                  //                                                   .isNotEmpty
-                  //                                           ? fullName
-                  //                                           : '',
-                  //                                       style: const TextStyle(
-                  //                                           fontFamily:
-                  //                                               'Inter-Medium',
-                  //                                           fontSize: 14,
-                  //                                           fontStyle: FontStyle
-                  //                                               .normal,
-                  //                                           fontWeight:
-                  //                                               FontWeight.w500,
-                  //                                           letterSpacing:
-                  //                                               -0.33,
-                  //                                           color: Color(
-                  //                                               0xff8B8B8B)),
-                  //                                     ),
-                  //                                   ),
-                  //                             Column(
-                  //                               crossAxisAlignment:
-                  //                                   CrossAxisAlignment.start,
-                  //                               mainAxisAlignment:
-                  //                                   MainAxisAlignment.start,
-                  //                               mainAxisSize: MainAxisSize.min,
-                  //                               children: [
-                  //                                 Expanded(
-                  //                                   child: Container(
-                  //                                     margin:
-                  //                                         const EdgeInsets.only(
-                  //                                             left: 16.0,
-                  //                                             top: 7.5),
-                  //                                     child: Text(
-                  //                                       "$name",
-                  //                                       style: const TextStyle(
-                  //                                           color: ColorSelect
-                  //                                               .white_color,
-                  //                                           fontSize: 14.0,
-                  //                                           fontFamily: 'Inter',
-                  //                                           fontWeight:
-                  //                                               FontWeight
-                  //                                                   .w500),
-                  //                                     ),
-                  //                                   ),
-                  //                                 ),
-                  //                                 Expanded(
-                  //                                   child: Container(
-                  //                                     margin:
-                  //                                         const EdgeInsets.only(
-                  //                                             left: 16.0,
-                  //                                             top: 5.5),
-                  //                                     child: Text(
-                  //                                       "$designation,$associate",
-                  //                                       style: const TextStyle(
-                  //                                           color: ColorSelect
-                  //                                               .designation_color,
-                  //                                           fontSize: 14.0,
-                  //                                           fontFamily: 'Inter',
-                  //                                           fontWeight:
-                  //                                               FontWeight
-                  //                                                   .w500),
-                  //                                     ),
-                  //                                   ),
-                  //                                 ),
-                  //                               ],
-                  //                             ),
-                  //                           ],
-                  //                         )),
-                  //                         DataCell(
-                  //                           Text(
-                  //                             "@$nickname",
-                  //                             style: const TextStyle(
-                  //                                 color:
-                  //                                     ColorSelect.white_color,
-                  //                                 fontSize: 14.0,
-                  //                                 fontFamily: 'Inter',
-                  //                                 fontWeight: FontWeight.w500),
-                  //                           ),
-                  //                         ),
-                  //                         DataCell(
-                  //                           Text(
-                  //                             "$capacity",
-                  //                             style: const TextStyle(
-                  //                                 color:
-                  //                                     ColorSelect.white_color,
-                  //                                 fontSize: 14.0,
-                  //                                 fontFamily: 'Inter',
-                  //                                 fontWeight: FontWeight.w500),
-                  //                           ),
-                  //                         ),
-                  //                         const DataCell(
-                  //                           Text(
-                  //                             "TBD",
-                  //                             style: TextStyle(
-                  //                                 color:
-                  //                                     ColorSelect.white_color,
-                  //                                 fontSize: 14.0,
-                  //                                 fontFamily: 'Inter',
-                  //                                 fontWeight: FontWeight.w500),
-                  //                           ),
-                  //                         ),
-                  //                         const DataCell(
-                  //                           Text(
-                  //                             "TBD",
-                  //                             style: TextStyle(
-                  //                                 color:
-                  //                                     ColorSelect.white_color,
-                  //                                 fontSize: 14.0,
-                  //                                 fontFamily: 'Inter',
-                  //                                 fontWeight: FontWeight.w500),
-                  //                           ),
-                  //                         ),
-                  //                         DataCell(_peopleList.resource != null
-                  //                             ? Container(
-                  //                                 // height: 50,
-                  //                                 width: 250,
-                  //                                 child: ListView.builder(
-                  //                                   shrinkWrap: true,
-                  //                                   scrollDirection:
-                  //                                       Axis.horizontal,
-                  //                                   itemCount: _peopleList
-                  //                                               .resource!
-                  //                                               .skills!
-                  //                                               .length <
-                  //                                           3
-                  //                                       ? _peopleList.resource!
-                  //                                           .skills!.length
-                  //                                       : 3,
-                  //                                   itemBuilder:
-                  //                                       (BuildContext context,
-                  //                                           int index) {
-                  //                                     Skills _skills =
-                  //                                         _peopleList.resource!
-                  //                                             .skills![index];
-                  //                                     var skill = _skills.title;
-                  //                                     postion = index;
-                  //                                     return Container(
-                  //                                       height: 25.0,
-                  //                                       margin: const EdgeInsets
-                  //                                               .only(
-                  //                                           top: 10.0,
-                  //                                           bottom: 10,
-                  //                                           right: 12),
-                  //                                       decoration:
-                  //                                           BoxDecoration(
-                  //                                         color: const Color(
-                  //                                             0xff334155),
-                  //                                         borderRadius:
-                  //                                             BorderRadius
-                  //                                                 .circular(
-                  //                                           8.0,
-                  //                                         ),
-                  //                                       ),
-                  //                                       child: Align(
-                  //                                         alignment:
-                  //                                             Alignment.center,
-                  //                                         child: Padding(
-                  //                                           padding:
-                  //                                               const EdgeInsets
-                  //                                                       .only(
-                  //                                                   top: 6.0,
-                  //                                                   bottom: 6.0,
-                  //                                                   right: 12.0,
-                  //                                                   left: 12.0),
-                  //                                           child: Text(
-                  //                                             '$skill',
-                  //                                             style: const TextStyle(
-                  //                                                 color: ColorSelect
-                  //                                                     .white_color,
-                  //                                                 fontSize:
-                  //                                                     14.0,
-                  //                                                 fontFamily:
-                  //                                                     'Inter',
-                  //                                                 fontWeight:
-                  //                                                     FontWeight
-                  //                                                         .w400),
-                  //                                           ),
-                  //                                         ),
-                  //                                       ),
-                  //                                     );
-                  //                                   },
-                  //                                 ),
-                  //                               )
-                  //                             : const Text('TBD',
-                  //                                 style: TextStyle(
-                  //                                     color: ColorSelect
-                  //                                         .white_color,
-                  //                                     fontSize: 14.0,
-                  //                                     fontFamily: 'Inter',
-                  //                                     fontWeight:
-                  //                                         FontWeight.w500))),
-                  //                         DataCell(
-                  //                           Padding(
-                  //                             padding: const EdgeInsets.only(
-                  //                                 left: 10.0, bottom: 12),
-                  //                             child: Stack(children: [
-                  //                               MyMenu(
-                  //                                   data: data.peopleList!
-                  //                                       .data![index],
-                  //                                   title: 'Menu at bottom',
-                  //                                   alignment:
-                  //                                       Alignment.bottomRight)
-                  //                             ]),
-                  //                           ),
-                  //                         )
-                  //                       ]));
-                  //                 });
-                  //               }
-                  //             }
-
-                  //             return data.peopleList == null ||
-                  //                     data.peopleList!.data!.isEmpty
-                  //                 ? const Expanded(
-                  //                     child: Center(
-                  //                         child: Text(
-                  //                       "No Records Found !",
-                  //                       style: TextStyle(
-                  //                           color: Color(0xffFFFFFF),
-                  //                           fontSize: 22.0,
-                  //                           fontFamily: 'Inter',
-                  //                           fontWeight: FontWeight.w500),
-                  //                     )),
-                  //                   )
-                  //                 : Row(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.start,
-                  //                     mainAxisSize: MainAxisSize.max,
-                  //                     crossAxisAlignment:
-                  //                         CrossAxisAlignment.center,
-                  //                     children: [
-                  //                       Expanded(
-                  //                         child: FittedBox(
-                  //                           child: SingleChildScrollView(
-                  //                             // controller:
-                  //                             //     vertical_scrollcontroller,
-                  //                             scrollDirection: Axis.vertical,
-                  //                             child: SingleChildScrollView(
-                  //                               scrollDirection:
-                  //                                   Axis.horizontal,
-                  //                               child: DataTable(
-                  //                                   showCheckboxColumn: false,
-                  //                                   dataRowHeight: 60,
-                  //                                   columns: const [
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "Name",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "Nickname",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "Capacity",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "Occupied till",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "Scheduled on",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "Skills",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                     DataColumn(
-                  //                                       label: Text(
-                  //                                         "",
-                  //                                         style: TextStyle(
-                  //                                             color: ColorSelect
-                  //                                                 .text_color,
-                  //                                             fontSize: 14.0,
-                  //                                             fontFamily:
-                  //                                                 'Inter',
-                  //                                             fontWeight:
-                  //                                                 FontWeight
-                  //                                                     .w500),
-                  //                                       ),
-                  //                                     ),
-                  //                                   ],
-                  //                                   rows: rows),
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                     ],
-                  //                   );
-                  //           });
-                  //         }
-                  //       }),
-                ],
-              ),
+    return MediaQuery(
+      data: mediaQueryData.copyWith(textScaleFactor: 1.0),
+      child: Scaffold(
+        backgroundColor: ColorSelect.class_color,
+        body: Container(
+          width: MediaQuery.of(context).size.width < 950
+              ? MediaQuery.of(context).size.width * 2
+              : MediaQuery.of(context).size.width - 160,
+          height: 969,
+          margin: const EdgeInsets.only(
+              left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+          decoration: BoxDecoration(
+            color: const Color(0xff1E293B),
+            border: Border.all(color: const Color(0xff1E293B)),
+            borderRadius: BorderRadius.circular(
+              12.0,
             ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Consumer<PeopleIdelClass>(builder: (context, data, _) {
+                return data.loading
+                    ? const Expanded(
+                        child: Center(child: CircularProgressIndicator()))
+                    : Expanded(
+                        child: RawScrollbar(
+                          controller: verticalScroll,
+                          thumbColor: const Color(0xff4b5563),
+                          radius: Radius.circular(20),
+                          thickness: 10,
+                          child: ListView(
+                            controller: verticalScroll,
+                            shrinkWrap: true,
+                            children: [
+                              makePeopleList(data),
+                            ],
+                          ),
+                        ),
+                      );
+              }),
+            ],
           ),
         ),
       ),
@@ -986,13 +481,19 @@ class _PeopleIdleState extends State<PeopleIdle> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: FittedBox(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
+                // child: FittedBox(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: RawScrollbar(
+                    controller: horizontalScroll,
+                    thumbColor: const Color(0xff4b5563),
+                    radius: Radius.circular(20),
+                    thickness: 10,
                     child: SingleChildScrollView(
+                      controller: horizontalScroll,
                       scrollDirection: Axis.horizontal,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Theme(
                           data: Theme.of(context)
                               .copyWith(dividerColor: Color(0xff525f72)),
@@ -1002,6 +503,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
                               dividerThickness: 0.7,
+                              columnSpacing: 132,
                               columns: const [
                                 DataColumn(
                                   label: Text(
@@ -1081,6 +583,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                   ),
                 ),
               ),
+              //),
             ],
           );
   }
@@ -1102,13 +605,8 @@ class _PeopleIdleState extends State<PeopleIdle> {
         setState(() {
           _timeline = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
       } else {
         print("failed to much");
       }
