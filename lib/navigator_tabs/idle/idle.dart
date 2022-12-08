@@ -760,7 +760,7 @@ class _IdleState extends State<Idle> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                // child: FittedBox(
+                 child: FittedBox(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
@@ -774,7 +774,7 @@ class _IdleState extends State<Idle> {
                             showCheckboxColumn: false,
                             dataRowHeight: 60,
                             dividerThickness: 0.7,
-                            columnSpacing: 80,
+                            //columnSpacing: 80,
                             columns: [
                               DataColumn(
                                 label: MouseRegion(
@@ -1136,7 +1136,7 @@ class _IdleState extends State<Idle> {
                   ),
                 ),
               ),
-              //),
+              ),
             ],
           );
   }
