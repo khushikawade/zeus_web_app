@@ -16,9 +16,6 @@ import 'data/DataClass.dart';
 import 'data/project_detail_data/ProjectDetailData.dart';
 import 'project_idel_model/project_idel_response.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
-import 'package:cross_scroll/cross_scroll.dart';
 
 class Idle extends StatefulWidget {
   const Idle({Key? key}) : super(key: key);
@@ -47,11 +44,9 @@ class _IdleState extends State<Idle> {
   List<SkillsData> skillsData = [];
   PopupScreen popupScreen = PopupScreen();
 
-  //String? id = "";
   bool? amIHovering;
   bool? amIHovering1;
 
-  //Future? _getData;
   Future? _getProjectDetail;
   Offset exitFrom = const Offset(0, 0);
   bool hovered = false;
@@ -235,9 +230,7 @@ class _IdleState extends State<Idle> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    // change();
-    getList = getListData1();
+      getList = getListData1();
     super.didChangeDependencies();
   }
 
@@ -248,9 +241,7 @@ class _IdleState extends State<Idle> {
 
   @override
   void initState() {
-    //getIdel();
-    //_getData = getListData();
-
+   
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
 
@@ -262,15 +253,9 @@ class _IdleState extends State<Idle> {
     getCustomer();
     getCurrency();
     getUsers();
-    //  var abv=Provider.of<ProjectDetail>(context, listen: false).productData();
-    // print('checkDate '+abv.data.toString());
-    //var a=_getProjectDetail as ProjectDetailResponse;
-    // print(a.data!.title);
-    // getData.getPeopleIdel();
+
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (_scrollController.hasClients) _scrollController.jumpTo(50.0);
-    // });
+    
   }
 
   // Make People List widget or Data Table
@@ -284,7 +269,6 @@ class _IdleState extends State<Idle> {
         data.peopleIdelResponse!.data!.asMap().forEach((index, element) {
           Data _projectData = data.peopleIdelResponse!.data![index];
 
-          //postion = [index];
           var projectName = '';
           var projectStatus = '';
           var updatedAt = '';
@@ -330,15 +314,7 @@ class _IdleState extends State<Idle> {
             deadlineDate = "N/A";
           }
 
-          // if (_projectData != null &&
-          //     _projectData.currentPhase! != null &&
-          //     _projectData.currentPhase!.title != null &&
-          //     _projectData.currentPhase!.title!.isNotEmpty) {
-          //   currentPhase = _projectData.currentPhase!.title!;
-          // } else {
-          //   currentPhase = "TBD";
-          // }
-
+       
           if (_projectData.currentPhase == null) {
             currentPhase = "N/A";
           } else {
@@ -365,30 +341,7 @@ class _IdleState extends State<Idle> {
             nextMileStone = 'N/A';
           }
 
-          // if (_projectData != null &&
-          //     _projectData.accountablePerson! != null &&
-          //     _projectData.accountablePerson!.name != null) {
-          //   apName = _projectData.accountablePerson!.name!;
-          //   print("AP Name-------------------------");
-          //   print(apName);
-          // } else {
-          //   apName = 'N/A';
-          // }
-
-          // if (_peopleList.resource != null) {
-          //   nickname = _peopleList.resource!.nickname!;
-          // } else {
-          //   nickname = 'TBD';
-          // }
-
-          // if (_peopleList.resource != null) {
-          //   capacity = _peopleList.resource!.capacity!;
-          // } else {
-          //   capacity = 'TBD';
-          // }
-
-          // var image = _peopleList.image;
-
+       
           String firstName = "";
           String lastName = "";
           String fullName = '';
@@ -548,90 +501,7 @@ class _IdleState extends State<Idle> {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                // _projectData.customer!.image != null &&
-                //         _projectData.customer!.image!.isNotEmpty
-                //     ? DataCell(
-                //         ConstrainedBox(
-                //           constraints: BoxConstraints.tight(Size(200.0, 50.0)),
-                //           child: InkWell(
-                //             onTap: () {
-                //               setState(() {
-                //                 showMenus(context, index);
-                //               });
-                //             },
-                //             child: Container(
-                //               width: 80,
-                //               height: 32,
-                //               child: Stack(
-                //                 children: [
-                //                   Positioned(
-                //                       top: 0,
-                //                       child: ClipRRect(
-                //                           borderRadius:
-                //                               BorderRadius.circular(100),
-                //                           child: Image.network(
-                //                             '${_projectData.customer!.image}',
-                //                             width: 32,
-                //                             height: 32,
-                //                             fit: BoxFit.cover,
-                //                           ))),
-                //                   Positioned(
-                //                     left: 16,
-                //                     child: ClipRRect(
-                //                       borderRadius: BorderRadius.circular(100),
-                //                       child: Image.network(
-                //                         'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
-                //                         width: 32,
-                //                         height: 32,
-                //                         fit: BoxFit.cover,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                   // Positioned(
-                //                   //   top: 0,
-                //                   //   child: ClipRRect(
-                //                   //     borderRadius: BorderRadius.circular(100),
-                //                   //     child: Image.network(
-                //                   //       'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                //                   //       width: 32,
-                //                   //       height: 32,
-                //                   //       fit: BoxFit.cover,
-                //                   //     ),
-                //                   //   ),
-                //                   // ),
-
-                //                   // image_count > 2 ?
-
-                //                   Positioned(
-                //                     left: 30,
-                //                     child: ClipRRect(
-                //                       borderRadius: BorderRadius.circular(100),
-                //                       child: Container(
-                //                         width: 32,
-                //                         height: 32,
-                //                         color: Color(0xff334155),
-                //                         child: const Center(
-                //                             child: Text(
-                //                           '+1',
-                //                           style: TextStyle(
-                //                               color: Color(0xffFFFFFF),
-                //                               fontSize: 12.0,
-                //                               fontFamily: 'Inter',
-                //                               fontWeight: FontWeight.w500),
-                //                         )),
-                //                       ),
-                //                     ),
-                //                   )
-                //                   // :
-                //                   // Container()
-                //                 ],
-                //               ),
-                //             ),
-                //           ),
-                //           //  ),
-                //         ),
-                //       )
-                //     :
+              
                 const DataCell(
                   Text(
                     "TBD",
@@ -643,70 +513,7 @@ class _IdleState extends State<Idle> {
                   ),
                 ),
 
-                // DataCell(_peopleList.resource != null
-                //     ? Container(
-                //         // height: 50,
-                //         width: 250,
-                //         child: ListView.builder(
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: _peopleList.resource!.skills!.length < 3
-                //               ? _peopleList.resource!.skills!.length
-                //               : 3,
-                //           itemBuilder: (BuildContext context, int index) {
-                //             Skills _skills =
-                //                 _peopleList.resource!.skills![index];
-                //             var skill = _skills.title;
-                //             postion = index;
-                //             return Container(
-                //               height: 25.0,
-                //               margin: const EdgeInsets.only(
-                //                   top: 10.0, bottom: 10, right: 12),
-                //               decoration: BoxDecoration(
-                //                 color: const Color(0xff334155),
-                //                 borderRadius: BorderRadius.circular(
-                //                   8.0,
-                //                 ),
-                //               ),
-                //               child: Align(
-                //                 alignment: Alignment.center,
-                //                 child: Padding(
-                //                   padding: const EdgeInsets.only(
-                //                       top: 6.0,
-                //                       bottom: 6.0,
-                //                       right: 12.0,
-                //                       left: 12.0),
-                //                   child: Text(
-                //                     '$skill',
-                //                     style: const TextStyle(
-                //                         color: ColorSelect.white_color,
-                //                         fontSize: 14.0,
-                //                         fontFamily: 'Inter',
-                //                         fontWeight: FontWeight.w400),
-                //                   ),
-                //                 ),
-                //               ),
-                //             );
-                //           },
-                //         ),
-                //       )
-                //     : const Text('TBD',
-                //         style: TextStyle(
-                //             color: ColorSelect.white_color,
-                //             fontSize: 14.0,
-                //             fontFamily: 'Inter',
-                //             fontWeight: FontWeight.w500))),
-                // DataCell(
-                //   Padding(
-                //     padding: const EdgeInsets.only(left: 10.0, bottom: 12),
-                //     child: Stack(children: [
-                //       MyMenu(
-                //           data: data.peopleList!.data![index],
-                //           title: 'Menu at bottom',
-                //           alignment: Alignment.bottomRight)
-                //     ]),
-                //   ),
-                // )
+              
               ]));
         });
       }
@@ -719,9 +526,7 @@ class _IdleState extends State<Idle> {
                 ? MediaQuery.of(context).size.width * 2
                 : MediaQuery.of(context).size.width - 200,
 
-            // height: MediaQuery.of(context).size.height * 0.83,
-            // height: MediaQuery.of(context).size.height * 0.83,
-
+          
             height: 969,
 
             child: const Center(
@@ -1207,7 +1012,6 @@ class _IdleState extends State<Idle> {
         },
       );
       print(response.body);
-      // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
@@ -1219,7 +1023,6 @@ class _IdleState extends State<Idle> {
         print("failuree");
       }
     } catch (e) {
-      // print('error caught: $e');
     }
   }
 
@@ -1325,14 +1128,12 @@ class _IdleState extends State<Idle> {
       AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
-      // print(response.body);
     }
   }
 
   Future<String?> getCustomer() async {
     String? value;
     if (value == null) {
-      //    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOWVlM2EwY2E0NmYyNmI1NzZkZDY0MTRhZDY0NTFlNjFjNjVlNTY2NzgxYjE1OWYxMzY5NDFmMjMwYmI5ZDVhODlhOGI4Y2QzMzBiNDg0NzMiLCJpYXQiOjE2NjM5NDMxMzUuNjY1NzY2LCJuYmYiOjE2NjM5NDMxMzUuNjY1NzY5LCJleHAiOjE2OTU0NzkxMzUuNjEyNTQ2LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.MQDtmzlqx5LkruPq7TwzFcPD2sClWNSioqOdZ4fnp3CoRL7gsELEv_nGZNR0ZjqcYCzQI0abz9PCVXQ6StgYNdN4ceGVTC2G004kaWj4edXGchTPQLLHnKQ73L47WZuqhwEOQ-0D6TITRczOScTuHuUC7VEwmQTsohzd3EAswGHSBBOiauRmgXiDEOTR9SPNvzH0b11AFcHeFjkPFG82LIJHI3h18ScWF2C4nKy2qnFgweCFhr7NwhYj1sNJKRqee-sa1BATvvkpXf7h4IQ5CEVIqrLEVoXviD958Nty1MC-gYsinaEQTWiyN-a6bb4o0RrHys8KPgVeSS4Ihe_FitaVjm7KPrV4LrEmvUhn2Fu_NJsV6n5toBJgHQ4_W6aR4fxMGMfmmx4mSfr7HdrDQNFeJ5BKhD88WYFuJPP3QyKuj6ps9w7wLK2DHHJ2VVKL06I8SIJq4R_-QNhT9_xSNKBWRWwbs4-Kp6xYtC0jSAcGhAIMmiEMxkt3cyCBwO9OcZEowWd7499nlTSMwSwYt8rwiX32ACBp3h2Sr8SdkBpBmuWQcAQEYPYteSWgV0OZkyAacHUg94xjDxF8dbNLEXab6ZNoL-uFmdzHXJxXENdAW6Gux_XejDgd4PgG6nD84nQIJPvhkDeIs5u_UZ3VUs8dO36FByLcKQNWNOUd15s'
       var token = 'Bearer ' + storage.read("token");
       var response = await http.get(
         Uri.parse("${AppUrl.baseUrl}/customer"),
@@ -1357,12 +1158,4 @@ class _IdleState extends State<Idle> {
     return null;
   }
 
-  // ShowMoreTextPopup popup = ShowMoreTextPopup(context,
-  //     text: text,
-  //     textStyle: TextStyle(color: Colors.black),
-  //     height: 200,
-  //     width: 100,
-  //     backgroundColor: Color(0xFF16CCCC),
-  //     padding: EdgeInsets.all(4.0),
-  //     borderRadius: BorderRadius.circular(10.0));
 }

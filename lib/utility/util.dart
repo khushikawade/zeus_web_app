@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:zeus/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
-// import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AppUtil {
   static Color getStatusContainerColor(String status) {
@@ -48,16 +46,6 @@ class AppUtil {
     }
   }
 
-  // static Future<bool> checkNetwork() async {
-  //   var connectivityResult = await (Connectivity().checkConnectivity());
-  //   if (connectivityResult == ConnectivityResult.mobile ||
-  //       connectivityResult == ConnectivityResult.wifi) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   static DateTime stringToDate(String date) {
     try {
       DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
@@ -82,10 +70,8 @@ class AppUtil {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // return object of type Dialog
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
-          //buttonPadding: EdgeInsets.zero,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           backgroundColor: const Color(0xff0F172A),
@@ -126,44 +112,6 @@ class AppUtil {
         );
       },
     );
-    // SmartDialog.show(builder: (context) {
-    //   return Container(
-    //     height: 150,
-    //     width: MediaQuery.of(context).size.width / 4,
-    //     padding: const EdgeInsets.all(16),
-    //     decoration: BoxDecoration(
-    //       color: Colors.black,
-    //       borderRadius: BorderRadius.circular(10),
-    //     ),
-    //     alignment: Alignment.center,
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.start,
-    //       mainAxisSize: MainAxisSize.min,
-    //       crossAxisAlignment: CrossAxisAlignment.end,
-    //       // ignore: prefer_const_literals_to_create_immutables
-    //       children: [
-    //         const Text('Your Session has been expired, Please try again!',
-    //             style: TextStyle(
-    //                 color: Color(0xffFFFFFF),
-    //                 fontSize: 18.0,
-    //                 fontFamily: 'Inter',
-    //                 fontWeight: FontWeight.normal)),
-    //                 const SizedBox(
-    //                   height: 30,
-    //                 ),
-    //         TextButton(
-    //             onPressed: () {},
-    //             child: const Text(
-    //               'Ok',
-    //               style: TextStyle(
-    //                   color: Color(0xffFFFFFF),
-    //                   fontSize: 16.0,
-    //                   fontFamily: 'Inter',
-    //                   fontWeight: FontWeight.w500),
-    //             ))
-    //       ],
-    //     ),
-    //   );
-    // });
+ 
   }
 }

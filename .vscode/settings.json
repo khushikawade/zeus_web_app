@@ -1,0 +1,9 @@
+{
+    "window.closeWhenEmpty": true,
+    "workbench.colorCustomizations": {
+        "editorUnnecessary.foreground": "#8857e5",
+        "editorUnnecessaryCode.border": "#f38383",
+        "editorUnnecessaryCode.opacity": "#f38383",
+        
+    }
+}

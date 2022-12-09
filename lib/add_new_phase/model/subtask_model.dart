@@ -27,9 +27,7 @@ class SubTasksModel {
       data['resource'] = this.resource;
     }
 
-    // if (this.milestone != null) {
-    //   data['milestone'] = this.milestone!.map((v) => v.toJson()).toList();
-    // }
+  
     return data;
   }
 }

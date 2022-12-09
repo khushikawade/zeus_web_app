@@ -67,7 +67,6 @@ class _NewPhaseState extends State<NewPhase> {
   String subtaskActionType = '';
   int subTaskEditIndex = 0;
 
-  //VS --------------------------------------------------------------------------------
   String mileStoneTitle = "";
   String mileStoneDate = AppUtil.dateToString(DateTime.now());
 
@@ -82,7 +81,6 @@ class _NewPhaseState extends State<NewPhase> {
   bool addMilestoneBtnClick = false;
   bool addSubtaskBtnClick = false;
 
-  // Merging code with phase module
 
   TypeAheadFormField? searchTextField;
   TypeAheadFormField? subTaskResourcesSearchTextField;
@@ -90,7 +88,6 @@ class _NewPhaseState extends State<NewPhase> {
   final TextEditingController _subTaskResourcesController =
       TextEditingController();
 
-  //VS --------------------------------------------------------------------------------
 
   checkFormStatus() {
     setState(() {
@@ -118,8 +115,8 @@ class _NewPhaseState extends State<NewPhase> {
                     id: element.resourceId ?? 0,
                     name: element.resource?.name ?? "",
                     departmentId: element.departmentId,
-                    departmentName: element?.department?.name ?? '',
-                    image: element?.resource?.image ?? ""),
+                    departmentName: element.department?.name ?? '',
+                    image: element.resource?.image ?? ""),
                 department: element.department?.name ?? ""));
 
             selectedSource.add(element.resource?.name ?? "");
@@ -164,8 +161,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   @override
   void initState() {
-    // _getTag = getProject();
-    // change();
+
 
     beforeScreenLoad();
     getDepartment();
@@ -196,7 +192,6 @@ class _NewPhaseState extends State<NewPhase> {
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       color: Color(0xff283345),
-                      //border: Border.all(color: const Color(0xff0E7490)),
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(16.0),
                         topLeft: Radius.circular(16.0),
@@ -210,7 +205,7 @@ class _NewPhaseState extends State<NewPhase> {
                           ),
                           blurRadius: 0.0,
                           spreadRadius: 0.0,
-                        ), //BoxShadow
+                        ), 
                       ],
                     ),
                     child: Row(
@@ -224,13 +219,11 @@ class _NewPhaseState extends State<NewPhase> {
                             children: [
                               Container(
                                 width: 97.0,
-                                //MediaQuery.of(context).size.width * 0.22,
                                 margin: const EdgeInsets.only(
                                     top: 10.0, bottom: 10.0),
                                 height: 40.0,
                                 decoration: BoxDecoration(
                                   color: const Color(0xff334155),
-                                  //border: Border.all(color:  const Color(0xff1E293B)),
                                   borderRadius: BorderRadius.circular(
                                     40.0,
                                   ),
@@ -253,13 +246,11 @@ class _NewPhaseState extends State<NewPhase> {
                               InkWell(
                                 child: Container(
                                   width: 97,
-                                  //MediaQuery.of(context).size.width * 0.22,
                                   margin: const EdgeInsets.only(
                                       top: 10.0, right: 20.0, bottom: 10.0),
                                   height: 40.0,
                                   decoration: BoxDecoration(
                                     color: const Color(0xff7DD3FC),
-                                    //border: Border.all(color:  const Color(0xff1E293B)),
                                     borderRadius: BorderRadius.circular(
                                       40.0,
                                     ),
@@ -418,7 +409,6 @@ class _NewPhaseState extends State<NewPhase> {
                   _phaseDetails.end_date = value;
                 });
               },
-              //  startDate: AppUtil.stringToDate(_1phaseDetails.start_date ?? ""),
               startDate: _phaseDetails.sub_tasks!.isNotEmpty
                   ? DateTime.now().add(Duration(days: 10))
                   : DateTime.now(),
@@ -463,11 +453,7 @@ class _NewPhaseState extends State<NewPhase> {
                             backgroundColor: Color(0xff334155),
                             radius: 30,
                             child: Icon(Icons.person_outline, size: 40),
-                            // SvgPicture.asset(
-                            //   'images/photo.svg',
-                            //   width: 24.0,
-                            //   height: 24.0,
-                            // ),
+                       
                           ),
                         ),
                         Positioned(
@@ -488,15 +474,12 @@ class _NewPhaseState extends State<NewPhase> {
                   ),
                   Expanded(
                     child: Container(
-                      // width: 305, //MediaQuery.of(context).size.width * 0.22,
 
                       margin: const EdgeInsets.only(left: 30.0),
                       height: 56.0,
-                      //width: MediaQuery.of(context).size.width * 0.20,
-                      // margin: const EdgeInsets.only(right: 30.0),
+                   
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
-                        //border: Border.all(color:  const Color(0xff1E293B)),
                         borderRadius: BorderRadius.circular(
                           8.0,
                         ),
@@ -507,7 +490,7 @@ class _NewPhaseState extends State<NewPhase> {
                         height: 20.0,
                         child: Container(
 
-                            // padding: const EdgeInsets.all(2.0),
+                            // padding: const dgeInsets.all(2.0),
                             child: StatefulBuilder(
                           builder:
                               (BuildContext context, StateSettersetState) {
@@ -526,12 +509,9 @@ class _NewPhaseState extends State<NewPhase> {
                                 ),
                                 isExpanded: true,
                                 icon: const Icon(
-                                  // Add this
                                   Icons.arrow_drop_down,
-                                  // Add this
                                   color: Color(0xff64748B),
 
-                                  // Add this
                                 ),
                                 items: _department.map((items) {
                                   return DropdownMenuItem(
@@ -599,11 +579,9 @@ class _NewPhaseState extends State<NewPhase> {
                         margin: const EdgeInsets.only(top: 16, left: 30),
                         decoration: BoxDecoration(),
                         child: Container(
-                          //padding: EdgeInsets.only(left: 5, right: 5),
                           height: 50.0,
                           decoration: BoxDecoration(
                             color: const Color(0xff334155),
-                            //border: Border.all(color:  const Color(0xff1E293B)),
 
                             borderRadius: BorderRadius.circular(
                               8.0,
@@ -698,9 +676,7 @@ class _NewPhaseState extends State<NewPhase> {
                         scrollDirection: Axis.horizontal,
                         itemCount: selectedSource.length,
                         itemBuilder: (context, index) {
-                          // Skills _skills =
-                          //     widget.data!.resource!.skills![index];
-                          // var tag = _skills.title;
+                         
                           return Container(
                             height: 32.0,
                             margin: const EdgeInsets.only(left: 12.0),
@@ -721,10 +697,8 @@ class _NewPhaseState extends State<NewPhase> {
                                 selectedSource[index],
                                 style: TextStyle(color: Colors.white),
                               ),
-                              //  selected: _isSelected!,
                               onSelected: (bool selected) {
                                 setState(() {
-                                  //    _isSelected = selected;
                                 });
                               },
                               onDeleted: () {
@@ -787,7 +761,6 @@ class _NewPhaseState extends State<NewPhase> {
                     onTap: () {
                       setState(() {
                         addMilestoneBtnClick=true;
-                        //savePhaseClick = true;
                       });
                       Future.delayed(const Duration(microseconds: 500), () {
                         if (_formKey.currentState!.validate()) {
@@ -857,7 +830,6 @@ class _NewPhaseState extends State<NewPhase> {
                     startDate: AppUtil.stringToDate(mileStoneDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
-                        // checkFormStatus();
                         return 'Please enter milestone date';
                       } else {
                         return null;
@@ -1136,11 +1108,7 @@ class _NewPhaseState extends State<NewPhase> {
                           backgroundColor: Color(0xff334155),
                           radius: 30,
                           child: Icon(Icons.person_outline, size: 40),
-                          // SvgPicture.asset(
-                          //   'images/photo.svg',
-                          //   width: 24.0,
-                          //   height: 24.0,
-                          // ),
+                     
                         ),
                       ),
                       Positioned(
@@ -1161,16 +1129,12 @@ class _NewPhaseState extends State<NewPhase> {
                 ),
                 Expanded(
                   child: Container(
-                    // width: 305, //MediaQuery.of(context).size.width * 0.22,
 
                     margin: const EdgeInsets.only(left: 30.0),
                     height: 56.0,
                     width: (MediaQuery.of(context).size.width * 0.22),
-                    //width: MediaQuery.of(context).size.width * 0.20,
-                    // margin: const EdgeInsets.only(right: 30.0),
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-                      //border: Border.all(color:  const Color(0xff1E293B)),
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -1179,7 +1143,6 @@ class _NewPhaseState extends State<NewPhase> {
                       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                       height: 20.0,
                       child: Container(
-                          // padding: const EdgeInsets.all(2.0),
                           child: StatefulBuilder(
                         builder: (BuildContext context, StateSettersetState) {
                           return DropdownButtonHideUnderline(
@@ -1197,12 +1160,9 @@ class _NewPhaseState extends State<NewPhase> {
                               ),
                               isExpanded: true,
                               icon: const Icon(
-                                // Add this
                                 Icons.arrow_drop_down,
-                                // Add this
                                 color: Color(0xff64748B),
 
-                                // Add this
                               ),
                               items: removeDuplicate().map((items) {
                                 return DropdownMenuItem(
@@ -1232,9 +1192,7 @@ class _NewPhaseState extends State<NewPhase> {
 
                                   subtaskDepat = newValue.toString();
                                   if (newValue != null) {
-                                    // startloading = true;
-                                    //getResourcesNeeded(newValue);
-                                  }
+                                   }
                                 });
                               },
                             ),
@@ -1253,11 +1211,9 @@ class _NewPhaseState extends State<NewPhase> {
           margin: const EdgeInsets.only(top: 16),
           decoration: BoxDecoration(),
           child: Container(
-            //padding: EdgeInsets.only(left: 5, right: 5),
             height: 50.0,
             decoration: BoxDecoration(
               color: const Color(0xff334155),
-              //border: Border.all(color:  const Color(0xff1E293B)),
 
               borderRadius: BorderRadius.circular(
                 8.0,
@@ -1315,66 +1271,7 @@ class _NewPhaseState extends State<NewPhase> {
                     });
                   },
                 ),
-                // AutoCompleteTextField<Details>(
-                //   clearOnSubmit: false,
-                //   suggestionsAmount: 100,
-                //   key: subtaskKey,
-                //   cursorColor: Colors.white,
-                //   decoration: const InputDecoration(
-                //     contentPadding: EdgeInsets.only(top: 15.0),
-                //     prefixIcon: Padding(
-                //         padding: EdgeInsets.only(top: 4.0),
-                //         child: Icon(
-                //           Icons.search,
-                //           color: Color(0xff64748B),
-                //         )),
-                //     hintText: 'Search',
-                //     hintStyle: TextStyle(
-                //         fontSize: 14.0,
-                //         color: Color(0xff64748B),
-                //         fontFamily: 'Inter',
-                //         fontWeight: FontWeight.w400),
-                //     border: InputBorder.none,
-                //   ),
-                //   suggestions: resourceSuggestions,
-                //   keyboardType: TextInputType.text,
-                //   style: const TextStyle(color: Colors.white, fontSize: 14.0),
-                //   itemFilter: (item, query) {
-                //     return item.name!
-                //         .toLowerCase()
-                //         .startsWith(query.toLowerCase());
-                //   },
-                //   itemSorter: (a, b) {
-                //     return a.name!.compareTo(b.name!);
-                //   },
-                //   itemSubmitted: (item) {
-                //     setState(() {
-                //       subTaskResourceName = item.name!;
-                //       subTaskResourcesSearchTextField!
-                //           .textField!.controller!.text = '';
-
-                //       selectedSubTaskSource.clear();
-                //       selectedSubTaskSource.add(ResourceData(
-                //           department_id: 1,
-                //           resource_id: item.id,
-                //           resource_name: item.name));
-
-                //       //
-                //       // if (selectedSubTaskSource.isNotEmpty) {
-                //       //   if (selectedSubTaskSource.contains(item.name)) {
-                //       //   } else {
-                //       //     selectedSubTaskSource.add(item.name!);
-                //       //   }
-                //       // } else {
-                //       //   selectedSubTaskSource.add(item.name!);
-                //       // }
-                //     });
-                //   },
-                //   itemBuilder: (context, item) {
-                //     // ui for the autocompelete row
-                //     return rowResourceName(item);
-                //   },
-                // ),
+              
               ],
             ),
           ),
@@ -1388,9 +1285,7 @@ class _NewPhaseState extends State<NewPhase> {
                     scrollDirection: Axis.horizontal,
                     itemCount: selectedSubTaskSource.length,
                     itemBuilder: (context, index) {
-                      // Skills _skills =
-                      //     widget.data!.resource!.skills![index];
-                      // var tag = _skills.title;
+                     
                       return Container(
                         height: 32.0,
                         margin: const EdgeInsets.only(left: 12.0),
@@ -1411,10 +1306,8 @@ class _NewPhaseState extends State<NewPhase> {
                             selectedSubTaskSource[index].resource_name ?? '',
                             style: TextStyle(color: Colors.white),
                           ),
-                          //  selected: _isSelected!,
                           onSelected: (bool selected) {
                             setState(() {
-                              //    _isSelected = selected;
                             });
                           },
                           onDeleted: () {
@@ -1589,7 +1482,6 @@ class _NewPhaseState extends State<NewPhase> {
                   }
                 }
 
-                // clickedAddMileStone = ;
               });
             },
           )
@@ -1647,11 +1539,9 @@ class _NewPhaseState extends State<NewPhase> {
   getDepartment() async {
     List department = [];
     department = await api.getDeparment(context);
-    if (department != null) {
-      setState(() {
-        _department = department;
-      });
-    }
+    setState(() {
+      _department = department;
+    });
   }
 
   getPhaseDetailsByID(String id) async {
@@ -1737,12 +1627,7 @@ class _NewPhaseState extends State<NewPhase> {
     List<PhasesSortedResources> uniquelist =
         listResource.where((item) => seen.add(item.department!)).toList();
 
-    // return listResource
-    //     .map((f) => f.toString())
-    //     .toSet()
-    //     .toList()
-    //     .map((f) => json.decode(f) as List<dynamic>)
-    //     .toList();
+
     return uniquelist;
   }
 

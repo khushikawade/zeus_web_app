@@ -1,7 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,13 +9,6 @@ import 'package:zeus/utility/app_url.dart';
 
 import 'package:provider/provider.dart';
 import 'dart:convert';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:flutter/material.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http_parser/http_parser.dart';
-import 'package:flutter/material.dart';
 import 'package:zeus/utility/util.dart';
 import '../../../utility/colors.dart';
 import '../../../people_profile/screen/people_detail_view.dart';
@@ -44,7 +34,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
   var dataPeople = 'people_data';
   bool imageavail = false;
 
-  //Future? _getList;
   var postion;
   SharedPreferences? sharedPreferences;
 
@@ -58,9 +47,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
   final double width = 18;
   final double widthVertical = 10;
 
-  // Future getPeopleData() {
-  //   return Provider.of<PeopleIdelClass>(context, listen: false).getPeople();
-  // }
+
 
   Future? getList;
   Future getListData1() {
@@ -79,7 +66,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
 
   @override
   void initState() {
-    //_getList = getPeopleData();
 
     print(
         "Called second time ------------------------------------------- gff gf f");
@@ -87,7 +73,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
     Provider.of<PeopleIdelClass>(context, listen: false).getPeopleDataList();
     change();
     getToken();
-    // getpeople();
     super.initState();
   }
 
@@ -96,7 +81,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
     if (mounted) {
       setState(() {
         token = sharedPreferences.getString('login')!;
-        //   name = sharedPreferences.getString('user')!;
         print(token);
       });
       return;
@@ -356,7 +340,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
                 ),
                 DataCell(_peopleList.resource != null
                     ? Container(
-                        // height: 50,
                         width: 250,
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -422,16 +405,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                               "Value returned --------------------------------------");
                           Provider.of<PeopleIdelClass>(context, listen: false)
                               .getPeopleDataList();
-                          // setState(() {
-                          //   data.peopleList!.data!.forEach((element) {
-                          //     data.peopleList!.data!.removeAt(index);
-                          //     // if (element.id.toString() ==
-                          //     //     data.peopleList!.data![index].id.toString()) {
-
-                          //     //   data.peopleList!.data!.removeAt(index);
-                          //     // }
-                          //   });
-                          // });
+                         
                         },
                       )
                     ]),
@@ -448,8 +422,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                 ? MediaQuery.of(context).size.width * 2
                 : MediaQuery.of(context).size.width - 200,
 
-            // height: MediaQuery.of(context).size.height * 0.83,
-            // height: MediaQuery.of(context).size.height * 0.83,
+       
 
             height: 969,
             child: const Center(
@@ -486,7 +459,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
                               .copyWith(dividerColor: Color(0xff525f72)),
                           child: DataTable(
                               horizontalMargin: 0,
-                              // showBottomBorder: true,
                               showCheckboxColumn: false,
                               dataRowHeight: 60,
                               dividerThickness: 0.7,

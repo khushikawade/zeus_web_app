@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:typed_data';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +41,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
   List _department = [];
   List _timeline = [];
   Future? _getTag;
-  //var listdata=list.resource!.city;
+  
   List _currencyName = [];
   List<int>? _selectedFile;
   Image? image;
@@ -69,7 +69,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
       var user = userFromJson(response.body);
 
       users = user.data!;
-      // print('Users: ${users.length}');
+      
       setState(() {
         loading = false;
       });
@@ -78,7 +78,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
         AppUtil.showErrorDialog(context);
       } else {
       print("Error getting users.");
-      // print(response.body);
+      
     }
   }
 
@@ -110,7 +110,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
     request.fields['time_zone'] = list.resource != null
         ? _time ?? list.resource!.timeZone!.diffFromGtm.toString()
         : '';
-    // request.fields['skills'] =abc;
+    
 
     if (!imageavail) {
     } else {
@@ -263,12 +263,12 @@ class _ProfileDetailState extends State<ProfileDetail> {
     }
     if (list.resource != null && list.resource!.capacity != null) {
       capacity = list.resource!.capacity;
-      // Character.isDigit(val)
-      // RegExp regex = RegExp(r'^[a-z A-Z]+$');
-      // capacity = list.resource!.capacity!.contains(regex)
-      //     ? list.resource!.capacity
-      //     : list.resource!.capacity!
-      //         .replaceAll(RegExp(r'^[a-z A-Z]+$'), ' hour/week');
+      
+      
+      
+      
+      
+      
     } else {
       capacity = 'TBD';
     }
@@ -357,8 +357,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
             controller: horizontalScroll,
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
-              // controller: verticalScroll,
-              // scrollDirection: Axis.vertical,
+              
+              
               child: Container(
                 width: MediaQuery.of(context).size.width < 950
                     ? MediaQuery.of(context).size.width * 2
@@ -368,14 +368,14 @@ class _ProfileDetailState extends State<ProfileDetail> {
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.start,
+                      
                       children: [
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.only(bottom: 60),
-                            // width: MediaQuery.of(context).size.width * 0.89,
-                            // height: MediaQuery.of(context).size.height * 0.40,
-                            //width: double.infinity,
+                            
+                            
+                            
                             margin: const EdgeInsets.only(
                                 left: 59.0,
                                 right: 32.0,
@@ -383,7 +383,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                 top: 35.0),
                             decoration: BoxDecoration(
                               color:
-                                  // Colors.red,
+                                  
                                   const Color(0xff1E293B),
                               border: Border.all(
                                   color: ColorSelect.peoplelistbackgroundcolor),
@@ -405,7 +405,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                           left: 16.0, top: 16.0),
                                       decoration: BoxDecoration(
                                         color: ColorSelect.box_decoration,
-                                        //border: Border.all(color: const Color(0xff0E7490)),
+                                        
                                         borderRadius: BorderRadius.circular(
                                           55.0,
                                         ),
@@ -440,7 +440,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                             margin: const EdgeInsets.only(
                                                 left: 0.0, top: 35.0),
                                             decoration: BoxDecoration(
-                                              //color: const Color(0xff334155),
+                                              
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 40.0,
@@ -457,14 +457,14 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                               left: 0.0, top: 25.0),
                                           child: Text(
                                             "@$nickname",
-                                            // list.resource != null
-                                            //     ? list.resource!.nickname != null &&
-                                            //             list.resource!.nickname!
-                                            //                 .isNotEmpty
-                                            //         ? list.resource!.nickname
-                                            //             .toString()
-                                            //         : 'TBD'
-                                            //     : 'TBD',
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             style: const TextStyle(
                                                 color: ColorSelect.white_color,
                                                 fontSize: 22.0,
@@ -472,7 +472,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                 fontWeight: FontWeight.w700),
                                           ),
                                         ),
-                                        //  "$name\n$designation,$associate",
+                                        
 
                                         Row(
                                           children: [
@@ -694,18 +694,18 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                                       BorderRadius.all(
                                                           Radius.circular(20))),
                                             ),
-                                            // Container(
-                                            //   margin: const EdgeInsets.only(
-                                            //       left: 0.0, top: 10.0),
-                                            //   child: const Text(
-                                            //     ".",
-                                            //     style: TextStyle(
-                                            //         color: ColorSelect.profile_color,
-                                            //         fontSize: 14.0,
-                                            //         fontFamily: 'Inter',
-                                            //         fontWeight: FontWeight.w400),
-                                            //   ),
-                                            // ),
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
                                             Container(
                                               margin: const EdgeInsets.only(
                                                   left: 10.0, top: 10.0),
@@ -756,17 +756,17 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     ),
                                   ],
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(bottom: 0.0),
-                                //   child: Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.center,
-                                //       crossAxisAlignment:
-                                //           CrossAxisAlignment.center,
-                                //       children: [
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
 
-                                //       ]),
-                                // ),
+                                
+                                
                               ],
                             ),
                           ),
@@ -807,7 +807,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                 ),
                               ),
                               Container(
-                                //width: 700.0,
+                                
                                 height: 50.0,
                                 margin: const EdgeInsets.only(
                                   left: 126.0,
@@ -855,7 +855,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               margin:
                                   const EdgeInsets.only(left: 118.0, top: 42),
                               child: Text(
-                                // "Mon - Fri | 10:00 AM - 7:00 PM | $timezome$timeoffset/$city",
+                                
 
                                 list.resource != null
                                     ? startDay == endDay
@@ -870,13 +870,13 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               ),
                             ),
                             Container(
-                              // width: 700.0,
+                              
                               margin: const EdgeInsets.only(
                                 top: 8.0,
                                 left: 118.0,
                               ),
                               child: Text(
-                                // "$salary hours/week",
+                                
                                 "$capacity"
                                 " hours/week",
                                 style: const TextStyle(
@@ -920,11 +920,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                       itemCount: list.resource!.skills!.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        //PeopleData _peopleListSkills = data.peopleList!.data![index];
+                                        
                                         Skills _skills =
                                             list.resource!.skills![index];
                                         var skill = _skills.title;
-                                        // postion=index;
+                                        
                                         return Container(
                                           height: 32.0,
                                           margin: const EdgeInsets.only(
@@ -1013,13 +1013,13 @@ class _ProfileDetailState extends State<ProfileDetail> {
         setState(() {
           _timeline = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
+        
+        
+        
+        
 
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
+        
+        
       }else if (response.statusCode == 401) {
       
       AppUtil.showErrorDialog(context);

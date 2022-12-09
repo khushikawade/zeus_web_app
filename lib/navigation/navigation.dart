@@ -11,12 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 
-import 'package:zeus/helper_widget/custom_popups.dart';
-import 'package:zeus/helper_widget/delete_dialog.dart';
-import 'package:zeus/helper_widget/mytooltip.dart';
-import 'package:zeus/helper_widget/searchbar.dart';
-import 'package:zeus/navigation/tag_model/tag_user.dart';
-import 'package:zeus/navigation/tag_model/tagresponse.dart';
 import 'package:zeus/navigator_tabs/idle/data/DataClass.dart';
 import 'package:zeus/navigator_tabs/people_idle/data/getdata_provider.dart';
 import 'package:zeus/people_profile/editpage/edit_page.dart';
@@ -99,16 +93,10 @@ class _NavigationRailState extends State<MyHomePage>
     var dateFormat = DateFormat("h:mm a"); // you can change the format here
     print(dateFormat.format(tempDate));
     return dateFormat.format(tempDate);
-    // return '${time.hour}:${time.minute} ${time.period.toString().split('.')[1]}';
+   
   }
 
-  // getformattedTime(TimeOfDay time) {
-  //     String to24hours() {
-  //        final hour = this.hour.toString().padLeft(2, "0");
-  //         final min = this.minute.toString().padLeft(2, "0");
 
-  //          return "$hour:$min";   } }
-  //          Text("24h: ${time.to24hours()}");  // 09:0
 
   var prefs;
 
@@ -167,7 +155,7 @@ class _NavigationRailState extends State<MyHomePage>
       print("skills sucess");
       var user = userFromJson(response.body);
       users = user.data!;
-      // print('Users: ${users.length}');
+    
       setState(() {
         loading = false;
       });
@@ -175,7 +163,7 @@ class _NavigationRailState extends State<MyHomePage>
       AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
-      // print(response.body);
+     
     }
   }
 
@@ -212,10 +200,7 @@ class _NavigationRailState extends State<MyHomePage>
     for (int i = 0; i < abc.length; i++) {
       request.fields['skills[$i]'] = '${abc[i]}';
     }
-    // if (_selectedFile != null && _selectedFile!.isNotEmpty) {
-
-    //   print(_selectedFile);
-    // }
+  
     _selectedFile = webImage;
     print(_selectedFile);
 
@@ -234,7 +219,6 @@ class _NavigationRailState extends State<MyHomePage>
     print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
       SmartDialog.dismiss();
-      // ignore: use_build_context_synchronously
       Navigator.pop(
         context,
       );
@@ -286,7 +270,7 @@ class _NavigationRailState extends State<MyHomePage>
           "work_folder_id": _warkfolderId.text.toString(),
           "budget": _budget.toString(),
           "currency": "&",
-          "estimation_hours": '80', // _estimatehours.toString(),
+          "estimation_hours": '80', 
           "status": _status,
         }),
         headers: {
@@ -294,7 +278,6 @@ class _NavigationRailState extends State<MyHomePage>
           "Authorization": token,
         },
       );
-      // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
@@ -328,12 +311,10 @@ class _NavigationRailState extends State<MyHomePage>
   String? _depat;
   String? _account, _custome, _curren, _status, _time, _tag, _day, _shortday;
 
-  // bool _submitted = false;
   bool _addSubmitted = true;
   String name = '';
   int profileIndex = 5;
 
-  // var _formKey = GlobalKey<FormState>();
 
   List _department = [];
   var items1 = [
@@ -367,18 +348,14 @@ class _NavigationRailState extends State<MyHomePage>
   List<int> add1 = [1];
   bool imageavail = false;
 
-  // XFile? webImage;
   var isIndex = 0;
   var isLoading = false;
 
   @override
   void initState() {
-    //_getTag = getProject();
     getUsers();
     change();
-    // webImage=_pickedImage as Uint8List?;
     _isSelected = false;
-    //_getProjectDetail=getProject();
     //-----------sayyam
     getAddpeople();
 
@@ -543,7 +520,6 @@ class _NavigationRailState extends State<MyHomePage>
                             width: MediaQuery.of(context).size.width * 0.99,
                             decoration: const BoxDecoration(
                               color: Color(0xff283345),
-                              //border: Border.all(color: const Color(0xff0E7490)),
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(16.0),
                                 topLeft: Radius.circular(16.0),
@@ -557,11 +533,10 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   blurRadius: 0.0,
                                   spreadRadius: 0.0,
-                                ), //BoxShadow
+                                ), 
                               ],
                             ),
                             child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(
@@ -578,13 +553,11 @@ class _NavigationRailState extends State<MyHomePage>
                                 Spacer(),
                                 Container(
                                   width: 97.0,
-                                  //MediaQuery.of(context).size.width * 0.22,
                                   margin: const EdgeInsets.only(
                                       top: 10.0, bottom: 10.0),
                                   height: 40.0,
                                   decoration: BoxDecoration(
                                     color: const Color(0xff334155),
-                                    //border: Border.all(color:  const Color(0xff1E293B)),
                                     borderRadius: BorderRadius.circular(
                                       40.0,
                                     ),
@@ -674,13 +647,11 @@ class _NavigationRailState extends State<MyHomePage>
                                   },
                                   child: Container(
                                     width: 97,
-                                    //MediaQuery.of(context).size.width * 0.22,
                                     margin: const EdgeInsets.only(
                                         top: 10.0, right: 20.0, bottom: 10.0),
                                     height: 40.0,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff7DD3FC),
-                                      //border: Border.all(color:  const Color(0xff1E293B)),
                                       borderRadius: BorderRadius.circular(
                                         40.0,
                                       ),
@@ -763,7 +734,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                   left: 48.0, top: 57.0),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
-                                                //border: Border.all(color: const Color(0xff0E7490)),
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                   40.0,
@@ -781,8 +751,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                         color:
                                                             Color(0xffFFFFFF)),
 
-                                                    //  SvgPicture.asset(
-                                                    //     'images/camera_pic.svg'),
+                                             
                                                   ),
                                                   Container(
                                                     margin:
@@ -822,7 +791,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                     : Text(''),
                                               ],
                                             )
-                                            // handleAllerrorWidget(selectImage)
                                           ],
                                         ),
                                       ),
@@ -855,7 +823,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -869,7 +836,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), //BoxShadow
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -893,11 +860,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       TextFormField(
                                         controller: _name,
-                                        // inputFormatters: [
-
-                                        //   // UpperCaseTextFormatter()
-                                        // ],
-                                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                                       
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
                                             color: Color(0xffFFFFFF)),
@@ -905,7 +868,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
                                         minLines: 1,
-                                        // maxLines: 20,
+                                     
                                         maxLength: 30,
 
                                         decoration: const InputDecoration(
@@ -926,16 +889,13 @@ class _NavigationRailState extends State<MyHomePage>
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w400)),
-                                        //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
 
                                         validator: (value) {
-                                          // validateName = nameValidation(value);
                                           RegExp regex = RegExp(r'^[a-z A-Z]+$',
-                                              // r'^[a-z]+$',
-                                              // r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$",
+                                            
                                               caseSensitive: false);
                                           if (value!.isEmpty) {
                                             return 'Please enter';
@@ -968,9 +928,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color:
-                                                  // Colors.red,
                                                   const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -984,11 +942,10 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), //BoxShadow
+                                                ), 
                                               ],
                                             ),
                                           ),
-                                          // errorWidget2(validNickName)
                                         ],
                                       ),
                                       Container(
@@ -1004,7 +961,6 @@ class _NavigationRailState extends State<MyHomePage>
                                           )),
                                       TextFormField(
                                         controller: _nickName,
-                                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
                                             color: Color(0xffFFFFFF)),
@@ -1029,13 +985,11 @@ class _NavigationRailState extends State<MyHomePage>
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w400)),
-                                        //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
 
                                         validator: (value) {
-                                          // validNickName = nameValidation(value);
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           }
@@ -1057,7 +1011,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 110.0,
                                         decoration: const BoxDecoration(
                                           color: Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.only(
                                             topRight: Radius.circular(8.0),
                                             topLeft: Radius.circular(8.0),
@@ -1071,7 +1024,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), //BoxShadow
+                                            ), 
                                           ],
                                         ),
                                       ),
@@ -1116,7 +1069,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           }
@@ -1137,7 +1089,6 @@ class _NavigationRailState extends State<MyHomePage>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          // flex: 2,
                                           child: Stack(
                                             children: [
                                               Container(
@@ -1153,7 +1104,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                 decoration: BoxDecoration(
                                                   color:
                                                       const Color(0xff334155),
-                                                  //border: Border.all(color:  const Color(0xff1E293B)),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                     8.0,
@@ -1167,7 +1117,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       ),
                                                       blurRadius: 0.0,
                                                       spreadRadius: 0.0,
-                                                    ), //BoxShadow
+                                                    ), 
                                                   ],
                                                 ),
                                               ),
@@ -1227,7 +1177,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                         .onUserInteraction
                                                     : AutovalidateMode.disabled,
                                                 validator: (value) {
-                                                  //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                                                   if (value!.isEmpty) {
                                                     return 'Please enter';
                                                   }
@@ -1248,16 +1197,13 @@ class _NavigationRailState extends State<MyHomePage>
                                           child: Stack(
                                             children: [
                                               Container(
-                                                // width: double.infinity / 2,
 
                                                 margin: const EdgeInsets.only(
                                                     top: 16.0, right: 30),
                                                 height: 56.0,
                                                 decoration: BoxDecoration(
                                                   color:
-                                                      // Colors.red,
                                                       const Color(0xff334155),
-                                                  //border: Border.all(color:  const Color(0xff1E293B)),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                     8.0,
@@ -1271,7 +1217,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       ),
                                                       blurRadius: 0.0,
                                                       spreadRadius: 0.0,
-                                                    ), //BoxShadow
+                                                    ), 
                                                   ],
                                                 ),
                                                 child: Column(
@@ -1336,15 +1282,12 @@ class _NavigationRailState extends State<MyHomePage>
                                                                       FontWeight
                                                                           .w300),
                                                             ),
-                                                            // isExpanded: true,
                                                             icon: const Icon(
-                                                              // Add this
                                                               Icons
-                                                                  .arrow_drop_down, // Add this
+                                                                  .arrow_drop_down,
                                                               color: Color(
                                                                   0xff64748B),
 
-                                                              // Add this
                                                             ),
                                                             elevation: 12,
                                                             items: _department
@@ -1385,129 +1328,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     ]),
                                               ),
 
-                                              // Container(
-                                              //   // width: MediaQuery.of(context)
-                                              //   //         .size
-                                              //   //         .width *
-                                              //   //     0.13,
-                                              //   margin: const EdgeInsets.only(
-                                              //       top: 16.0, right: 30),
-                                              //   height: 56.0,
-                                              //   decoration: BoxDecoration(
-                                              //     color: const Color(0xff334155),
-                                              //     //border: Border.all(color:  const Color(0xff1E293B)),
-                                              //     borderRadius:
-                                              //         BorderRadius.circular(
-                                              //       8.0,
-                                              //     ),
-                                              //   ),
-                                              //   child: Column(
-                                              //     crossAxisAlignment:
-                                              //         CrossAxisAlignment.start,
-                                              //     children: [
-                                              //       Container(
-                                              //           margin:
-                                              //               const EdgeInsets.only(
-                                              //                   top: 6.0,
-                                              //                   left: 16.0),
-                                              //           child: const Text(
-                                              //             "Department",
-                                              //             style: TextStyle(
-                                              //                 fontSize: 13.0,
-                                              //                 color: Color(
-                                              //                     0xff64748B),
-                                              //                 fontFamily: 'Inter',
-                                              //                 fontWeight:
-                                              //                     FontWeight
-                                              //                         .w500),
-                                              //           )),
-                                              //       Container(
-                                              //         margin:
-                                              //             const EdgeInsets.only(
-                                              //                 left: 16.0,
-                                              //                 right: 16.0),
-                                              //         height: 20.0,
-                                              //         child: Container(
-
-                                              //             // padding: const EdgeInsets.all(2.0),
-                                              //             child: StatefulBuilder(
-                                              //           builder: (BuildContext
-                                              //                   context,
-                                              //               StateSettersetState) {
-                                              //             return DropdownButtonHideUnderline(
-                                              //               child:
-                                              //                   CustomDropdownButton(
-                                              //                 dropdownColor:
-                                              //                     ColorSelect
-                                              //                         .class_color,
-                                              //                 value: _depat,
-                                              //                 underline:
-                                              //                     Container(),
-                                              //                 hint: const Text(
-                                              //                   "Select",
-                                              //                   style: TextStyle(
-                                              //                       fontSize:
-                                              //                           14.0,
-                                              //                       color: Color(
-                                              //                           0xffFFFFFF),
-                                              //                       fontFamily:
-                                              //                           'Inter',
-                                              //                       fontWeight:
-                                              //                           FontWeight
-                                              //                               .w500),
-                                              //                 ),
-                                              //                 // isExpanded: true,
-                                              //                 icon: const Icon(
-                                              //                   // Add this
-                                              //                   Icons
-                                              //                       .arrow_drop_down,
-                                              //                   // Add this
-                                              //                   color: Color(
-                                              //                       0xff64748B),
-
-                                              //                   // Add this
-                                              //                 ),
-                                              //                 items: _department
-                                              //                     .map((items) {
-                                              //                   return DropdownMenuItem(
-                                              //                     value: items[
-                                              //                             'id']
-                                              //                         .toString(),
-                                              //                     child: Text(
-                                              //                       items['name'],
-                                              //                       style: const TextStyle(
-                                              //                           fontSize:
-                                              //                               14.0,
-                                              //                           color: Color(
-                                              //                               0xffFFFFFF),
-                                              //                           fontFamily:
-                                              //                               'Inter',
-                                              //                           fontWeight:
-                                              //                               FontWeight
-                                              //                                   .w400),
-                                              //                     ),
-                                              //                   );
-                                              //                 }).toList(),
-                                              // onChanged: (String?
-                                              //     newValue) {
-                                              //   setStateView(() {
-                                              //     print(
-                                              //         "---------newValue--------------${newValue}");
-                                              //     _depat =
-                                              //         newValue!;
-                                              //     selectDepartment =
-                                              //         true;
-                                              //  });
-                                              //  },
-                                              //      ),
-                                              //             );
-                                              //           },
-                                              //         )),
-                                              //       )
-                                              //     ],
-                                              //   ),
-                                              // ),
-                                              // // Text("Red"),
+                                          
 
                                               saveButtonClick
                                                   ? selectDepartment
@@ -1540,7 +1361,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
                                             8.0,
                                           ),
@@ -1553,7 +1373,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), //BoxShadow
+                                            ), 
                                           ],
                                         ),
                                       ),
@@ -1570,7 +1390,6 @@ class _NavigationRailState extends State<MyHomePage>
                                           )),
                                       TextFormField(
                                         controller: _association,
-                                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
                                             color: Color(0xffFFFFFF)),
@@ -1595,13 +1414,11 @@ class _NavigationRailState extends State<MyHomePage>
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500)),
-                                        //  autovalidate: _autoValidate ,
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
 
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           }
@@ -1640,7 +1457,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -1649,7 +1465,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             child: Container(
                                                 margin: const EdgeInsets.only(
                                                     left: 13.0, right: 18.0),
-                                                // padding: const EdgeInsets.all(2.0),
                                                 child: StatefulBuilder(
                                                   builder:
                                                       (BuildContext context,
@@ -1675,13 +1490,10 @@ class _NavigationRailState extends State<MyHomePage>
                                                         ),
                                                         isExpanded: true,
                                                         icon: Icon(
-                                                          // Add this
                                                           Icons.arrow_drop_down,
-                                                          // Add this
                                                           color:
                                                               Color(0xff64748B),
 
-                                                          // Add this
                                                         ),
                                                         items: _currencyName
                                                             .map((items) {
@@ -1716,28 +1528,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   },
                                                 )),
                                           ),
-                                          // saveButtonClick
-                                          //     ? selectSalary
-                                          //         ? const Text(
-                                          //             " ",
-                                          //           )
-                                          //         : const Padding(
-                                          //             padding: EdgeInsets.only(
-                                          //               top: 0,
-                                          //               left: 0,
-                                          //             ),
-                                          //             child: Text(
-                                          //                 "Please Select ",
-                                          //                 style: TextStyle(
-                                          //                     color: Color
-                                          //                         .fromARGB(
-                                          //                             255,
-                                          //                             221,
-                                          //                             49,
-                                          //                             60),
-                                          //                     fontSize: 14)),
-                                          //           )
-                                          //     : Text(''),
+                                         
                                         ],
                                       ),
                                       const SizedBox(
@@ -1756,7 +1547,6 @@ class _NavigationRailState extends State<MyHomePage>
                                               height: 56.0,
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
-                                                //border: Border.all(color:  const Color(0xff1E293B)),
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                   8.0,
@@ -1770,7 +1560,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     ),
                                                     blurRadius: 0.0,
                                                     spreadRadius: 0.0,
-                                                  ), //BoxShadow
+                                                  ), 
                                                 ],
                                               ),
                                             ),
@@ -1821,7 +1611,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                       .onUserInteraction
                                                   : AutovalidateMode.disabled,
                                               validator: (value) {
-                                                //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                                                 RegExp regex = RegExp(
                                                     r'^\D+|(?<=\d),(?=\d)');
 
@@ -1890,9 +1679,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color:
-                                                  // Colors.red,
                                                   const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -1906,8 +1693,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), //BoxShadow
-                                              ],
+                                            )],
                                             ),
                                           ),
                                           handleAllerrorWidget(selectDays)
@@ -1933,7 +1719,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 20.0,
                                         child: Container(
 
-                                            // padding: const EdgeInsets.all(2.0),
                                             child: StatefulBuilder(
                                           builder: (BuildContext context,
                                               StateSettersetState) {
@@ -1945,7 +1730,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                 child: DropdownButton(
                                                   dropdownColor:
                                                       ColorSelect.class_color,
-                                                  // value: _day,
                                                   underline: Container(),
                                                   hint: const Text(
                                                     "Select",
@@ -1959,12 +1743,9 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   isExpanded: true,
                                                   icon: const Icon(
-                                                    // Add this
                                                     Icons.arrow_drop_down,
-                                                    // Add this
                                                     color: Color(0xff64748B),
 
-                                                    // Add this
                                                   ),
                                                   items: items1
                                                       .map((String items1) {
@@ -2019,7 +1800,6 @@ class _NavigationRailState extends State<MyHomePage>
                                               scrollDirection: Axis.horizontal,
                                               itemCount:
                                                   selectedDaysList.length,
-                                              //.tagResponse!.data!.length,
                                               itemBuilder: (context, index) {
                                                 return Container(
                                                   margin: const EdgeInsets.only(
@@ -2048,7 +1828,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                           color: Colors.white),
                                                     ),
                                                     selected: _isSelected!,
-                                                    //  selectedColor: Color(0xff334155),
                                                     onSelected:
                                                         (bool selected) {
                                                       setStateView(() {
@@ -2094,7 +1873,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -2108,7 +1886,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), //BoxShadow
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -2198,11 +1976,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 20.0,
                                   ),
-                                  // Text(
-                                  //   'Selected Range: ${_timeRange!.start.format(context)} - ${_timeRange!.end.format(context)}',
-                                  //   style: TextStyle(
-                                  //       fontSize: 20, color: Colors.white),
-                                  // ),
+                                
 
                                   Row(
                                     mainAxisAlignment:
@@ -2237,7 +2011,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                 child: SvgPicture.asset(
                                                     'images/tag_new.svg')),
                                           )
-                                          //SvgPicture.asset('images/list.svg'),
                                           ),
                                     ],
                                   ),
@@ -2260,7 +2033,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 55.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
                                             48.0,
                                           ),
@@ -2272,8 +2044,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 : searchTextField =
                                                     AutoCompleteTextField<
                                                         Datum>(
-                                                    // controller: input_controller,
-                                                    //   suggestions: input_list,
+                                                 
                                                     clearOnSubmit: false,
                                                     key: key,
                                                     cursorColor: Colors.white,
@@ -2324,7 +2095,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                     },
                                                     itemSubmitted: (item) {
                                                       setStateView(() {
-                                                        //print(item.title);
                                                         searchTextField!
                                                             .textField!
                                                             .controller!
@@ -2347,7 +2117,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                     },
                                                     itemBuilder:
                                                         (context, item) {
-                                                      // ui for the autocompelete row
                                                       return row(item);
                                                     },
                                                   )
@@ -2376,7 +2145,6 @@ class _NavigationRailState extends State<MyHomePage>
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: abc.length,
-                                        //.tagResponse!.data!.length,
                                         itemBuilder: (context, index) {
                                           return Container(
                                             margin: const EdgeInsets.only(
@@ -2404,7 +2172,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                     color: Colors.white),
                                               ),
                                               selected: _isSelected!,
-                                              //  selectedColor: Color(0xff334155),
                                               onSelected: (bool selected) {
                                                 setStateView(() {
                                                   _isSelected = selected;
@@ -2470,7 +2237,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -2484,7 +2250,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), //BoxShadow
+                                                ), 
                                               ],
                                             ),
                                           ),
@@ -2532,10 +2298,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-
-                                          // validateCountry =
-                                          //     countryValidation(value);
+                                     
 
                                           RegExp regex =
                                               RegExp(r'^[a-z A-Z]+$');
@@ -2567,7 +2330,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
-                                              //border: Border.all(color:  const Color(0xff1E293B)),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -2581,7 +2343,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), //BoxShadow
+                                                ), 
                                               ],
                                             ),
                                           ),
@@ -2629,8 +2391,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                          //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                          // validateCity = cityValidation(value);
+                                     
                                           RegExp regex =
                                               RegExp(r'^[a-z A-Z]+$');
                                           if (value!.isEmpty) {
@@ -2656,7 +2417,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
                                             8.0,
                                           ),
@@ -2669,7 +2429,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), //BoxShadow
+                                            ), 
                                           ],
                                         ),
                                       ),
@@ -2717,9 +2477,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           String pattern =
                                               r'(^(?:[+0]9)?[0-9]{10}$)';
                                           RegExp regExp = new RegExp(pattern);
-                                          // RegExp regex = RegExp(
-                                          //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                          if (value!.isEmpty) {
+                                           if (value!.isEmpty) {
                                             return 'Please enter';
                                           } else if (!regExp.hasMatch(value)) {
                                             return 'Please enter valid mobile number';
@@ -2735,7 +2493,6 @@ class _NavigationRailState extends State<MyHomePage>
                                   Stack(
                                     children: [
                                       Container(
-                                        // padding: const EdgeInsets.only(top: 20),
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.26,
@@ -2744,7 +2501,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
                                             8.0,
                                           ),
@@ -2757,7 +2513,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), //BoxShadow
+                                            ), 
                                           ],
                                         ),
                                       ),
@@ -2837,7 +2593,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
-                                          //border: Border.all(color:  const Color(0xff1E293B)),
                                           borderRadius: BorderRadius.circular(
                                             8.0,
                                           ),
@@ -2845,7 +2600,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         child: Container(
                                             margin: const EdgeInsets.only(
                                                 left: 16.0, right: 20.0),
-                                            // padding: const EdgeInsets.all(2.0),
                                             child: StatefulBuilder(
                                               builder: (BuildContext context,
                                                   StateSettersetState) {
@@ -2867,12 +2621,9 @@ class _NavigationRailState extends State<MyHomePage>
                                                     ),
                                                     isExpanded: true,
                                                     icon: Icon(
-                                                      // Add this
                                                       Icons.arrow_drop_down,
-                                                      // Add this
                                                       color: Color(0xff64748B),
 
-                                                      // Add this
                                                     ),
                                                     items:
                                                         _timeline.map((items) {
@@ -2943,7 +2694,6 @@ class _NavigationRailState extends State<MyHomePage>
             children: [
               GestureDetector(
                 onTap: () {
-                  // showAddPeople(context);
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 26.0, left: 20.0),
@@ -2969,13 +2719,7 @@ class _NavigationRailState extends State<MyHomePage>
                           margin: const EdgeInsets.only(top: 30.0, left: 6.0),
                           child: Column(
                             children: [
-                              /*  Text(prefs.getString('val')=='q'?'List':prefs.getString('val')=='r'?'Profile':'List', style: const TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontSize: 22.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700)),*/
-
-                              // if (prefs.getString('val') == 'q') ...[
+                            
                               _selectedIndex == 1
                                   ? Row(
                                       crossAxisAlignment:
@@ -3017,15 +2761,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       ],
                                     )
                                   : Container(),
-                              //] else
-                              // if (prefs.getString('val') == 'r') ...[
-                              //   const Text("Profile",
-                              //       style: TextStyle(
-                              //           color: Color(0xffFFFFFF),
-                              //           fontSize: 22.0,
-                              //           fontFamily: 'Inter',
-                              //           fontWeight: FontWeight.w700))
-                              // ],
+                           
 
                               profileIndex == 5 && _selectedIndex != 1
                                   ? const Text("Profile",
@@ -3038,28 +2774,12 @@ class _NavigationRailState extends State<MyHomePage>
 
                               const SizedBox(height: 10),
 
-                              // prefs.getString('val')=='q'?'List':prefs.getString('val')=='r'?'Profile':'List'
-
-                              // if (prefs.getString('val') == 'q') ...[
-                              //   Container(
-                              //     width: 25,
-                              //     height: 3,
-                              //     decoration: const BoxDecoration(
-                              //         color: Color(0xff93C5FD),
-                              //         borderRadius: BorderRadius.only(
-                              //             topLeft: Radius.circular(3),
-                              //             topRight: Radius.circular(3))),
-                              //   )
-                              // ]
-                              // else if (prefs.getString('val') == 'r') ...[
-                              //   SizedBox(),
-                              // ]
+                             
                             ],
                           )),
                     );
                   }),
               const SizedBox(width: 30),
-              // if (prefs.getString('val')! == 'q') ...[
               _selectedIndex == 1
                   ? const Padding(
                       padding: EdgeInsets.only(top: 16.0, left: 0.0),
@@ -3071,56 +2791,9 @@ class _NavigationRailState extends State<MyHomePage>
                               fontWeight: FontWeight.w500)),
                     )
                   : Container(),
-              // ],
               const Spacer(),
 
-              /* Container(
-                width: MediaQuery.of(context).size.width * 0.22,
-                margin: const EdgeInsets.only(left: 15.0, top: 26.0),
-                height: 35.0,
-                decoration: BoxDecoration(
-                  color: const Color(0xff1E293B),
-                  border: Border.all(color: const Color(0xff1E293B)),
-                  borderRadius: BorderRadius.circular(
-                    48.0,
-                  ),
-                ),
-                child: TextFormField(
-                  cursorColor: const Color(0xffFFFFFF),
-                  style: const TextStyle(color: Color(0xffFFFFFF)),
-                  textAlignVertical: TextAlignVertical.bottom,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(
-                        bottom: 13.0,
-                        top: 14.0,
-                        right: 10,
-                        left: 14.0,
-                      ),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: InkWell(
-                          onTap: () {},
-                          child: SvgPicture.asset(
-                            "images/search.svg",
-                            color: const Color(0xff64748B),
-                            width: 17.05,
-                            height: 17.06,
-                          ),
-                        ),
-                      ),
-                      border: InputBorder.none,
-                      hintText: 'Search project',
-                      hintStyle: const TextStyle(
-                          fontSize: 14.0,
-                          color: Color(0xff64748B),
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400)),
-                  onChanged: (value) {
-                    //filterSearchResults(value);
-                  },
-                ),
-              ),*/
+           
               Container(
                 padding: EdgeInsets.only(left: 5, right: 5),
                 width: MediaQuery.of(context).size.width * 0.23,
@@ -3129,19 +2802,15 @@ class _NavigationRailState extends State<MyHomePage>
                 decoration: BoxDecoration(
                   color: const Color(0xff1e293b),
 
-                  // const Color(0xff334155),
-                  //border: Border.all(color:  const Color(0xff1E293B)),
-                  borderRadius: BorderRadius.circular(
+                   borderRadius: BorderRadius.circular(
                     42.0,
                   ),
                 ),
                 child: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
+                 children: [
                     TextField(
                       controller: searchController,
-                      //   suggestions: input_list,
-                      //key: key,
+                 
                       onChanged: (val) {
                         try {
                           _debouncer.run(() {
@@ -3202,62 +2871,10 @@ class _NavigationRailState extends State<MyHomePage>
                   child: const CircleAvatar(
                     radius: 20,
                     backgroundImage: AssetImage('images/images.jpeg'),
-                    /*  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage('images/images.jpeg'),
-                   //   AssetImage(images/image.png),
-                  )*/
+                  
                   )),
               LogOut(returnValue: () {}),
-              // Container(
-              //   width: 24.0,
-              //   height: 24.0,
-              //   decoration: BoxDecoration(
-              //     color: const Color(0xff334155),
-              //     border: Border.all(color: const Color(0xff334155)),
-              //     borderRadius: BorderRadius.circular(
-              //       10.0,
-              //     ),
-              //   ),
-              //   margin: const EdgeInsets.only(
-              //     top: 26.0,
-              //     left: 8.0,
-              //     right: 20.0,
-              //   ),
-              //   child:
-
-              //    Padding(
-              //     padding: const EdgeInsets.all(6.0),
-              //     child: SvgPicture.asset(
-              //       "images/drop_arrow.svg",
-              //     ),
-              //   ),
-              // ),
-              // Container(
-              //   width: 24.0,
-              //   height: 24.0,
-              //   decoration: BoxDecoration(
-              //     color: const Color(0xff334155),
-              //     border: Border.all(color: const Color(0xff334155)),
-              //     borderRadius: BorderRadius.circular(
-              //       10.0,
-              //     ),
-              //   ),
-              //   margin: const EdgeInsets.only(
-              //     top: 26.0,
-              //     left: 6.0,
-              //     right: 40.0,
-              //   ),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(6.0),
-              //     child: SvgPicture.asset(
-              //       "images/drop_arrow.svg",
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 16,
-              // ),
+             
             ],
           ),
         ),
@@ -4110,7 +3727,7 @@ class _NavigationRailState extends State<MyHomePage>
     endTime2 = '';
     _department.clear();
     getDepartment();
-    // '${startTime1}-${endTime2}';
+    
     _country.clear();
     _enterCity.clear();
 
@@ -4120,7 +3737,6 @@ class _NavigationRailState extends State<MyHomePage>
   }
 
 //dropdown apis
-
   Future<String?> getDepartment() async {
     String? value;
     if (value == null) {

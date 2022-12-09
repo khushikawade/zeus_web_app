@@ -1,6 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:zeus/login_screen/login.dart';
@@ -10,9 +7,6 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/utility/constant.dart';
-import 'package:zeus/utility/dropdrowndata.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:zeus/utility/upertextformate.dart';
 import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -42,10 +36,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       position: PopupMenuPosition.under,
       offset: const Offset(-20, 20),
       color: const Color(0xff334155),
-      // padding: const EdgeInsets.only(
-      //   left: 50,
-      //   top: 20,
-      // ),
+      
       tooltip: '',
       child: Container(
         width: 24.0,
@@ -110,7 +101,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           ),
         ),
       ],
-      // child: Text(widget.title),
+    
     );
   }
 

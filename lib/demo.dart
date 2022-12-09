@@ -1,8 +1,6 @@
-// ignore_for_file: avoid_unnecessary_containers, sort_child_properties_last
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -20,7 +18,6 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import '../navigation/navigation.dart';
 import '../navigator_tabs/idle/project_detail_model/project_detail_response.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -34,7 +31,6 @@ showDailog(
     String? id,
     List<SkillsData> skills) {
   //print('listdata'+statusList.length.toString());
-  //print('datacomefast'+response.data!.phase!.length.toString());
   DateTime? selectedDate;
   DateTime? selectedDateReminder;
   DateTime? selectedDateDevlivery;
@@ -47,13 +43,10 @@ showDailog(
   var isLoading = false;
   bool? _isSelected;
   var status = response.data!.status;
-  //var id = response.data!.id;
   bool _submitted = false;
-  // AutoCompleteTextField? searchTextField;
   TypeAheadFormField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<SkillsData>> key = new GlobalKey();
   List<SkillsData> users = <SkillsData>[];
-  // String? setDate;
   users = skills;
   bool loading = true;
   final TextEditingController _projecttitle = TextEditingController();
@@ -78,7 +71,6 @@ showDailog(
         body: jsonEncode({
           "title": _projecttitle.text.toString(),
           "accountable_person_id": _account,
-          //"accountable_person_id": "1",
           "customer_id": _custome,
           "crm_task_id": _crmtask.text.toString(),
           "work_folder_id": _warkfolderId.text.toString(),
@@ -95,12 +87,10 @@ showDailog(
           "Authorization": token,
         },
       );
-      // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        // ignore: use_build_context_synchronously
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
@@ -114,7 +104,6 @@ showDailog(
         print("failuree");
       }
     } catch (e) {
-      // print('error caught: $e');
     }
   }
 
@@ -132,7 +121,6 @@ showDailog(
         },
       );
 
-      // ignore: unrelated_type_equality_checks
 
       if (response.statusCode == 200) {
         var responseJson =
@@ -140,7 +128,6 @@ showDailog(
 
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
 
-        // ignore: use_build_context_synchronously
 
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -150,7 +137,6 @@ showDailog(
         print(response.body);
       }
     } catch (e) {
-      // print('error caught: $e');
 
     }
   }
@@ -161,11 +147,6 @@ showDailog(
     var token = 'Bearer ' + storage.read("token");
 
     try {
-      // var map = new Map<String, dynamic>();
-
-      // map['project_id'] = projectId;
-
-      // map['name'] = tagName;
 
       var response = await http.post(
         Uri.parse('${AppUrl.baseUrl}/project/tags'),
@@ -179,7 +160,6 @@ showDailog(
         },
       );
 
-      // ignore: unrelated_type_equality_checks
 
       if (response.statusCode == 200) {
         var responseJson =
@@ -187,7 +167,6 @@ showDailog(
 
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
 
-        // ignore: use_build_context_synchronously
 
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -197,12 +176,10 @@ showDailog(
         print(response.body);
       }
     } catch (e) {
-      // print('error caught: $e');
 
     }
   }
 
-  //Add
 
   //Add description and time api
   Future<void> addDescriptionProject() async {
@@ -210,7 +187,6 @@ showDailog(
     try {
       var apiResponse = await http.post(
         Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
-        //body: map,
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days":
@@ -258,7 +234,6 @@ showDailog(
         print("failuree");
       }
     } catch (e) {
-      // print('error caught: $e');
     }
   }
 
@@ -311,7 +286,6 @@ showDailog(
       print("date time now ${DateTime.now()}");
       print('--------------------------------------');
 
-      //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
     }
 
     if (response.data != null &&
@@ -321,7 +295,6 @@ showDailog(
       selectedDateDeadline =
           DateTime.parse(response.data!.deadlineDate!.toString());
 
-      //selectedDateDeadline = DateTime.parse("2022-11-27 00:00:00");
 
     }
 
@@ -332,14 +305,12 @@ showDailog(
       selectedDateDevlivery =
           DateTime.parse(response.data!.deliveryDate!.toString());
 
-      //selectedDateDevlivery = DateTime.parse("2022-11-29 00:00:00");
     }
 
     if (response.data != null &&
         response.data!.startDate != null &&
         response.data!.startDate!.isNotEmpty &&
         response.data!.startDate != "0000-00-00 00:00:00") {
-      // selectedDate = DateTime.parse("2022-11-29 00:00:00");
       selectedDate = DateTime.parse(response.data!.startDate!.toString());
     }
 
@@ -355,11 +326,7 @@ showDailog(
         abc.add(element.name!);
       });
     }
-    // _status = response.data != null &&
-    //         response.data!.status != null &&
-    //         response.data!.status!.isNotEmpty
-    //     ? response.data!.status.toString()
-    //     : '';
+    
   }
 
   DateTime getInitialDate(int calendarTapValue) {
@@ -410,24 +377,13 @@ showDailog(
           return Theme(
             data: ThemeData.light().copyWith(
                 primaryColor: const Color(0xff0F172A),
-                accentColor: const Color(0xff0F172A),
-                colorScheme:
-                    ColorScheme.light(primary: const Color(0xff0F172A)),
                 buttonTheme:
-                    ButtonThemeData(textTheme: ButtonTextTheme.primary)),
+                    ButtonThemeData(textTheme: ButtonTextTheme.primary), colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)).copyWith(secondary: const Color(0xff0F172A))),
             child: child!,
           );
         },
 
-        // initialDate: setDate == "5"
-        //     ? selectedDateDeadline!
-        //     : setDate == "4"
-        //         ? selectedDateDevlivery!
-        //         : setDate == "3"
-        //             ? selectedDateReminder!
-        //             : setDate == "2"
-        //                 ? selectedDate!
-        //                 : selectedDate!,
+     
 
         initialDate: calendarTapValue == 1
             ? selectedDate != null
@@ -657,60 +613,6 @@ showDailog(
                                                   ),
                                                 ),
 
-                                                // Stack(
-                                                //   clipBehavior: Clip.none,
-                                                //   children: [
-                                                //     Container(
-                                                //       margin:
-                                                //           const EdgeInsets.only(
-                                                //               left: 12.0,
-                                                //               top: 8.0),
-                                                //       child: SvgPicture.asset(
-                                                //         'images/list_ceramony.svg',
-                                                //         width: 19.06,
-                                                //         height: 17.01,
-                                                //       ),
-                                                //     ),
-                                                //     Positioned(
-                                                //       bottom: 10,
-                                                //       left: 12,
-                                                //       child: Center(
-                                                //         child: Container(
-                                                //           margin: const EdgeInsets
-                                                //               .only(
-                                                //             top: 13.0,
-                                                //             left: 8.0,
-                                                //           ),
-                                                //           height: 16.0,
-                                                //           width: 16.0,
-                                                //           decoration: const BoxDecoration(
-                                                //               color: Colors.red,
-                                                //               borderRadius:
-                                                //                   BorderRadius
-                                                //                       .all(Radius
-                                                //                           .circular(
-                                                //                               20))),
-                                                //           child: const Align(
-                                                //             alignment:
-                                                //                 Alignment.center,
-                                                //             child: Text(
-                                                //               "2",
-                                                //               style: TextStyle(
-                                                //                   color: Color(
-                                                //                       0xffFFFFFF),
-                                                //                   fontSize: 11.0,
-                                                //                   fontFamily:
-                                                //                       'Inter',
-                                                //                   fontWeight:
-                                                //                       FontWeight
-                                                //                           .w500),
-                                                //             ),
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //     ),
-                                                //   ],
-                                                // ),
                                               ],
                                             ),
                                           ],
@@ -752,8 +654,6 @@ showDailog(
                                           controller:
                                               _horizontalScrollController,
                                           scrollDirection: Axis.horizontal,
-                                          // physics:
-                                          //     const BouncingScrollPhysics(),
                                           physics: ClampingScrollPhysics(),
                                           children: [
                                             Column(
@@ -776,7 +676,6 @@ showDailog(
                                                 ),
                                                 InkWell(
                                                   onTap: () {
-                                                    //setDate = "2";
                                                     _selectDate(setState, 1);
                                                   },
                                                   child: Container(
@@ -820,7 +719,6 @@ showDailog(
                                                 ),
                                                 InkWell(
                                                   onTap: () {
-                                                    //setDate = "3";
                                                     _selectDate(setState, 2);
                                                   },
                                                   child: Container(
@@ -829,13 +727,9 @@ showDailog(
                                                             left: 30.0,
                                                             top: 6.0),
                                                     child: Text(
-                                                      // reminderDate1 == null
-                                                      //     ?
                                                       AppUtil.formattedDateYear(
                                                           selectedDateReminder
                                                               .toString()),
-                                                      //   "${selectedDateReminder.day}${selectedDateReminder.month}${selectedDateReminder.year}",
-                                                      // : "$reminderDate1",
                                                       style: const TextStyle(
                                                           color:
                                                               Color(0xffFFFFFF),
@@ -868,7 +762,6 @@ showDailog(
                                                 ),
                                                 InkWell(
                                                   onTap: () {
-                                                    //setDate = "4";
                                                     _selectDate(setState, 3);
                                                   },
                                                   child: Container(
@@ -877,14 +770,11 @@ showDailog(
                                                             left: 30.0,
                                                             top: 6.0),
                                                     child: Text(
-                                                      // deliveryDate == null
-                                                      //     ?${selectedDateDevlivery.day} ${selectedDateDevlivery.month} ${selectedDateDevlivery.year}
                                                       AppUtil.formattedDateYear(
                                                           selectedDateDevlivery
                                                               .toString()),
 
-                                                      // : "$deliveryDate",
-                                                      style: const TextStyle(
+                                                     style: const TextStyle(
                                                           color:
                                                               Color(0xffFFFFFF),
                                                           fontSize: 14.0,
@@ -916,7 +806,6 @@ showDailog(
                                                 ),
                                                 InkWell(
                                                   onTap: () {
-                                                    //setDate = "5";
                                                     _selectDate(setState, 4);
                                                   },
                                                   child: Container(
@@ -925,14 +814,11 @@ showDailog(
                                                             left: 30.0,
                                                             top: 6.0),
                                                     child: Text(
-                                                      // deadlineDate == null
-                                                      //  ?
-                                                      AppUtil.formattedDateYear(
+                                                       AppUtil.formattedDateYear(
                                                           selectedDateDeadline
                                                               .toString()),
 
-                                                      // : '$deadlineDate',
-                                                      style: const TextStyle(
+                                                       style: const TextStyle(
                                                           color:
                                                               Color(0xffFFFFFF),
                                                           fontSize: 14.0,
@@ -967,9 +853,6 @@ showDailog(
                                                       left: 30.0, top: 6.0),
                                                   child: Text(
                                                     response.data != null &&
-                                                            response.data!
-                                                                    .workingDays! !=
-                                                                null &&
                                                             response
                                                                 .data!
                                                                 .workingDays!
@@ -1006,11 +889,7 @@ showDailog(
                                                             Color(0xff334155),
                                                         width: 0.6),
                                                     shape: BoxShape.circle),
-                                                // child: const Icon(
-                                                //   Icons.close,
-                                                //   color: Colors.white,
-                                                // ),
-                                                child: SvgPicture.asset(
+                                                 child: SvgPicture.asset(
                                                   'images/cross.svg',
                                                 ),
                                               ),
@@ -1062,15 +941,12 @@ showDailog(
                                           children: [
                                             Container(
                                               child: Wrap(
-                                                //SizedBox
                                                 spacing: 8,
 
                                                 children: List.generate(
                                                   abc.length,
                                                   (index) {
-                                                    // Tags tag=response.data!.tags![index];
-                                                    //var tagName=tag.name;
-
+                                                
                                                     return Container(
                                                       height: 32,
                                                       margin:
@@ -1103,8 +979,6 @@ showDailog(
                                                               color:
                                                                   Colors.white),
                                                         ),
-                                                        // selected: _isSelected!,
-                                                        //  selectedColor: Color(0xff334155),
                                                         onSelected:
                                                             (bool selected) {
                                                           setState(() {
@@ -1258,18 +1132,9 @@ showDailog(
                                                                 (item) {
                                                               _typeAheadController
                                                                   .text = '';
-                                                              // if (!abc.contains(
-                                                              //     item.name)) {
-                                                              abc.add(
+                                                                abc.add(
                                                                   item.name!);
-
-                                                              // saveTagApi(
-                                                              //     response
-                                                              //         .data!.id
-                                                              //         .toString(),
-                                                              //     item.name!);
-                                                              // }
-                                                              setState(() {
+       setState(() {
                                                                 Navigator.of(
                                                                         context)
                                                                     .pop();
@@ -1337,8 +1202,7 @@ showDailog(
                                               0.14,
                                       decoration: BoxDecoration(
                                         color:
-                                            // Colors.amber,
-                                            const Color(0xff1E293B),
+                                              const Color(0xff1E293B),
                                         border: Border.all(
                                             color: const Color(0xff424D5F),
                                             width: 0.5),
@@ -1394,7 +1258,6 @@ showDailog(
                                       height: 40.0,
                                       decoration: BoxDecoration(
                                         color: const Color(0xff334155),
-                                        // border: Border.all(color: const Color(0xff1E293B)),
                                         borderRadius: BorderRadius.circular(
                                           12.0,
                                         ),
@@ -1568,8 +1431,7 @@ showDailog(
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
-                                          // margin: const EdgeInsets.only(left: 20.0, top: 40.0),
-                                          height: MediaQuery.of(context)
+                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
                                               0.50,
@@ -1579,61 +1441,11 @@ showDailog(
                                               0.99,
                                           decoration: const BoxDecoration(
                                             color: Color(0xff263143),
-                                            //border: Border.all(color: const Color(0xff0E7490)),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    // Container(
-                                    //   padding:const EdgeInsets.only(left: 10,right:10 ),
-                                    //   decoration:const  BoxDecoration(boxShadow: [
-                                    //     BoxShadow(
-                                    //       color: Colors.black,
-                                    //       spreadRadius: 0,
-                                    //       blurRadius: 3,
-                                    //       offset: Offset(
-                                    //           0, -3), // changes position of shadow
-                                    //     ),
-                                    //   ], color: Color(0xff263143)),
-                                    //   child: Center(
-                                    //     child: TextFormField(
-                                    //       controller: _commentController,
-                                    //       autocorrect: false,
-                                    //       cursorColor: const Color(0xffFFFFFF),
-                                    //       style: const TextStyle(
-                                    //           color: Color(0xffFFFFFF)),
-                                    //       textAlignVertical: TextAlignVertical.bottom,
-                                    //       keyboardType: TextInputType.text,
-                                    //       decoration: const InputDecoration(
-                                    //           //counterText: '',
-                                    //           // errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                    //           contentPadding: EdgeInsets.only(
-                                    //             bottom: 16.0,
-                                    //             top: 57.0,
-                                    //             right: 10,
-                                    //             left: 26.0,
-                                    //           ),
-                                    //           border: InputBorder.none,
-                                    //           hintText: 'Write a comment',
-                                    //           hintStyle: TextStyle(
-                                    //               fontSize: 14.0,
-                                    //               color: Color(0xff94A3B8),
-                                    //               fontFamily: 'Inter',
-                                    //               fontWeight: FontWeight.w400)),
-                                    //       autovalidateMode: _submitted
-                                    //           ? AutovalidateMode.onUserInteraction
-                                    //           : AutovalidateMode.disabled,
-                                    //       validator: (value) {
-                                    //         //  RegExp regex=RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                    //         if (value!.isEmpty) {
-                                    //           return 'Please enter';
-                                    //         }
-                                    //         return null;
-                                    //       },
-                                    //       //  onChanged: (text) => setState(() => name_ = text),
-                                    //     ),
-                                    //   ),
-                                    // ),
+                                
                                   ],
                                 ),
                               ),
@@ -1738,10 +1550,9 @@ showDailog(
                               margin: const EdgeInsets.only(
                                   left: 30.0, top: 12.0, right: 30.0),
                               height:
-                                  40, //MediaQuery.of(context).size.height * 0.07,
+                                  40, 
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
-                                // border: Border.all(color: const Color(0xff1E293B)),
                                 borderRadius: BorderRadius.circular(
                                   12.0,
                                 ),
@@ -1798,17 +1609,7 @@ showDailog(
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.only(
-                                  //       left: 10.0, bottom: 10),
-                                  //   child: MenuPhase(
-                                  //       title: 'Menu at bottom',
-                                  //       alignment: Alignment.topRight,
-                                  //       buildContext: context,
-                                  //       returnValue: () {
-                                  //         Navigator.pop(context, true);
-                                  //       }),
-                                  // ),
+                               
                                 ],
                               ),
                             ),
@@ -1826,13 +1627,10 @@ showDailog(
                                   var date = phase.startDate;
                                   var endDate = phase.endDate;
 
-                                  //var inputDate = DateTime.parse(date!);
-                                  //var outputFormat = DateFormat('dd/MM/yyyyy');
-                                  //var _date = outputFormat.format(inputDate);
+                              
                                   var _date = date.toString();
 
-                                  //var _reminderdate = DateTime.parse(endDate!);
-                                  //var _remind = DateFormat('dd/MM/yyyyy');
+                                  
                                   var _endDate = endDate.toString();
 
                                   return Column(
@@ -1943,8 +1741,7 @@ showDailog(
                                                 returnValue: () {
                                                   print(
                                                       "Value returned --------------------------------------");
-                                                  // Provider.of<PeopleIdelClass>(context, listen: true).getPeopleDataList();
-                                                },
+                                                  },
                                               )
                                             ]),
                                           ),
@@ -1955,7 +1752,6 @@ showDailog(
                                               left: 30.0,
                                               right: 30.0,
                                               bottom: 0.0),
-                                          //  height: 74.0,//MediaQuery.of(context).size.height * 0.10,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *

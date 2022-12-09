@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:zeus/navigator_tabs/people_idle/model/model_class.dart';
 import 'package:zeus/utility/util.dart';
 
 import 'app_url.dart';

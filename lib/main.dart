@@ -22,7 +22,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // bool?  isLogin;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => EditPageModel())
         ],
         child:
-            // MaterialApp(
-            //   home: Example(),
-            //   navigatorObservers: [FlutterSmartDialog.observer],
-            //   builder: FlutterSmartDialog.init(),
-            // )
+            
+            
+            
+            
+            
             MaterialApp(
           debugShowCheckedModeBanner: false,
           builder: FlutterSmartDialog.init(),
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
                 const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
               ],
             ),
-            home: //Rconst NewPhase(),
+            home: 
                 storage.read(isLogin) == null
                     ? LoginScreen(
                         onSubmit: (String value) {},
@@ -76,109 +76,109 @@ class MyApp extends StatelessWidget {
                       ),
 
             navigatorObservers: [FlutterSmartDialog.observer],
-            // here
-            // builder: FlutterSmartDialog.init(),
+            
+            
             onGenerateRoute: generateRoute,
             debugShowCheckedModeBanner: false,
 
-            // onGenerateRoute: (RouteSettings settings) {
-            //   return Routes.fadeThrough(settings, (context) {
-            //     // switch (settings.name) {
-            //     //   case Routes.home:
-            //     //     return const ListPage();
-            //     //   case Routes.post:
-            //     //     return const PostPage();
-            //     //   case Routes.style:
-            //     //     return const TypographyPage();
-            //     //   default:
-            //     //     return const SizedBox.shrink();
-            //     // }
-            //   });
-            // },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
           ),
         ));
   }
-  // return MultiProvider(
-  //   providers: [
-  //     ChangeNotifierProvider(create: (_) => DataIdelClass()),
-  //     ChangeNotifierProvider(create: (_) => PeopleIdelClass()),
-  //     ChangeNotifierProvider(create: (_) => ProjectDetail()),
-  //     ChangeNotifierProvider(create: (_) => TagDetail()),
-  //     ChangeNotifierProvider(create: (_) => EditPageModel())
-  //   ],
-  //   child: MaterialApp(
-  //     scrollBehavior: MyCustomScrollBehavior(),
-  //     home: storage.read(isLogin) == null
-  //         ? LoginScreen(
-  //             onSubmit: (String value) {},
-  //           )
-  //         : MyHomePage(
-  //             onSubmit: (String value) {},
-  //             adOnSubmit: (String value) {},
-  //           ),
-  //     onGenerateRoute: generateRoute,
-  //     debugShowCheckedModeBanner: false,
-  //   ),
-  // );
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
-// import 'package:responsive_framework/responsive_framework.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MultiProvider(
-//         providers: [
-//           ChangeNotifierProvider(create: (_) => DataIdelClass()),
-//           ChangeNotifierProvider(create: (_) => PeopleIdelClass()),
-//           ChangeNotifierProvider(create: (_) => ProjectDetail()),
-//           ChangeNotifierProvider(create: (_) => TagDetail()),
-//           ChangeNotifierProvider(create: (_) => EditPageModel())
-//         ],
-//         child: MaterialApp(
-//           builder: (context, child) => ResponsiveWrapper.builder(
-//               BouncingScrollWrapper.builder(context, child!),
-//               maxWidth: 2000,
-//               minWidth: 1200,
-//               defaultScale: true,
-//               breakpoints: [
-//                 const ResponsiveBreakpoint.resize(450, name: MOBILE),
-//                 const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-//                 const ResponsiveBreakpoint.autoScale(1200, name: TABLET),
-//                 const ResponsiveBreakpoint.resize(1440, name: DESKTOP),
-//                 const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
-//               ],
-//               background: Container(color: const Color(0xFFF5F5F5))),
-//           home: storage.read(isLogin) == null
-//               ? LoginScreen(
-//                   onSubmit: (String value) {},
-//                 )
-//               : MyHomePage(
-//                   onSubmit: (String value) {},
-//                   adOnSubmit: (String value) {},
-//                 ),
-//           onGenerateRoute: generateRoute,
-//           debugShowCheckedModeBanner: false,
-//           // onGenerateRoute: (RouteSettings settings) {
-//           //   return Routes.fadeThrough(settings, (context) {
-//           //     // switch (settings.name) {
-//           //     //   case Routes.home:
-//           //     //     return const ListPage();
-//           //     //   case Routes.post:
-//           //     //     return const PostPage();
-//           //     //   case Routes.style:
-//           //     //     return const TypographyPage();
-//           //     //   default:
-//           //     //     return const SizedBox.shrink();
-//           //     // }
-//           //   });
-//           // },
-//         ));
-//   }
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

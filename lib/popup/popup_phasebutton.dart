@@ -11,7 +11,6 @@ import 'dart:typed_data';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:zeus/utility/upertextformate.dart';
 import 'package:zeus/utility/util.dart';
 import '../DemoContainer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -128,8 +127,7 @@ class _MenuPhaseState extends State<MenuPhase>
 
   @override
   void initState() {
-    // _getTag = getProject();
-    // change();
+   
 
     _isSelected = false;
     getUsers();
@@ -144,16 +142,7 @@ class _MenuPhaseState extends State<MenuPhase>
     return PopupMenuButton<int>(
       offset: widget.offset,
       color: Color(0xFF0F172A),
-      // icon: const Padding(
-      //   padding: EdgeInsets.only(bottom: 15.0),
-      //   child: Icon(
-      //     Icons.more_vert,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      // icon: SvgPicture.asset(
-      //   "images/edit.svg",
-      // ),
+     
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 7.0),
         height: 30,
@@ -168,8 +157,6 @@ class _MenuPhaseState extends State<MenuPhase>
             padding: const EdgeInsets.all(8.0),
             child: SvgPicture.asset(
               "images/edit.svg",
-              // height: 30,
-              // width: 30,
             ),
           ),
         ),
@@ -179,14 +166,11 @@ class _MenuPhaseState extends State<MenuPhase>
         PopupMenuItem(
           value: 1,
           child: InkWell(
-            // hoverColor: Colors.red,
             onTap: () {
-              //Navigator.pop(context);
               widget.onEditClick!();
             },
             child: Container(
               width: 30,
-              // color: ColorSelect.backgroundColor,
               child: const Text(
                 "Edit",
                 style: TextStyle(
@@ -293,7 +277,6 @@ class _MenuPhaseState extends State<MenuPhase>
                               )
                             ],
                           ),
-                          //MediaQueryx.of(context).size.height * 0.85,
                         ),
                       ),
                     );
@@ -310,7 +293,6 @@ class _MenuPhaseState extends State<MenuPhase>
           ),
         )
       ],
-      // child: Text(widget.title),
     );
   }
 
@@ -319,8 +301,6 @@ class _MenuPhaseState extends State<MenuPhase>
       _addSubmitted = true;
     });
     if (_addFormKey.currentState!.validate()) {
-      // widget.adOnSubmit!(name1);
-      // getAddPeople();
       Navigator.pushNamed(context, "/home");
     }
   }
@@ -370,13 +350,6 @@ class _MenuPhaseState extends State<MenuPhase>
         setState(() {
           _timeline = mdata;
         });
-        //var res = response.body;
-        //  print('helloDepartment' + res);
-        //  DepartmentResponce peopleList = DepartmentResponce.fromJson(json.decode(res));
-        // return peopleList;
-
-        // final stringRes = JsonEncoder.withIndent('').convert(res);
-        //  print(stringRes);
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
@@ -402,7 +375,6 @@ class _MenuPhaseState extends State<MenuPhase>
 
       users = user.data!;
 
-      // print('Users: ${users.length}');
 
       setState(() {
         loading = false;
@@ -412,7 +384,6 @@ class _MenuPhaseState extends State<MenuPhase>
     } else {
       print("Error getting users.");
 
-      // print(response.body);
 
     }
   }
@@ -424,7 +395,6 @@ class _MenuPhaseState extends State<MenuPhase>
     var url = '${AppUrl.deleteForphase}${peopleId}';
     var token = 'Bearer ' + storage.read("token");
 
-    // var userId = storage.read("user_id");
     var response = await http.delete(
       Uri.parse(url),
       headers: {"Accept": "application/json", "Authorization": token},
@@ -434,30 +404,10 @@ class _MenuPhaseState extends State<MenuPhase>
       print("sucess");
       print(indexs);
       widget.onDeleteSuccess();
-      // print(widget.response.data!.phase!.length);
-      // setState() {
-      //   for (int i = 0; i < widget.response.data!.phase!.length; i++) {
-      //     // ignore: unrelated_type_equality_checks
-      //     if (widget.response.data!.phase![i] == indexs) {
-      //       widget.response.data!.phase!.removeAt(i);
-      //     }
-      //   }
-      // }
 
       SmartDialog.dismiss();
 
       widget.returnValue!();
-
-      // ignore: use_build_context_synchronously
-      //Navigator.pop(context, true);
-      // Navigator.of(buildContext).pushReplacement(
-      //   MaterialPageRoute(
-      //       builder: (context) => MyHomePage(
-      //             onSubmit: (String value) {},
-      //             adOnSubmit: (String value) {},
-      //           )),
-      // );
-      //(Route<dynamic> route) => false);
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(context);
