@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, sort_child_properties_last
+
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -1054,159 +1056,126 @@ showDailog(
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          height: 32.0,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 25.0),
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: abc
-                                                  .length, //response.data!.tags!.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                // Tags tag=response.data!.tags![index];
-                                                //var tagName=tag.name;
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: abc.isEmpty
+                                                  ? 0
+                                                  : MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      3,
+                                              child: Wrap(
+                                                //SizedBox
+                                                spacing: 8,
 
-                                                return Container(
-                                                  height: 32,
-                                                  margin: const EdgeInsets.only(
-                                                      left: 5.0, right: 5.0),
-                                                  child: InputChip(
-                                                    shape: const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    8))),
-                                                    deleteIcon: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.white,
-                                                      size: 20,
-                                                    ),
-                                                    backgroundColor:
-                                                        Color(0xff334155),
-                                                    visualDensity:
-                                                        VisualDensity.compact,
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    label: Text(
-                                                      abc[index],
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    // selected: _isSelected!,
-                                                    //  selectedColor: Color(0xff334155),
-                                                    onSelected:
-                                                        (bool selected) {
-                                                      setState(() {
-                                                        _isSelected = selected;
-                                                      });
-                                                    },
-                                                    onDeleted: () {
-                                                      response.data!.tags!
-                                                          .forEach(
-                                                        (element) {
-                                                          if (element.name ==
-                                                              abc[index]) {
-                                                            removeTagAPI(element
-                                                                .id
-                                                                .toString());
-                                                          }
+                                                children: List.generate(
+                                                  abc.length,
+                                                  (index) {
+                                                    // Tags tag=response.data!.tags![index];
+                                                    //var tagName=tag.name;
+
+                                                    return Container(
+                                                      height: 32,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 5.0,
+                                                              right: 5.0),
+                                                      child: InputChip(
+                                                        shape: const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            8))),
+                                                        deleteIcon: const Icon(
+                                                          Icons.close,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        backgroundColor:
+                                                            Color(0xff334155),
+                                                        visualDensity:
+                                                            VisualDensity
+                                                                .compact,
+                                                        materialTapTargetSize:
+                                                            MaterialTapTargetSize
+                                                                .shrinkWrap,
+                                                        label: Text(
+                                                          abc[index],
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                        // selected: _isSelected!,
+                                                        //  selectedColor: Color(0xff334155),
+                                                        onSelected:
+                                                            (bool selected) {
+                                                          setState(() {
+                                                            _isSelected =
+                                                                selected;
+                                                          });
                                                         },
-                                                      );
+                                                        onDeleted: () {
+                                                          response.data!.tags!
+                                                              .forEach(
+                                                            (element) {
+                                                              if (element
+                                                                      .name ==
+                                                                  abc[index]) {
+                                                                removeTagAPI(element
+                                                                    .id
+                                                                    .toString());
+                                                              }
+                                                            },
+                                                          );
 
-                                                      setState(() {
-                                                        abc.removeAt(index);
-                                                      });
-                                                    },
+                                                          setState(() {
+                                                            abc.removeAt(index);
+                                                          });
+                                                        },
 
-                                                    showCheckmark: false,
-                                                  ),
-                                                );
-                                              },
+                                                        showCheckmark: false,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        // SizedBox(
-                                        //   height: 32,
-                                        //   child: Padding(
-                                        //     padding:
-                                        //         EdgeInsets.only(left: 26),
-                                        //     child: ListView.builder(
-                                        //       scrollDirection:
-                                        //           Axis.horizontal,
-                                        //       itemCount: abc.length,
-                                        //       //.tagResponse!.data!.length,
-                                        //       itemBuilder: (context, index) {
-                                        //         return Container(
-                                        //           margin:
-                                        //               const EdgeInsets.only(
-                                        //                   left: 5.0,
-                                        //                   right: 5.0),
-                                        //           child: InputChip(
-                                        //             shape: RoundedRectangleBorder(
-                                        //                 borderRadius:
-                                        //                     BorderRadius.all(
-                                        //                         Radius
-                                        //                             .circular(
-                                        //                                 8))),
-                                        //             deleteIcon: Icon(
-                                        //               Icons.close,
-                                        //               color: Colors.white,
-                                        //               size: 20,
-                                        //             ),
-                                        //             backgroundColor:
-                                        //                 Color(0xff334155),
-                                        //             visualDensity:
-                                        //                 VisualDensity.compact,
-                                        //             materialTapTargetSize:
-                                        //                 MaterialTapTargetSize
-                                        //                     .shrinkWrap,
-                                        //             label: Text(
-                                        //               abc[index],
-                                        //               style: TextStyle(
-                                        //                   color:
-                                        //                       Colors.white),
-                                        //             ),
-                                        //             selected: _isSelected!,
-                                        //             //  selectedColor: Color(0xff334155),
-                                        //             onSelected:
-                                        //                 (bool selected) {
-                                        //               setState(() {
-                                        //                 _isSelected =
-                                        //                     selected;
-                                        //               });
-                                        //             },
-                                        //             onDeleted: () {
-                                        //               setState(() {
-                                        //                 abc.removeAt(index);
-                                        //               });
-                                        //             },
-
-                                        //             showCheckmark: false,
-                                        //           ),
-                                        //         );
-                                        //       },
-                                        //     ),
-                                        //   ),
-                                        // ),
-
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await showMenu(
-                                              context: context,
-                                              color: ColorSelect.class_color,
-                                              position:
-                                                  const RelativeRect.fromLTRB(
-                                                      160.0,
-                                                      200.0,
-                                                      160.0,
-                                                      100.0),
-                                              items: [
+                                            PopupMenuButton<int>(
+                                              tooltip: '',
+                                              offset: const Offset(25, 38),
+                                              color: Color(0xFF0F172A),
+                                              child: Container(
+                                                  width: 35.0,
+                                                  height: 35.0,
+                                                  margin: const EdgeInsets.only(
+                                                    left: 15.0,
+                                                  ),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Color(0xff334155),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Container(
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
+                                                        child: SvgPicture.asset(
+                                                            'images/tag_new.svg')),
+                                                  )
+                                                  //SvgPicture.asset('images/list.svg'),
+                                                  ),
+                                              itemBuilder: (context) => [
                                                 PopupMenuItem(
                                                   padding:
                                                       const EdgeInsets.all(0),
@@ -1216,8 +1185,9 @@ showDailog(
                                                       Navigator.pop(context);
                                                     },
                                                     child: Container(
-                                                      height: 50,
                                                       width: 400,
+                                                      color: const Color(
+                                                          0xff1E293B),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -1251,9 +1221,10 @@ showDailog(
                                                               decoration:
                                                                   const InputDecoration(
                                                                 contentPadding:
-                                                                    EdgeInsets.only(
-                                                                        top:
-                                                                            15.0),
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  top: 15.0,
+                                                                ),
                                                                 prefixIcon:
                                                                     Padding(
                                                                         padding: EdgeInsets.only(
@@ -1267,12 +1238,12 @@ showDailog(
                                                                               Color(0xff64748B),
                                                                         )),
                                                                 hintText:
-                                                                    'Searchsss',
+                                                                    'Search',
                                                                 hintStyle: TextStyle(
                                                                     fontSize:
                                                                         14.0,
                                                                     color: Color(
-                                                                        0xffffffff),
+                                                                        0xff64748B),
                                                                     fontFamily:
                                                                         'Inter',
                                                                     fontWeight:
@@ -1311,7 +1282,11 @@ showDailog(
                                                                         .toString(),
                                                                     item.name!);
                                                               }
-                                                              setState(() {});
+                                                              setState(() {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              });
                                                             },
                                                           ),
                                                         ],
@@ -1321,64 +1296,50 @@ showDailog(
                                                 ),
                                               ],
                                               elevation: 8.0,
-                                            ).then((value) {
-                                              if (value != null) print(value);
-                                            });
-                                          },
-                                          child: Container(
-                                              width: 35.0,
-                                              height: 35.0,
-                                              margin: const EdgeInsets.only(
-                                                left: 15.0,
-                                              ),
-                                              decoration: const BoxDecoration(
-                                                color: Color(0xff334155),
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Container(
-                                                child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: SvgPicture.asset(
-                                                        'images/tag_new.svg')),
-                                              )
-                                              //SvgPicture.asset('images/list.svg'),
-                                              ),
+                                            ),
+                                          ],
                                         ),
                                         Spacer(),
-                                        Container(
-                                          child: const Text(
-                                            'Work folder',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.cermany_color,
-                                                fontSize: 14.0,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Container(
+                                            child: const Text(
+                                              'Work folder',
+                                              style: TextStyle(
+                                                  color:
+                                                      ColorSelect.cermany_color,
+                                                  fontSize: 14.0,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
                                           ),
                                         ),
                                         Container(
                                           margin: const EdgeInsets.only(
-                                              left: 10.0, right: 35.0),
+                                              left: 10.0, right: 35.0, top: 8),
                                           child: SvgPicture.asset(
                                             'images/cermony.svg',
                                           ),
                                         ),
-                                        Container(
-                                          child: const Text(
-                                            'CRM',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.cermany_color,
-                                                fontSize: 14.0,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Container(
+                                            child: const Text(
+                                              'CRM',
+                                              style: TextStyle(
+                                                  color:
+                                                      ColorSelect.cermany_color,
+                                                  fontSize: 14.0,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
                                           ),
                                         ),
                                         Container(
                                           margin: const EdgeInsets.only(
-                                              left: 10.0, right: 16.0),
+                                              left: 10.0, right: 16.0, top: 8),
                                           child: SvgPicture.asset(
                                             'images/cermony.svg',
                                           ),
@@ -1414,19 +1375,18 @@ showDailog(
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
                                             color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        // keyboardType: TextInputType.text,
+                                        textAlignVertical:TextAlignVertical.bottom,
+                                        maxLines: 10,
                                         decoration: const InputDecoration(
                                             contentPadding: EdgeInsets.only(
-                                              bottom: 13.0,
+                                              bottom: 20.0,
                                               top: 14.0,
                                               right: 10,
                                               left: 14.0,
                                             ),
                                             border: InputBorder.none,
                                             hintText: '',
-                                            hintStyle: const TextStyle(
+                                            hintStyle: TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
