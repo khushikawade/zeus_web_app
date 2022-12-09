@@ -1,13 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:zeus/helper_widget/scrollbar_helper_widget.dart';
 import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/navigator_tabs/idle/PopScreen.dart';
 import 'package:zeus/utility/colors.dart';
@@ -15,16 +9,11 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import 'dart:convert';
 import '../../helper_widget/custom_popups.dart';
-import '../../navigation/skills_model/skills_response.dart';
 import '../../utility/app_url.dart';
 import '../../popup/Popup.dart';
-import '../../widgets/custom_app_bar.dart';
-import 'PopScreen.dart';
-import 'PopScreen.dart';
 import 'PopScreen.dart';
 import 'data/DataClass.dart';
 import 'data/project_detail_data/ProjectDetailData.dart';
-import 'project_detail_model/project_detail_response.dart';
 import 'project_idel_model/project_idel_response.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -306,40 +295,35 @@ class _IdleState extends State<Idle> {
           var nextMileStone = '';
           var apName = '';
 
-          if (_projectData != null &&
-              _projectData.title != null &&
+          if (_projectData.title != null &&
               _projectData.title!.isNotEmpty) {
             projectName = _projectData.title!;
           } else {
             projectName = "TBD";
           }
 
-          if (_projectData != null &&
-              _projectData.status != null &&
+          if (_projectData.status != null &&
               _projectData.status!.isNotEmpty) {
             projectStatus = _projectData.status!;
           } else {
             projectStatus = "TBD";
           }
 
-          if (_projectData != null &&
-              _projectData.updatedAt != null &&
+          if (_projectData.updatedAt != null &&
               _projectData.updatedAt!.isNotEmpty) {
             updatedAt = AppUtil.formattedDate(_projectData.updatedAt!);
           } else {
             updatedAt = "N/A";
           }
 
-          if (_projectData != null &&
-              _projectData.deliveryDate != null &&
+          if (_projectData.deliveryDate != null &&
               _projectData.deliveryDate!.isNotEmpty) {
             deliveryDate = AppUtil.formattedDate(_projectData.deliveryDate!);
           } else {
             deliveryDate = "N/A";
           }
 
-          if (_projectData != null &&
-              _projectData.deadlineDate != null &&
+          if (_projectData.deadlineDate != null &&
               _projectData.deadlineDate!.isNotEmpty) {
             deadlineDate = AppUtil.formattedDate(_projectData.deadlineDate!);
           } else {
@@ -358,15 +342,13 @@ class _IdleState extends State<Idle> {
           if (_projectData.currentPhase == null) {
             currentPhase = "N/A";
           } else {
-            if (_projectData.currentPhase! != null &&
-                _projectData.currentPhase!.title != null &&
+            if (_projectData.currentPhase!.title != null &&
                 _projectData.currentPhase!.title!.isNotEmpty) {
               currentPhase = _projectData.currentPhase!.title!;
             }
           }
 
-          if (_projectData != null &&
-              _projectData.customer != null &&
+          if (_projectData.customer != null &&
               _projectData.customer!.image != null &&
               _projectData.customer!.image!.isNotEmpty) {
             print(_projectData.customer!.image!);
@@ -374,8 +356,7 @@ class _IdleState extends State<Idle> {
             //print("96939633");
           }
 
-          if (_projectData != null &&
-              _projectData.currentPhase != null &&
+          if (_projectData.currentPhase != null &&
               _projectData.currentPhase!.currentMilestone != null &&
               _projectData.currentPhase!.currentMilestone!.mDate != null) {
             nextMileStone = AppUtil.formattedDate(
@@ -458,7 +439,7 @@ class _IdleState extends State<Idle> {
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Color(0xff334155)),
                   child: Text(
-                    fullName != null && fullName.isNotEmpty ? fullName : '',
+                    fullName.isNotEmpty ? fullName : '',
                     // 'AP',
                     style: const TextStyle(
                         fontFamily: 'Inter-Medium',
@@ -1242,6 +1223,7 @@ class _IdleState extends State<Idle> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getCurrency() async {
@@ -1268,6 +1250,7 @@ class _IdleState extends State<Idle> {
       }
       return value;
     }
+    return null;
   }
 
   Future<String?> getAccountable() async {
@@ -1294,6 +1277,7 @@ class _IdleState extends State<Idle> {
       }
       return value;
     }
+    return null;
   }
 
   void getUsers() async {
@@ -1346,6 +1330,7 @@ class _IdleState extends State<Idle> {
       }
       return value;
     }
+    return null;
   }
 
   // ShowMoreTextPopup popup = ShowMoreTextPopup(context,

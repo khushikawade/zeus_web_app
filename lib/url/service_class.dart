@@ -1,9 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:zeus/utility/app_url.dart';
 import '../navigation/tag_model/tagresponse.dart';
 import '../navigator_tabs/idle/project_detail_model/project_detail_response.dart';
@@ -34,6 +30,7 @@ class Service {
         print("failed to much");
       }
     } catch (e) {}
+    return null;
   }
 
   Future<PeopleList?> getpeopleList(String? searchText) async {
@@ -56,6 +53,7 @@ class Service {
       print(response.body);
       print("failed to much");
     }
+    return null;
   }
 
   Future<ProjectDetailResponse?> getIdelDetail(String id) async {
@@ -84,6 +82,7 @@ class Service {
     } else {
       print("failed to responce ideal detail");
     }
+    return null;
   }
 
   Future<TagResponse?> getTag() async {
@@ -108,5 +107,6 @@ class Service {
         print("failed to much");
       }
     } catch (e) {}
+    return null;
   }
 }

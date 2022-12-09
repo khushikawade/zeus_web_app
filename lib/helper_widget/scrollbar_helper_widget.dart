@@ -16,7 +16,7 @@ class CustomScrollBar extends StatelessWidget {
       radius: Radius.circular(5.65218),
       thickness: 9,
       scrollbarOrientation: ScrollbarOrientation.right,
-      isAlwaysShown: true,
+      thumbVisibility: true,
       controller: scrollController,
       child: child,
     );

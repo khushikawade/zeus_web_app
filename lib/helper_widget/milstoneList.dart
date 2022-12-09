@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zeus/add_new_phase/model/mileston_model.dart';
 import 'package:zeus/add_new_phase/model/phase_details.dart';
-import 'package:zeus/helper_widget/labeltextfield.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 Widget milestoneList(context, PhaseDetails phaseDetails,
         {required Null Function(Milestones values, int index, String action)
@@ -11,7 +8,7 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
     ListView.builder(
         shrinkWrap: true,
         // physics: BouncingScrollPhysics,
-        itemCount: phaseDetails?.milestone?.length ?? 0,
+        itemCount: phaseDetails.milestone?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(

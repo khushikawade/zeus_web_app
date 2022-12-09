@@ -4,20 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'dart:typed_data';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart';
-import 'package:zeus/helper_widget/scrollbar_helper_widget.dart';
-import 'package:zeus/helper_widget/searchbar.dart';
-import 'package:zeus/navigation/tag_model/tag_user.dart';
-import 'package:zeus/navigation/tag_model/tagresponse.dart';
-import 'package:zeus/people_profile/editpage/edit_page.dart';
-import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/utility/app_url.dart';
-import 'package:zeus/utility/dropdrowndata.dart';
 
 import 'package:provider/provider.dart';
 import 'dart:convert';
@@ -31,16 +21,10 @@ import 'package:flutter/material.dart';
 import 'package:zeus/utility/util.dart';
 import '../../../utility/colors.dart';
 import '../../../people_profile/screen/people_detail_view.dart';
-import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 import '../../../utility/constant.dart';
 import '../../idle/data/project_detail_data/ProjectDetailData.dart';
 import '../data/getdata_provider.dart';
 import '../model/model_class.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
 class PeopleIdle extends StatefulWidget {
   final ValueChanged<String>? onSubmit;
@@ -229,7 +213,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                               index: index = 5,
                             )));
 
-                if (result != null && result) {
+                if (result) {
                   Provider.of<PeopleIdelClass>(context, listen: false)
                       .getPeopleDataList();
                 }
@@ -264,7 +248,7 @@ class _PeopleIdleState extends State<PeopleIdle> {
                                 shape: BoxShape.circle,
                                 color: Color(0xffF2F2F2)),
                             child: Text(
-                              fullName != null && fullName.isNotEmpty
+                              fullName.isNotEmpty
                                   ? fullName
                                   : '',
                               style: const TextStyle(
@@ -469,100 +453,100 @@ class _PeopleIdleState extends State<PeopleIdle> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: FittedBox(
+                 child: FittedBox(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 0, right: 0),
-                        child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(dividerColor: Color(0xff525f72)),
-                          child: DataTable(
-                              // showBottomBorder: true,
-                              showCheckboxColumn: false,
-                              dataRowHeight: 60,
-                              dividerThickness: 0.7,
-                              //columnSpacing: 132,
-                              columns: const [
-                                DataColumn(
-                                  label: Text(
-                                    "Name",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0, right: 0),
+                      child: Theme(
+                        data: Theme.of(context)
+                            .copyWith(dividerColor: Color(0xff525f72)),
+                        child: DataTable(
+                            // showBottomBorder: true,
+                            showCheckboxColumn: false,
+                            dataRowHeight: 60,
+                            dividerThickness: 0.7,
+                            columnSpacing: 132,
+                            columns: const [
+                              DataColumn(
+                                label: Text(
+                                  "Name",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                DataColumn(
-                                  label: Text(
-                                    "Nickname",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Nickname",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                DataColumn(
-                                  label: Text(
-                                    "Capacity",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Capacity",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                DataColumn(
-                                  label: Text(
-                                    "Occupied till",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Occupied till",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                DataColumn(
-                                  label: Text(
-                                    "Scheduled on",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Scheduled on",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                DataColumn(
-                                  label: Text(
-                                    "Skills",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Skills",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                DataColumn(
-                                  label: Text(
-                                    "Action",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Action",
+                                  style: TextStyle(
+                                      color: ColorSelect.text_color,
+                                      fontSize: 14.0,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
                                 ),
-                              ],
-                              rows: rows),
-                        ),
+                              ),
+                            ],
+                            rows: rows),
                       ),
                     ),
                   ),
                 ),
+              )
               ),
             ],
           );
@@ -592,5 +576,6 @@ class _PeopleIdleState extends State<PeopleIdle> {
       }
       return value;
     }
+    return null;
   }
 }

@@ -1,5 +1,3 @@
-import 'package:zeus/add_new_phase/model/subtask_model.dart';
-import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
 
 class Milestones {
   int? id;

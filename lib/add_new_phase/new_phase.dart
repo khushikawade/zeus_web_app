@@ -1,20 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:zeus/DemoContainer.dart';
 import 'package:zeus/add_new_phase/model/mileston_model.dart';
 import 'package:zeus/add_new_phase/model/phase_details.dart';
 import 'package:zeus/add_new_phase/model/resourcedata.dart';
 import 'package:zeus/add_new_phase/model/resources_needed.dart';
-import 'package:zeus/add_new_phase/model/resources_needed.dart'
-    as resourceNeeded;
 import 'package:zeus/add_new_phase/model/subtask_model.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
@@ -757,10 +750,10 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   Widget mileStoneView() {
-    return Form(
-      key: _mileStoneFormKey,
-      child: Expanded(
-        flex: 1,
+    return Expanded(
+      flex: 1,
+      child: Form(
+        key: _mileStoneFormKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -793,7 +786,8 @@ class _NewPhaseState extends State<NewPhase> {
                         : clickAddMileStone(),
                     onTap: () {
                       setState(() {
-                        savePhaseClick = true;
+                        addMilestoneBtnClick=true;
+                        //savePhaseClick = true;
                       });
                       Future.delayed(const Duration(microseconds: 500), () {
                         if (_formKey.currentState!.validate()) {
@@ -1061,7 +1055,7 @@ class _NewPhaseState extends State<NewPhase> {
                           } else {
                             setState(() {
                               mileStoneTitle =
-                                  values?.resource?.resource_name ?? '';
+                                  values.resource?.resource_name ?? '';
                             });
                           }
                         },
@@ -1478,38 +1472,40 @@ class _NewPhaseState extends State<NewPhase> {
                   fontWeight: FontWeight.w500),
             ),
             onTap: () {
+
               if (_mileStoneFormKey.currentState!.validate()) {
-                setState(() {
-                  if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
-                    try {
-                      if (mileStoneAction.isEmpty) {
-                        _phaseDetails.milestone!.add(Milestones(
-                            title: mileStoneTitle, m_date: mileStoneDate));
-                      } else {
-                        _phaseDetails.milestone![mileStoneEditIndex].title =
-                            mileStoneTitle;
-                        _phaseDetails.milestone![mileStoneEditIndex].m_date =
-                            mileStoneDate;
-                      }
 
-                      mileStoneEditIndex = 0;
-                      mileStoneAction = '';
+                if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
+                  try {
+                   setState(() {
+                     if (mileStoneAction.isEmpty) {
+                       _phaseDetails.milestone!.add(Milestones(
+                           title: mileStoneTitle, m_date: mileStoneDate));
+                     } else {
+                       _phaseDetails.milestone![mileStoneEditIndex].title =
+                           mileStoneTitle;
+                       _phaseDetails.milestone![mileStoneEditIndex].m_date =
+                           mileStoneDate;
+                     }
 
-                      mileStoneDate = AppUtil.dateToString(DateTime.now());
-                      mileStoneTitle = "";
-                      controllerMilestoneTitle.text = "";
-                      clickedAddMileStone = false;
-                      saveButtonClick = true;
-                    } catch (e) {
-                      print(e);
-                    }
-                  } else {
-                    print('Add milestone date');
+                     mileStoneEditIndex = 0;
+                     mileStoneAction = '';
+
+                     mileStoneDate = AppUtil.dateToString(DateTime.now());
+                     mileStoneTitle = "";
+                     controllerMilestoneTitle.text = "";
+                     clickedAddMileStone = false;
+                     saveButtonClick = true;
+                   });
+                  } catch (e) {
+                    print(e);
                   }
+                } else {
+                  print('Add milestone date');
+                }
 
-                  // clickedAddMileStone = ;
-                });
               }
+
             },
           )
         ],

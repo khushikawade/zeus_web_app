@@ -1,9 +1,4 @@
-import 'dart:async';
-import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:zeus/utility/colors.dart';
 
 class ListSearch extends StatefulWidget {
