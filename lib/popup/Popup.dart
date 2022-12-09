@@ -1266,17 +1266,18 @@ showDailog(
                                                                 (item) {
                                                               _typeAheadController
                                                                   .text = '';
-                                                              // if (!abc.contains(
-                                                              //     item.name)) {
-                                                              abc.add(
-                                                                  item.name!);
+                                                              if (!abc.contains(
+                                                                  item.name)) {
+                                                                abc.add(
+                                                                    item.name!);
 
-                                                              // saveTagApi(
-                                                              //     response
-                                                              //         .data!.id
-                                                              //         .toString(),
-                                                              //     item.name!);
-                                                              //  }
+                                                                saveTagApi(
+                                                                    response
+                                                                        .data!
+                                                                        .id
+                                                                        .toString(),
+                                                                    item.name!);
+                                                              }
                                                               setState(() {
                                                                 Navigator.of(
                                                                         context)
