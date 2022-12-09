@@ -6,7 +6,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zeus/helper_widget/pop_resource_button.dart';
+import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
+
 import 'package:zeus/utility/app_url.dart';
 
 import 'package:provider/provider.dart';
@@ -49,6 +50,13 @@ class _PeopleIdleState extends State<PeopleIdle> {
 
   final _verticalScrollController = ScrollController();
   final _horizontalScrollController = ScrollController();
+  final ScrollController horizontalScroll = ScrollController();
+  final ScrollController verticalScroll = ScrollController();
+
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 50.0);
+  final double width = 18;
+  final double widthVertical = 10;
 
   // Future getPeopleData() {
   //   return Provider.of<PeopleIdelClass>(context, listen: false).getPeople();
@@ -127,11 +135,18 @@ class _PeopleIdleState extends State<PeopleIdle> {
                     ? const Expanded(
                         child: Center(child: CircularProgressIndicator()))
                     : Expanded(
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: [
-                            makePeopleList(data),
-                          ],
+                        child: RawScrollbar(
+                          controller: verticalScroll,
+                          thumbColor: const Color(0xff4b5563),
+                          radius: Radius.circular(20),
+                          thickness: 10,
+                          child: ListView(
+                            controller: verticalScroll,
+                            shrinkWrap: true,
+                            children: [
+                              makePeopleList(data),
+                            ],
+                          ),
                         ),
                       );
               }),
@@ -394,9 +409,9 @@ class _PeopleIdleState extends State<PeopleIdle> {
                             fontWeight: FontWeight.w500))),
                 DataCell(
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0, bottom: 15),
+                    padding: const EdgeInsets.only(left: 5.0, bottom: 15),
                     child: Stack(children: [
-                      MyMenu(
+                     pop.MyMenu(
                         peopleList: data.peopleList!.data,
                         data: data.peopleList!.data![index],
                         title: 'Menu at bottom',
@@ -456,92 +471,100 @@ class _PeopleIdleState extends State<PeopleIdle> {
                  child: FittedBox(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 0, right: 0),
-                      child: Theme(
-                        data: Theme.of(context)
-                            .copyWith(dividerColor: Color(0xff525f72)),
-                        child: DataTable(
-                            // showBottomBorder: true,
-                            showCheckboxColumn: false,
-                            dataRowHeight: 60,
-                            dividerThickness: 0.7,
-                            columnSpacing: 132,
-                            columns: const [
-                              DataColumn(
-                                label: Text(
-                                  "Name",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                  child: RawScrollbar(
+                    controller: horizontalScroll,
+                    thumbColor: const Color(0xff4b5563),
+                    radius: Radius.circular(20),
+                    thickness: 10,
+                    child: SingleChildScrollView(
+                      controller: horizontalScroll,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(dividerColor: Color(0xff525f72)),
+                          child: DataTable(
+                              horizontalMargin: 0,
+                              // showBottomBorder: true,
+                              showCheckboxColumn: false,
+                              dataRowHeight: 60,
+                              dividerThickness: 0.7,
+                              columnSpacing: 132,
+                              columns: const [
+                                DataColumn(
+                                  label: Text(
+                                    "Name",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Nickname",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                                DataColumn(
+                                  label: Text(
+                                    "Nickname",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Capacity",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                                DataColumn(
+                                  label: Text(
+                                    "Capacity",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Occupied till",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                                DataColumn(
+                                  label: Text(
+                                    "Occupied till",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Scheduled on",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                                DataColumn(
+                                  label: Text(
+                                    "Scheduled on",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Skills",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                                DataColumn(
+                                  label: Text(
+                                    "Skills",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Action",
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
+                                DataColumn(
+                                  label: Text(
+                                    "Action",
+                                    style: TextStyle(
+                                        color: ColorSelect.text_color,
+                                        fontSize: 14.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                            ],
-                            rows: rows),
+                              ],
+                              rows: rows),
+                        ),
                       ),
                     ),
                   ),

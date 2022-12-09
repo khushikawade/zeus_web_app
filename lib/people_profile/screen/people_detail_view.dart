@@ -4,7 +4,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/daysList.dart';
-import 'package:zeus/helper_widget/pop_resource_button.dart';
+import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
 import 'package:zeus/utility/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -745,7 +745,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10.0, bottom: 10),
-                                      child: MyMenu(
+                                      child: pop.MyMenu(
                                           data: list,
                                           title: 'Menu at bottom',
                                           alignment: Alignment.topRight,
