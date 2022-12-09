@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zeus/add_new_phase/model/mileston_model.dart';
-import 'package:zeus/add_new_phase/model/phase_details.dart';
+import 'package:zeus/phase_module/model/mileston_model.dart';
+import 'package:zeus/phase_module/model/phase_details.dart';
+
 
 Widget milestoneList(context, PhaseDetails phaseDetails,
         {required Null Function(Milestones values, int index, String action)

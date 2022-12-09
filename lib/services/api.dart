@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zeus/add_new_phase/model/phase_details.dart';
-import 'package:zeus/add_new_phase/model/resources_needed.dart';
+import 'package:zeus/phase_module/model/phase_details.dart';
+import 'package:zeus/phase_module/model/resources_needed.dart';
 import 'package:zeus/services/api_client.dart';
 
 import 'package:http/http.dart';
