@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:zeus/login_screen/login.dart';
+import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
 
 class AppUtil {

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/utility/util.dart';
-import '../DemoContainer.dart';
+import '../helper_widget/search_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:zeus/utility/app_url.dart';
@@ -127,7 +127,7 @@ class _MenuPhaseState extends State<MenuPhase>
 
   @override
   void initState() {
-   
+
 
     _isSelected = false;
     getUsers();
@@ -142,7 +142,7 @@ class _MenuPhaseState extends State<MenuPhase>
     return PopupMenuButton<int>(
       offset: widget.offset,
       color: Color(0xFF0F172A),
-     
+
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 7.0),
         height: 30,

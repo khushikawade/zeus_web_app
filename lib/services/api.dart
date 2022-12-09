@@ -6,12 +6,12 @@ import 'package:zeus/phase_module/model/resources_needed.dart';
 import 'package:zeus/services/api_client.dart';
 
 import 'package:http/http.dart';
-import 'package:zeus/services/responce_model/create_phase_resp.dart';
-import 'package:zeus/services/responce_model/get_phase_details_resp.dart';
-import 'package:zeus/services/responce_model/update_phase_resp.dart';
+import 'package:zeus/services/response_model/create_phase_resp.dart';
+import 'package:zeus/services/response_model/get_phase_details_resp.dart';
+import 'package:zeus/services/response_model/update_phase_resp.dart';
 import 'package:zeus/utility/app_url.dart';
-import 'package:zeus/utility/constants.dart';
 import 'package:zeus/utility/util.dart';
+import 'package:zeus/utility/constant.dart';
 
 
 class Api {
@@ -44,11 +44,11 @@ class Api {
       } catch (e) {
         print(e);
         return PhaseDetails(
-            error: Constants.somethingWentWorng, statusCode: 500);
+            error: somethingWentWorng, statusCode: 500);
       }
     } else {
       return PhaseDetails(
-          error: Constants.somethingWentWorng, statusCode: response.statusCode);
+          error: somethingWentWorng, statusCode: response.statusCode);
     }
   }
 
@@ -120,13 +120,13 @@ class Api {
       } catch (e) {
         print(e);
         return ResourceNeededModel(
-            error: Constants.somethingWentWorng, statusCode: 500);
+            error: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return ResourceNeededModel(
-          error: Constants.somethingWentWorng, statusCode: response.statusCode);
+          error: somethingWentWorng, statusCode: response.statusCode);
     }
   }
 
@@ -162,13 +162,13 @@ class Api {
       } catch (e) {
         print(e);
         return CreatePhaseResp(
-            message: Constants.somethingWentWorng, statusCode: 500);
+            message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return CreatePhaseResp(
-          message: Constants.somethingWentWorng,
+          message: somethingWentWorng,
           statusCode: response.statusCode);
     }
   }
@@ -205,13 +205,13 @@ class Api {
       } catch (e) {
         print(e);
         return GetPhaseDetails(
-            message: Constants.somethingWentWorng, statusCode: 500);
+            message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return GetPhaseDetails(
-          message: Constants.somethingWentWorng,
+          message: somethingWentWorng,
           statusCode: response.statusCode);
     }
   }
@@ -248,13 +248,13 @@ class Api {
       } catch (e) {
         print(e);
         return UpdatePhaseResp(
-            message: Constants.somethingWentWorng, statusCode: 500);
+            message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return UpdatePhaseResp(
-          message: Constants.somethingWentWorng,
+          message: somethingWentWorng,
           statusCode: response.statusCode);
     }
   }

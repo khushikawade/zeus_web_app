@@ -10,18 +10,18 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:zeus/DemoContainer.dart';
+import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
-import 'package:zeus/navigation/skills_model/skills_response_project.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
+import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 
-import '../navigation/navigation.dart';
-import '../navigator_tabs/idle/project_detail_model/project_detail_response.dart';
+import '../home_module/home_page.dart';
 
 showDailog(
     BuildContext context,
@@ -72,7 +72,7 @@ showDailog(
         body: jsonEncode({
           "title": _projecttitle.text.toString(),
           "accountable_person_id": _account,
-          
+
           "customer_id": _custome,
           "crm_task_id": _crmtask.text.toString(),
           "work_folder_id": _warkfolderId.text.toString(),
@@ -106,7 +106,7 @@ showDailog(
         print("failuree");
       }
     } catch (e) {
-      
+
     }
   }
 
@@ -131,7 +131,7 @@ showDailog(
 
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
 
-        
+
 
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -141,7 +141,7 @@ showDailog(
         print(response.body);
       }
     } catch (e) {
-      
+
 
     }
   }
@@ -152,7 +152,7 @@ showDailog(
     var token = 'Bearer ' + storage.read("token");
 
     try {
-    
+
       var response = await http.post(
         Uri.parse('${AppUrl.baseUrl}/project/tags'),
         body: jsonEncode({
@@ -173,7 +173,7 @@ showDailog(
 
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
 
-    
+
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
@@ -182,7 +182,7 @@ showDailog(
         print(response.body);
       }
     } catch (e) {
-     
+
 
     }
   }
@@ -195,7 +195,7 @@ showDailog(
     try {
       var apiResponse = await http.post(
         Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
-   
+
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days":
@@ -629,7 +629,7 @@ showDailog(
                                                   ),
                                                 ),
 
-                                              
+
                                               ],
                                             ),
                                           ],
@@ -919,7 +919,7 @@ showDailog(
                                       ),
                                     ),
                                   ),
-                               
+
                                 ],
                               ),
                             ),
@@ -970,13 +970,13 @@ showDailog(
                                                           .width /
                                                       3,
                                               child: Wrap(
-                                              
+
                                                 spacing: 8,
 
                                                 children: List.generate(
                                                   abc.length,
                                                   (index) {
-                                                
+
                                                     return Container(
                                                       height: 32,
                                                       margin:
@@ -1490,7 +1490,7 @@ showDailog(
                                         ),
                                       ],
                                     ),
-                                   
+
                                   ],
                                 ),
                               ),
@@ -1598,7 +1598,7 @@ showDailog(
                                   40,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
-                             
+
                                 borderRadius: BorderRadius.circular(
                                   12.0,
                                 ),
@@ -1655,7 +1655,7 @@ showDailog(
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                              
+
                                 ],
                               ),
                             ),

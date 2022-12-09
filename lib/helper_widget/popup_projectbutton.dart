@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:zeus/navigation/navigation.dart';
-import 'package:zeus/navigator_tabs/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
-import '../DemoContainer.dart';
+import 'search_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zeus/utility/app_url.dart';
 

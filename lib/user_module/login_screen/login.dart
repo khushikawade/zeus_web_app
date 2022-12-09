@@ -6,9 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/utility/app_url.dart';
+import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../utility/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   final ValueChanged<String> onSubmit;

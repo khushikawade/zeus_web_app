@@ -2,18 +2,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:zeus/navigator_tabs/idle/data/DataClass.dart';
-import 'package:zeus/navigator_tabs/people_idle/data/getdata_provider.dart';
-import 'package:zeus/people_profile/editpage/edit_profile_model.dart';
+import 'package:zeus/people_module/people_idle/data/getdata_provider.dart';
+import 'package:zeus/project_module/idle/data/DataClass.dart';
+import 'package:zeus/project_module/idle/data/project_detail_data/ProjectDetailData.dart';
 import 'package:zeus/routers/routers_class.dart';
+import 'package:zeus/services/response_model/tag_model/tag_user.dart';
+import 'package:zeus/user_module/login_screen/login.dart';
+import 'package:zeus/user_module/people_profile/editpage/edit_profile_model.dart';
 import 'package:zeus/utility/constant.dart';
-import 'login_screen/login.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'navigation/navigation.dart';
+import 'home_module/home_page.dart';
 import 'package:provider/provider.dart';
-import 'navigation/tag_model/tag_user.dart';
-import 'navigator_tabs/idle/data/project_detail_data/ProjectDetailData.dart';
 
 void main() async {
   await GetStorage.init();
@@ -22,7 +22,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => EditPageModel())
         ],
         child:
-            
-            
-            
-            
-            
+
+
+
+
+
             MaterialApp(
           debugShowCheckedModeBanner: false,
           builder: FlutterSmartDialog.init(),
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
                 const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
               ],
             ),
-            home: 
+            home:
                 storage.read(isLogin) == null
                     ? LoginScreen(
                         onSubmit: (String value) {},
@@ -76,50 +76,50 @@ class MyApp extends StatelessWidget {
                       ),
 
             navigatorObservers: [FlutterSmartDialog.observer],
-            
-            
+
+
             onGenerateRoute: generateRoute,
             debugShowCheckedModeBanner: false,
 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           ),
         ));
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

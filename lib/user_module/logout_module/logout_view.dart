@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:zeus/login_screen/login.dart';
+import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
@@ -8,15 +8,17 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
-import '../DemoContainer.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:zeus/utility/app_url.dart';
 
+import '../../helper_widget/search_view.dart';
+
 class LogOut extends StatefulWidget {
   final Function? returnValue;
   final Offset offset;
-  
+
   LogOut({this.returnValue, this.offset = const Offset(180, 40), Key? key})
       : super(key: key);
 
@@ -36,7 +38,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       position: PopupMenuPosition.under,
       offset: const Offset(-20, 20),
       color: const Color(0xff334155),
-      
+
       tooltip: '',
       child: Container(
         width: 24.0,
@@ -101,7 +103,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           ),
         ),
       ],
-    
+
     );
   }
 

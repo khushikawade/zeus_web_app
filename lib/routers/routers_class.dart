@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zeus/navigator_tabs/people_idle/screen/people_idle.dart';
-import '../navigation/navigation.dart';
+import 'package:zeus/people_module/people_idle/screen/people_idle.dart';
+import '../home_module/home_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
