@@ -23,16 +23,13 @@ class AppUrl {
   static const String abc = '$baseUrl/project/';
   static const String delete = '$baseUrl/resource/';
   static const String deleteForProject = '$baseUrl/project/';
-
   static const String searchLanguage = "$baseUrl/tags";
   static const String departmentResources = '/departments';
   static const String resourceNeeded = '/resource/';
-
   static const String deleteForphase = "$baseUrl/phase/";
   static const String logOut = "$baseUrl/signout";
   static const String createPhase = "/phase";
   static const String getPhase = "/phase/";
-static const String updatePhase = "/phase/";
-
+  static const String updatePhase = "/phase/";
 
 }

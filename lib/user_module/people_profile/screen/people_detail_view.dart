@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/daysList.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
-import 'package:zeus/people_module/people_idle/model/model_class.dart';
-import 'package:zeus/project_module/idle/data/project_detail_data/ProjectDetailData.dart';
+import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -199,7 +199,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
   Future? getList;
   Future getListData1() {
-    return Provider.of<ProjectDetail>(context, listen: false).changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: false).changeProfile();
   }
 
   @override

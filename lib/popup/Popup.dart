@@ -14,7 +14,7 @@ import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
-import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
@@ -63,12 +63,12 @@ showDailog(
 
   final TextEditingController _typeAheadController = TextEditingController();
 
-  //Edit project api
+  //Edit project_detail api
   Future<void> editProject() async {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.put(
-        Uri.parse('${AppUrl.baseUrl}/project/$_id'),
+        Uri.parse('${AppUrl.baseUrl}/project_detail/$_id'),
         body: jsonEncode({
           "title": _projecttitle.text.toString(),
           "accountable_person_id": _account,
@@ -110,13 +110,13 @@ showDailog(
     }
   }
 
-  //Edit project api
+  //Edit project_detail api
   Future<void> removeTagAPI(String tagId) async {
     var token = 'Bearer ' + storage.read("token");
 
     try {
       var response = await http.delete(
-        Uri.parse('${AppUrl.baseUrl}/project/tags/${tagId}'),
+        Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token,
@@ -146,7 +146,7 @@ showDailog(
     }
   }
 
-  //Edit project api
+  //Edit project_detail api
 
   Future<void> saveTagApi(String projectId, String tagName) async {
     var token = 'Bearer ' + storage.read("token");
@@ -154,7 +154,7 @@ showDailog(
     try {
 
       var response = await http.post(
-        Uri.parse('${AppUrl.baseUrl}/project/tags'),
+        Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
         body: jsonEncode({
           "project_id": projectId,
           "name": tagName,
@@ -194,7 +194,7 @@ showDailog(
     var token = 'Bearer ' + storage.read("token");
     try {
       var apiResponse = await http.post(
-        Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
+        Uri.parse('${AppUrl.baseUrl}/project_detail/project_detail-dates/$_id'),
 
         body: jsonEncode({
           "description": _description.text.toString(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zeus/people_module/people_idle/screen/people_idle.dart';
+import 'package:zeus/people_module/people_home/people_home.dart';
 import '../home_module/home_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -7,7 +7,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //case '/ProfileScreen':
     //return MaterialPageRoute(builder: (_) =>  ProfileDetail());
     case '/peopleList':
-      return MaterialPageRoute(builder: (_) => PeopleIdle());
+      return MaterialPageRoute(builder: (_) => PeopleHomeView());
     case '/home':
       return MaterialPageRoute(
           builder: (_) => MyHomePage(
@@ -16,7 +16,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
     default:
       // If there is no such named route in the switch statement, e.g. /third
-      return MaterialPageRoute(builder: (_) => PeopleIdle());
+      return MaterialPageRoute(builder: (_) => PeopleHomeView());
   }
 }
 

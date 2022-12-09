@@ -22,7 +22,7 @@ const String videoMeetingType = "video";
 
 const invalidEmail = "Invalid Email";
 const enterEmail = "Enter your email";
-// project Status
+// project_detail Status
 const String onTrack = "On track";
 const String potentialRisk = "Potential risk";
 const String risk = "Risk";

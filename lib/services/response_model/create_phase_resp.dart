@@ -79,7 +79,7 @@ class Data {
     createdAt: json["created_at"] == null ? null : json["created_at"],
     updatedAt: json["updated_at"] == null ? null : json["updated_at"],
     subTasks: json["sub_tasks"] == null ? null : List<SubTask>.from(json["sub_tasks"].map((x) => SubTask.fromJson(x))),
-    project: json["project"] == null ? null : DataProject.fromJson(json["project"]),
+    project: json["project_detail"] == null ? null : DataProject.fromJson(json["project_detail"]),
     assignedResources: json["assigned_resources"] == null ? null : List<AssignedResource>.from(json["assigned_resources"].map((x) => AssignedResource.fromJson(x))),
     milestone: json["milestone"] == null ? null : List<Milestone>.from(json["milestone"].map((x) => Milestone.fromJson(x))),
   );
@@ -96,7 +96,7 @@ class Data {
     "created_at": createdAt == null ? null : createdAt,
     "updated_at": updatedAt == null ? null : updatedAt,
     "sub_tasks": subTasks == null ? null : List<dynamic>.from(subTasks!.map((x) => x.toJson())),
-    "project": project == null ? null : project!.toJson(),
+    "project_detail": project == null ? null : project!.toJson(),
     "assigned_resources": assignedResources == null ? null : List<dynamic>.from(assignedResources!.map((x) => x.toJson())),
     "milestone": milestone == null ? null : List<dynamic>.from(milestone!.map((x) => x.toJson())),
   };
@@ -224,7 +224,7 @@ class Resource {
     deletedAt: json["deleted_at"] == null ? null : json["deleted_at"],
     createdAt: json["created_at"] == null ? null : json["created_at"],
     updatedAt: json["updated_at"] == null ? null : json["updated_at"],
-    project: json["project"] == null ? null : ResourceProject.fromJson(json["project"]),
+    project: json["project_detail"] == null ? null : ResourceProject.fromJson(json["project_detail"]),
     resource: json["resource"],
     tasks: json["tasks"] == null ? null : List<Task>.from(json["tasks"].map((x) => Task.fromJson(x))),
   );
@@ -240,7 +240,7 @@ class Resource {
     "deleted_at": deletedAt == null ? null : deletedAt,
     "created_at": createdAt == null ? null : createdAt,
     "updated_at": updatedAt == null ? null : updatedAt,
-    "project": project == null ? null : project!.toJson(),
+    "project_detail": project == null ? null : project!.toJson(),
     "resource": resource,
     "tasks": tasks == null ? null : List<dynamic>.from(tasks!.map((x) => x.toJson())),
   };

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:zeus/home_module/home_page.dart';
-import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
@@ -1613,7 +1613,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                 Container(
                                   margin: const EdgeInsets.only(right: 20.0),
                                   child: const Text(
-                                    "Do you want to delete this project?",
+                                    "Do you want to delete this project_detail?",
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700,
@@ -1624,7 +1624,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                 Container(
                                   margin: EdgeInsets.only(top: 15.0),
                                   child: const Text(
-                                    "Once deleted,you will not find this project in the list ",
+                                    "Once deleted,you will not find this project_detail in the list ",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
@@ -1759,7 +1759,7 @@ class _ProjectEditState extends State<ProjectEdit>
     }
   }
 
-  //Edit project api
+  //Edit project_detail api
   editProject(BuildContext context) async {
     print("-----------------------------");
     print(widget.id);
@@ -1784,7 +1784,7 @@ class _ProjectEditState extends State<ProjectEdit>
 
       try {
         var response = await http.post(
-          Uri.parse('${AppUrl.baseUrl}/project/${widget.id}/update'),
+          Uri.parse('${AppUrl.baseUrl}/project_detail/${widget.id}/update'),
           body: map,
           headers: {
             "Accept": "application/json",

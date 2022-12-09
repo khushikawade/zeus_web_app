@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:zeus/people_module/people_idle/model/model_class.dart';
-import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
-import 'package:zeus/project_module/idle/project_idel_model/project_idel_response.dart';
+import 'package:zeus/services/model/model_class.dart';
+import 'package:zeus/services/response_model/project_idel_response.dart';
+import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/tag_model/tagresponse.dart';
 import 'package:zeus/utility/app_url.dart';
 import '../utility/constant.dart';
 
 class Service {
-  Future<PeopleIdelResponse?> getIdel(String? searchText) async {
+  Future<ProjectDetailsResponse?> getIdel(String? searchText) async {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.get(
@@ -21,7 +21,7 @@ class Service {
       if (response.statusCode == 200) {
         var res = response.body;
 
-        PeopleIdelResponse idel = PeopleIdelResponse.fromJson(json.decode(res));
+        ProjectDetailsResponse idel = ProjectDetailsResponse.fromJson(json.decode(res));
         return idel;
 
         final stringRes = JsonEncoder.withIndent('').convert(res);

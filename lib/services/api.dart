@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zeus/phase_module/model/phase_details.dart';
-import 'package:zeus/phase_module/model/resources_needed.dart';
 import 'package:zeus/services/api_client.dart';
 
 import 'package:http/http.dart';
+import 'package:zeus/services/model/phase_details.dart';
+import 'package:zeus/services/model/resources_needed.dart';
 import 'package:zeus/services/response_model/create_phase_resp.dart';
 import 'package:zeus/services/response_model/get_phase_details_resp.dart';
 import 'package:zeus/services/response_model/update_phase_resp.dart';

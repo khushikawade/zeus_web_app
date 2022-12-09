@@ -52,7 +52,7 @@ class AccountableList {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    project = json['project'] != null ? new Project.fromJson(json['project']) : null;
+    project = json['project_detail'] != null ? new Project.fromJson(json['project_detail']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -68,7 +68,7 @@ class AccountableList {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.project != null) {
-      data['project'] = this.project!.toJson();
+      data['project_detail'] = this.project!.toJson();
     }
     return data;
   }

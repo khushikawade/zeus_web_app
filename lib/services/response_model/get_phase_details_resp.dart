@@ -313,7 +313,7 @@ class Resource {
         createdAt: json["created_at"] == null ? null : json["created_at"],
         updatedAt: json["updated_at"] == null ? null : json["updated_at"],
         project:
-            json["project"] == null ? null : Project.fromJson(json["project"]),
+            json["project_detail"] == null ? null : Project.fromJson(json["project_detail"]),
         resource: json["resource"],
         tasks: json["tasks"] == null
             ? null
@@ -332,7 +332,7 @@ class Resource {
         "deleted_at": deletedAt == null ? null : deletedAt,
         "created_at": createdAt == null ? null : createdAt,
         "updated_at": updatedAt == null ? null : updatedAt,
-        "project": project == null ? null : project!.toJson(),
+        "project_detail": project == null ? null : project!.toJson(),
         "resource": resource,
         "tasks": tasks == null
             ? null

@@ -2,13 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:zeus/people_module/people_idle/data/getdata_provider.dart';
-import 'package:zeus/project_module/idle/data/DataClass.dart';
-import 'package:zeus/project_module/idle/data/project_detail_data/ProjectDetailData.dart';
+import 'package:zeus/people_module/people_home/people_home_view_model.dart';
+import 'package:zeus/project_module/create_project/create_project_model.dart';
+import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
-import 'package:zeus/user_module/people_profile/editpage/edit_profile_model.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -22,25 +21,17 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => DataIdelClass()),
-          ChangeNotifierProvider(create: (_) => PeopleIdelClass()),
-          ChangeNotifierProvider(create: (_) => ProjectDetail()),
+          ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
+          ChangeNotifierProvider(create: (_) => PeopleHomeViewModel()),
+          ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
           ChangeNotifierProvider(create: (_) => TagDetail()),
-          ChangeNotifierProvider(create: (_) => EditPageModel())
+          ChangeNotifierProvider(create: (_) => CreateProjectModel())
         ],
-        child:
-
-
-
-
-
-            MaterialApp(
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
           builder: FlutterSmartDialog.init(),
           home: MaterialApp(
@@ -65,120 +56,18 @@ class MyApp extends StatelessWidget {
                 const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
               ],
             ),
-            home:
-                storage.read(isLogin) == null
-                    ? LoginScreen(
-                        onSubmit: (String value) {},
-                      )
-                    : MyHomePage(
-                        onSubmit: (String value) {},
-                        adOnSubmit: (String value) {},
-                      ),
-
+            home: storage.read(isLogin) == null
+                ? LoginScreen(
+                    onSubmit: (String value) {},
+                  )
+                : MyHomePage(
+                    onSubmit: (String value) {},
+                    adOnSubmit: (String value) {},
+                  ),
             navigatorObservers: [FlutterSmartDialog.observer],
-
-
             onGenerateRoute: generateRoute,
             debugShowCheckedModeBanner: false,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           ),
         ));
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

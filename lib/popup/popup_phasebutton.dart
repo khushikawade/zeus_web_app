@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:zeus/project_module/idle/project_detail_model/project_detail_response.dart';
+import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
@@ -215,7 +215,7 @@ class _MenuPhaseState extends State<MenuPhase>
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted,you will not find this person in project list ",
+                                  "Once deleted,you will not find this person in project_detail list ",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,

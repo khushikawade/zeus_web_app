@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zeus/phase_module/model/phase_details.dart';
-import 'package:zeus/phase_module/model/subtask_model.dart';
+import 'package:zeus/services/model/phase_details.dart';
+import 'package:zeus/services/model/subtask_model.dart';
+
+
 
 Widget subTaskList(context, PhaseDetails phaseDetails,
         {required Null Function(SubTasksModel values, int index, String action)

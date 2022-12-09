@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/responsive.dart';
-import 'package:zeus/people_module/people_idle/model/model_class.dart';
+import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
@@ -345,7 +345,15 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                     if (widget.data!.resource!.skills!.isNotEmpty) {
                       widget.data!.resource!.skills!.forEach((element) {
-                        abc.add(element.title!);
+                        if (abc.isNotEmpty) {
+                          if (abc.contains(element.title!)) {
+                          } else {
+                            abc.add(element.title!.toString());
+                          }
+                        } else {
+                          abc.add(element.title!.toString());
+                        }
+                        // abc.add(element.title!);
                       });
                     }
 

@@ -78,7 +78,7 @@ class Data {
         updatedAt: json["updated_at"],
         subTasks: List<SubTask>.from(
             json["sub_tasks"].map((x) => SubTask.fromJson(x))),
-        project: DataProject.fromJson(json["project"]),
+        project: DataProject.fromJson(json["project_detail"]),
         assignedResources: List<AssignedResource>.from(
             json["assigned_resources"]
                 .map((x) => AssignedResource.fromJson(x))),
@@ -98,7 +98,7 @@ class Data {
         "created_at": createdAt,
         "updated_at": updatedAt,
         "sub_tasks": List<dynamic>.from(subTasks!.map((x) => x.toJson())),
-        "project": project!.toJson(),
+        "project_detail": project!.toJson(),
         "assigned_resources":
             List<dynamic>.from(assignedResources!.map((x) => x.toJson())),
         "milestone": List<dynamic>.from(milestone!.map((x) => x.toJson())),
@@ -228,7 +228,7 @@ class Resource {
         deletedAt: json["deleted_at"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-        project: ResourceProject.fromJson(json["project"]),
+        project: ResourceProject.fromJson(json["project_detail"]),
         resource: json["resource"],
         tasks: List<Task>.from(json["tasks"].map((x) => Task.fromJson(x))),
       );
@@ -244,7 +244,7 @@ class Resource {
         "deleted_at": deletedAt,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "project": project!.toJson(),
+        "project_detail": project!.toJson(),
         "resource": resource,
         "tasks": List<dynamic>.from(tasks!.map((x) => x.toJson())),
       };

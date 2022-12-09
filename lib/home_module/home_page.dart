@@ -10,14 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
-import 'package:zeus/people_module/people_idle/data/getdata_provider.dart';
-
-import 'package:zeus/project_module/idle/data/DataClass.dart';
-import 'package:zeus/project_module/idle/data/project_detail_data/ProjectDetailData.dart';
-import 'package:zeus/project_module/idle/idle.dart';
+import 'package:zeus/people_module/people_home/people_home_view_model.dart';
+import 'package:zeus/project_module/create_project/create_project.dart';
+import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/project_module/project_detail/project_home_view.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/logout_module/logout_view.dart';
-import 'package:zeus/user_module/people_profile/editpage/edit_page.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/dropdrowndata.dart';
 import 'package:zeus/utility/util.dart';
@@ -108,7 +106,7 @@ class _NavigationRailState extends State<MyHomePage>
   Future? getList;
 
   Future getListData() {
-    return Provider.of<ProjectDetail>(context, listen: true).changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: true).changeProfile();
   }
 
   @override
@@ -256,7 +254,7 @@ class _NavigationRailState extends State<MyHomePage>
     }
   }
 
-  //Create project Api
+  //Create project_detail Api
   createProject() async {
     var token = 'Bearer ' + storage.read("token");
     try {
@@ -353,6 +351,7 @@ class _NavigationRailState extends State<MyHomePage>
 
   @override
   void initState() {
+      Provider.of<ProjectHomeViewModel>(context, listen: false).getPeopleIdel(searchText: '');
     getUsers();
     change();
     _isSelected = false;
@@ -425,7 +424,7 @@ class _NavigationRailState extends State<MyHomePage>
         style: TextStyle(fontSize: 40),
       ),
     ),
-    Idle(),
+    ProjectHome(),
     Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,
@@ -466,7 +465,7 @@ class _NavigationRailState extends State<MyHomePage>
     ),
   ];
 
-  //Create project popup
+  //Create project_detail popup
   void showAlertDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -479,7 +478,7 @@ class _NavigationRailState extends State<MyHomePage>
               backgroundColor: const Color(0xff1E293B),
               content: Form(
                   key: _addFormKey,
-                  child: EditPage(
+                  child: CreateProjectPage(
                     formKey: _addFormKey,
                   )),
             ),
@@ -2813,14 +2812,15 @@ class _NavigationRailState extends State<MyHomePage>
                  
                       onChanged: (val) {
                         try {
-                          _debouncer.run(() {
+                          _debouncer.run(() async {
                             if (_selectedIndex == 1) {
-                              Provider.of<DataIdelClass>(context, listen: false)
-                                  .getPeopleIdel(searchText: val);
+                              if(val!=null&&val.isNotEmpty){
+                              await  Provider.of<ProjectHomeViewModel>(context, listen: false).getPeopleIdel(searchText: val);
+                              }
                             } else if (_selectedIndex == 2) {
                               print(_selectedIndex);
                             } else if (_selectedIndex == 3) {
-                              Provider.of<PeopleIdelClass>(context,
+                              Provider.of<PeopleHomeViewModel>(context,
                                       listen: false)
                                   .getPeopleDataList(searchText: val);
                             }
