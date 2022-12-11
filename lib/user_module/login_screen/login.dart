@@ -73,7 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                           color: Color(0xff94A3B8),
                           fontSize: 14.0,
-                          fontFamily: 'Inter',
+                          fontStyle: FontStyle.normal,
+                          fontFamily: 'Inter-Medium',
                           fontWeight: FontWeight.w500),
                     ),
                   ),
@@ -86,22 +87,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       "Zestful Empowering Utilization System",
                       style: TextStyle(
                           color: Color(0xffFFFFFF),
-                          fontSize: 20.0,
-                          fontFamily: 'Inter',
+                          fontSize: 22.0,
+                          fontStyle: FontStyle.normal,
+                          fontFamily: 'Inter-Bold',
                           fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
                 Center(
                   child: Container(
-                    //  height: MediaQuery.of(context).size.height * 0.34,
                     width: MediaQuery.of(context).size.width * 0.30,
                     margin: const EdgeInsets.only(
                       top: 49.0,
                     ),
                     decoration: BoxDecoration(
                       color: const Color(0xff1E293B),
-                      //border: Border.all(color: const Color(0xff0E7490)),
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -131,8 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: MediaQuery.of(context).size.width * 0.99,
                               margin: const EdgeInsets.only(
                                 top: 40.0,
-                                left: 30.0,
-                                right: 30.0,
+                                left: 20.0,
+                                right: 20.0,
                               ),
                               height: 56.0,
                               decoration: BoxDecoration(
@@ -160,48 +160,48 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Container(
                                   height: 16.0,
                                   margin: const EdgeInsets.only(
-                                      top: 50.0, left: 50.0),
+                                      top: 50.0, left: 35.0),
                                   child: const Text(
                                     "Email address",
                                     style: TextStyle(
-                                        fontSize: 14.0,
+                                        fontSize: 11.0,
                                         color: Color(0xff64748B),
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Inter-Medium',
+                                        fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
-
-                                /*  Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:20.0,
-                                  margin:
-                                  const EdgeInsets.only(top: 10.0, left: 2.0,bottom: 0.0),
-                  
-                                  child:
-                                ),*/
                               ],
                             ),
                             TextFormField(
                               autocorrect: false,
                               controller: emailController,
                               cursorColor: const Color(0xffFFFFFF),
-                              style: const TextStyle(color: Color(0xffFFFFFF)),
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  fontStyle: FontStyle.normal,
+                                  color: Color(0xffFFFFFF),
+                                  letterSpacing: 0.25,
+                                  fontFamily: 'Inter-Regular',
+                                  fontWeight: FontWeight.w400),
                               textAlignVertical: TextAlignVertical.bottom,
                               keyboardType: TextInputType.text,
                               decoration: const InputDecoration(
                                   //errorStyle: TextStyle(fontSize: 14, height: 0.20),
                                   contentPadding: EdgeInsets.only(
                                     bottom: 0.0,
-                                    top: 82.0,
+                                    top: 80.0,
                                     right: 10,
-                                    left: 50.0,
+                                    left: 35.0,
                                   ),
                                   border: InputBorder.none,
                                   hintText: 'Enter email address',
                                   hintStyle: TextStyle(
                                       fontSize: 14.0,
+                                      fontStyle: FontStyle.normal,
                                       color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
+                                      letterSpacing: 0.25,
+                                      fontFamily: 'Inter-Regular',
                                       fontWeight: FontWeight.w400)),
                               autovalidateMode: _submitted
                                   ? AutovalidateMode.onUserInteraction
@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: MediaQuery.of(context).size.width * 0.99,
                               margin: const EdgeInsets.only(
-                                  top: 24.0, left: 30.0, right: 30.0),
+                                  top: 24.0, left: 20.0, right: 20.0),
                               height: 56.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -259,25 +259,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Container(
                                   height: 16.0,
                                   margin: const EdgeInsets.only(
-                                      top: 33.0, left: 50.0),
+                                      top: 33.0, left: 35.0),
                                   child: const Text(
                                     "Password",
                                     style: TextStyle(
-                                        fontSize: 14.0,
+                                        fontSize: 11.0,
                                         color: Color(0xff64748B),
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Inter-Medium',
+                                        fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
-
-                                /*  Container(
-                                  alignment: Alignment.centerLeft,
-                                  height:20.0,
-                                  margin:
-                                  const EdgeInsets.only(top: 10.0, left: 2.0,bottom: 0.0),
-                  
-                                  child:
-                                ),*/
                               ],
                             ),
                             TextFormField(
@@ -285,24 +277,33 @@ class _LoginScreenState extends State<LoginScreen> {
                               controller: passwordController,
                               obscureText: !_showPassword,
                               cursorColor: const Color(0xffFFFFFF),
-                              style: const TextStyle(color: Color(0xffFFFFFF)),
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  fontStyle: FontStyle.normal,
+                                  color: Color(0xffFFFFFF),
+                                  letterSpacing: 0.25,
+                                  fontFamily: 'Inter-Regular',
+                                  fontWeight: FontWeight.w400),
                               textAlignVertical: TextAlignVertical.bottom,
                               keyboardType: TextInputType.text,
                               decoration: const InputDecoration(
-                                  //errorStyle: TextStyle(fontSize: 14, height: 0.20),
-                                  contentPadding: EdgeInsets.only(
-                                    bottom: 0.0,
-                                    top: 66.0,
-                                    right: 10,
-                                    left: 50.0,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintText: 'Enter password',
-                                  hintStyle: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w400)),
+                                //errorStyle: TextStyle(fontSize: 14, height: 0.20),
+                                contentPadding: EdgeInsets.only(
+                                  bottom: 0.0,
+                                  top: 63.0,
+                                  right: 10,
+                                  left: 35.0,
+                                ),
+                                border: InputBorder.none,
+                                hintText: 'Enter password',
+                                hintStyle: TextStyle(
+                                    fontSize: 14.0,
+                                    fontStyle: FontStyle.normal,
+                                    color: Color(0xffFFFFFF),
+                                    letterSpacing: 0.25,
+                                    fontFamily: 'Inter-Regular',
+                                    fontWeight: FontWeight.w400),
+                              ),
                               autovalidateMode: _submitted
                                   ? AutovalidateMode.onUserInteraction
                                   : AutovalidateMode.disabled,
@@ -319,50 +320,55 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            if (emailController.text.isEmpty &&
-                                passwordController.text.isEmpty) {
-                              _submit();
-                            } else {
-                              SmartDialog.showLoading(
-                                msg:
-                                    "Your request is in progress please wait for a while...",
-                              );
-                              Future.delayed(const Duration(seconds: 2), () {
-                                login();
-                              });
-                            }
-                          },
+                        SizedBox(
+                          height: 35,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
                           child: Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              width:
-                                  87, //MediaQuery.of(context).size.width * 0.22,
-                              margin: const EdgeInsets.only(
-                                  top: 38.0, right: 30.0, bottom: 38),
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff7DD3FC),
-                                //border: Border.all(color:  const Color(0xff1E293B)),
-                                borderRadius: BorderRadius.circular(
-                                  40.0,
+                            alignment: Alignment.bottomRight,
+                            child: InkWell(
+                              onTap: () {
+                                if (emailController.text.isEmpty &&
+                                    passwordController.text.isEmpty) {
+                                  _submit();
+                                } else {
+                                  SmartDialog.showLoading(
+                                    msg:
+                                        "Your request is in progress please wait for a while...",
+                                  );
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
+                                    login();
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: 87,
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff7DD3FC),
+                                  borderRadius: BorderRadius.circular(
+                                    40.0,
+                                  ),
                                 ),
-                              ),
-
-                              child: const Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: ColorSelect.black_color,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w700),
+                                child: const Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: ColorSelect.black_color,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 25,
                         ),
                       ],
                     ),

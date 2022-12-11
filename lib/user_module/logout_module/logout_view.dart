@@ -38,11 +38,11 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       position: PopupMenuPosition.under,
       offset: const Offset(-20, 20),
       color: const Color(0xff334155),
-
       tooltip: '',
       child: Container(
         width: 24.0,
         height: 24.0,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: const Color(0xff334155),
           border: Border.all(color: const Color(0xff334155)),
@@ -50,19 +50,16 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
             10.0,
           ),
         ),
-        margin: const EdgeInsets.only(
-          top: 16.0,
-          left: 8.0,
-          right: 20.0,
-        ),
         child: Padding(
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.only(top: 3),
           child: SvgPicture.asset(
             "images/drop_arrow.svg",
+            width: 8,
+            height: 5,
+            alignment: Alignment.center,
           ),
         ),
       ),
-
       itemBuilder: (context) => [
         PopupMenuItem(
           padding: EdgeInsets.zero,
@@ -103,7 +100,6 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           ),
         ),
       ],
-
     );
   }
 

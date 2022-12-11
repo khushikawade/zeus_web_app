@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -48,11 +47,10 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
   final double width = 18;
   final double widthVertical = 10;
 
-
-
   Future? getList;
   Future getListData1() {
-    return Provider.of<ProjectHomeViewModel>(context, listen: false).changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: false)
+        .changeProfile();
   }
 
   @override
@@ -67,11 +65,11 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
   @override
   void initState() {
-
     print(
         "Called second time ------------------------------------------- gff gf f");
 
-    Provider.of<PeopleHomeViewModel>(context, listen: false).getPeopleDataList();
+    Provider.of<PeopleHomeViewModel>(context, listen: false)
+        .getPeopleDataList();
     change();
     getToken();
     super.initState();
@@ -119,21 +117,40 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 return data.loading
                     ? const Expanded(
                         child: Center(child: CircularProgressIndicator()))
-                    : Expanded(
-                        child: RawScrollbar(
-                          controller: verticalScroll,
-                          thumbColor: const Color(0xff4b5563),
-                          radius: Radius.circular(20),
-                          thickness: 10,
-                          child: ListView(
-                            controller: verticalScroll,
-                            shrinkWrap: true,
-                            children: [
-                              makePeopleList(data),
-                            ],
-                          ),
-                        ),
-                      );
+                    : data.peopleList == null || data.peopleList!.data!.isEmpty
+                        ? Expanded(
+                            child: const Center(
+                                child: Text(
+                              "No Records Found!",
+                              style: TextStyle(
+                                  color: Color(0xffFFFFFF),
+                                  fontSize: 22.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            )),
+                          )
+                        : Expanded(
+                            child: RawScrollbar(
+                              controller: _scrollController,
+                              thumbColor: const Color(0xff4b5563),
+                              crossAxisMargin: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              thickness: 8,
+                              child: ScrollConfiguration(
+                                behavior: ScrollConfiguration.of(context)
+                                    .copyWith(scrollbars: false),
+                                child: ListView(
+                                  controller: verticalScroll,
+                                  shrinkWrap: true,
+                                  children: [
+                                    makePeopleList(data),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
               }),
             ],
           ),
@@ -248,9 +265,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                                 shape: BoxShape.circle,
                                 color: Color(0xffF2F2F2)),
                             child: Text(
-                              fullName.isNotEmpty
-                                  ? fullName
-                                  : '',
+                              fullName.isNotEmpty ? fullName : '',
                               style: const TextStyle(
                                   fontFamily: 'Inter-Medium',
                                   fontSize: 14,
@@ -395,7 +410,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                   Padding(
                     padding: const EdgeInsets.only(left: 5.0, bottom: 15),
                     child: Stack(children: [
-                     pop.MyMenu(
+                      pop.MyMenu(
                         peopleList: data.peopleList!.data,
                         data: data.peopleList!.data![index],
                         title: 'Menu at bottom',
@@ -404,9 +419,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                         returnValue: () {
                           print(
                               "Value returned --------------------------------------");
-                          Provider.of<PeopleHomeViewModel>(context, listen: false)
+                          Provider.of<PeopleHomeViewModel>(context,
+                                  listen: false)
                               .getPeopleDataList();
-                         
                         },
                       )
                     ]),
@@ -417,135 +432,115 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
       }
     }
 
-    return data.peopleList == null || data.peopleList!.data!.isEmpty
-        ? Container(
-            width: MediaQuery.of(context).size.width < 950
-                ? MediaQuery.of(context).size.width * 2
-                : MediaQuery.of(context).size.width - 200,
-
-       
-
-            height: 969,
-            child: const Center(
-                child: Text(
-              "No Records Found!",
-              style: TextStyle(
-                  color: Color(0xffFFFFFF),
-                  fontSize: 22.0,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500),
-            )),
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                 child: FittedBox(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: RawScrollbar(
-                    controller: horizontalScroll,
-                    thumbColor: const Color(0xff4b5563),
-                    radius: Radius.circular(20),
-                    thickness: 10,
-                    child: SingleChildScrollView(
-                      controller: horizontalScroll,
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(dividerColor: Color(0xff525f72)),
-                          child: DataTable(
-                              horizontalMargin: 0,
-                              showCheckboxColumn: false,
-                              dataRowHeight: 60,
-                              dividerThickness: 0.7,
-                              columnSpacing: 132,
-                              columns: const [
-                                DataColumn(
-                                  label: Text(
-                                    "Name",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Nickname",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Capacity",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Occupied till",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Scheduled on",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Skills",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: Text(
-                                    "Action",
-                                    style: TextStyle(
-                                        color: ColorSelect.text_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                              rows: rows),
-                        ),
-                      ),
-                    ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+            child: FittedBox(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: RawScrollbar(
+              controller: horizontalScroll,
+              thumbColor: const Color(0xff4b5563),
+              radius: Radius.circular(20),
+              thickness: 10,
+              child: SingleChildScrollView(
+                controller: horizontalScroll,
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Theme(
+                    data: Theme.of(context)
+                        .copyWith(dividerColor: Color(0xff525f72)),
+                    child: DataTable(
+                        horizontalMargin: 0,
+                        showCheckboxColumn: false,
+                        dataRowHeight: 60,
+                        dividerThickness: 0.7,
+                        columnSpacing: 132,
+                        columns: const [
+                          DataColumn(
+                            label: Text(
+                              "Name",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Nickname",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Capacity",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Occupied till",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Scheduled on",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Skills",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Action",
+                              style: TextStyle(
+                                  color: ColorSelect.text_color,
+                                  fontSize: 14.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                        rows: rows),
                   ),
                 ),
-              )
               ),
-            ],
-          );
+            ),
+          ),
+        )),
+      ],
+    );
   }
 
   Future<String?> getTimeline() async {

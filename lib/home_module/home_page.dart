@@ -42,8 +42,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _NavigationRailState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin 
-    {
+    with SingleTickerProviderStateMixin {
   AutoCompleteTextField? searchTextField;
   final fieldText = TextEditingController();
   final searchController = TextEditingController();
@@ -91,10 +90,7 @@ class _NavigationRailState extends State<MyHomePage>
     var dateFormat = DateFormat("h:mm a"); // you can change the format here
     print(dateFormat.format(tempDate));
     return dateFormat.format(tempDate);
-   
   }
-
-
 
   var prefs;
 
@@ -106,7 +102,8 @@ class _NavigationRailState extends State<MyHomePage>
   Future? getList;
 
   Future getListData() {
-    return Provider.of<ProjectHomeViewModel>(context, listen: true).changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: true)
+        .changeProfile();
   }
 
   @override
@@ -153,7 +150,7 @@ class _NavigationRailState extends State<MyHomePage>
       print("skills sucess");
       var user = userFromJson(response.body);
       users = user.data!;
-    
+
       setState(() {
         loading = false;
       });
@@ -161,7 +158,6 @@ class _NavigationRailState extends State<MyHomePage>
       AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
-     
     }
   }
 
@@ -198,7 +194,7 @@ class _NavigationRailState extends State<MyHomePage>
     for (int i = 0; i < abc.length; i++) {
       request.fields['skills[$i]'] = '${abc[i]}';
     }
-  
+
     _selectedFile = webImage;
     print(_selectedFile);
 
@@ -268,7 +264,7 @@ class _NavigationRailState extends State<MyHomePage>
           "work_folder_id": _warkfolderId.text.toString(),
           "budget": _budget.toString(),
           "currency": "&",
-          "estimation_hours": '80', 
+          "estimation_hours": '80',
           "status": _status,
         }),
         headers: {
@@ -311,8 +307,6 @@ class _NavigationRailState extends State<MyHomePage>
 
   bool _addSubmitted = true;
   String name = '';
-  int profileIndex = 5;
-
 
   List _department = [];
   var items1 = [
@@ -351,7 +345,8 @@ class _NavigationRailState extends State<MyHomePage>
 
   @override
   void initState() {
-      Provider.of<ProjectHomeViewModel>(context, listen: false).getPeopleIdel(searchText: '');
+    Provider.of<ProjectHomeViewModel>(context, listen: false)
+        .getPeopleIdel(searchText: '');
     getUsers();
     change();
     _isSelected = false;
@@ -391,6 +386,8 @@ class _NavigationRailState extends State<MyHomePage>
   final TextEditingController _budget = TextEditingController();
   final TextEditingController _estimatehours = TextEditingController();
 
+  final ScrollController verticalScroll = ScrollController();
+
   Future<void> _selectDate(setState) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -398,7 +395,9 @@ class _NavigationRailState extends State<MyHomePage>
           return Theme(
             data: ThemeData.light().copyWith(
               primaryColor: const Color(0xff0F172A),
-              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), colorScheme: ColorScheme.light(primary: const Color(0xff0F172A)).copyWith(secondary: const Color(0xff0F172A)),
+              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+              colorScheme: ColorScheme.light(primary: const Color(0xff0F172A))
+                  .copyWith(secondary: const Color(0xff0F172A)),
             ),
             child: child!,
           );
@@ -475,6 +474,7 @@ class _NavigationRailState extends State<MyHomePage>
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
+              contentPadding: EdgeInsets.zero,
               backgroundColor: const Color(0xff1E293B),
               content: Form(
                   key: _addFormKey,
@@ -510,13 +510,20 @@ class _NavigationRailState extends State<MyHomePage>
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.99,
                   height: MediaQuery.of(context).size.height * 0.99,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  child: RawScrollbar(
+                    controller: verticalScroll,
+                    thumbColor: const Color(0xff4b5563),
+                    crossAxisMargin: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    thickness: 8,
+                    child: ListView(
+                      controller: verticalScroll,
+                      shrinkWrap: true,
                       children: [
                         Container(
-                            height: MediaQuery.of(context).size.height * 0.11,
-                            width: MediaQuery.of(context).size.width * 0.99,
+                            height: 87,
                             decoration: const BoxDecoration(
                               color: Color(0xff283345),
                               borderRadius: BorderRadius.only(
@@ -532,7 +539,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   blurRadius: 0.0,
                                   spreadRadius: 0.0,
-                                ), 
+                                ),
                               ],
                             ),
                             child: Row(
@@ -647,7 +654,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   child: Container(
                                     width: 97,
                                     margin: const EdgeInsets.only(
-                                        top: 10.0, right: 20.0, bottom: 10.0),
+                                        top: 10.0, right: 30.0, bottom: 10.0),
                                     height: 40.0,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff7DD3FC),
@@ -655,7 +662,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         40.0,
                                       ),
                                     ),
-
                                     child: const Align(
                                       alignment: Alignment.center,
                                       child: Text(
@@ -749,8 +755,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                         size: 18,
                                                         color:
                                                             Color(0xffFFFFFF)),
-
-                                             
                                                   ),
                                                   Container(
                                                     margin:
@@ -797,13 +801,14 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(
-                                        left: 30.0, top: 23.0),
+                                        left: 30.0, top: 30.0),
                                     child: const Text(
                                       "About you",
                                       style: TextStyle(
                                           color: Color(0xffFFFFFF),
                                           fontSize: 18.0,
-                                          fontFamily: 'Inter',
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'Inter-Bold',
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
@@ -859,7 +864,6 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       TextFormField(
                                         controller: _name,
-                                       
                                         cursorColor: const Color(0xffFFFFFF),
                                         style: const TextStyle(
                                             color: Color(0xffFFFFFF)),
@@ -867,9 +871,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             TextAlignVertical.bottom,
                                         keyboardType: TextInputType.text,
                                         minLines: 1,
-                                     
                                         maxLength: 30,
-
                                         decoration: const InputDecoration(
                                             counterText: "",
                                             contentPadding: EdgeInsets.only(
@@ -891,10 +893,8 @@ class _NavigationRailState extends State<MyHomePage>
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
-
                                         validator: (value) {
                                           RegExp regex = RegExp(r'^[a-z A-Z]+$',
-                                            
                                               caseSensitive: false);
                                           if (value!.isEmpty) {
                                             return 'Please enter';
@@ -926,8 +926,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 bottom: 10),
                                             height: 56.0,
                                             decoration: BoxDecoration(
-                                              color:
-                                                  const Color(0xff334155),
+                                              color: const Color(0xff334155),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -941,7 +940,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), 
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -987,7 +986,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
-
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Please enter';
@@ -1023,7 +1021,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), 
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -1116,7 +1114,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       ),
                                                       blurRadius: 0.0,
                                                       spreadRadius: 0.0,
-                                                    ), 
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -1196,7 +1194,6 @@ class _NavigationRailState extends State<MyHomePage>
                                           child: Stack(
                                             children: [
                                               Container(
-
                                                 margin: const EdgeInsets.only(
                                                     top: 16.0, right: 30),
                                                 height: 56.0,
@@ -1216,7 +1213,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                       ),
                                                       blurRadius: 0.0,
                                                       spreadRadius: 0.0,
-                                                    ), 
+                                                    ),
                                                   ],
                                                 ),
                                                 child: Column(
@@ -1261,7 +1258,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                                   child:
                                                                       CustomDropdownButton(
                                                             isDense: true,
-
                                                             dropdownColor:
                                                                 Color(
                                                                     0xff0F172A),
@@ -1286,7 +1282,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                                   .arrow_drop_down,
                                                               color: Color(
                                                                   0xff64748B),
-
                                                             ),
                                                             elevation: 12,
                                                             items: _department
@@ -1326,9 +1321,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                       }),
                                                     ]),
                                               ),
-
-                                          
-
                                               saveButtonClick
                                                   ? selectDepartment
                                                       ? const Text(
@@ -1372,7 +1364,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), 
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -1416,7 +1408,6 @@ class _NavigationRailState extends State<MyHomePage>
                                         autovalidateMode: _addSubmitted
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
-
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Please enter';
@@ -1448,7 +1439,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.07,
+                                                0.10,
                                             margin: const EdgeInsets.only(
                                                 left: 30.0,
                                                 top: 16.0,
@@ -1492,7 +1483,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                           Icons.arrow_drop_down,
                                                           color:
                                                               Color(0xff64748B),
-
                                                         ),
                                                         items: _currencyName
                                                             .map((items) {
@@ -1527,7 +1517,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                   },
                                                 )),
                                           ),
-                                         
                                         ],
                                       ),
                                       const SizedBox(
@@ -1540,7 +1529,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.10,
+                                                  0.12,
                                               margin: const EdgeInsets.only(
                                                   top: 16.0, bottom: 16.0),
                                               height: 56.0,
@@ -1559,7 +1548,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     ),
                                                     blurRadius: 0.0,
                                                     spreadRadius: 0.0,
-                                                  ), 
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -1634,7 +1623,7 @@ class _NavigationRailState extends State<MyHomePage>
                             ),
                             Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.99,
+                                    MediaQuery.of(context).size.height * 1.2,
                                 child: const VerticalDivider(
                                   color: Color(0xff94A3B8),
                                   thickness: 0.2,
@@ -1677,8 +1666,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 left: 30.0),
                                             height: 56.0,
                                             decoration: BoxDecoration(
-                                              color:
-                                                  const Color(0xff334155),
+                                              color: const Color(0xff334155),
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 8.0,
@@ -1692,7 +1680,8 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                            )],
+                                                )
+                                              ],
                                             ),
                                           ),
                                           handleAllerrorWidget(selectDays)
@@ -1716,9 +1705,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             top: 26,
                                             bottom: 10),
                                         height: 20.0,
-                                        child: Container(
-
-                                            child: StatefulBuilder(
+                                        child: Container(child: StatefulBuilder(
                                           builder: (BuildContext context,
                                               StateSettersetState) {
                                             return Padding(
@@ -1744,7 +1731,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                   icon: const Icon(
                                                     Icons.arrow_drop_down,
                                                     color: Color(0xff64748B),
-
                                                   ),
                                                   items: items1
                                                       .map((String items1) {
@@ -1975,8 +1961,6 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 20.0,
                                   ),
-                                
-
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -2009,8 +1993,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     const EdgeInsets.all(10.0),
                                                 child: SvgPicture.asset(
                                                     'images/tag_new.svg')),
-                                          )
-                                          ),
+                                          )),
                                     ],
                                   ),
                                   const SizedBox(
@@ -2020,6 +2003,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Container(
                                         padding:
@@ -2043,7 +2027,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                 : searchTextField =
                                                     AutoCompleteTextField<
                                                         Datum>(
-                                                 
                                                     clearOnSubmit: false,
                                                     key: key,
                                                     cursorColor: Colors.white,
@@ -2073,15 +2056,12 @@ class _NavigationRailState extends State<MyHomePage>
                                                               FontWeight.w400),
                                                       border: InputBorder.none,
                                                     ),
-
                                                     suggestions: users,
                                                     keyboardType:
                                                         TextInputType.text,
-
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 14.0),
-
                                                     itemFilter: (item, query) {
                                                       return item.title!
                                                           .toLowerCase()
@@ -2122,79 +2102,69 @@ class _NavigationRailState extends State<MyHomePage>
                                           ],
                                         ),
                                       ),
-                                      handleAllerrorWidget(selectSkill)
+                                      handleAllerrorWidget(selectSkill),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 30),
+                                        child: Wrap(
+                                          spacing: 5,
+                                          runSpacing: 5,
+                                          children: List.generate(
+                                            abc.length,
+                                            (index) {
+                                              return Container(
+                                                height: 32,
+                                                margin: const EdgeInsets.only(
+                                                    left: 5.0, right: 5.0),
+                                                child: InputChip(
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          8))),
+                                                  deleteIcon: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                    size: 20,
+                                                  ),
+                                                  backgroundColor:
+                                                      Color(0xff334155),
+                                                  visualDensity:
+                                                      VisualDensity.compact,
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  label: Text(
+                                                    abc[index],
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  onSelected: (bool selected) {
+                                                    setState(() {
+                                                      _isSelected = selected;
+                                                    });
+                                                  },
+                                                  onDeleted: () {
+                                                    setState(() {
+                                                      abc.removeAt(index);
+                                                    });
+                                                  },
+                                                  showCheckmark: false,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                     ],
-                                  ),
-
-                                  /*  SizedBox(
-                                    height: 100,
-                                    child: ListView.builder(
-                                        itemBuilder: (context,index){
-                                          return Text(_addtag[index]['title']);},
-                                        padding: const EdgeInsets.all(12.0),
-                                        itemCount: _addtag.length
-                                      ),
-                                  ),
-*/
-
-                                  SizedBox(
-                                    height: 30,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 26),
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: abc.length,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 12.0),
-                                            child: InputChip(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(8))),
-                                              deleteIcon: Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                              backgroundColor:
-                                                  Color(0xff334155),
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              label: Text(
-                                                abc[index],
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              selected: _isSelected!,
-                                              onSelected: (bool selected) {
-                                                setStateView(() {
-                                                  _isSelected = selected;
-                                                });
-                                              },
-                                              onDeleted: () {
-                                                setStateView(() {
-                                                  abc.removeAt(index);
-                                                });
-                                              },
-
-                                              showCheckmark: false,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
                                   ),
                                 ],
                               ),
                             ),
                             Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.99,
+                                    MediaQuery.of(context).size.height * 1.2,
                                 child: const VerticalDivider(
                                   color: Color(0xff94A3B8),
                                   thickness: 0.2,
@@ -2249,7 +2219,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), 
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -2297,8 +2267,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                     
-
                                           RegExp regex =
                                               RegExp(r'^[a-z A-Z]+$');
                                           if (value!.isEmpty) {
@@ -2342,7 +2310,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   ),
                                                   blurRadius: 0.0,
                                                   spreadRadius: 0.0,
-                                                ), 
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -2390,7 +2358,6 @@ class _NavigationRailState extends State<MyHomePage>
                                             ? AutovalidateMode.onUserInteraction
                                             : AutovalidateMode.disabled,
                                         validator: (value) {
-                                     
                                           RegExp regex =
                                               RegExp(r'^[a-z A-Z]+$');
                                           if (value!.isEmpty) {
@@ -2428,7 +2395,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), 
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -2476,7 +2443,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           String pattern =
                                               r'(^(?:[+0]9)?[0-9]{10}$)';
                                           RegExp regExp = new RegExp(pattern);
-                                           if (value!.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'Please enter';
                                           } else if (!regExp.hasMatch(value)) {
                                             return 'Please enter valid mobile number';
@@ -2512,7 +2479,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               ),
                                               blurRadius: 0.0,
                                               spreadRadius: 0.0,
-                                            ), 
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -2622,7 +2589,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                     icon: Icon(
                                                       Icons.arrow_drop_down,
                                                       color: Color(0xff64748B),
-
                                                     ),
                                                     items:
                                                         _timeline.map((items) {
@@ -2676,6 +2642,7 @@ class _NavigationRailState extends State<MyHomePage>
           );
         });
   }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -2684,197 +2651,179 @@ class _NavigationRailState extends State<MyHomePage>
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 80.0,
+          toolbarHeight: 70.0,
           backgroundColor: const Color(0xff0F172A),
           elevation: 0,
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 5, right: 5),
+                  width: 475,
+                  height: 48.0,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff1e293b),
+                    borderRadius: BorderRadius.circular(
+                      42.0,
+                    ),
+                  ),
+                  child: TextField(
+                    controller: searchController,
+                    onChanged: (val) {
+                      try {
+                        _debouncer.run(() async {
+                          if (_selectedIndex == 1) {
+                            if (val != null && val.isNotEmpty) {
+                              await Provider.of<ProjectHomeViewModel>(context,
+                                      listen: false)
+                                  .getPeopleIdel(searchText: val);
+                            }
+                          } else if (_selectedIndex == 2) {
+                            print(_selectedIndex);
+                          } else if (_selectedIndex == 3) {
+                            Provider.of<PeopleHomeViewModel>(context,
+                                    listen: false)
+                                .getPeopleDataList(searchText: val);
+                          }
+                        });
+                      } catch (e) {
+                        print(e);
+                        print(val);
+                      }
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 16.0),
+                      prefixIcon: const Padding(
+                          padding:
+                              EdgeInsets.only(top: 4.0, left: 15, right: 20),
+                          child: Icon(
+                            Icons.search,
+                            color: Color(0xff64748B),
+                          )),
+                      hintText: _selectedIndex == 1
+                          ? 'Search Project'
+                          : _selectedIndex == 3
+                              ? 'Search People'
+                              : 'Search',
+                      hintStyle: const TextStyle(
+                          fontSize: 14.0,
+                          color: Color(0xff64748B),
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(color: Colors.white, fontSize: 14.0),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                    width: 40.0,
+                    height: 40.0,
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage('images/images.jpeg'),
+                    )),
+                SizedBox(
+                  width: 10,
+                ),
+                LogOut(returnValue: () {}),
+                SizedBox(
+                  width: 30,
+                ),
+              ],
+            ),
+          ],
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
-                onTap: () {
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(top: 26.0, left: 20.0),
-                  child: SvgPicture.asset(
-                    'images/hamburger.svg',
-                    width: 18.0,
-                    height: 12.0,
-                  ),
+                onTap: () {},
+                child: SvgPicture.asset(
+                  'images/hamburger.svg',
+                  width: 18.0,
+                  height: 12.0,
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 26.0, left: 0.0),
-                child: SvgPicture.asset(
-                  'images/logo.svg',
-                ),
+              SvgPicture.asset(
+                'images/logo.svg',
+              ),
+              SizedBox(
+                width: 25,
               ),
               FutureBuilder(
                   future: getList,
                   builder: (context, snapshot) {
                     return Visibility(
                       visible: snapshot.data as bool,
-                      child: Container(
-                          margin: const EdgeInsets.only(top: 30.0, left: 6.0),
-                          child: Column(
-                            children: [
-                            
-                              _selectedIndex == 1
-                                  ? Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.only(top: 20),
-                                              child: Text("List",
-                                                  style: TextStyle(
-                                                      color: Color(0xff93C5FD),
-                                                      fontSize: 14.0,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            Container(
-                                              width: 25,
-                                              height: 3,
-                                              decoration: const BoxDecoration(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Column(
+                          children: [
+                            _selectedIndex == 1
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text("List",
+                                              style: TextStyle(
                                                   color: Color(0xff93C5FD),
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  3),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  3))),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  : Container(),
-                           
-
-                              profileIndex == 5 && _selectedIndex != 1
-                                  ? const Text("Profile",
-                                      style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 22.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700))
-                                  : Container(),
-
-                              const SizedBox(height: 10),
-
-                             
-                            ],
-                          )),
+                                                  fontSize: 14.0,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500)),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          Container(
+                                            width: 25,
+                                            height: 3,
+                                            decoration: const BoxDecoration(
+                                                color: Color(0xff93C5FD),
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(3),
+                                                    topRight:
+                                                        Radius.circular(3))),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      _selectedIndex == 1
+                                          ? Text("Timeline",
+                                              style: TextStyle(
+                                                  color: Color(0xffffffff),
+                                                  fontSize: 14.0,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500))
+                                          : Container(),
+                                    ],
+                                  )
+                                : Container(),
+                            _selectedIndex == 3
+                                ? const Text("Profile",
+                                    style: TextStyle(
+                                        color: Color(0xffFFFFFF),
+                                        fontSize: 22.0,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700))
+                                : Container(),
+                          ],
+                        ),
+                      ),
                     );
                   }),
-              const SizedBox(width: 30),
-              _selectedIndex == 1
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 16.0, left: 0.0),
-                      child: Text("Timeline",
-                          style: TextStyle(
-                              color: Color(0xffffffff),
-                              fontSize: 14.0,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500)),
-                    )
-                  : Container(),
-              const Spacer(),
-
-           
-              Container(
-                padding: EdgeInsets.only(left: 5, right: 5),
-                width: MediaQuery.of(context).size.width * 0.23,
-                margin: const EdgeInsets.only(left: 30.0, top: 16.0),
-                height: 48.0,
-                decoration: BoxDecoration(
-                  color: const Color(0xff1e293b),
-
-                   borderRadius: BorderRadius.circular(
-                    42.0,
-                  ),
-                ),
-                child: Column(
-                 children: [
-                    TextField(
-                      controller: searchController,
-                 
-                      onChanged: (val) {
-                        try {
-                          _debouncer.run(() async {
-                            if (_selectedIndex == 1) {
-                              if(val!=null&&val.isNotEmpty){
-                              await  Provider.of<ProjectHomeViewModel>(context, listen: false).getPeopleIdel(searchText: val);
-                              }
-                            } else if (_selectedIndex == 2) {
-                              print(_selectedIndex);
-                            } else if (_selectedIndex == 3) {
-                              Provider.of<PeopleHomeViewModel>(context,
-                                      listen: false)
-                                  .getPeopleDataList(searchText: val);
-                            }
-                          });
-                        } catch (e) {
-                          print(e);
-                          print(val);
-                        }
-                      },
-
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 16.0),
-                        prefixIcon: const Padding(
-                            padding:
-                                EdgeInsets.only(top: 4.0, left: 15, right: 20),
-                            child: Icon(
-                              Icons.search,
-                              color: Color(0xff64748B),
-                            )),
-                        hintText: _selectedIndex == 1
-                            ? 'Search Project'
-                            : _selectedIndex == 3
-                                ? 'Search People'
-                                : 'Search',
-                        hintStyle: const TextStyle(
-                            fontSize: 14.0,
-                            color: Color(0xff64748B),
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400),
-                        border: InputBorder.none,
-                      ),
-
-                      keyboardType: TextInputType.text,
-
-                      style: TextStyle(color: Colors.white, fontSize: 14.0),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                  width: 40.0,
-                  height: 40.0,
-                  margin: const EdgeInsets.only(
-                    right: 5.0,
-                    top: 15,
-                    left: 10.0,
-                  ),
-                  child: const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage('images/images.jpeg'),
-                  
-                  )),
-              LogOut(returnValue: () {}),
-             
             ],
           ),
         ),
@@ -2912,9 +2861,6 @@ class _NavigationRailState extends State<MyHomePage>
                               _selectedIndex = index;
                               searchController.clear();
                               add1.add(index);
-                              print(
-                                  '<<<<<<<<<<<<<<_selectedIndex>>>>>>>>>>>>>>');
-                              print(_selectedIndex);
                             });
                           }
                         },
@@ -3186,7 +3132,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   verticalOffset: 17,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 5.0),
-                                //  textAlign: TextAlign.center,
+                                  //  textAlign: TextAlign.center,
                                   decoration: BoxDecoration(
                                     color: const Color(0xff334155),
                                     border: Border.all(
@@ -3727,7 +3673,7 @@ class _NavigationRailState extends State<MyHomePage>
     endTime2 = '';
     _department.clear();
     getDepartment();
-    
+
     _country.clear();
     _enterCity.clear();
 
@@ -3764,5 +3710,4 @@ class _NavigationRailState extends State<MyHomePage>
     }
     return null;
   }
-
-    }
+}

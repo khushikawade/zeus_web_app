@@ -81,13 +81,11 @@ class _NewPhaseState extends State<NewPhase> {
   bool addMilestoneBtnClick = false;
   bool addSubtaskBtnClick = false;
 
-
   TypeAheadFormField? searchTextField;
   TypeAheadFormField? subTaskResourcesSearchTextField;
   final TextEditingController _typeAheadController = TextEditingController();
   final TextEditingController _subTaskResourcesController =
       TextEditingController();
-
 
   checkFormStatus() {
     setState(() {
@@ -161,8 +159,6 @@ class _NewPhaseState extends State<NewPhase> {
 
   @override
   void initState() {
-
-
     beforeScreenLoad();
     getDepartment();
     if (widget.type == 1) {
@@ -205,7 +201,7 @@ class _NewPhaseState extends State<NewPhase> {
                           ),
                           blurRadius: 0.0,
                           spreadRadius: 0.0,
-                        ), 
+                        ),
                       ],
                     ),
                     child: Row(
@@ -217,26 +213,31 @@ class _NewPhaseState extends State<NewPhase> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Container(
-                                width: 97.0,
-                                margin: const EdgeInsets.only(
-                                    top: 10.0, bottom: 10.0),
-                                height: 40.0,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff334155),
-                                  borderRadius: BorderRadius.circular(
-                                    40.0,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: 97.0,
+                                  margin: const EdgeInsets.only(
+                                      top: 10.0, bottom: 10.0),
+                                  height: 40.0,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff334155),
+                                    borderRadius: BorderRadius.circular(
+                                      40.0,
+                                    ),
                                   ),
-                                ),
-                                child: const Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700),
+                                  child: const Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Color(0xffFFFFFF),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -255,7 +256,6 @@ class _NewPhaseState extends State<NewPhase> {
                                       40.0,
                                     ),
                                   ),
-
                                   child: const Align(
                                     alignment: Alignment.center,
                                     child: Text(
@@ -412,7 +412,6 @@ class _NewPhaseState extends State<NewPhase> {
               startDate: _phaseDetails.sub_tasks!.isNotEmpty
                   ? DateTime.now().add(Duration(days: 10))
                   : DateTime.now(),
-
               validationCallBack: (String values) {
                 if (values.isEmpty) {
                   checkFormStatus();
@@ -453,7 +452,6 @@ class _NewPhaseState extends State<NewPhase> {
                             backgroundColor: Color(0xff334155),
                             radius: 30,
                             child: Icon(Icons.person_outline, size: 40),
-                       
                           ),
                         ),
                         Positioned(
@@ -474,10 +472,8 @@ class _NewPhaseState extends State<NewPhase> {
                   ),
                   Expanded(
                     child: Container(
-
                       margin: const EdgeInsets.only(left: 30.0),
                       height: 56.0,
-                   
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
                         borderRadius: BorderRadius.circular(
@@ -485,22 +481,20 @@ class _NewPhaseState extends State<NewPhase> {
                         ),
                       ),
                       child: Container(
-                        margin:
-                            const EdgeInsets.only(left: 16.0, right: 16.0),
+                        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                         height: 20.0,
                         child: Container(
 
                             // padding: const dgeInsets.all(2.0),
                             child: StatefulBuilder(
-                          builder:
-                              (BuildContext context, StateSettersetState) {
+                          builder: (BuildContext context, StateSettersetState) {
                             return DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 dropdownColor: ColorSelect.class_color,
                                 value: _depat,
                                 underline: Container(),
                                 hint: const Text(
-                                  "Select",
+                                  "Type",
                                   style: TextStyle(
                                       fontSize: 14.0,
                                       color: Color(0xffFFFFFF),
@@ -511,7 +505,6 @@ class _NewPhaseState extends State<NewPhase> {
                                 icon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color(0xff64748B),
-
                                 ),
                                 items: _department.map((items) {
                                   return DropdownMenuItem(
@@ -582,7 +575,6 @@ class _NewPhaseState extends State<NewPhase> {
                           height: 50.0,
                           decoration: BoxDecoration(
                             color: const Color(0xff334155),
-
                             borderRadius: BorderRadius.circular(
                               8.0,
                             ),
@@ -591,6 +583,9 @@ class _NewPhaseState extends State<NewPhase> {
                             children: [
                               searchTextField = TypeAheadFormField(
                                 keepSuggestionsOnLoading: false,
+                                suggestionsBoxVerticalOffset: 0.0,
+                                suggestionsBoxDecoration:
+                                    SuggestionsBoxDecoration(),
                                 hideOnLoading: true,
                                 suggestionsCallback: (pattern) {
                                   return getSuggestions(pattern);
@@ -676,7 +671,6 @@ class _NewPhaseState extends State<NewPhase> {
                         scrollDirection: Axis.horizontal,
                         itemCount: selectedSource.length,
                         itemBuilder: (context, index) {
-                         
                           return Container(
                             height: 32.0,
                             margin: const EdgeInsets.only(left: 12.0),
@@ -698,8 +692,7 @@ class _NewPhaseState extends State<NewPhase> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onSelected: (bool selected) {
-                                setState(() {
-                                });
+                                setState(() {});
                               },
                               onDeleted: () {
                                 setState(() {
@@ -760,7 +753,7 @@ class _NewPhaseState extends State<NewPhase> {
                         : clickAddMileStone(),
                     onTap: () {
                       setState(() {
-                        addMilestoneBtnClick=true;
+                        addMilestoneBtnClick = true;
                       });
                       Future.delayed(const Duration(microseconds: 500), () {
                         if (_formKey.currentState!.validate()) {
@@ -1108,7 +1101,6 @@ class _NewPhaseState extends State<NewPhase> {
                           backgroundColor: Color(0xff334155),
                           radius: 30,
                           child: Icon(Icons.person_outline, size: 40),
-                     
                         ),
                       ),
                       Positioned(
@@ -1129,7 +1121,6 @@ class _NewPhaseState extends State<NewPhase> {
                 ),
                 Expanded(
                   child: Container(
-
                     margin: const EdgeInsets.only(left: 30.0),
                     height: 56.0,
                     width: (MediaQuery.of(context).size.width * 0.22),
@@ -1142,8 +1133,7 @@ class _NewPhaseState extends State<NewPhase> {
                     child: Container(
                       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                       height: 20.0,
-                      child: Container(
-                          child: StatefulBuilder(
+                      child: Container(child: StatefulBuilder(
                         builder: (BuildContext context, StateSettersetState) {
                           return DropdownButtonHideUnderline(
                             child: DropdownButton(
@@ -1151,7 +1141,7 @@ class _NewPhaseState extends State<NewPhase> {
                               value: subtaskDepat,
                               underline: Container(),
                               hint: const Text(
-                                "Select",
+                                "Type",
                                 style: TextStyle(
                                     fontSize: 14.0,
                                     color: Color(0xffFFFFFF),
@@ -1162,7 +1152,6 @@ class _NewPhaseState extends State<NewPhase> {
                               icon: const Icon(
                                 Icons.arrow_drop_down,
                                 color: Color(0xff64748B),
-
                               ),
                               items: removeDuplicate().map((items) {
                                 return DropdownMenuItem(
@@ -1191,8 +1180,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   }
 
                                   subtaskDepat = newValue.toString();
-                                  if (newValue != null) {
-                                   }
+                                  if (newValue != null) {}
                                 });
                               },
                             ),
@@ -1214,7 +1202,6 @@ class _NewPhaseState extends State<NewPhase> {
             height: 50.0,
             decoration: BoxDecoration(
               color: const Color(0xff334155),
-
               borderRadius: BorderRadius.circular(
                 8.0,
               ),
@@ -1223,6 +1210,8 @@ class _NewPhaseState extends State<NewPhase> {
               children: [
                 subTaskResourcesSearchTextField = TypeAheadFormField(
                   keepSuggestionsOnLoading: false,
+                  suggestionsBoxVerticalOffset: 0.0,
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration(),
                   hideOnLoading: true,
                   suggestionsCallback: (pattern) {
                     return getSuggestionsForSubTask(pattern);
@@ -1271,7 +1260,6 @@ class _NewPhaseState extends State<NewPhase> {
                     });
                   },
                 ),
-              
               ],
             ),
           ),
@@ -1285,7 +1273,6 @@ class _NewPhaseState extends State<NewPhase> {
                     scrollDirection: Axis.horizontal,
                     itemCount: selectedSubTaskSource.length,
                     itemBuilder: (context, index) {
-                     
                       return Container(
                         height: 32.0,
                         margin: const EdgeInsets.only(left: 12.0),
@@ -1307,8 +1294,7 @@ class _NewPhaseState extends State<NewPhase> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onSelected: (bool selected) {
-                            setState(() {
-                            });
+                            setState(() {});
                           },
                           onDeleted: () {
                             setState(() {
@@ -1365,40 +1351,36 @@ class _NewPhaseState extends State<NewPhase> {
                   fontWeight: FontWeight.w500),
             ),
             onTap: () {
-
               if (_mileStoneFormKey.currentState!.validate()) {
-
                 if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
                   try {
-                   setState(() {
-                     if (mileStoneAction.isEmpty) {
-                       _phaseDetails.milestone!.add(Milestones(
-                           title: mileStoneTitle, m_date: mileStoneDate));
-                     } else {
-                       _phaseDetails.milestone![mileStoneEditIndex].title =
-                           mileStoneTitle;
-                       _phaseDetails.milestone![mileStoneEditIndex].m_date =
-                           mileStoneDate;
-                     }
+                    setState(() {
+                      if (mileStoneAction.isEmpty) {
+                        _phaseDetails.milestone!.add(Milestones(
+                            title: mileStoneTitle, m_date: mileStoneDate));
+                      } else {
+                        _phaseDetails.milestone![mileStoneEditIndex].title =
+                            mileStoneTitle;
+                        _phaseDetails.milestone![mileStoneEditIndex].m_date =
+                            mileStoneDate;
+                      }
 
-                     mileStoneEditIndex = 0;
-                     mileStoneAction = '';
+                      mileStoneEditIndex = 0;
+                      mileStoneAction = '';
 
-                     mileStoneDate = AppUtil.dateToString(DateTime.now());
-                     mileStoneTitle = "";
-                     controllerMilestoneTitle.text = "";
-                     clickedAddMileStone = false;
-                     saveButtonClick = true;
-                   });
+                      mileStoneDate = AppUtil.dateToString(DateTime.now());
+                      mileStoneTitle = "";
+                      controllerMilestoneTitle.text = "";
+                      clickedAddMileStone = false;
+                      saveButtonClick = true;
+                    });
                   } catch (e) {
                     print(e);
                   }
                 } else {
                   print('Add milestone date');
                 }
-
               }
-
             },
           )
         ],
@@ -1481,7 +1463,6 @@ class _NewPhaseState extends State<NewPhase> {
                     print('Enter sub task data');
                   }
                 }
-
               });
             },
           )
@@ -1626,7 +1607,6 @@ class _NewPhaseState extends State<NewPhase> {
     var seen = Set<String>();
     List<PhasesSortedResources> uniquelist =
         listResource.where((item) => seen.add(item.department!)).toList();
-
 
     return uniquelist;
   }
