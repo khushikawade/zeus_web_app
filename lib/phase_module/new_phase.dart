@@ -339,7 +339,7 @@ class _NewPhaseState extends State<NewPhase> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                titleHeadlineWidget("Phases details", 18.0),
+                titleHeadlineWidget("Phase details", 18.0),
               ],
             ),
             const SizedBox(
@@ -451,7 +451,11 @@ class _NewPhaseState extends State<NewPhase> {
                           child: CircleAvatar(
                             backgroundColor: Color(0xff334155),
                             radius: 30,
-                            child: Icon(Icons.person_outline, size: 40),
+                            child: Icon(
+                              Icons.person_outline,
+                              size: 35,
+                              color: Color(0xffDADADA),
+                            ),
                           ),
                         ),
                         Positioned(
@@ -608,7 +612,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     hintText: 'Search',
                                     hintStyle: TextStyle(
                                         fontSize: 14.0,
-                                        color: Color(0xff64748B),
+                                        color: Colors.white,
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w400),
                                     border: InputBorder.none,
@@ -984,7 +988,7 @@ class _NewPhaseState extends State<NewPhase> {
               height: 8.0,
             ),
             clickAddSubTask
-                ? titleHeadlineWidget("Resources need for subtask", 16)
+                ? titleHeadlineWidget("Resources needed for the subtasks", 16)
                 : Container(),
             clickAddSubTask && saveSubtaskClick && selectedSubTaskSource.isEmpty
                 ? Container(
@@ -1480,7 +1484,7 @@ class _NewPhaseState extends State<NewPhase> {
             color: const Color(0xffFFFFFF),
             fontSize: i,
             fontFamily: 'Inter',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
       ),
     );
   }
