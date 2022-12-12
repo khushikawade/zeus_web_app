@@ -1038,6 +1038,8 @@ showDailog(
                                                     children: [
                                                       searchTextField =
                                                           TypeAheadFormField(
+                                                            
+
                                                         keepSuggestionsOnLoading:
                                                             false,
                                                         hideOnLoading: true,

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zeus/services/model/mileston_model.dart';
 import 'package:zeus/services/model/phase_details.dart';
 
-
-
 Widget milestoneList(context, PhaseDetails phaseDetails,
         {required Null Function(Milestones values, int index, String action)
             callback}) =>
@@ -82,10 +80,10 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                           Row(
                             children: [
                               Column(
-                                children:  [
+                                children: [
                                   InkWell(
                                     onTap: () {
-                                       callback(phaseDetails.milestone![index],
+                                      callback(phaseDetails.milestone![index],
                                           index, 'Edit');
                                     },
                                     child: const Padding(
@@ -124,7 +122,7 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                                         child: CircleAvatar(
                                             backgroundColor: Color(0xff475569),
                                             radius: 20,
-                                            child: Icon(Icons.delete,
+                                            child: Icon(Icons.delete_outline,
                                                 color: Colors.white, size: 20)
 
                                             // SvgPicture.asset(
