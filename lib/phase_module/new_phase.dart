@@ -581,7 +581,7 @@ class _NewPhaseState extends State<NewPhase> {
                           shadowColor: Color(0xff1E293B),
                           elevation: 20,
                           child: Container(
-                            height: 56.0,
+                            height: 50.0,
                             decoration: BoxDecoration(
                               // color: const Color(0xff334155),
                               boxShadow: [
@@ -618,8 +618,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       TextFieldConfiguration(
                                     controller: _typeAheadController,
                                     style: const TextStyle(
-                                        color: const Color(0xff1E293B),
-                                        fontSize: 14.0),
+                                        color: Colors.white, fontSize: 14.0),
                                     keyboardType: TextInputType.text,
                                     cursorColor: Colors.white,
                                     autofocus: true,
@@ -643,14 +642,14 @@ class _NewPhaseState extends State<NewPhase> {
                                     ),
                                   ),
                                   itemBuilder: (context, item) {
-                                    return 
-                                    // Text(
-                                    //   item.name.toString(),
-                                    //   style: const TextStyle(
-                                    //       fontSize: 16.0, color: Colors.white),
-                                    // );
-                                    // Text("khushi");
-                                    rowResourceName(item);
+                                    return
+                                        // Text(
+                                        //   item.name.toString(),
+                                        //   style: const TextStyle(
+                                        //       fontSize: 16.0, color: Colors.white),
+                                        // );
+                                        // Text("khushi");
+                                        rowResourceName(item);
                                   },
                                   transitionBuilder:
                                       (context, suggestionsBox, controller) {
@@ -1240,69 +1239,79 @@ class _NewPhaseState extends State<NewPhase> {
           width: MediaQuery.of(context).size.width * 0.26,
           margin: const EdgeInsets.only(top: 16),
           decoration: BoxDecoration(),
-          child: Container(
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: const Color(0xff334155),
-              borderRadius: BorderRadius.circular(
-                8.0,
-              ),
-            ),
-            child: Column(
-              children: [
-                subTaskResourcesSearchTextField = TypeAheadFormField(
-                  keepSuggestionsOnLoading: false,
-                  suggestionsBoxVerticalOffset: 0.0,
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(),
-                  hideOnLoading: true,
-                  suggestionsCallback: (pattern) {
-                    return getSuggestionsForSubTask(pattern);
-                  },
-                  textFieldConfiguration: TextFieldConfiguration(
-                    controller: _subTaskResourcesController,
-                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
-                    keyboardType: TextInputType.text,
-                    cursorColor: Colors.white,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 15.0),
-                      prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 4.0),
-                          child: Icon(
-                            Icons.search,
-                            color: Color(0xff64748B),
-                          )),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Color(0xff64748B),
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                  itemBuilder: (context, item) {
-                    return rowResourceName(item);
-                  },
-                  transitionBuilder: (context, suggestionsBox, controller) {
-                    return suggestionsBox;
-                  },
-                  onSuggestionSelected: (item) {
-                    setState(() {
-                      subTaskResourceName = item.name!;
-                      _subTaskResourcesController.text = '';
-
-                      selectedSubTaskSource.clear();
-                      selectedSubTaskSource.add(ResourceData(
-                          department_id: item.departmentId,
-                          resource_id: item.userId,
-                          resource_name: item.name,
-                          profileImage: item.image,
-                          department_name: item.departmentName));
-                    });
-                  },
+          child: Material(
+            color: const Color(0xff1E293B),
+            shadowColor: Color(0xff1E293B),
+            elevation: 20,
+            child: Container(
+              height: 50.0,
+              decoration: BoxDecoration(
+                // color: const Color(0xff334155),
+                // borderRadius: BorderRadius.circular(
+                //   8.0,
+                // ),
+                borderRadius: BorderRadius.circular(
+                  6.0,
                 ),
-              ],
+              ),
+              child: Column(
+                children: [
+                  subTaskResourcesSearchTextField = TypeAheadFormField(
+                    keepSuggestionsOnLoading: false,
+                    suggestionsBoxVerticalOffset: 0.0,
+                    suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                        color: const Color(0xff334155)),
+                    hideOnLoading: true,
+                    suggestionsCallback: (pattern) {
+                      return getSuggestionsForSubTask(pattern);
+                    },
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _subTaskResourcesController,
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 14.0),
+                      keyboardType: TextInputType.text,
+                      cursorColor: Colors.white,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 15.0),
+                        prefixIcon: Padding(
+                            padding: EdgeInsets.only(top: 4.0),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(0xff64748B),
+                            )),
+                        hintText: 'Search',
+                        hintStyle: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.white,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                    itemBuilder: (context, item) {
+                      return rowResourceName(item);
+                    },
+                    transitionBuilder: (context, suggestionsBox, controller) {
+                      return suggestionsBox;
+                    },
+                    onSuggestionSelected: (item) {
+                      setState(() {
+                        subTaskResourceName = item.name!;
+                        _subTaskResourcesController.text = '';
+
+                        selectedSubTaskSource.clear();
+                        selectedSubTaskSource.add(ResourceData(
+                            department_id: item.departmentId,
+                            resource_id: item.userId,
+                            resource_name: item.name,
+                            profileImage: item.image,
+                            department_name: item.departmentName));
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

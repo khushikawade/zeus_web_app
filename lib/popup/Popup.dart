@@ -1549,7 +1549,7 @@ showDailog(
                                     ],
                                   ),
                                   onTap: () async {
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
@@ -1643,6 +1643,13 @@ showDailog(
                                   var endDate = phase.endDate;
 
                                   var _date = date.toString();
+                                  print(_date);
+
+                                  // var _date1 =
+                                  //     AppUtil.dateToString1(_date);
+
+                                  // print("pppppppppppp");
+                                  // print(_date1);
 
                                   var _endDate = endDate.toString();
 

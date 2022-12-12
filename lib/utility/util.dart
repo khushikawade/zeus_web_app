@@ -46,19 +46,19 @@ class AppUtil {
     }
   }
 
-  static String formattedDateYear1(String date) {
-    if (date != "0000-00-00 00:00:00") {
-      try {
-        DateTime dateTime = DateTime.parse(date);
-        DateFormat dateFormat = DateFormat('d MMM');
-        return dateFormat.format(dateTime).toString();
-      } catch (_) {
-        return 'N/A';
-      }
-    } else {
-      return 'N/A';
-    }
-  }
+  // static String formattedDateYear1(String date) {
+  //   if (date != "0000-00-00 00:00:00") {
+  //     try {
+  //       DateTime dateTime = DateTime.parse(date);
+  //       // DateFormat dateFormat = DateFormat('MMM').format(date).toString();
+  //       // return dateFormat.format(dateTime).toString();
+  //     } catch (_) {
+  //       return 'N/A';
+  //     }
+  //   } else {
+  //     return 'N/A';
+  //   }
+  // }
 
   static DateTime stringToDate(String date) {
     try {
@@ -69,18 +69,35 @@ class AppUtil {
     }
   }
 
-  static DateTime stringToDate1(String date) {
+  static String stringToDate1(String date) {
     try {
-      DateTime parseDate = DateFormat("dd/MM").parse(date);
-      return parseDate;
+      print("jfdkffff");
+      DateTime dateTime = DateTime.parse(date);
+      DateFormat dateFormat = DateFormat('d MMM yyyy');
+      print(dateFormat.format(dateTime).toString());
+      return dateFormat.format(dateTime).toString();
+
+      // DateTime parseDate = DateFormat("dd/MM").parse(date);
+      // return parseDate;
     } catch (e) {
-      return DateTime.now();
+      print(e);
+      return '';
     }
   }
 
   static dateToString(DateTime date) {
     try {
       DateFormat formatter = DateFormat('dd/MM/yyyy');
+      String formatted = formatter.format(date);
+      return formatted;
+    } catch (e) {
+      return date.toString();
+    }
+  }
+
+    static dateToString1(DateTime date) {
+    try {
+      DateFormat formatter = DateFormat('MMM');
       String formatted = formatter.format(date);
       return formatted;
     } catch (e) {
