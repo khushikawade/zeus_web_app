@@ -5,6 +5,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
@@ -423,8 +424,8 @@ class _LoginScreenState extends State<LoginScreen> {
         //  ==========edited sayyamyadav
         //Navigator.pushNamed(context, "/home");
         SmartDialog.dismiss();
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil("/home", (route) => false);
+        // Navigator.of(context)
+        //     .pushNamedAndRemoveUntil("/home", (route) => false);
 
         ///  Navigator.pushReplacementNamed(context, "/home");
 
@@ -432,6 +433,14 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (context) =>
             const DemoClass()));*/
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                      onSubmit: (String value) {},
+                      adOnSubmit: (String value) {},
+                    )),
+            (Route<dynamic> route) => route is MyHomePage);
       } else {
         Fluttertoast.showToast(
           msg: 'Please check Email and Password',
