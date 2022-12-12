@@ -149,10 +149,13 @@ Widget rowProject(SkillsData user) {
 }
 
 Widget rowResourceName(item) {
-  return Container(
-    color: Color(0xff0F172A),
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
     child: Row(
       children: [
+        SizedBox(
+          width: 6,
+        ),
         ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: Container(
@@ -167,7 +170,40 @@ Widget rowResourceName(item) {
           ),
         ),
         SizedBox(
+          width: 8,
+        ),
+        Text(
+          item.name.toString(),
+          style: const TextStyle(fontSize: 16.0, color: Colors.white),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget rowResourceName1(item) {
+  return Container(
+    color: Color(0xff0F172A),
+    child: Row(
+      children: [
+        SizedBox(
           width: 10,
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Image.network(
+              'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+              width: 32,
+              height: 32,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 5,
         ),
         Container(
           padding: const EdgeInsets.all(11.0),

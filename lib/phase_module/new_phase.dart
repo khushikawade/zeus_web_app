@@ -581,7 +581,7 @@ class _NewPhaseState extends State<NewPhase> {
                           shadowColor: Color(0xff1E293B),
                           elevation: 20,
                           child: Container(
-                            height: 60.0,
+                            height: 56.0,
                             decoration: BoxDecoration(
                               // color: const Color(0xff334155),
                               boxShadow: [
@@ -608,7 +608,8 @@ class _NewPhaseState extends State<NewPhase> {
                                   keepSuggestionsOnLoading: false,
                                   suggestionsBoxVerticalOffset: 0.0,
                                   suggestionsBoxDecoration:
-                                      SuggestionsBoxDecoration(),
+                                      SuggestionsBoxDecoration(
+                                          color: Color(0xff1E293B)),
                                   hideOnLoading: true,
                                   suggestionsCallback: (pattern) {
                                     return getSuggestions(pattern);
@@ -617,7 +618,8 @@ class _NewPhaseState extends State<NewPhase> {
                                       TextFieldConfiguration(
                                     controller: _typeAheadController,
                                     style: const TextStyle(
-                                        color: Colors.white, fontSize: 14.0),
+                                        color: const Color(0xff1E293B),
+                                        fontSize: 14.0),
                                     keyboardType: TextInputType.text,
                                     cursorColor: Colors.white,
                                     autofocus: true,
@@ -631,7 +633,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             Icons.search,
                                             color: Color(0xff64748B),
                                           )),
-                                      hintText: 'Search1',
+                                      hintText: 'Search',
                                       hintStyle: TextStyle(
                                           fontSize: 14.0,
                                           color: Colors.white,
@@ -641,7 +643,14 @@ class _NewPhaseState extends State<NewPhase> {
                                     ),
                                   ),
                                   itemBuilder: (context, item) {
-                                    return rowResourceName(item);
+                                    return 
+                                    // Text(
+                                    //   item.name.toString(),
+                                    //   style: const TextStyle(
+                                    //       fontSize: 16.0, color: Colors.white),
+                                    // );
+                                    // Text("khushi");
+                                    rowResourceName(item);
                                   },
                                   transitionBuilder:
                                       (context, suggestionsBox, controller) {
@@ -716,7 +725,7 @@ class _NewPhaseState extends State<NewPhase> {
                                 size: 20,
                               ),
                               backgroundColor: const Color(0xff334155),
-                              visualDensity: VisualDensity.compact,
+                              // visualDensity: VisualDensity.compact,
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
                               label: Text(
@@ -1132,7 +1141,8 @@ class _NewPhaseState extends State<NewPhase> {
                         child: CircleAvatar(
                           backgroundColor: Color(0xff334155),
                           radius: 30,
-                          child: Icon(Icons.person_outline, size: 40),
+                          child: Icon(Icons.person_outline,
+                              size: 35, color: Color(0xffDADADA)),
                         ),
                       ),
                       Positioned(
