@@ -459,7 +459,6 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                         showCheckboxColumn: false,
                         dataRowHeight: 60,
                         dividerThickness: 0.7,
-                        columnSpacing: 132,
                         columns: const [
                           DataColumn(
                             label: Text(

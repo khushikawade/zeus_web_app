@@ -82,7 +82,7 @@ class AppUtil {
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold)),
           content: const Padding(
-            padding: EdgeInsets.only(left: 25, right: 25, top: 16, bottom: 10),
+            padding: EdgeInsets.only(left: 25, right: 25, top: 16,bottom: 10),
             child: Text('Your Session has been expired, Please try again!',
                 style: TextStyle(
                     color: Color(0xffFFFFFF),
@@ -98,7 +98,7 @@ class AppUtil {
                           builder: (context) => LoginScreen(
                                 onSubmit: (String value) {},
                               )),
-                      (Route<dynamic> route) => true);
+                      (Route<dynamic> route) => route is LoginScreen);
                 },
                 child: const Text(
                   'Ok',
@@ -112,5 +112,6 @@ class AppUtil {
         );
       },
     );
+ 
   }
 }
