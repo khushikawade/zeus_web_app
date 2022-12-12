@@ -2842,6 +2842,7 @@ class _NavigationRailState extends State<MyHomePage>
                         BoxConstraints(minHeight: constraint.maxHeight),
                     child: IntrinsicHeight(
                       child: NavigationRail(
+                        groupAlignment: -1.0,
                         selectedIndex: _selectedIndex,
                         onDestinationSelected: (int index) {
                           isIndex = index;
@@ -2872,9 +2873,8 @@ class _NavigationRailState extends State<MyHomePage>
                         //type: BottomNavigationBarType.fixed,
                         backgroundColor: const Color(0xff0F172A),
                         destinations: <NavigationRailDestination>[
-                          // navigation destinations
-
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 46.0,
                               height: 46.0,
@@ -2898,17 +2898,13 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                               ),
                             ),
-                            // selectedIcon: Icon(Icons.favorite),
                             label: const Text(''),
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Tooltip(
                               verticalOffset: 40,
-                              // textStyle: const TextStyle(
-                              //     fontSize: 15,
-                              //     color: Colors.white,
-                              //     fontWeight: FontWeight.normal),
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 border:
@@ -2924,11 +2920,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   left: 20.0,
                                   right: 0.0,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(9.0),
-                                  child: SvgPicture.asset(
-                                    "images/notification_icon.svg",
-                                  ),
+                                child: SvgPicture.asset(
+                                  "images/notification_icon.svg",
                                 ),
                               ),
                             ),
@@ -2951,27 +2944,9 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                               child: Stack(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/notification_icon.svg",
-                                    ),
+                                  SvgPicture.asset(
+                                    "images/notification_icon.svg",
                                   ),
-                                  // Positioned(
-                                  //   right: 0,
-                                  //   top: 3,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
                                 ],
                               ),
                             ),
@@ -2988,6 +2963,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                              padding: EdgeInsets.zero,
                               icon: Column(
                                 children: [
                                   Container(
@@ -3023,11 +2999,8 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 child: Stack(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: SvgPicture.asset(
-                                        "images/camera.svg",
-                                      ),
+                                    SvgPicture.asset(
+                                      "images/camera.svg",
                                     ),
                                     // Positioned(
                                     //   right: 0,
@@ -3127,6 +3100,7 @@ class _NavigationRailState extends State<MyHomePage>
                           // ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Column(
                               children: [
                                 Tooltip(
@@ -3177,30 +3151,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   18.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/people.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 0,
-                                  //   top: 6,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/people.svg",
                               ),
                             ),
                             label: const Align(
@@ -3216,6 +3168,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 20.0,
                               height: 18.0,
@@ -3245,36 +3198,15 @@ class _NavigationRailState extends State<MyHomePage>
                                   18.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/button.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 2,
-                                  //   top: 6,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/button.svg",
                               ),
                             ),
                             label: const Text(''),
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 20.0,
                               height: 18.0,
@@ -3304,36 +3236,15 @@ class _NavigationRailState extends State<MyHomePage>
                                   18.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/bell.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 3,
-                                  //   top: 4,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/bell.svg",
                               ),
                             ),
                             label: const Text(''),
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 20.0,
                               height: 18.0,
@@ -3363,30 +3274,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   16.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/setting.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 0,
-                                  //   top: 6,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/setting.svg",
                               ),
                             ),
                             label: const Text(''),
@@ -3398,6 +3287,7 @@ class _NavigationRailState extends State<MyHomePage>
                             const IconThemeData(color: Colors.black),
                         selectedLabelTextStyle:
                             const TextStyle(color: Colors.white),
+                        extended: false,
                       ),
                     ),
                   ),
