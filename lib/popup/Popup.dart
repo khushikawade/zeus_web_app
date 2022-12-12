@@ -897,10 +897,10 @@ showDailog(
                           ),
 
                           //---------------------SAYYAM YADAV
-                          const Divider(
+                           Container(
                             color: Color(0xff424D5F),
-                            thickness: 0.7,
-                            height: 10,
+                            height: 0.7,
+                             width: double.infinity,
                           ),
                         ],
                       ),
@@ -1400,20 +1400,13 @@ showDailog(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.50,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.99,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xff263143),
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: MediaQuery.of(context).size.height * 0.651 ,
+                                  width: MediaQuery.of(context).size.width *
+                                      0.99,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xff263143),
+                                  ),
                                 ),
                               ],
                             ),

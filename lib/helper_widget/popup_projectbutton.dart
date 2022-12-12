@@ -1515,6 +1515,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                       ),
                                       GestureDetector(
                                         onTap: () {
+                                          print('onSaveClick');
                                           if (_formKey.currentState!
                                               .validate()) {
                                             if (selectDeliveryDate == true) {
@@ -1781,10 +1782,11 @@ class _ProjectEditState extends State<ProjectEdit>
       map['delivery_date'] = deliveryDate.toString();
 
       // delivery_date
-
+      print('Request');
+      print(map);
       try {
         var response = await http.post(
-          Uri.parse('${AppUrl.baseUrl}/project_detail/${widget.id}/update'),
+          Uri.parse('${AppUrl.baseUrl}/project/${widget.id}/update'),
           body: map,
           headers: {
             "Accept": "application/json",
@@ -1792,6 +1794,8 @@ class _ProjectEditState extends State<ProjectEdit>
           },
         );
         // ignore: unrelated_type_equality_checks
+        print(response.body);
+        print(response.body);
 
         if (response.statusCode == 200) {
           var responseJson =

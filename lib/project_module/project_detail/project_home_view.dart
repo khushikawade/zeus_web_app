@@ -15,7 +15,7 @@ import 'project_home_view_model.dart';
 import '../../services/response_model/project_idel_response.dart';
 import 'package:provider/provider.dart';
 
-class ProjectHome extends StatefulWidget  {
+class ProjectHome extends StatefulWidget {
   const ProjectHome({Key? key}) : super(key: key);
 
   @override
@@ -40,7 +40,7 @@ class ProjectHomeState extends State<ProjectHome> {
   List _customerName = [];
   ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
-  List<DataRow> rows = [];
+
 
   bool? amIHovering;
   bool? amIHovering1;
@@ -215,9 +215,11 @@ class ProjectHomeState extends State<ProjectHome> {
 
   // ScrollController _controller = ScrollController();
 
-  Future? getListData()  {
-    return  Provider.of<ProjectHomeViewModel>(context, listen: false)
+  Future? getListData() async {
+    var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
+
+    return result;
   }
 
   Future? getList;
@@ -242,24 +244,32 @@ class ProjectHomeState extends State<ProjectHome> {
   initState() {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
-
-    getListData();
-    change();
-    getSelectStatus();
-    getAccountable();
-    getAccountable();
-    getCustomer();
-    getCurrency();
-    getUsers();
+    getAllData();
     super.initState();
   }
 
-  getData(ProjectHomeViewModel? data){
+  getAllData() async {
+    await getListData();
+    change();
+    await getSelectStatus();
+    await getAccountable();
+    await getAccountable();
+    await getCustomer();
+    await getCurrency();
+    getUsers();
+    //await getData();
+  }
+
+  // get provider data
+  getData() {
+    var data = context.watch<ProjectHomeViewModel>();
 
 
+  }
 
-
-
+  // Make People List widget or Data Table
+  Widget makeProjectList(ProjectHomeViewModel? data) {
+    List<DataRow> rows = [];
     if (data!.projectDetailsResponse != null) {
       if (data.projectDetailsResponse!.data!.isNotEmpty) {
         print("ONE");
@@ -509,11 +519,6 @@ class ProjectHomeState extends State<ProjectHome> {
         });
       }
     }
-  }
-
-  // Make People List widget or Data Table
-  Widget makeProjectList(ProjectHomeViewModel? data) {
-    getData(data);
     return Row(
       key: Key("show_more_ink_well"),
       mainAxisAlignment: MainAxisAlignment.start,
@@ -913,6 +918,7 @@ class ProjectHomeState extends State<ProjectHome> {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
+
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
       child: Scaffold(
@@ -969,8 +975,8 @@ class ProjectHomeState extends State<ProjectHome> {
                                 controller: _scrollController,
                                 shrinkWrap: true,
                                 children: [
-                                  makeProjectList(data),
-                                ],
+                                   makeProjectList(data)
+                                  ],
                               ),
                             ),
                           ));
