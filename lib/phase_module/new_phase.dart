@@ -1083,115 +1083,113 @@ class _NewPhaseState extends State<NewPhase> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.26,
-          child: Expanded(
-            child: Row(
-              children: [
-                Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        top: 0,
+          child: Row(
+            children: [
+              Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xff334155),
+                        radius: 30,
+                        child: Icon(Icons.person_outline, size: 40),
+                      ),
+                    ),
+                    Positioned(
                         bottom: 0,
-                        child: CircleAvatar(
-                          backgroundColor: Color(0xff334155),
-                          radius: 30,
-                          child: Icon(Icons.person_outline, size: 40),
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: Color(0xff10B981),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                                child: Icon(Icons.add,
-                                    color: Colors.white, size: 18)),
-                          ))
-                    ],
-                  ),
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Color(0xff10B981),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                              child: Icon(Icons.add,
+                                  color: Colors.white, size: 18)),
+                        ))
+                  ],
                 ),
-                Expanded(
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 30.0),
+                  height: 56.0,
+                  width: (MediaQuery.of(context).size.width * 0.22),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff334155),
+                    borderRadius: BorderRadius.circular(
+                      8.0,
+                    ),
+                  ),
                   child: Container(
-                    margin: const EdgeInsets.only(left: 30.0),
-                    height: 56.0,
-                    width: (MediaQuery.of(context).size.width * 0.22),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      height: 20.0,
-                      child: Container(child: StatefulBuilder(
-                        builder: (BuildContext context, StateSettersetState) {
-                          return DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              dropdownColor: ColorSelect.class_color,
-                              value: subtaskDepat,
-                              underline: Container(),
-                              hint: const Text(
-                                "Type",
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xffFFFFFF),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              isExpanded: true,
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Color(0xff64748B),
-                              ),
-                              items: removeDuplicate().map((items) {
-                                return DropdownMenuItem(
-                                  value: items.department,
-                                  child: Text(
-                                    items.department!,
-                                    style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedSubTaskSource.clear();
-                                });
-                                setState(() {
-                                  resourceSuggestions.clear();
-                                  for (var element in listResource) {
-                                    if (element.department!.toLowerCase() ==
-                                        newValue.toString().toLowerCase()) {
-                                      resourceSuggestions.add(element.details!);
-                                    }
-                                  }
-
-                                  subtaskDepat = newValue.toString();
-                                  if (newValue != null) {}
-                                });
-                              },
+                    margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    height: 20.0,
+                    child: Container(child: StatefulBuilder(
+                      builder: (BuildContext context, StateSettersetState) {
+                        return DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            dropdownColor: ColorSelect.class_color,
+                            value: subtaskDepat,
+                            underline: Container(),
+                            hint: const Text(
+                              "Type",
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xffFFFFFF),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
                             ),
-                          );
-                        },
-                      )),
-                    ),
+                            isExpanded: true,
+                            icon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Color(0xff64748B),
+                            ),
+                            items: removeDuplicate().map((items) {
+                              return DropdownMenuItem(
+                                value: items.department,
+                                child: Text(
+                                  items.department!,
+                                  style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedSubTaskSource.clear();
+                              });
+                              setState(() {
+                                resourceSuggestions.clear();
+                                for (var element in listResource) {
+                                  if (element.department!.toLowerCase() ==
+                                      newValue.toString().toLowerCase()) {
+                                    resourceSuggestions.add(element.details!);
+                                  }
+                                }
+
+                                subtaskDepat = newValue.toString();
+                                if (newValue != null) {}
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    )),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Container(

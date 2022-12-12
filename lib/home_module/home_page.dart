@@ -2650,6 +2650,7 @@ class _NavigationRailState extends State<MyHomePage>
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           automaticallyImplyLeading: false,
           toolbarHeight: 70.0,
           backgroundColor: const Color(0xff0F172A),
