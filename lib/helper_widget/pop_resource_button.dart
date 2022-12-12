@@ -105,7 +105,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   bool _addSubmitted = true;
   bool loading = true;
 
-
   bool? _isSelected;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _nickName = TextEditingController();
@@ -125,8 +124,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-
-
     _isSelected = false;
     getUsers();
     getDepartment();
@@ -136,7 +133,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   }
 
   getformattedTime(TimeOfDay time) {
-
     DateTime tempDate = DateFormat("hh:mm")
         .parse(time.hour.toString() + ":" + time.minute.toString());
     var dateFormat = DateFormat("h:mm a");
@@ -168,13 +164,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     return PopupMenuButton<int>(
       offset: const Offset(-15, 12),
       position: PopupMenuPosition.under,
-
-      color:
-
-          const Color(0xFF0F172A),
+      color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-
-
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 16.0),
         height: 30,
@@ -190,19 +181,15 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
             padding: const EdgeInsets.all(8.0),
             child: SvgPicture.asset(
               "images/edit.svg",
-
-
             ),
           ),
         ),
       ),
-
       itemBuilder: (context) => [
         PopupMenuItem(
           padding: EdgeInsets.zero,
           value: 1,
           child: Container(
-
             child: InkWell(
               hoverColor: Color(0xff1e293b),
               onTap: () {
@@ -216,14 +203,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       selectedDaysList.add(splitNames[i]);
                     }
 
-
-
                     widget.data!.resource!.availibiltyTime != null
                         ? finalTime = widget.data!.resource!.availibiltyTime!
                         : " ";
 
                     var names;
-
 
                     print("--------------------------");
                     finalTime.toString().trim();
@@ -235,12 +219,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       print(Time1);
                       print(Time2);
                       setState(() {});
-
-
-
-                    } else {
-
-                    }
+                    } else {}
 
                     _name.text = widget.data!.name != null &&
                             widget.data!.name!.isNotEmpty
@@ -342,7 +321,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
                     var image = widget.data!.image;
 
-
                     if (widget.data!.resource!.skills!.isNotEmpty) {
                       widget.data!.resource!.skills!.forEach((element) {
                         if (abc.isNotEmpty) {
@@ -356,7 +334,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         // abc.add(element.title!);
                       });
                     }
-
                   });
                 }
                 showAddPeople(context);
@@ -369,7 +346,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   padding: EdgeInsets.only(left: 20.0, top: 15),
                   child: Text(
                     "Edit",
-
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -405,9 +381,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               Container(
                                 margin: const EdgeInsets.only(right: 20.0),
                                 child: Text(
-
                                   "Do you want to delete @${widget.data!.resource!.nickname!} ?",
-
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
@@ -432,7 +406,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                   child: Row(
                                     children: [
                                       Spacer(),
-                                      GestureDetector(
+                                      InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
@@ -449,14 +423,13 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           ),
                                         ),
                                       ),
-                                      GestureDetector(
+                                      InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                           SmartDialog.showLoading(
                                             msg:
                                                 "Your request is in progress please wait for a while...",
                                           );
-
 
                                           Future.delayed(
                                               const Duration(seconds: 2), () {
@@ -482,7 +455,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               )
                             ],
                           ),
-
                         ),
                       ),
                     );
@@ -506,7 +478,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           ),
         )
       ],
-
     );
   }
 
@@ -535,7 +506,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             width: MediaQuery.of(context).size.width * 0.99,
                             decoration: const BoxDecoration(
                               color: Color(0xff283345),
-
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(16.0),
                                 topLeft: Radius.circular(16.0),
@@ -553,13 +523,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               ],
                             ),
                             child: Row(
-
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(
                                       left: 30.0, top: 10.0, bottom: 10.0),
                                   child: const Text(
-                                    "Edit people",
+                                    "Edit People",
                                     style: TextStyle(
                                         color: Color(0xffFFFFFF),
                                         fontSize: 18.0,
@@ -569,19 +538,17 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 ),
                                 Spacer(),
                                 Container(
-                                  width:
-                                      97.0,
+                                  width: 97.0,
                                   margin: const EdgeInsets.only(
                                       top: 10.0, bottom: 10.0),
                                   height: 40.0,
                                   decoration: BoxDecoration(
                                     color: const Color(0xff334155),
-
                                     borderRadius: BorderRadius.circular(
                                       40.0,
                                     ),
                                   ),
-                                  child: GestureDetector(
+                                  child: InkWell(
                                     onTap: () {
                                       Navigator.of(context).pop();
                                     },
@@ -619,24 +586,18 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                         });
                                       }
                                     }
-
-
-
                                   },
                                   child: Container(
-                                    width:
-                                        97,
+                                    width: 97,
                                     margin: const EdgeInsets.only(
                                         top: 10.0, right: 20.0, bottom: 10.0),
                                     height: 40.0,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff7DD3FC),
-
                                       borderRadius: BorderRadius.circular(
                                         40.0,
                                       ),
                                     ),
-
                                     child: const Align(
                                       alignment: Alignment.center,
                                       child: Text(
@@ -654,14 +615,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             )),
                         ResponsiveWidget(
                           largeScreen: getDesktopView(setState),
-
                         )
                       ],
                     ),
                   ),
                 ),
               ),
-
             ),
           );
         });
@@ -715,7 +674,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       margin: const EdgeInsets.only(left: 48.0, top: 20.0),
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
-
                         borderRadius: BorderRadius.circular(
                           40.0,
                         ),
@@ -765,7 +723,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -795,16 +752,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   ),
                   TextFormField(
                     controller: _name,
-
-
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
                     keyboardType: TextInputType.text,
                     minLines: 1,
-
                     maxLength: 30,
-
                     decoration: const InputDecoration(
                         counterText: "",
                         contentPadding: EdgeInsets.only(
@@ -821,13 +774,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             color: Color(0xffFFFFFF),
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500)),
-
                     autovalidateMode: _addSubmitted
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
-
                     validator: (value) {
-
                       RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
@@ -849,7 +799,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -878,7 +827,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       )),
                   TextFormField(
                     controller: _nickName,
-
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
@@ -900,13 +848,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             color: Color(0xffFFFFFF),
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500)),
-
                     autovalidateMode: _addSubmitted
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
-
                     validator: (value) {
-
                       if (value!.isEmpty) {
                         return 'Please enter';
                       }
@@ -925,7 +870,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 110.0,
                     decoration: const BoxDecoration(
                       color: Color(0xff334155),
-
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(8.0),
                         topLeft: Radius.circular(8.0),
@@ -956,7 +900,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       )),
                   TextFormField(
                     maxLines: 5,
-
                     controller: _bio,
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
@@ -966,11 +909,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         counterText: "",
                         errorStyle: TextStyle(fontSize: 14, height: 0.20),
                         contentPadding: EdgeInsets.only(
-
-                            top: 47.0,
-                            right: 40,
-                            left: 45.0,
-                            bottom: 50),
+                            top: 47.0, right: 40, left: 45.0, bottom: 50),
                         border: InputBorder.none,
                         hintText: 'Enter your bio',
                         hintStyle: TextStyle(
@@ -1007,7 +946,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           height: 56.0,
                           decoration: BoxDecoration(
                             color: const Color(0xff334155),
-
                             borderRadius: BorderRadius.circular(
                               8.0,
                             ),
@@ -1081,7 +1019,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       height: 56.0,
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
-
                         borderRadius: BorderRadius.circular(
                           8.0,
                         ),
@@ -1104,10 +1041,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             margin:
                                 const EdgeInsets.only(left: 16.0, right: 16.0),
                             height: 20.0,
-                            child: Container(
-
-
-                                child: StatefulBuilder(
+                            child: Container(child: StatefulBuilder(
                               builder:
                                   (BuildContext context, StateSettersetState) {
                                 return DropdownButtonHideUnderline(
@@ -1123,13 +1057,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w500),
                                     ),
-
                                     icon: const Icon(
-
                                       Icons.arrow_drop_down,
                                       color: Color(0xff64748B),
-
-
                                     ),
                                     items: _department.map((items) {
                                       return DropdownMenuItem(
@@ -1149,8 +1079,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                         _depat = newValue;
                                       });
                                     },
-
-
                                   ),
                                 );
                               },
@@ -1171,7 +1099,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -1200,7 +1127,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       )),
                   TextFormField(
                     controller: _association,
-
                     cursorColor: const Color(0xffFFFFFF),
                     style: const TextStyle(color: Color(0xffFFFFFF)),
                     textAlignVertical: TextAlignVertical.bottom,
@@ -1222,13 +1148,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             color: Color(0xffFFFFFF),
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500)),
-
                     autovalidateMode: _addSubmitted
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
-
                     validator: (value) {
-
                       if (value!.isEmpty) {
                         return 'Please enter';
                       }
@@ -1258,14 +1181,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
                     ),
                     child: Container(
                         margin: const EdgeInsets.only(left: 13.0, right: 18.0),
-
                         child: StatefulBuilder(
                           builder: (BuildContext context, StateSettersetState) {
                             return DropdownButtonHideUnderline(
@@ -1283,11 +1204,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 ),
                                 isExpanded: true,
                                 icon: Icon(
-
                                   Icons.arrow_drop_down,
                                   color: Color(0xff64748B),
-
-
                                 ),
                                 items: _currencyName.map((items) {
                                   return DropdownMenuItem(
@@ -1325,7 +1243,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           height: 56.0,
                           decoration: BoxDecoration(
                             color: const Color(0xff334155),
-
                             borderRadius: BorderRadius.circular(
                               8.0,
                             ),
@@ -1380,7 +1297,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               ? AutovalidateMode.onUserInteraction
                               : AutovalidateMode.disabled,
                           validator: (value) {
-
                             RegExp regex = RegExp(r'^\D+|(?<=\d),(?=\d)');
 
                             if (value!.isEmpty) {
@@ -1437,10 +1353,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         margin: const EdgeInsets.only(left: 30.0),
                         height: 56.0,
                         decoration: BoxDecoration(
-                          color:
-
-                              const Color(0xff334155),
-
+                          color: const Color(0xff334155),
                           borderRadius: BorderRadius.circular(
                             8.0,
                           ),
@@ -1476,17 +1389,13 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     margin:
                         const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
                     height: 20.0,
-                    child: Container(
-
-
-                        child: StatefulBuilder(
+                    child: Container(child: StatefulBuilder(
                       builder: (BuildContext context, StateSettersetState) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 16, right: 70),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton(
                               dropdownColor: ColorSelect.class_color,
-
                               underline: Container(),
                               hint: const Text(
                                 "Select",
@@ -1498,11 +1407,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               ),
                               isExpanded: true,
                               icon: const Icon(
-
                                 Icons.arrow_drop_down,
                                 color: Color(0xff64748B),
-
-
                               ),
                               items: items1.map((String items1) {
                                 return DropdownMenuItem(
@@ -1543,7 +1449,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: selectedDaysList.length,
-
                     itemBuilder: (context, index) {
                       return Container(
                         margin: const EdgeInsets.only(left: 12.0),
@@ -1564,10 +1469,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             selectedDaysList[index],
                             style: TextStyle(color: Colors.white),
                           ),
-
                           selected: _isSelected!,
-
-
                           onSelected: (bool selected) {
                             setState(() {
                               _isSelected = selected;
@@ -1580,7 +1482,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               selectedDaysList.removeAt(index);
                             });
                           },
-
                           showCheckmark: false,
                         ),
                       );
@@ -1596,7 +1497,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -1631,10 +1531,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         left: 45.0,
                       ),
                       child: Text(
-
-
-
-
                         finalTime != null ? finalTime : " ",
                         style: TextStyle(
                             fontSize: 11.0,
@@ -1642,43 +1538,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       )),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 ],
               ),
               const SizedBox(
@@ -1722,21 +1581,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       Time2 = getformattedTime(endTime);
 
                       finalTime = '$startTime1 - $endTime2';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     });
                   }),
                 ),
@@ -1770,9 +1614,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: SvgPicture.asset('images/tag_new.svg')),
-                      )
-
-                      ),
+                      )),
                 ],
               ),
               Column(
@@ -1786,7 +1628,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 50.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         48.0,
                       ),
@@ -1794,8 +1635,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     child: Column(
                       children: [
                         searchTextField = AutoCompleteTextField<Datum>(
-
-
                           clearOnSubmit: false,
                           key: key,
                           cursorColor: Colors.white,
@@ -1816,12 +1655,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                 fontWeight: FontWeight.w400),
                             border: InputBorder.none,
                           ),
-
                           suggestions: users,
                           keyboardType: TextInputType.text,
-
                           style: TextStyle(color: Colors.white, fontSize: 14.0),
-
                           itemFilter: (item, query) {
                             return item.title!
                                 .toLowerCase()
@@ -1832,7 +1668,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           },
                           itemSubmitted: (item) {
                             setState(() {
-
                               searchTextField!.textField!.controller!.text = '';
                               if (abc.isNotEmpty) {
                                 if (abc.contains(item.title!)) {
@@ -1845,7 +1680,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             });
                           },
                           itemBuilder: (context, item) {
-
                             return row(item);
                           },
                         )
@@ -1865,9 +1699,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                           scrollDirection: Axis.horizontal,
                           itemCount: abc.length,
                           itemBuilder: (context, index) {
-
-
-
                             return Container(
                               height: 32.0,
                               margin: const EdgeInsets.only(left: 12.0),
@@ -1943,7 +1774,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -1997,7 +1827,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
                     validator: (value) {
-
                       RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
@@ -2018,7 +1847,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -2072,7 +1900,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         ? AutovalidateMode.onUserInteraction
                         : AutovalidateMode.disabled,
                     validator: (value) {
-
                       RegExp regex = RegExp(r'^[a-z A-Z]+$');
                       if (value!.isEmpty) {
                         return 'Please enter';
@@ -2093,7 +1920,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -2150,7 +1976,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                       String pattern = r'(^(?:[+0]9)?[0-9]{10}$)';
                       RegExp regExp = new RegExp(pattern);
 
-
                       if (value!.isEmpty) {
                         return 'Please enter';
                       } else if (!regExp.hasMatch(value)) {
@@ -2171,7 +1996,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     height: 56.0,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
-
                       borderRadius: BorderRadius.circular(
                         8.0,
                       ),
@@ -2251,14 +2075,12 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                 height: 56.0,
                 decoration: BoxDecoration(
                   color: const Color(0xff334155),
-
                   borderRadius: BorderRadius.circular(
                     8.0,
                   ),
                 ),
                 child: Container(
                     margin: const EdgeInsets.only(left: 16.0, right: 20.0),
-
                     child: StatefulBuilder(
                       builder: (BuildContext context, StateSettersetState) {
                         return DropdownButtonHideUnderline(
@@ -2276,11 +2098,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                             ),
                             isExpanded: true,
                             icon: Icon(
-
                               Icons.arrow_drop_down,
                               color: Color(0xff64748B),
-
-
                             ),
                             items: _timeline.map((items) {
                               return DropdownMenuItem(
@@ -2318,8 +2137,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       _addSubmitted = true;
     });
     if (_addFormKey.currentState!.validate()) {
-
-
       Navigator.pushNamed(context, "/home");
     }
   }
@@ -2369,13 +2186,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         setState(() {
           _timeline = mdata;
         });
-
-
-
-
-
-
-
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
@@ -2401,8 +2211,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       users = user.data!;
 
-
-
       setState(() {
         loading = false;
       });
@@ -2410,9 +2218,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
-
-
-
     }
   }
 
@@ -2422,9 +2227,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
     String commaSepratedString = selectedDaysList.join(", ");
 
-
     var token = 'Bearer ' + storage.read("token");
-
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
@@ -2450,8 +2253,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     request.fields['time_zone'] =
         _time ?? widget.data!.resource!.timeZone!.diffFromGtm.toString();
 
-
-
     if (!imageavail) {
     } else {
       _selectedFile = webImage;
@@ -2461,25 +2262,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           filename: "file_up"));
     }
 
-
-
     for (int i = 0; i < abc.length; i++) {
       request.fields['skills[$i]'] = '${abc[i]}';
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     print(
         "Request Data ------------------------------------------------ ${request.fields}");
@@ -2514,7 +2299,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     var url = '${AppUrl.delete}${peopleId}';
     var token = 'Bearer ' + storage.read("token");
 
-
     var response = await http.delete(
       Uri.parse(url),
       headers: {"Accept": "application/json", "Authorization": token},
@@ -2526,17 +2310,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       SmartDialog.dismiss();
 
       widget.returnValue!();
-
-
-
-
-
-
-
-
-
-
-
     } else if (response.statusCode == 401) {
       AppUtil.showErrorDialog(context);
     } else {

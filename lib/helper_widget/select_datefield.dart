@@ -26,15 +26,15 @@ class DatePicker extends StatefulWidget {
 class _DatePickerState extends State<DatePicker> {
   DateTime? startDate;
   DateTime? endDate;
-  DateTime? selectedDate;
   TextEditingController controller = TextEditingController();
   String? errorText = "";
 
   @override
   void initState() {
-    startDate = widget.startDate ?? DateTime.now();
-    endDate = widget.endDate ?? DateTime.now().add(const Duration(days: 36500));
-    selectedDate = widget.initialDate ?? DateTime.now();
+    startDate = widget.startDate ?? null;
+    endDate = widget.endDate ??
+        null; //DateTime.now().add(const Duration(days: 36500));
+   
   }
 
   @override
@@ -96,13 +96,14 @@ class _DatePickerState extends State<DatePicker> {
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w500),
                                   )),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 6.0),
-                                child: Container(
-                                  height: 30,
-                                  width: 200,
+                              Container(
+                                height: 30,
+                                width: 200,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
                                   child: TextFormField(
                                     cursorColor: const Color(0xffFFFFFF),
+
                                     enabled: false,
 
                                     style: const TextStyle(
@@ -110,8 +111,10 @@ class _DatePickerState extends State<DatePicker> {
                                     textAlignVertical: TextAlignVertical.bottom,
                                     keyboardType: TextInputType.text,
                                     controller: TextEditingController(
-                                        text:
-                                            '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
+                                        text: startDate == null ||
+                                                startDate.toString().isEmpty
+                                            ? 'dd/mm/yyyy'
+                                            : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
                                     decoration: const InputDecoration(
                                         contentPadding: EdgeInsets.only(
                                           bottom: 16.0,
@@ -151,12 +154,20 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 5.0, right: 10.0),
-                    height: 20.0,
-                    child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: SvgPicture.asset('images/cross.svg')),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        startDate = null;
+                        endDate = null;
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 5.0, right: 10.0),
+                      height: 20.0,
+                      child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: SvgPicture.asset('images/cross.svg')),
+                    ),
                   ),
                 ],
               )),
