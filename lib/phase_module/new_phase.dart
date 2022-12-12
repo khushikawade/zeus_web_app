@@ -335,6 +335,9 @@ class _NewPhaseState extends State<NewPhase> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: 8.0,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -361,7 +364,7 @@ class _NewPhaseState extends State<NewPhase> {
                   return null;
                 }),
             const SizedBox(
-              height: 20.0,
+              height: 10.0,
             ),
             formField(
                 controller: controller_phase_type,
@@ -379,7 +382,7 @@ class _NewPhaseState extends State<NewPhase> {
                   return null;
                 }),
             const SizedBox(
-              height: 20.0,
+              height: 10.0,
             ),
             DatePicker(
               title: "Start date",
@@ -400,7 +403,7 @@ class _NewPhaseState extends State<NewPhase> {
               },
             ),
             const SizedBox(
-              height: 20.0,
+              height: 10.0,
             ),
             DatePicker(
               title: "End date",
@@ -428,7 +431,7 @@ class _NewPhaseState extends State<NewPhase> {
               },
             ),
             const SizedBox(
-              height: 20.0,
+              height: 10.0,
             ),
             titleHeadlineWidget("Resources needed", 16.0),
             Container(
@@ -487,10 +490,7 @@ class _NewPhaseState extends State<NewPhase> {
                       child: Container(
                         margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                         height: 20.0,
-                        child: Container(
-
-                            // padding: const dgeInsets.all(2.0),
-                            child: StatefulBuilder(
+                        child: Container(child: StatefulBuilder(
                           builder: (BuildContext context, StateSettersetState) {
                             return DropdownButtonHideUnderline(
                               child: DropdownButton(
@@ -572,67 +572,108 @@ class _NewPhaseState extends State<NewPhase> {
                 ? loading == true
                     ? Center(child: const CircularProgressIndicator())
                     : Container(
+                        padding: EdgeInsets.only(left: 20),
                         width: MediaQuery.of(context).size.width * 0.26,
                         margin: const EdgeInsets.only(top: 16, left: 30),
                         decoration: BoxDecoration(),
-                        child: Container(
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              searchTextField = TypeAheadFormField(
-                                keepSuggestionsOnLoading: false,
-                                suggestionsBoxVerticalOffset: 0.0,
-                                suggestionsBoxDecoration:
-                                    SuggestionsBoxDecoration(),
-                                hideOnLoading: true,
-                                suggestionsCallback: (pattern) {
-                                  return getSuggestions(pattern);
-                                },
-                                textFieldConfiguration: TextFieldConfiguration(
-                                  controller: _typeAheadController,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 14.0),
-                                  keyboardType: TextInputType.text,
-                                  cursorColor: Colors.white,
-                                  autofocus: true,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.only(top: 15.0),
-                                    prefixIcon: Padding(
-                                        padding: EdgeInsets.only(top: 4.0),
-                                        child: Icon(
-                                          Icons.search,
-                                          color: Color(0xff64748B),
-                                        )),
-                                    hintText: 'Search',
-                                    hintStyle: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.white,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w400),
-                                    border: InputBorder.none,
-                                  ),
+                        child: Material(
+                          color: const Color(0xff1E293B),
+                          shadowColor: Color(0xff1E293B),
+                          elevation: 20,
+                          child: Container(
+                            height: 60.0,
+                            decoration: BoxDecoration(
+                              // color: const Color(0xff334155),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xff1E293B),
+                                  // color: Colors.black,
+                                  // .withOpacity(0.5), //color of shadow
+                                  spreadRadius: 0.5, //spread radius
+                                  blurRadius: 0.5, // blur radius
+                                  offset: Offset(
+                                      0.2, 0.2), // changes position of shadow
+                                  //first paramerter of offset is left-right
+                                  //second parameter is top to down
                                 ),
-                                itemBuilder: (context, item) {
-                                  return rowResourceName(item);
-                                },
-                                transitionBuilder:
-                                    (context, suggestionsBox, controller) {
-                                  return suggestionsBox;
-                                },
-                                onSuggestionSelected: (item) {
-                                  setState(() {
-                                    searchTextField!.textFieldConfiguration
-                                        .controller!.text = '';
+                                //you can set more BoxShadow() here
+                              ],
+                              borderRadius: BorderRadius.circular(
+                                6.0,
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                searchTextField = TypeAheadFormField(
+                                  keepSuggestionsOnLoading: false,
+                                  suggestionsBoxVerticalOffset: 0.0,
+                                  suggestionsBoxDecoration:
+                                      SuggestionsBoxDecoration(),
+                                  hideOnLoading: true,
+                                  suggestionsCallback: (pattern) {
+                                    return getSuggestions(pattern);
+                                  },
+                                  textFieldConfiguration:
+                                      TextFieldConfiguration(
+                                    controller: _typeAheadController,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 14.0),
+                                    keyboardType: TextInputType.text,
+                                    cursorColor: Colors.white,
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      // border: InputBorder.none,
+                                      contentPadding:
+                                          EdgeInsets.only(top: 15.0, left: 10),
+                                      prefixIcon: Padding(
+                                          padding: EdgeInsets.only(top: 4.0),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Color(0xff64748B),
+                                          )),
+                                      hintText: 'Search1',
+                                      hintStyle: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.white,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w400),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                  itemBuilder: (context, item) {
+                                    return rowResourceName(item);
+                                  },
+                                  transitionBuilder:
+                                      (context, suggestionsBox, controller) {
+                                    return suggestionsBox;
+                                  },
+                                  onSuggestionSelected: (item) {
+                                    setState(() {
+                                      searchTextField!.textFieldConfiguration
+                                          .controller!.text = '';
 
-                                    if (selectedSource.isNotEmpty) {
-                                      if (selectedSource.contains(item.name)) {
+                                      if (selectedSource.isNotEmpty) {
+                                        if (selectedSource
+                                            .contains(item.name)) {
+                                        } else {
+                                          _phaseDetails.resource!.add(
+                                              ResourceData(
+                                                  resource_name: item.name,
+                                                  resource_id: item.userId,
+                                                  department_name:
+                                                      item.departmentName,
+                                                  department_id:
+                                                      item.departmentId ?? 0));
+                                          listResource.add(
+                                              PhasesSortedResources(
+                                                  department: _depat['name'],
+                                                  details: item));
+                                          selectedSource.add(item.name!);
+                                        }
                                       } else {
+                                        listResource.add(PhasesSortedResources(
+                                            department: _depat['name'],
+                                            details: item));
                                         _phaseDetails.resource!.add(
                                             ResourceData(
                                                 resource_name: item.name,
@@ -640,28 +681,15 @@ class _NewPhaseState extends State<NewPhase> {
                                                 department_name:
                                                     item.departmentName,
                                                 department_id:
-                                                    item.departmentId ?? 0));
-                                        listResource.add(PhasesSortedResources(
-                                            department: _depat['name'],
-                                            details: item));
+                                                    item.departmentId ?? 0,
+                                                profileImage: item.image));
                                         selectedSource.add(item.name!);
                                       }
-                                    } else {
-                                      listResource.add(PhasesSortedResources(
-                                          department: _depat['name'],
-                                          details: item));
-                                      _phaseDetails.resource!.add(ResourceData(
-                                          resource_name: item.name,
-                                          resource_id: item.userId,
-                                          department_name: item.departmentName,
-                                          department_id: item.departmentId ?? 0,
-                                          profileImage: item.image));
-                                      selectedSource.add(item.name!);
-                                    }
-                                  });
-                                },
-                              ),
-                            ],
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )
@@ -737,7 +765,7 @@ class _NewPhaseState extends State<NewPhase> {
                 children: [
                   clickedAddMileStone == false
                       ? titleHeadlineWidget("Milestones", 18.0)
-                      : titleHeadlineWidget(" Add Milestones", 18.0),
+                      : titleHeadlineWidget("Add Milestones", 18.0),
                   InkWell(
                     child: clickedAddMileStone == false
                         ? Container(
@@ -897,7 +925,7 @@ class _NewPhaseState extends State<NewPhase> {
                 children: [
                   clickAddSubTask == false
                       ? titleHeadlineWidget("Subtasks", 18.0)
-                      : titleHeadlineWidget(" Add Subtasks", 18.0),
+                      : titleHeadlineWidget("Add Subtasks", 18.0),
                   Padding(
                     padding: const EdgeInsets.only(right: 10.0),
                     child: InkWell(
@@ -1318,7 +1346,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddMileStone() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 16),
+      padding: const EdgeInsets.only(top: 12, right: 32),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -1394,7 +1422,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddSubtask() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 16),
+      padding: const EdgeInsets.only(top: 12, right: 32),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,

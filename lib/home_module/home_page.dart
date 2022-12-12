@@ -2859,6 +2859,7 @@ class _NavigationRailState extends State<MyHomePage>
                         BoxConstraints(minHeight: constraint.maxHeight),
                     child: IntrinsicHeight(
                       child: NavigationRail(
+                        // groupAlignment: 1.1,
                         selectedIndex: _selectedIndex,
                         onDestinationSelected: (int index) {
                           isIndex = index;
@@ -2892,6 +2893,7 @@ class _NavigationRailState extends State<MyHomePage>
                           // navigation destinations
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 46.0,
                               height: 46.0,
@@ -2920,6 +2922,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Tooltip(
                               verticalOffset: 40,
                               // textStyle: const TextStyle(
@@ -2943,6 +2946,7 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(9.0),
+                                  // padding: EdgeInsets.zero,
                                   child: SvgPicture.asset(
                                     "images/notification_icon.svg",
                                   ),
@@ -2970,6 +2974,7 @@ class _NavigationRailState extends State<MyHomePage>
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(6.0),
+                                    // padding: EdgeInsets.zero,
                                     child: SvgPicture.asset(
                                       "images/notification_icon.svg",
                                     ),
@@ -3005,6 +3010,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                              padding: EdgeInsets.zero,
                               icon: Column(
                                 children: [
                                   Container(
@@ -3041,6 +3047,7 @@ class _NavigationRailState extends State<MyHomePage>
                                 child: Stack(
                                   children: [
                                     Padding(
+                                      // padding: EdgeInsets.zero,
                                       padding: const EdgeInsets.all(6.0),
                                       child: SvgPicture.asset(
                                         "images/camera.svg",
@@ -3144,6 +3151,7 @@ class _NavigationRailState extends State<MyHomePage>
                           // ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Column(
                               children: [
                                 Tooltip(
@@ -3197,6 +3205,7 @@ class _NavigationRailState extends State<MyHomePage>
                               child: Stack(
                                 children: [
                                   Padding(
+                                    // padding: EdgeInsets.zero,
                                     padding: const EdgeInsets.all(6.0),
                                     child: SvgPicture.asset(
                                       "images/people.svg",
@@ -3233,6 +3242,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 20.0,
                               height: 18.0,
@@ -3265,6 +3275,7 @@ class _NavigationRailState extends State<MyHomePage>
                               child: Stack(
                                 children: [
                                   Padding(
+                                    // padding: EdgeInsets.zero,
                                     padding: const EdgeInsets.all(6.0),
                                     child: SvgPicture.asset(
                                       "images/button.svg",
@@ -3292,6 +3303,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 20.0,
                               height: 18.0,
@@ -3324,6 +3336,7 @@ class _NavigationRailState extends State<MyHomePage>
                               child: Stack(
                                 children: [
                                   Padding(
+                                    // padding: EdgeInsets.zero,
                                     padding: const EdgeInsets.all(6.0),
                                     child: SvgPicture.asset(
                                       "images/bell.svg",
@@ -3351,6 +3364,7 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
 
                           NavigationRailDestination(
+                            padding: EdgeInsets.zero,
                             icon: Container(
                               width: 20.0,
                               height: 18.0,
@@ -3383,6 +3397,7 @@ class _NavigationRailState extends State<MyHomePage>
                               child: Stack(
                                 children: [
                                   Padding(
+                                    // padding: EdgeInsets.zero,
                                     padding: const EdgeInsets.all(6.0),
                                     child: SvgPicture.asset(
                                       "images/setting.svg",

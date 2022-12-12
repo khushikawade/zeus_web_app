@@ -110,11 +110,9 @@ class _DatePickerState extends State<DatePicker> {
                                     textAlignVertical: TextAlignVertical.bottom,
                                     keyboardType: TextInputType.text,
                                     controller: TextEditingController(
-                                      
                                         text: startDate == null
                                             ? 'Select Date'
-                                            : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'
-                                            ),
+                                            : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
                                     decoration: const InputDecoration(
                                         contentPadding: EdgeInsets.only(
                                           bottom: 16.0,

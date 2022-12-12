@@ -46,9 +46,32 @@ class AppUtil {
     }
   }
 
+  static String formattedDateYear1(String date) {
+    if (date != "0000-00-00 00:00:00") {
+      try {
+        DateTime dateTime = DateTime.parse(date);
+        DateFormat dateFormat = DateFormat('d MMM');
+        return dateFormat.format(dateTime).toString();
+      } catch (_) {
+        return 'N/A';
+      }
+    } else {
+      return 'N/A';
+    }
+  }
+
   static DateTime stringToDate(String date) {
     try {
       DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
+      return parseDate;
+    } catch (e) {
+      return DateTime.now();
+    }
+  }
+
+  static DateTime stringToDate1(String date) {
+    try {
+      DateTime parseDate = DateFormat("dd/MM").parse(date);
       return parseDate;
     } catch (e) {
       return DateTime.now();
@@ -82,7 +105,7 @@ class AppUtil {
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold)),
           content: const Padding(
-            padding: EdgeInsets.only(left: 25, right: 25, top: 16,bottom: 10),
+            padding: EdgeInsets.only(left: 25, right: 25, top: 16, bottom: 10),
             child: Text('Your Session has been expired, Please try again!',
                 style: TextStyle(
                     color: Color(0xffFFFFFF),
@@ -112,6 +135,5 @@ class AppUtil {
         );
       },
     );
- 
   }
 }
