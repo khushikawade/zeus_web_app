@@ -15,7 +15,7 @@ import 'project_home_view_model.dart';
 import '../../services/response_model/project_idel_response.dart';
 import 'package:provider/provider.dart';
 
-class ProjectHome extends StatefulWidget {
+class ProjectHome extends StatefulWidget  {
   const ProjectHome({Key? key}) : super(key: key);
 
   @override
@@ -40,6 +40,7 @@ class ProjectHomeState extends State<ProjectHome> {
   List _customerName = [];
   ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
+  List<DataRow> rows = [];
 
   bool? amIHovering;
   bool? amIHovering1;
@@ -214,8 +215,8 @@ class ProjectHomeState extends State<ProjectHome> {
 
   // ScrollController _controller = ScrollController();
 
-  Future? getListData() async {
-    return await Provider.of<ProjectHomeViewModel>(context, listen: false)
+  Future? getListData()  {
+    return  Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
   }
 
@@ -226,11 +227,11 @@ class ProjectHomeState extends State<ProjectHome> {
         .changeProfile();
   }
 
-  @override
-  void didChangeDependencies() {
-    getList = getListData1();
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getList = getListData1();
+  //   super.didChangeDependencies();
+  // }
 
   void change() async {
     var prefs = await SharedPreferences.getInstance();
@@ -241,6 +242,7 @@ class ProjectHomeState extends State<ProjectHome> {
   initState() {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
+
     getListData();
     change();
     getSelectStatus();
@@ -249,16 +251,18 @@ class ProjectHomeState extends State<ProjectHome> {
     getCustomer();
     getCurrency();
     getUsers();
-
     super.initState();
   }
 
-  // Make People List widget or Data Table
-  Widget makeProjectList(ProjectHomeViewModel? data) {
-    List<DataRow> rows = [];
+  getData(ProjectHomeViewModel? data){
+
+
+
+
 
     if (data!.projectDetailsResponse != null) {
       if (data.projectDetailsResponse!.data!.isNotEmpty) {
+        print("ONE");
         print(data.projectDetailsResponse!.data!.length);
         print(data.projectDetailsResponse!.data!.length);
         data.projectDetailsResponse!.data!.asMap().forEach((index, element) {
@@ -342,7 +346,7 @@ class ProjectHomeState extends State<ProjectHome> {
               _projectData.accountablePerson!.name!.isNotEmpty) {
             if (_projectData.accountablePerson!.name!.contains(" ")) {
               List<String> splitedList =
-                  _projectData.accountablePerson!.name!.split(" ");
+              _projectData.accountablePerson!.name!.split(" ");
               splitedList.removeWhere((element) => element.isEmpty);
 
               firstName = splitedList[0];
@@ -505,7 +509,11 @@ class ProjectHomeState extends State<ProjectHome> {
         });
       }
     }
+  }
 
+  // Make People List widget or Data Table
+  Widget makeProjectList(ProjectHomeViewModel? data) {
+    getData(data);
     return Row(
       key: Key("show_more_ink_well"),
       mainAxisAlignment: MainAxisAlignment.start,

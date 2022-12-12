@@ -46,7 +46,7 @@ Widget formField( {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   labelText: labelText,
                   labelStyle: TextStyle(
-                      fontSize: 11.0,
+                      fontSize: 14.0,
                       color: Color(0xff64748B),
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500),
