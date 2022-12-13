@@ -543,9 +543,14 @@ class _NewPhaseState extends State<NewPhase> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    width: 16,
+                  ),
                   Expanded(
+                    // flex: 1,
                     child: Container(
-                      margin: const EdgeInsets.only(left: 30.0),
+                      // width: MediaQuery.of(context).size.width * 0.13,
+                      margin: const EdgeInsets.only(top: 10.0, right: 30),
                       height: 56.0,
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
@@ -553,67 +558,151 @@ class _NewPhaseState extends State<NewPhase> {
                           8.0,
                         ),
                       ),
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        height: 20.0,
-                        child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              margin:
+                                  const EdgeInsets.only(top: 6.0, left: 16.0),
+                              child: const Text(
+                                "Department",
+                                style: TextStyle(
+                                    fontSize: 13.0,
+                                    color: Color(0xff64748B),
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w500),
+                              )),
+                          Container(
+                            margin:
+                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                            height: 20.0,
+                            child: Container(child: StatefulBuilder(
+                              builder:
+                                  (BuildContext context, StateSettersetState) {
+                                return DropdownButtonHideUnderline(
+                                  child: CustomDropdownButton(
+                                      dropdownColor: ColorSelect.class_color,
+                                      value: _depat,
+                                      underline: Container(),
+                                      hint: const Text(
+                                        "Type",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Color(0xff64748B),
+                                      ),
+                                      items: _department.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(
+                                            items['name'],
+                                            style: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (dynamic newValue) {
+                                        setState(() {
+                                          print(newValue);
 
-                            // padding: const dgeInsets.all(2.0),
-                            child: StatefulBuilder(
-                          builder: (BuildContext context, StateSettersetState) {
-                            return DropdownButtonHideUnderline(
-                              child: CustomDropdownButton(
-                                dropdownColor: ColorSelect.class_color,
-                                value: _depat,
-                                underline: Container(),
-                                hint: const Text(
-                                  "Type",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // isExpanded: true,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Color(0xff64748B),
-                                ),
-                                items: _department.map((items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(
-                                      items['name'],
-                                      style: const TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xffFFFFFF),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (dynamic newValue) {
-                                  setState(() {
-                                    print(newValue);
+                                          print(newValue);
+                                          _depat = newValue;
+                                          print(newValue);
 
-                                    print(newValue);
-                                    _depat = newValue;
-                                    print(newValue);
-
-                                    if (newValue != null) {
-                                      startloading = true;
-                                      getResourcesNeeded(
-                                          newValue['id'].toString());
-                                    }
-                                  });
-                                },
-                              ),
-                            );
-                          },
-                        )),
+                                          if (newValue != null) {
+                                            startloading = true;
+                                            getResourcesNeeded(
+                                                newValue['id'].toString());
+                                          }
+                                        });
+                                      }),
+                                );
+                              },
+                            )),
+                          )
+                        ],
                       ),
                     ),
                   ),
+                  // Expanded(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 30.0),
+                  //     height: 56.0,
+                  //     decoration: BoxDecoration(
+                  //       color: const Color(0xff334155),
+                  //       borderRadius: BorderRadius.circular(
+                  //         8.0,
+                  //       ),
+                  //     ),
+                  //     child: Container(
+                  //       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  //       height: 20.0,
+                  //       child: Container(
+
+                  //           // padding: const dgeInsets.all(2.0),
+                  //           child: StatefulBuilder(
+                  //         builder: (BuildContext context, StateSettersetState) {
+                  //           return DropdownButtonHideUnderline(
+                  //             child: CustomDropdownButton(
+                  //               dropdownColor: ColorSelect.class_color,
+                  //               value: _depat,
+                  //               underline: Container(),
+                  //               hint: const Text(
+                  //                 "Type",
+                  //                 style: TextStyle(
+                  //                     fontSize: 14.0,
+                  //                     color: Color(0xffFFFFFF),
+                  //                     fontFamily: 'Inter',
+                  //                     fontWeight: FontWeight.w500),
+                  //               ),
+                  //               // isExpanded: true,
+                  //               icon: const Icon(
+                  //                 Icons.arrow_drop_down,
+                  //                 color: Color(0xff64748B),
+                  //               ),
+                  //               items: _department.map((items) {
+                  //                 return DropdownMenuItem(
+                  //                   value: items,
+                  //                   child: Text(
+                  //                     items['name'],
+                  //                     style: const TextStyle(
+                  //                         fontSize: 14.0,
+                  //                         color: Color(0xffFFFFFF),
+                  //                         fontFamily: 'Inter',
+                  //                         fontWeight: FontWeight.w400),
+                  //                   ),
+                  //                 );
+                  //               }).toList(),
+                  //               onChanged: (dynamic newValue) {
+                  //                 setState(() {
+                  //                   print(newValue);
+
+                  //                   print(newValue);
+                  //                   _depat = newValue;
+                  //                   print(newValue);
+
+                  //                   if (newValue != null) {
+                  //                     startloading = true;
+                  //                     getResourcesNeeded(
+                  //                         newValue['id'].toString());
+                  //                   }
+                  //                 });
+                  //               },
+                  //             ),
+                  //           );
+                  //         },
+                  //       )),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
