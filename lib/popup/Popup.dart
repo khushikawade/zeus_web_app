@@ -1474,7 +1474,7 @@ showDailog(
                         child: Column(
                           children: [
                             SizedBox(
-                                height: 30.0,
+                                height: 60.0,
                                 width: MediaQuery.of(context).size.width,
                                 child: const Divider(
                                   color: Color(0xff424D5F),
@@ -1549,7 +1549,7 @@ showDailog(
                                     ],
                                   ),
                                   onTap: () async {
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
                                     await showDialog(
                                         context: context,
                                         builder: (context) {
@@ -1559,11 +1559,14 @@ showDailog(
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.99,
                               margin: const EdgeInsets.only(
-                                  left: 30.0, top: 12.0, right: 30.0),
-                              height: 40,
+                                  left: 15.0, top: 12.0, right: 15.0),
+                              height: 50,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 borderRadius: BorderRadius.circular(
@@ -1634,13 +1637,22 @@ showDailog(
                                   Phase phase = response.data!.phase![index];
                                   var title = phase.title;
                                   var phaseType = phase.phaseType;
-                                  String name = title!.substring(0, 2);
+                                  String name =
+                                      title!.substring(0, 2).toUpperCase();
                                   var date = phase.startDate;
                                   var endDate = phase.endDate;
 
                                   var _date = date.toString();
 
+                                  var date1 = AppUtil.getFormatedDate(_date);
+                                  var fromDate =
+                                      AppUtil.formattedDateYear1(date1);
+
                                   var _endDate = endDate.toString();
+
+                                  var date2 = AppUtil.getFormatedDate(_endDate);
+                                  var tillDate =
+                                      AppUtil.formattedDateYear1(date2);
 
                                   return Column(
                                     crossAxisAlignment:
@@ -1653,8 +1665,8 @@ showDailog(
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            height: 25.0,
-                                            width: 25.0,
+                                            height: 35.0,
+                                            width: 35.0,
                                             margin: const EdgeInsets.only(
                                                 left: 45.0, top: 10.0),
                                             decoration: BoxDecoration(
@@ -1670,7 +1682,7 @@ showDailog(
                                                 "$name",
                                                 style: const TextStyle(
                                                     color: Color(0xffFFFFFF),
-                                                    fontSize: 10.0,
+                                                    fontSize: 12.0,
                                                     fontFamily: 'Inter',
                                                     fontWeight:
                                                         FontWeight.w500),
@@ -1694,7 +1706,7 @@ showDailog(
                                             margin: const EdgeInsets.only(
                                                 top: 12.0, right: 42.0),
                                             child: Text(
-                                              "$_date",
+                                              "$fromDate",
                                               style: const TextStyle(
                                                   color: Color(0xff94A3B8),
                                                   fontSize: 14.0,
@@ -1706,7 +1718,7 @@ showDailog(
                                             margin: const EdgeInsets.only(
                                                 top: 12.0, right: 52.0),
                                             child: Text(
-                                              "$_endDate",
+                                              "$tillDate",
                                               style: const TextStyle(
                                                   color: Color(0xff94A3B8),
                                                   fontSize: 14.0,
