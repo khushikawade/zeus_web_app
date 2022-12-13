@@ -437,7 +437,7 @@ class _NewPhaseState extends State<NewPhase> {
               height: 10.0,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 5),
+              padding: EdgeInsets.only(left: 10),
               child: titleHeadlineWidget("Resources needed", 16.0),
             ),
             Container(
