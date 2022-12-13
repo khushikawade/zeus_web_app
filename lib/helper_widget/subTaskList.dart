@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zeus/services/model/phase_details.dart';
 import 'package:zeus/services/model/subtask_model.dart';
 
-
-
 Widget subTaskList(context, PhaseDetails phaseDetails,
         {required Null Function(SubTasksModel values, int index, String action)
             callback}) =>
@@ -175,7 +173,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                     },
                                     child: const Padding(
                                         padding:
-                                            EdgeInsets.only(left: 20.0, top: 7),
+                                            EdgeInsets.only(left: 10.0, top: 7),
                                         child: CircleAvatar(
                                             backgroundColor: Color(0xff475569),
                                             radius: 20,
