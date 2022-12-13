@@ -232,15 +232,15 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 //               index: index = 5,
                 //             )));
 
-                context.vxNav.push(
+                bool result = await context.vxNav.waitAndPush(
                     Uri(
                         path: MyRoutes.peopleDetailsRoute,
                         queryParameters: {"id": _peopleList.id.toString()}),
                     params: _peopleList);
-                // if (result) {
-                //   Provider.of<PeopleHomeViewModel>(context, listen: false)
-                //       .getPeopleDataList();
-                // }
+                if (result) {
+                  Provider.of<PeopleHomeViewModel>(context, listen: false)
+                      .getPeopleDataList();
+                }
               },
               cells: [
                 DataCell(Row(

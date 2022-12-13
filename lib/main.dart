@@ -60,8 +60,11 @@ class MyApp extends StatelessWidget {
             ),
             routeInformationParser: VxInformationParser(),
             routerDelegate: VxNavigator(routes: {
-              "/": (_, __) =>
-                  MaterialPage(child: LoginScreen(onSubmit: ((value) {}))),
+              "/": (_, __) => storage.read(isLogin) == null
+                  ? MaterialPage(child: LoginScreen(onSubmit: ((value) {})))
+                  : MaterialPage(
+                      child: MyHomePage(
+                          onSubmit: (value) {}, adOnSubmit: (value) {})),
               MyRoutes.homeRoute: (uri, params) {
                 return MaterialPage(
                     child: MyHomePage(

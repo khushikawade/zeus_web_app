@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:velocity_x/velocity_x.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
 
@@ -140,12 +142,13 @@ class AppUtil {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => LoginScreen(
-                                onSubmit: (String value) {},
-                              )),
-                      (Route<dynamic> route) => route is LoginScreen);
+                  context.vxNav.clearAndPush(Uri.parse(MyRoutes.loginRoute));
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (context) => LoginScreen(
+                  //               onSubmit: (String value) {},
+                  //             )),
+                  //     (Route<dynamic> route) => route is LoginScreen);
                 },
                 child: const Text(
                   'Ok',

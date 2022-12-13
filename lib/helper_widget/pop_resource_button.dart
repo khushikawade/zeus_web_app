@@ -2276,12 +2276,11 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       SmartDialog.dismiss();
       try {
+        widget.returnValue!();
         Navigator.pop(context);
       } catch (e) {
         print(e);
       }
-
-      widget.returnValue!();
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(context);

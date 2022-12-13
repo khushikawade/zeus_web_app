@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
@@ -432,12 +433,13 @@ class _NavigationRailState extends State<MyHomePage>
         style: TextStyle(fontSize: 40, color: Colors.white),
       ),
     ),
-    Container(
-      child: const Navigator(
-        onGenerateRoute: generateRoute,
-        initialRoute: '/peopleList',
-      ),
-    ),
+    PeopleHomeView(),
+    // Container(
+    //   child: const Navigator(
+    //     onGenerateRoute: generateRoute,
+    //     initialRoute: '/peopleList',
+    //   ),
+    // ),
     Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,

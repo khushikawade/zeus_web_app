@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:velocity_x/velocity_x.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -122,12 +124,13 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       storage.erase();
       sharedPreferences.clear();
 
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => LoginScreen(
-                    onSubmit: (String value) {},
-                  )),
-          (Route<dynamic> route) => route is LoginScreen);
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(
+      //         builder: (context) => LoginScreen(
+      //               onSubmit: (String value) {},
+      //             )),
+      //     (Route<dynamic> route) => route is LoginScreen);
+      context.vxNav.clearAndPush(Uri.parse(MyRoutes.loginRoute));
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(context);
