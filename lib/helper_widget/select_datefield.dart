@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DatePicker extends StatefulWidget {
+  String? subtitle;
   String? title;
   DateTime? startDate;
   DateTime? initialDate;
@@ -11,7 +12,8 @@ class DatePicker extends StatefulWidget {
   Function(bool values)? isValidateCallBack;
 
   DatePicker(
-      {required this.title,
+      {required this.subtitle,
+      required this.title,
       required this.startDate,
       this.endDate,
       this.initialDate,
@@ -44,8 +46,14 @@ class _DatePickerState extends State<DatePicker> {
       child: Column(
         children: [
           Container(
-              width: MediaQuery.of(context).size.width * 0.26,
-              margin: const EdgeInsets.only(left: 10.0),
+              width: widget.title == 'Milestone Date' ||
+                      widget.subtitle == 'subTask'
+                  ? MediaQuery.of(context).size.width * 27
+                  : MediaQuery.of(context).size.width * 0.26,
+              margin: widget.title == 'Milestone Date' ||
+                      widget.subtitle == 'subTask'
+                  ? const EdgeInsets.only(left: 15.0, right: 10)
+                  : EdgeInsets.only(left: 10.0),
               height: 56.0,
               decoration: BoxDecoration(
                 color: const Color(0xff334155),
