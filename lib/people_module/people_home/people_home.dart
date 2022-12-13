@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/user_module/people_profile/screen/people_detail_view.dart';
 
@@ -222,18 +224,23 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
           rows.add(DataRow(
               onSelectChanged: (newValue) async {
-                bool result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProfileDetail(
-                              list: _peopleList,
-                              index: index = 5,
-                            )));
+                // bool result = await Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => ProfileDetail(
+                //               list: _peopleList,
+                //               index: index = 5,
+                //             )));
 
-                if (result) {
-                  Provider.of<PeopleHomeViewModel>(context, listen: false)
-                      .getPeopleDataList();
-                }
+                context.vxNav.push(
+                    Uri(
+                        path: MyRoutes.peopleDetailsRoute,
+                        queryParameters: {"id": _peopleList.id.toString()}),
+                    params: _peopleList);
+                // if (result) {
+                //   Provider.of<PeopleHomeViewModel>(context, listen: false)
+                //       .getPeopleDataList();
+                // }
               },
               cells: [
                 DataCell(Row(

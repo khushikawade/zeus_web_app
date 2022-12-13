@@ -22,9 +22,8 @@ import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
 class ProfileDetail extends StatefulWidget {
   PeopleData list;
-  int index;
 
-  ProfileDetail({Key? key, required this.list, required this.index});
+  ProfileDetail({Key? key, required this.list});
 
   @override
   State<ProfileDetail> createState() => _ProfileDetailState(list);
