@@ -84,8 +84,11 @@ class _NewPhaseState extends State<NewPhase> {
 
   TypeAheadFormField? searchTextField;
   TypeAheadFormField? subTaskResourcesSearchTextField;
+  TypeAheadFormField? searchTextFieldForLanguage;
   final TextEditingController _typeAheadController = TextEditingController();
   final TextEditingController _subTaskResourcesController =
+      TextEditingController();
+  final TextEditingController _subTaskLangugaeController =
       TextEditingController();
 
   checkFormStatus() {
@@ -320,6 +323,24 @@ class _NewPhaseState extends State<NewPhase> {
     matches.addAll(users);
     matches.retainWhere(
         (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
+  List<PhasesSortedResources> getSuggestionsForType(String query) {
+    // List<Details> matches = List.empty(growable: true);
+    // matches.addAll(users);
+    // matches.retainWhere(
+    //     (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
+    // return matches;
+    var seen = Set<String>();
+    List<PhasesSortedResources> uniquelist =
+        listResource.where((item) => seen.add(item.department!)).toList();
+    List<PhasesSortedResources> matches = List.empty(growable: true);
+    matches.clear();
+    matches.addAll(uniquelist);
+    matches.retainWhere((element) =>
+        element.department!.toLowerCase().contains(query.toLowerCase()));
+
     return matches;
   }
 
@@ -1199,77 +1220,234 @@ class _NewPhaseState extends State<NewPhase> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 30.0),
-                    height: 56.0,
-                    width: (MediaQuery.of(context).size.width * 0.22),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                        left: 9.2,
-                      ),
-                      height: 21.0,
-                      child: Container(child: StatefulBuilder(
-                        builder: (BuildContext context, StateSettersetState) {
-                          return DropdownButtonHideUnderline(
-                            child: CustomDropdownButton(
-                              dropdownColor: ColorSelect.class_color,
-                              value: subtaskDepat,
-                              underline: Container(),
-                              hint: const Text(
-                                "Type",
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xffFFFFFF),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              //  isExpanded: true,
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Color(0xff64748B),
-                              ),
-                              items: removeDuplicate().map((items) {
-                                return DropdownMenuItem(
-                                  value: items.department,
-                                  child: Text(
-                                    items.department!,
-                                    style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedSubTaskSource.clear();
-                                });
-                                setState(() {
-                                  resourceSuggestions.clear();
-                                  for (var element in listResource) {
-                                    if (element.department!.toLowerCase() ==
-                                        newValue.toString().toLowerCase()) {
-                                      resourceSuggestions.add(element.details!);
-                                    }
-                                  }
+                // Expanded(
+                //   child: Container(
+                //     margin: const EdgeInsets.only(left: 30.0),
+                //     height: 56.0,
+                //     width: (MediaQuery.of(context).size.width * 0.22),
+                //     decoration: BoxDecoration(
+                //       color: const Color(0xff334155),
+                //       borderRadius: BorderRadius.circular(
+                //         8.0,
+                //       ),
+                //     ),
+                //     child: Container(
+                //       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                //       height: 20.0,
+                //       child: Container(child: StatefulBuilder(
+                //         builder: (BuildContext context, StateSettersetState) {
+                //           return DropdownButtonHideUnderline(
+                //             child: CustomDropdownButton(
+                //               dropdownColor: ColorSelect.class_color,
+                //               value: subtaskDepat,
+                //               underline: Container(),
+                //               hint: const Text(
+                //                 "Type",
+                //                 style: TextStyle(
+                //                     fontSize: 14.0,
+                //                     color: Color(0xffFFFFFF),
+                //                     fontFamily: 'Inter',
+                //                     fontWeight: FontWeight.w500),
+                //               ),
+                //               //  isExpanded: true,
+                //               icon: const Icon(
+                //                 Icons.arrow_drop_down,
+                //                 color: Color(0xff64748B),
+                //               ),
+                //               items: removeDuplicate().map((items) {
+                //                 return DropdownMenuItem(
+                //                   value: items.department,
+                //                   child: Text(
+                //                     items.department!,
+                //                     style: const TextStyle(
+                //                         fontSize: 14.0,
+                //                         color: Color(0xffFFFFFF),
+                //                         fontFamily: 'Inter',
+                //                         fontWeight: FontWeight.w400),
+                //                   ),
+                //                 );
+                //               }).toList(),
+                //               onChanged: (newValue) {
+                //                 setState(() {
+                //                   selectedSubTaskSource.clear();
+                //                 });
+                //                 setState(() {
+                //                   resourceSuggestions.clear();
+                //                   for (var element in listResource) {
+                //                     if (element.department!.toLowerCase() ==
+                //                         newValue.toString().toLowerCase()) {
+                //                       resourceSuggestions.add(element.details!);
+                //                     }
+                //                   }
 
-                                  subtaskDepat = newValue.toString();
-                                  if (newValue != null) {}
-                                });
-                              },
+                //                   subtaskDepat = newValue.toString();
+                //                   if (newValue != null) {}
+                //                 });
+                //               },
+                //             ),
+                //           );
+                //         },
+                //       )),
+                //     ),
+                //   ),
+                // ),
+
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30.0, right: 18),
+                          child: PopupMenuButton<int>(
+                            tooltip: '',
+                            offset: const Offset(0, 10),
+                            position: PopupMenuPosition.under,
+                            color: Color(0xFF0F172A),
+                            child: Container(
+                                height: 56.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  borderRadius: BorderRadius.circular(
+                                    8.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 16.0),
+                                      child: Text(
+                                        subtaskDepat == null
+                                            ? "Type"
+                                            : subtaskDepat.toString(),
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Color(0xff64748B),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                            // padding:
+                            //     const EdgeInsets.only(left: 30.0, right: 18),
+                            constraints: BoxConstraints.tightForFinite(
+                              width: 400,
                             ),
-                          );
-                        },
-                      )),
-                    ),
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                padding: const EdgeInsets.all(0),
+                                value: 1,
+                                child: Container(
+                                  // margin: const EdgeInsets.only(
+                                  //     left: 30.0, right: 18),
+                                  width: 425,
+                                  color: const Color(0xff334155),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      searchTextFieldForLanguage =
+                                          TypeAheadFormField(
+                                        keepSuggestionsOnLoading: false,
+                                        hideOnLoading: true,
+                                        suggestionsBoxVerticalOffset: 0.0,
+                                        suggestionsBoxDecoration:
+                                            SuggestionsBoxDecoration(
+                                                color: Color(0xff334155)),
+                                        suggestionsCallback: (pattern) {
+                                          return getSuggestionsForType(pattern);
+                                        },
+                                        textFieldConfiguration:
+                                            TextFieldConfiguration(
+                                          controller:
+                                              _subTaskLangugaeController,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14.0),
+                                          keyboardType: TextInputType.text,
+                                          cursorColor: Colors.white,
+                                          autofocus: true,
+                                          decoration: const InputDecoration(
+                                            contentPadding: EdgeInsets.only(
+                                              top: 15.0,
+                                            ),
+                                            prefixIcon: Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 4.0),
+                                                child: Icon(
+                                                  Icons.search,
+                                                  color: Color(0xff64748B),
+                                                )),
+                                            hintText: 'Search',
+                                            hintStyle: TextStyle(
+                                                fontSize: 14.0,
+                                                color: Color(0xff64748B),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w400),
+                                            border: InputBorder.none,
+                                          ),
+                                        ),
+                                        itemBuilder: (context, item) {
+                                          return rowPhases(item);
+                                        },
+                                        transitionBuilder: (context,
+                                            suggestionsBox, controller) {
+                                          return suggestionsBox;
+                                        },
+                                        onSuggestionSelected: (item) {
+                                          resourceSuggestions.clear();
+                                          _subTaskLangugaeController.text = '';
+                                          setState(() {
+                                            selectedSubTaskSource.clear();
+                                          });
+                                          setState(() {
+                                            resourceSuggestions.clear();
+                                            for (var element in listResource) {
+                                              if (element.department!
+                                                      .toLowerCase() ==
+                                                  item.details.departmentName
+                                                      .toString()
+                                                      .toLowerCase()) {
+                                                resourceSuggestions
+                                                    .add(element.details!);
+                                              }
+                                            }
+
+                                            subtaskDepat =
+                                                item.department.toString();
+                                            print(subtaskDepat);
+                                            print(subtaskDepat);
+                                            setState(() {
+                                              Navigator.of(context).pop();
+                                            });
+
+                                            if (item != null) {}
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                            elevation: 0.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
