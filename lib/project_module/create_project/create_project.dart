@@ -1170,7 +1170,7 @@ class _EditPageState extends State<CreateProjectPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
                         },
@@ -1202,7 +1202,7 @@ class _EditPageState extends State<CreateProjectPage> {
                       SizedBox(
                         width: 16,
                       ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           setState(() {
                             createButtonClick = true;

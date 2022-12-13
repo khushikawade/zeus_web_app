@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class DatePicker extends StatefulWidget {
   String? title;
   DateTime? startDate;
@@ -27,15 +26,15 @@ class DatePicker extends StatefulWidget {
 class _DatePickerState extends State<DatePicker> {
   DateTime? startDate;
   DateTime? endDate;
-  DateTime? selectedDate;
   TextEditingController controller = TextEditingController();
   String? errorText = "";
 
   @override
   void initState() {
-    startDate = widget.startDate ?? DateTime.now();
-    endDate = widget.endDate ?? DateTime.now().add(const Duration(days: 36500));
-    selectedDate = widget.initialDate ?? DateTime.now();
+    startDate = widget.startDate ?? null;
+    endDate = widget.endDate ??
+        null; //DateTime.now().add(const Duration(days: 36500));
+   
   }
 
   @override
@@ -47,7 +46,7 @@ class _DatePickerState extends State<DatePicker> {
           Container(
               width: MediaQuery.of(context).size.width * 0.26,
               margin: const EdgeInsets.only(left: 30.0),
-              height: 56.0, 
+              height: 56.0,
               decoration: BoxDecoration(
                 color: const Color(0xff334155),
                 //border: Border.all(color:  const Color(0xff1E293B)),
@@ -100,46 +99,52 @@ class _DatePickerState extends State<DatePicker> {
                               Container(
                                 height: 30,
                                 width: 200,
-                                child: TextFormField(
-                                  cursorColor: const Color(0xffFFFFFF),
-                                  enabled: false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: TextFormField(
+                                    cursorColor: const Color(0xffFFFFFF),
 
-                                  style:
-                                      const TextStyle(color: Color(0xffFFFFFF)),
-                                  textAlignVertical: TextAlignVertical.bottom,
-                                  keyboardType: TextInputType.text,
-                                  controller: TextEditingController(
-                                      text:
-                                          '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
-                                  decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                        bottom: 16.0,
-                                        top: 0.0,
-                                        right: 10,
-                                        left: 15.0,
-                                      ),
-                                      border: InputBorder.none,
-                                      enabled: false,
-                                      errorStyle:
-                                          TextStyle(height: 0, fontSize: 0)),
-                                  onChanged: (value) {
-                                    //filterSearchResults(value);
-                                    //  controller = value;
-                                    // callback(controller);
-                                  },
+                                    enabled: false,
 
-                                  validator: (value) {
-                                    setState(() {
-                                      errorText =
-                                          widget.validationCallBack!(value!) ??
-                                              "";
-                                    });
-                                    return null;
-                                  },
-                                  // onSaved: (value) {
-                                  //   controller = value;
-                                  //   callback(controller);
-                                  // },
+                                    style: const TextStyle(
+                                        color: Color(0xffFFFFFF)),
+                                    textAlignVertical: TextAlignVertical.bottom,
+                                    keyboardType: TextInputType.text,
+                                    controller: TextEditingController(
+                                        text: startDate == null ||
+                                                startDate.toString().isEmpty
+                                            ? 'dd/mm/yyyy'
+                                            : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
+                                    decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                          bottom: 16.0,
+                                          top: 0.0,
+                                          right: 10,
+                                          left: 15.0,
+                                        ),
+                                        border: InputBorder.none,
+                                        enabled: false,
+                                        errorStyle:
+                                            TextStyle(height: 0, fontSize: 0)),
+                                    onChanged: (value) {
+                                      //filterSearchResults(value);
+                                      //  controller = value;
+                                      // callback(controller);
+                                    },
+
+                                    validator: (value) {
+                                      setState(() {
+                                        errorText = widget
+                                                .validationCallBack!(value!) ??
+                                            "";
+                                      });
+                                      return null;
+                                    },
+                                    // onSaved: (value) {
+                                    //   controller = value;
+                                    //   callback(controller);
+                                    // },
+                                  ),
                                 ),
                               ),
                             ],
@@ -149,12 +154,20 @@ class _DatePickerState extends State<DatePicker> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 5.0, right: 10.0),
-                    height: 20.0,
-                    child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: SvgPicture.asset('images/cross.svg')),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        startDate = null;
+                        endDate = null;
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 5.0, right: 10.0),
+                      height: 20.0,
+                      child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: SvgPicture.asset('images/cross.svg')),
+                    ),
                   ),
                 ],
               )),

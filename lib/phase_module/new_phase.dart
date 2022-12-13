@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
@@ -31,7 +32,7 @@ class NewPhase extends StatefulWidget {
 }
 
 class _NewPhaseState extends State<NewPhase> {
-  PhaseDetails _phaseDetails =
+  PhaseDetails phaseDetails =
       PhaseDetails(sub_tasks: [], resource: [], milestone: []);
   TextEditingController controller_next_phase = TextEditingController();
   TextEditingController controllerMilestoneTitle = TextEditingController();
@@ -46,8 +47,8 @@ class _NewPhaseState extends State<NewPhase> {
   String? selectUser, subtaskDepat;
   List _department = [];
   Api api = Api();
-  DateTime startDate = DateTime.now().subtract(Duration(days: 40));
-  DateTime endDate = DateTime.now().add(Duration(days: 40));
+  // DateTime startDates = DateTime.now().subtract(Duration(days: 40));
+  // DateTime endDates = DateTime.now().add(Duration(days: 40));
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Type';
   bool clickedAddMileStone = false;
@@ -97,14 +98,17 @@ class _NewPhaseState extends State<NewPhase> {
     if (getPhaseDetails != null &&
         getPhaseDetails!.statusCode == 200 &&
         getPhaseDetails!.status == true) {
-      _phaseDetails.statusCode = 200;
+      phaseDetails.statusCode = 200;
       if (getPhaseDetails!.data != null) {
-        _phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
-        _phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
-        _phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
+        setState(() {
+          phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
+          phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
+        });
+
+        phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
         controller_phase_type.text = getPhaseDetails?.data?.phaseType ?? "";
         controller_next_phase.text = getPhaseDetails?.data?.title ?? "";
-        _phaseDetails.title = getPhaseDetails?.data?.title ?? "";
+        phaseDetails.title = getPhaseDetails?.data?.title ?? "";
         if (getPhaseDetails!.data!.assignedResources != null &&
             getPhaseDetails!.data!.assignedResources!.isNotEmpty) {
           getPhaseDetails!.data!.assignedResources!.forEach((element) {
@@ -119,7 +123,7 @@ class _NewPhaseState extends State<NewPhase> {
 
             selectedSource.add(element.resource?.name ?? "");
 
-            _phaseDetails.resource!.add(ResourceData(
+            phaseDetails.resource!.add(ResourceData(
                 department_id: element.departmentId ?? 0,
                 resource_id: element.resourceId ?? 0,
                 resource_name: element.resource?.name ?? ''));
@@ -130,7 +134,7 @@ class _NewPhaseState extends State<NewPhase> {
             getPhaseDetails!.data!.milestone!.isNotEmpty) {
           saveButtonClick = true;
           getPhaseDetails!.data!.milestone!.forEach((element) {
-            _phaseDetails.milestone!
+            phaseDetails.milestone!
                 .add(Milestones(title: element.title, m_date: element.mDate));
           });
         }
@@ -139,7 +143,7 @@ class _NewPhaseState extends State<NewPhase> {
             getPhaseDetails!.data!.subTasks!.isNotEmpty) {
           saveButtonClickForSubtask = true;
           getPhaseDetails!.data!.subTasks!.forEach((element) {
-            _phaseDetails.sub_tasks!.add(SubTasksModel(
+            phaseDetails.sub_tasks!.add(SubTasksModel(
                 end_date: element.startDate,
                 start_date: element.endDate,
                 resource: ResourceData(
@@ -151,7 +155,9 @@ class _NewPhaseState extends State<NewPhase> {
                     profileImage:
                         element.assignResource?.resource?.image ?? '')));
           });
-          print(_phaseDetails);
+          print(phaseDetails);
+          print(phaseDetails);
+          print(phaseDetails);
         }
       }
     }
@@ -180,133 +186,132 @@ class _NewPhaseState extends State<NewPhase> {
           width: MediaQuery.of(context).size.width * 0.99,
           height: MediaQuery.of(context).size.height * 0.99,
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.11,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      color: Color(0xff283345),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16.0),
-                        topLeft: Radius.circular(16.0),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x26000000),
-                          offset: Offset(
-                            0.0,
-                            1.0,
-                          ),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
-                        ),
-                      ],
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    color: Color(0xff283345),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16.0),
+                      topLeft: Radius.circular(16.0),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        titleHeadlineWidget("New Phase", 22.0),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  width: 97.0,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
-                                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x26000000),
+                        offset: Offset(
+                          0.0,
+                          1.0,
+                        ),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      titleHeadlineWidget("New Phase", 22.0),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: 97.0,
+                                margin: const EdgeInsets.only(
+                                    top: 10.0, bottom: 10.0),
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  borderRadius: BorderRadius.circular(
+                                    40.0,
                                   ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xffFFFFFF),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
+                                ),
+                                child: const Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xffFFFFFF),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              InkWell(
-                                child: Container(
-                                  width: 97,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, right: 20.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff7DD3FC),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
-                                    ),
-                                  ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Save",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xff000000),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            InkWell(
+                              child: Container(
+                                width: 97,
+                                margin: const EdgeInsets.only(
+                                    top: 10.0, right: 20.0, bottom: 10.0),
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff7DD3FC),
+                                  borderRadius: BorderRadius.circular(
+                                    40.0,
                                   ),
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    savePhaseClick = true;
-                                  });
-                                  Future.delayed(
-                                      const Duration(microseconds: 500), () {
-                                    createPhase();
-                                  });
-                                },
+                                child: const Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    phaseView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    mileStoneView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    subtaskView()
-                  ],
-                ),
-              ],
-            ),
-          ),
+                              onTap: () {
+                                setState(() {
+                                  savePhaseClick = true;
+                                });
+                                Future.delayed(
+                                    const Duration(microseconds: 500), () {
+                                  createPhase();
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  phaseView(),
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.99,
+                      child: const VerticalDivider(
+                        color: Color(0xff94A3B8),
+                        thickness: 0.2,
+                      )),
+                  mileStoneView(),
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.99,
+                      child: const VerticalDivider(
+                        color: Color(0xff94A3B8),
+                        thickness: 0.2,
+                      )),
+                  subtaskView()
+                ],
+              ),
+            ],
+          )),
         ));
   }
 
@@ -339,7 +344,7 @@ class _NewPhaseState extends State<NewPhase> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                titleHeadlineWidget("Phases details", 18.0),
+                titleHeadlineWidget("Phase details", 18.0),
               ],
             ),
             const SizedBox(
@@ -351,7 +356,7 @@ class _NewPhaseState extends State<NewPhase> {
                 labelText: "Phase Title",
                 callback: (values) {
                   setState(() {
-                    _phaseDetails.title = values;
+                    phaseDetails.title = values;
                   });
                 },
                 validateCallback: (value) {
@@ -369,7 +374,7 @@ class _NewPhaseState extends State<NewPhase> {
                 context: context,
                 callback: (values) {
                   setState(() {
-                    _phaseDetails.phase_type = values;
+                    phaseDetails.phase_type = values;
                   });
                 },
                 validateCallback: (value) {
@@ -381,56 +386,120 @@ class _NewPhaseState extends State<NewPhase> {
             const SizedBox(
               height: 20.0,
             ),
-            DatePicker(
-              title: "Start date",
-              callback: (value) {
-                setState(() {
-                  _phaseDetails.start_date = value;
-                });
-                setState(() {});
-              },
-              startDate: DateTime.now(),
-              validationCallBack: (String values) {
-                if (values.isEmpty) {
-                  checkFormStatus();
-                  return 'Please enter start date';
-                } else {
-                  return null;
-                }
-              },
-            ),
+            widget.type == 0
+                ? DatePicker(
+                    title: "Start date",
+                    callback: (value) {
+                      setState(() {
+                        phaseDetails.start_date = value.trim();
+                        print(value);
+                      });
+                      setState(() {});
+                    },
+                    startDate: null,
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        checkFormStatus();
+                        return 'Please enter start date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+                : getPhaseDetails != null
+                    ? DatePicker(
+                        title: "Start date",
+                        callback: (value) {
+                          setState(() {
+                            phaseDetails.start_date = value.trim();
+                          });
+                          setState(() {});
+                        },
+                        startDate: AppUtil.stringToDate(
+                            phaseDetails.start_date.toString()),
+                        validationCallBack: (String values) {
+                          if (values.isEmpty) {
+                            checkFormStatus();
+                            return 'Please enter start date';
+                          } else {
+                            return null;
+                          }
+                        },
+                      )
+                    : Container(
+                        height: 56.0,
+                      ),
             const SizedBox(
               height: 20.0,
             ),
-            DatePicker(
-              title: "End date",
-              callback: (value) {
-                setState(() {
-                  _phaseDetails.end_date = value;
-                });
-              },
-              startDate: _phaseDetails.sub_tasks!.isNotEmpty
-                  ? DateTime.now().add(Duration(days: 10))
-                  : DateTime.now(),
-              validationCallBack: (String values) {
-                if (values.isEmpty) {
-                  checkFormStatus();
-                  return 'Please enter end date';
-                } else if (_phaseDetails.end_date != null &&
-                    _phaseDetails.start_date != null) {
-                  if ((AppUtil.stringToDate(_phaseDetails.end_date!).isBefore(
-                      (AppUtil.stringToDate(_phaseDetails.start_date!))))) {
-                    return 'End date must be greater then the start date';
-                  }
-                } else {
-                  return null;
-                }
-              },
-            ),
+            getPhaseDetails != null
+                ? DatePicker(
+                    title: "End date",
+                    callback: (value) {
+                      setState(() {
+                        phaseDetails.end_date = value;
+                      });
+                    },
+                    startDate: widget.type == 1
+                        ? AppUtil.stringToDate(phaseDetails.end_date != null &&
+                                phaseDetails.end_date!.isNotEmpty
+                            ? phaseDetails.end_date.toString()
+                            : '')
+                        : null,
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        checkFormStatus();
+                        return 'Please enter end date';
+                      } else if (phaseDetails.end_date != null &&
+                          phaseDetails.start_date != null) {
+                        if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                            .isBefore((AppUtil.stringToDate(
+                                phaseDetails.start_date!))))) {
+                          return 'End date must be greater then the start date';
+                        }
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+                : widget.type == 0
+                    ? DatePicker(
+                        title: "End date",
+                        callback: (value) {
+                          setState(() {
+                            phaseDetails.end_date = value;
+                          });
+                        },
+                        startDate: widget.type == 1
+                            ? AppUtil.stringToDate(
+                                phaseDetails.end_date != null &&
+                                        phaseDetails.end_date!.isNotEmpty
+                                    ? phaseDetails.end_date.toString()
+                                    : '')
+                            : null,
+                        validationCallBack: (String values) {
+                          if (values.isEmpty) {
+                            checkFormStatus();
+                            return 'Please enter end date';
+                          } else if (phaseDetails.end_date != null &&
+                              phaseDetails.start_date != null) {
+                            if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                                .isBefore((AppUtil.stringToDate(
+                                    phaseDetails.start_date!))))) {
+                              return 'End date must be greater then the start date';
+                            }
+                          } else {
+                            return null;
+                          }
+                        },
+                      )
+                    : Container(
+                        height: 56.0,
+                      ),
             const SizedBox(
               height: 20.0,
             ),
-            titleHeadlineWidget("Resources needed", 16.0),
+            titleHeadlineWidget("", 16.0),
             Container(
               width: MediaQuery.of(context).size.width * 0.26,
               margin: const EdgeInsets.only(left: 30.0),
@@ -451,7 +520,11 @@ class _NewPhaseState extends State<NewPhase> {
                           child: CircleAvatar(
                             backgroundColor: Color(0xff334155),
                             radius: 30,
-                            child: Icon(Icons.person_outline, size: 40),
+                            child: Icon(
+                              Icons.person_outline,
+                              size: 35,
+                              color: Color(0xffDADADA),
+                            ),
                           ),
                         ),
                         Positioned(
@@ -489,7 +562,7 @@ class _NewPhaseState extends State<NewPhase> {
                             child: StatefulBuilder(
                           builder: (BuildContext context, StateSettersetState) {
                             return DropdownButtonHideUnderline(
-                              child: DropdownButton(
+                              child: CustomDropdownButton(
                                 dropdownColor: ColorSelect.class_color,
                                 value: _depat,
                                 underline: Container(),
@@ -501,7 +574,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w500),
                                 ),
-                                isExpanded: true,
+                                // isExpanded: true,
                                 icon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color(0xff64748B),
@@ -608,7 +681,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     hintText: 'Search',
                                     hintStyle: TextStyle(
                                         fontSize: 14.0,
-                                        color: Color(0xff64748B),
+                                        color: Colors.white,
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w400),
                                     border: InputBorder.none,
@@ -629,14 +702,13 @@ class _NewPhaseState extends State<NewPhase> {
                                     if (selectedSource.isNotEmpty) {
                                       if (selectedSource.contains(item.name)) {
                                       } else {
-                                        _phaseDetails.resource!.add(
-                                            ResourceData(
-                                                resource_name: item.name,
-                                                resource_id: item.userId,
-                                                department_name:
-                                                    item.departmentName,
-                                                department_id:
-                                                    item.departmentId ?? 0));
+                                        phaseDetails.resource!.add(ResourceData(
+                                            resource_name: item.name,
+                                            resource_id: item.userId,
+                                            department_name:
+                                                item.departmentName,
+                                            department_id:
+                                                item.departmentId ?? 0));
                                         listResource.add(PhasesSortedResources(
                                             department: _depat['name'],
                                             details: item));
@@ -646,7 +718,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       listResource.add(PhasesSortedResources(
                                           department: _depat['name'],
                                           details: item));
-                                      _phaseDetails.resource!.add(ResourceData(
+                                      phaseDetails.resource!.add(ResourceData(
                                           resource_name: item.name,
                                           resource_id: item.userId,
                                           department_name: item.departmentName,
@@ -793,7 +865,7 @@ class _NewPhaseState extends State<NewPhase> {
                 : saveButtonClick
                     ? milestoneList(
                         context,
-                        _phaseDetails,
+                        phaseDetails,
                         callback: (values, index, action) {
                           setState(() {
                             if (action == "Delete") {
@@ -820,7 +892,9 @@ class _NewPhaseState extends State<NewPhase> {
                         print(mileStoneDate);
                       });
                     },
-                    startDate: AppUtil.stringToDate(mileStoneDate),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(mileStoneDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         return 'Please enter milestone date';
@@ -829,7 +903,7 @@ class _NewPhaseState extends State<NewPhase> {
                       }
                     },
                   ),
-            savePhaseClick && _phaseDetails.milestone!.isEmpty
+            savePhaseClick && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: const EdgeInsets.only(left: 30.0, top: 03),
@@ -857,9 +931,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   onDeleteMileStone(int index) {
     try {
-      if (_phaseDetails.milestone!.length >= index) {
+      if (phaseDetails.milestone!.length >= index) {
         setState(() {
-          _phaseDetails.milestone!.removeAt(index);
+          phaseDetails.milestone!.removeAt(index);
         });
       }
     } catch (e) {}
@@ -942,9 +1016,11 @@ class _NewPhaseState extends State<NewPhase> {
                 ? DatePicker(
                     title: "Start date",
                     callback: (value) {
-                      subTaskStartDate = value;
+                      subTaskStartDate = value.trim();
                     },
-                    startDate: DateTime.now(),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(subTaskStartDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         return 'Please enter start date';
@@ -961,9 +1037,11 @@ class _NewPhaseState extends State<NewPhase> {
                 ? DatePicker(
                     title: "End date",
                     callback: (value) {
-                      subTaskEndDate = value;
+                      subTaskEndDate = value.trim();
                     },
-                    startDate: AppUtil.stringToDate(subTaskStartDate),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(subTaskEndDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         checkFormStatus();
@@ -984,7 +1062,7 @@ class _NewPhaseState extends State<NewPhase> {
               height: 8.0,
             ),
             clickAddSubTask
-                ? titleHeadlineWidget("Resources need for subtask", 16)
+                ? titleHeadlineWidget("Resources needed for the subtasks", 16)
                 : Container(),
             clickAddSubTask && saveSubtaskClick && selectedSubTaskSource.isEmpty
                 ? Container(
@@ -1011,7 +1089,7 @@ class _NewPhaseState extends State<NewPhase> {
                 : saveButtonClickForSubtask
                     ? subTaskList(
                         context,
-                        _phaseDetails,
+                        phaseDetails,
                         callback: (values, index, subTaskAction) {
                           if (subTaskAction == 'Delete') {
                             onDeleteSubtask(index);
@@ -1026,7 +1104,7 @@ class _NewPhaseState extends State<NewPhase> {
                         },
                       )
                     : Container(),
-            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
+            savePhaseClick && phaseDetails.sub_tasks!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: const EdgeInsets.only(left: 30.0, top: 03),
@@ -1054,9 +1132,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   onDeleteSubtask(int index) {
     try {
-      if (_phaseDetails.sub_tasks!.length >= index) {
+      if (phaseDetails.sub_tasks!.length >= index) {
         setState(() {
-          _phaseDetails.sub_tasks!.removeAt(index);
+          phaseDetails.sub_tasks!.removeAt(index);
           subTaskStartDate = AppUtil.dateToString(DateTime.now());
           subTaskEndDate = AppUtil.dateToString(DateTime.now());
         });
@@ -1135,7 +1213,7 @@ class _NewPhaseState extends State<NewPhase> {
                     child: Container(child: StatefulBuilder(
                       builder: (BuildContext context, StateSettersetState) {
                         return DropdownButtonHideUnderline(
-                          child: DropdownButton(
+                          child: CustomDropdownButton(
                             dropdownColor: ColorSelect.class_color,
                             value: subtaskDepat,
                             underline: Container(),
@@ -1147,7 +1225,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w500),
                             ),
-                            isExpanded: true,
+                            //  isExpanded: true,
                             icon: const Icon(
                               Icons.arrow_drop_down,
                               color: Color(0xff64748B),
@@ -1177,7 +1255,6 @@ class _NewPhaseState extends State<NewPhase> {
                                     resourceSuggestions.add(element.details!);
                                   }
                                 }
-
                                 subtaskDepat = newValue.toString();
                                 if (newValue != null) {}
                               });
@@ -1354,12 +1431,12 @@ class _NewPhaseState extends State<NewPhase> {
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
-                        _phaseDetails.milestone!.add(Milestones(
+                        phaseDetails.milestone!.add(Milestones(
                             title: mileStoneTitle, m_date: mileStoneDate));
                       } else {
-                        _phaseDetails.milestone![mileStoneEditIndex].title =
+                        phaseDetails.milestone![mileStoneEditIndex].title =
                             mileStoneTitle;
-                        _phaseDetails.milestone![mileStoneEditIndex].m_date =
+                        phaseDetails.milestone![mileStoneEditIndex].m_date =
                             mileStoneDate;
                       }
 
@@ -1433,14 +1510,14 @@ class _NewPhaseState extends State<NewPhase> {
                       subTaskEndDate.isNotEmpty) {
                     try {
                       if (subtaskActionType.isEmpty) {
-                        _phaseDetails.sub_tasks!.add(SubTasksModel(
+                        phaseDetails.sub_tasks!.add(SubTasksModel(
                           resource: selectedSubTaskSource[0],
                           end_date: subTaskEndDate,
                           start_date: subTaskStartDate,
                         ));
                         subtaskActionType = '';
                       } else {
-                        _phaseDetails.sub_tasks![subTaskEditIndex] =
+                        phaseDetails.sub_tasks![subTaskEditIndex] =
                             SubTasksModel(
                                 resource: selectedSubTaskSource[0],
                                 end_date: subTaskEndDate,
@@ -1478,7 +1555,7 @@ class _NewPhaseState extends State<NewPhase> {
             color: const Color(0xffFFFFFF),
             fontSize: i,
             fontFamily: 'Inter',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -1499,12 +1576,12 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   createPhase() {
-    _phaseDetails.project_id = widget.id;
+    phaseDetails.project_id = widget.id;
     allValidate = true;
     if (_formKey.currentState!.validate()) {
-      if (allValidate && _phaseDetails.milestone!.isNotEmpty) {
-        if (_phaseDetails.milestone!.isNotEmpty &&
-            _phaseDetails.sub_tasks!.isNotEmpty) {
+      if (allValidate && phaseDetails.milestone!.isNotEmpty) {
+        if (phaseDetails.milestone!.isNotEmpty &&
+            phaseDetails.sub_tasks!.isNotEmpty) {
           if (widget.type == 1) {
             updatePhaseApi();
           } else {
@@ -1550,7 +1627,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
     try {
       CreatePhaseResp createPhaseResp =
-          await api.createNewPhase(json.encode(_phaseDetails), context);
+          await api.createNewPhase(json.encode(phaseDetails), context);
       if (createPhaseResp.status == true) {
         Navigator.pop(context);
       }
@@ -1571,7 +1648,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
     try {
       UpdatePhaseResp updatePhaseResp =
-          await api.updatePhase(json.encode(_phaseDetails), widget.id, context);
+          await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
         Navigator.pop(context);
       }
@@ -1610,8 +1687,8 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   beforeScreenLoad() {
-    _phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
-    _phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
+    phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
+    phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
     mileStoneDate = AppUtil.dateToString(DateTime.now());
     subTaskStartDate = AppUtil.dateToString(DateTime.now());
     subTaskEndDate = AppUtil.dateToString(DateTime.now());
