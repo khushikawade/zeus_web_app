@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
@@ -31,7 +32,7 @@ class NewPhase extends StatefulWidget {
 }
 
 class _NewPhaseState extends State<NewPhase> {
-  PhaseDetails _phaseDetails =
+  PhaseDetails phaseDetails =
       PhaseDetails(sub_tasks: [], resource: [], milestone: []);
   TextEditingController controller_next_phase = TextEditingController();
   TextEditingController controllerMilestoneTitle = TextEditingController();
@@ -46,8 +47,8 @@ class _NewPhaseState extends State<NewPhase> {
   String? selectUser, subtaskDepat;
   List _department = [];
   Api api = Api();
-  DateTime startDate = DateTime.now().subtract(Duration(days: 40));
-  DateTime endDate = DateTime.now().add(Duration(days: 40));
+  // DateTime startDates = DateTime.now().subtract(Duration(days: 40));
+  // DateTime endDates = DateTime.now().add(Duration(days: 40));
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Type';
   bool clickedAddMileStone = false;
@@ -97,14 +98,17 @@ class _NewPhaseState extends State<NewPhase> {
     if (getPhaseDetails != null &&
         getPhaseDetails!.statusCode == 200 &&
         getPhaseDetails!.status == true) {
-      _phaseDetails.statusCode = 200;
+      phaseDetails.statusCode = 200;
       if (getPhaseDetails!.data != null) {
-        _phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
-        _phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
-        _phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
+        setState(() {
+          phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
+          phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
+        });
+
+        phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
         controller_phase_type.text = getPhaseDetails?.data?.phaseType ?? "";
         controller_next_phase.text = getPhaseDetails?.data?.title ?? "";
-        _phaseDetails.title = getPhaseDetails?.data?.title ?? "";
+        phaseDetails.title = getPhaseDetails?.data?.title ?? "";
         if (getPhaseDetails!.data!.assignedResources != null &&
             getPhaseDetails!.data!.assignedResources!.isNotEmpty) {
           getPhaseDetails!.data!.assignedResources!.forEach((element) {
@@ -119,7 +123,7 @@ class _NewPhaseState extends State<NewPhase> {
 
             selectedSource.add(element.resource?.name ?? "");
 
-            _phaseDetails.resource!.add(ResourceData(
+            phaseDetails.resource!.add(ResourceData(
                 department_id: element.departmentId ?? 0,
                 resource_id: element.resourceId ?? 0,
                 resource_name: element.resource?.name ?? ''));
@@ -130,7 +134,7 @@ class _NewPhaseState extends State<NewPhase> {
             getPhaseDetails!.data!.milestone!.isNotEmpty) {
           saveButtonClick = true;
           getPhaseDetails!.data!.milestone!.forEach((element) {
-            _phaseDetails.milestone!
+            phaseDetails.milestone!
                 .add(Milestones(title: element.title, m_date: element.mDate));
           });
         }
@@ -139,7 +143,7 @@ class _NewPhaseState extends State<NewPhase> {
             getPhaseDetails!.data!.subTasks!.isNotEmpty) {
           saveButtonClickForSubtask = true;
           getPhaseDetails!.data!.subTasks!.forEach((element) {
-            _phaseDetails.sub_tasks!.add(SubTasksModel(
+            phaseDetails.sub_tasks!.add(SubTasksModel(
                 end_date: element.startDate,
                 start_date: element.endDate,
                 resource: ResourceData(
@@ -151,7 +155,9 @@ class _NewPhaseState extends State<NewPhase> {
                     profileImage:
                         element.assignResource?.resource?.image ?? '')));
           });
-          print(_phaseDetails);
+          print(phaseDetails);
+          print(phaseDetails);
+          print(phaseDetails);
         }
       }
     }
@@ -245,6 +251,15 @@ class _NewPhaseState extends State<NewPhase> {
                                 width: 16,
                               ),
                               InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    savePhaseClick = true;
+                                  });
+                                  Future.delayed(
+                                      const Duration(microseconds: 500), () {
+                                    createPhase();
+                                  });
+                                },
                                 child: Container(
                                   width: 97,
                                   margin: const EdgeInsets.only(
@@ -268,16 +283,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     ),
                                   ),
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    savePhaseClick = true;
-                                  });
-                                  Future.delayed(
-                                      const Duration(microseconds: 500), () {
-                                    createPhase();
-                                  });
-                                },
-                              ),
+                              )
                             ],
                           ),
                         )
@@ -289,14 +295,14 @@ class _NewPhaseState extends State<NewPhase> {
                   children: [
                     phaseView(),
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
+                        height: MediaQuery.of(context).size.height * 1.5,
                         child: const VerticalDivider(
                           color: Color(0xff94A3B8),
                           thickness: 0.2,
                         )),
                     mileStoneView(),
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
+                        height: MediaQuery.of(context).size.height * 1.5,
                         child: const VerticalDivider(
                           color: Color(0xff94A3B8),
                           thickness: 0.2,
@@ -328,257 +334,345 @@ class _NewPhaseState extends State<NewPhase> {
 
   // Phase view
   Widget phaseView() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      child: Expanded(
-        flex: 1,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return Expanded(
+      flex: 1,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 8.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  titleHeadlineWidget("Phases details", 18.0),
+                  titleHeadlineWidget("Phase details", 18.0),
                 ],
               ),
-              const SizedBox(
-                height: 8.0,
-              ),
-              formField(
-                  controller: controller_next_phase,
-                  context: context,
-                  labelText: "Phase Title",
-                  callback: (values) {
-                    setState(() {
-                      _phaseDetails.title = values;
-                    });
-                  },
-                  validateCallback: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter phase title';
-                    }
-                    return null;
-                  }),
-              const SizedBox(
-                height: 20.0,
-              ),
-              formField(
-                  controller: controller_phase_type,
-                  labelText: "Phase Type",
-                  context: context,
-                  callback: (values) {
-                    setState(() {
-                      _phaseDetails.phase_type = values;
-                    });
-                  },
-                  validateCallback: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter phase type';
-                    }
-                    return null;
-                  }),
-              const SizedBox(
-                height: 20.0,
-              ),
-              DatePicker(
-                title: "Start date",
-                callback: (value) {
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            formField(
+                controller: controller_next_phase,
+                context: context,
+                labelText: "Phase Title",
+                callback: (values) {
                   setState(() {
-                    _phaseDetails.start_date = value;
-                  });
-                  setState(() {});
-                },
-                startDate: DateTime.now(),
-                validationCallBack: (String values) {
-                  if (values.isEmpty) {
-                    checkFormStatus();
-                    return 'Please enter start date';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              DatePicker(
-                title: "End date",
-                callback: (value) {
-                  setState(() {
-                    _phaseDetails.end_date = value;
+                    phaseDetails.title = values;
                   });
                 },
-                startDate: _phaseDetails.sub_tasks!.isNotEmpty
-                    ? DateTime.now().add(Duration(days: 10))
-                    : DateTime.now(),
-                validationCallBack: (String values) {
-                  if (values.isEmpty) {
-                    checkFormStatus();
-                    return 'Please enter end date';
-                  } else if (_phaseDetails.end_date != null &&
-                      _phaseDetails.start_date != null) {
-                    if ((AppUtil.stringToDate(_phaseDetails.end_date!).isBefore(
-                        (AppUtil.stringToDate(_phaseDetails.start_date!))))) {
-                      return 'End date must be greater then the start date';
-                    }
-                  } else {
-                    return null;
+                validateCallback: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter phase title';
                   }
+                  return null;
+                }),
+            const SizedBox(
+              height: 10.0,
+            ),
+            formField(
+                controller: controller_phase_type,
+                labelText: "Phase Type",
+                context: context,
+                callback: (values) {
+                  setState(() {
+                    phaseDetails.phase_type = values;
+                  });
                 },
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              titleHeadlineWidget("Resources needed", 16.0),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.26,
-                margin: const EdgeInsets.only(left: 30.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                            child: CircleAvatar(
-                              backgroundColor: Color(0xff334155),
-                              radius: 40,
-                              child: Icon(Icons.person_outline, size: 30 ,color: Color(0xffDADADA), ),
+                validateCallback: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter phase type';
+                  }
+                  return null;
+                }),
+            const SizedBox(
+              height: 10.0,
+            ),
+            widget.type == 0
+                ? DatePicker(
+                    title: "Start date",
+                    callback: (value) {
+                      setState(() {
+                        phaseDetails.start_date = value.trim();
+                        print(value);
+                      });
+                      setState(() {});
+                    },
+                    startDate: null,
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        checkFormStatus();
+                        return 'Please enter start date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+                : getPhaseDetails != null
+                    ? DatePicker(
+                        title: "Start date",
+                        callback: (value) {
+                          setState(() {
+                            phaseDetails.start_date = value.trim();
+                          });
+                          setState(() {});
+                        },
+                        startDate: AppUtil.stringToDate(
+                            phaseDetails.start_date.toString()),
+                        validationCallBack: (String values) {
+                          if (values.isEmpty) {
+                            checkFormStatus();
+                            return 'Please enter start date';
+                          } else {
+                            return null;
+                          }
+                        },
+                      )
+                    : Container(
+                        height: 56.0,
+                      ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            getPhaseDetails != null
+                ? DatePicker(
+                    title: "End date",
+                    callback: (value) {
+                      setState(() {
+                        phaseDetails.end_date = value;
+                      });
+                    },
+                    startDate: widget.type == 1
+                        ? AppUtil.stringToDate(phaseDetails.end_date != null &&
+                                phaseDetails.end_date!.isNotEmpty
+                            ? phaseDetails.end_date.toString()
+                            : '')
+                        : null,
+                    validationCallBack: (String values) {
+                      if (values.isEmpty) {
+                        checkFormStatus();
+                        return 'Please enter end date';
+                      } else if (phaseDetails.end_date != null &&
+                          phaseDetails.start_date != null) {
+                        if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                            .isBefore((AppUtil.stringToDate(
+                                phaseDetails.start_date!))))) {
+                          return 'End date must be greater then the start date';
+                        }
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
+                : widget.type == 0
+                    ? DatePicker(
+                        title: "End date",
+                        callback: (value) {
+                          setState(() {
+                            phaseDetails.end_date = value;
+                          });
+                        },
+                        startDate: widget.type == 1
+                            ? AppUtil.stringToDate(
+                                phaseDetails.end_date != null &&
+                                        phaseDetails.end_date!.isNotEmpty
+                                    ? phaseDetails.end_date.toString()
+                                    : '')
+                            : null,
+                        validationCallBack: (String values) {
+                          if (values.isEmpty) {
+                            checkFormStatus();
+                            return 'Please enter end date';
+                          } else if (phaseDetails.end_date != null &&
+                              phaseDetails.start_date != null) {
+                            if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                                .isBefore((AppUtil.stringToDate(
+                                    phaseDetails.start_date!))))) {
+                              return 'End date must be greater then the start date';
+                            }
+                          } else {
+                            return null;
+                          }
+                        },
+                      )
+                    : Container(
+                        height: 56.0,
+                      ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            titleHeadlineWidget("", 16.0),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.26,
+              margin: const EdgeInsets.only(left: 20.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: CircleAvatar(
+                            backgroundColor: Color(0xff334155),
+                            radius: 30,
+                            child: Icon(
+                              Icons.person_outline,
+                              size: 35,
+                              color: Color(0xffDADADA),
                             ),
                           ),
-                          Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  color: Color(0xff10B981),
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Center(
-                                    child: Icon(Icons.add,
-                                        color: Colors.white, size: 13)),
-                              ))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 30.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
                         ),
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                          height: 20.0,
-                          child: Container(
-
-                              // padding: const dgeInsets.all(2.0),
-                              child: StatefulBuilder(
-                            builder: (BuildContext context, StateSettersetState) {
-                              return DropdownButtonHideUnderline(
-                                child: DropdownButton(
-                                  dropdownColor: ColorSelect.class_color,
-                                  value: _depat,
-                                  underline: Container(),
-                                  hint: const Text(
-                                    "Type",
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  isExpanded: true,
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Color(0xff64748B),
-                                  ),
-                                  items: _department.map((items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(
-                                        items['name'],
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (dynamic newValue) {
-                                    setState(() {
-                                      print(newValue);
+                        Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Color(0xff10B981),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Center(
+                                  child: Icon(Icons.add,
+                                      color: Colors.white, size: 18)),
+                            ))
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 20.0),
+                      height: 56.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        height: 20.0,
+                        child: Container(child: StatefulBuilder(
+                          builder: (BuildContext context, StateSettersetState) {
+                            return DropdownButtonHideUnderline(
+                              child: CustomDropdownButton(
+                                dropdownColor: ColorSelect.class_color,
+                                value: _depat,
+                                underline: Container(),
+                                hint: const Text(
+                                  "Type",
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                // isExpanded: true,
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Color(0xff64748B),
+                                ),
+                                items: _department.map((items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(
+                                      items['name'],
+                                      style: const TextStyle(
+                                          fontSize: 14.0,
+                                          color: Color(0xffFFFFFF),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (dynamic newValue) {
+                                  setState(() {
+                                    print(newValue);
 
                                       print(newValue);
                                       _depat = newValue;
                                       print(newValue);
 
-                                      if (newValue != null) {
-                                        startloading = true;
-                                        getResourcesNeeded(
-                                            newValue['id'].toString());
-                                      }
-                                    });
-                                  },
-                                ),
-                              );
-                            },
-                          )),
-                        ),
+                                    if (newValue != null) {
+                                      startloading = true;
+                                      getResourcesNeeded(
+                                          newValue['id'].toString());
+                                    }
+                                  });
+                                },
+                              ),
+                            );
+                          },
+                        )),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              savePhaseClick && selectedSource.isEmpty
-                  ? Container(
-                      width: MediaQuery.of(context).size.width * 0.26,
-                      margin: EdgeInsets.only(left: 30.0, top: 03),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Please select resources',
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.red,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    )
-                  : SizedBox.shrink(),
-              startloading == true
-                  ? loading == true
-                      ? Center(child: const CircularProgressIndicator())
-                      : Container(
-                          width: MediaQuery.of(context).size.width * 0.26,
-                          margin: const EdgeInsets.only(top: 16, left: 30),
-                          decoration: BoxDecoration(),
+            ),
+            savePhaseClick && selectedSource.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.26,
+                    margin: EdgeInsets.only(left: 30.0, top: 03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Please select resources',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox.shrink(),
+            startloading == true
+                ? loading == true
+                    ? Center(child: const CircularProgressIndicator())
+                    : Container(
+                        // padding: EdgeInsets.only(left: 20),
+                        width: MediaQuery.of(context).size.width * 0.22,
+                        margin: const EdgeInsets.only(top: 16, left: 20),
+                        decoration: BoxDecoration(),
+                        child: Material(
+                          color: const Color(0xff1E293B),
+                          shadowColor: Color(0xff1E293B),
+                          elevation: 15,
                           child: Container(
                             height: 50.0,
                             decoration: BoxDecoration(
-                              color: const Color(0xff334155),
+                              // color: const Color(0xff334155),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xff1E293B),
+                                  // color: Colors.black,
+                                  // .withOpacity(0.5), //color of shadow
+                                  spreadRadius: 0.5, //spread radius
+                                  blurRadius: 0.5, // blur radius
+                                  offset: Offset(
+                                      0.2, 0.2), // changes position of shadow
+                                  //first paramerter of offset is left-right
+                                  //second parameter is top to down
+                                ),
+                                //you can set more BoxShadow() here
+                              ],
                               borderRadius: BorderRadius.circular(
-                                8.0,
+                                6.0,
                               ),
                             ),
                             child: Column(
@@ -587,12 +681,14 @@ class _NewPhaseState extends State<NewPhase> {
                                   keepSuggestionsOnLoading: false,
                                   suggestionsBoxVerticalOffset: 0.0,
                                   suggestionsBoxDecoration:
-                                      SuggestionsBoxDecoration(),
+                                      SuggestionsBoxDecoration(
+                                          color: Color(0xff1E293B)),
                                   hideOnLoading: true,
                                   suggestionsCallback: (pattern) {
                                     return getSuggestions(pattern);
                                   },
-                                  textFieldConfiguration: TextFieldConfiguration(
+                                  textFieldConfiguration:
+                                      TextFieldConfiguration(
                                     controller: _typeAheadController,
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 14.0),
@@ -600,7 +696,9 @@ class _NewPhaseState extends State<NewPhase> {
                                     cursorColor: Colors.white,
                                     autofocus: true,
                                     decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.only(top: 15.0),
+                                      // border: InputBorder.none,
+                                      contentPadding:
+                                          EdgeInsets.only(top: 15.0, left: 10),
                                       prefixIcon: Padding(
                                           padding: EdgeInsets.only(top: 4.0),
                                           child: Icon(
@@ -610,14 +708,21 @@ class _NewPhaseState extends State<NewPhase> {
                                       hintText: 'Search',
                                       hintStyle: TextStyle(
                                           fontSize: 14.0,
-                                          color: Color(0xff64748B),
+                                          color: Colors.white,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w400),
                                       border: InputBorder.none,
                                     ),
                                   ),
                                   itemBuilder: (context, item) {
-                                    return rowResourceName(item);
+                                    return
+                                        // Text(
+                                        //   item.name.toString(),
+                                        //   style: const TextStyle(
+                                        //       fontSize: 16.0, color: Colors.white),
+                                        // );
+                                        // Text("khushi");
+                                        rowResourceName(item);
                                   },
                                   transitionBuilder:
                                       (context, suggestionsBox, controller) {
@@ -629,9 +734,10 @@ class _NewPhaseState extends State<NewPhase> {
                                           .controller!.text = '';
 
                                       if (selectedSource.isNotEmpty) {
-                                        if (selectedSource.contains(item.name)) {
+                                        if (selectedSource
+                                            .contains(item.name)) {
                                         } else {
-                                          _phaseDetails.resource!.add(
+                                          phaseDetails.resource!.add(
                                               ResourceData(
                                                   resource_name: item.name,
                                                   resource_id: item.userId,
@@ -639,20 +745,23 @@ class _NewPhaseState extends State<NewPhase> {
                                                       item.departmentName,
                                                   department_id:
                                                       item.departmentId ?? 0));
-                                          listResource.add(PhasesSortedResources(
-                                              department: _depat['name'],
-                                              details: item));
+                                          listResource.add(
+                                              PhasesSortedResources(
+                                                  department: _depat['name'],
+                                                  details: item));
                                           selectedSource.add(item.name!);
                                         }
                                       } else {
                                         listResource.add(PhasesSortedResources(
                                             department: _depat['name'],
                                             details: item));
-                                        _phaseDetails.resource!.add(ResourceData(
+                                        phaseDetails.resource!.add(ResourceData(
                                             resource_name: item.name,
                                             resource_id: item.userId,
-                                            department_name: item.departmentName,
-                                            department_id: item.departmentId ?? 0,
+                                            department_name:
+                                                item.departmentName,
+                                            department_id:
+                                                item.departmentId ?? 0,
                                             profileImage: item.image));
                                         selectedSource.add(item.name!);
                                       }
@@ -662,58 +771,58 @@ class _NewPhaseState extends State<NewPhase> {
                               ],
                             ),
                           ),
-                        )
-                  : Container(),
-              selectedSource.isNotEmpty
-                  ? SizedBox(
-                      height: 55,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 28.0),
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: selectedSource.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 32.0,
-                              margin: const EdgeInsets.only(left: 12.0),
-                              child: InputChip(
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
-                                deleteIcon: const Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                backgroundColor: const Color(0xff334155),
-                                visualDensity: VisualDensity.compact,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                label: Text(
-                                  selectedSource[index],
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onSelected: (bool selected) {
-                                  setState(() {});
-                                },
-                                onDeleted: () {
-                                  setState(() {
-                                    removeDuplicate();
-                                    selectedSubTaskSource.removeWhere((element) =>
-                                        element == selectedSource[index]);
-                                    listResource.removeAt(index);
-                                    selectedSource.removeAt(index);
-                                  });
-                                },
-                              ),
-                            );
-                          },
                         ),
+                      )
+                : Container(),
+            selectedSource.isNotEmpty
+                ? SizedBox(
+                    height: 55,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 28.0),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: selectedSource.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            height: 32.0,
+                            margin: const EdgeInsets.only(left: 12.0),
+                            child: InputChip(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              deleteIcon: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              backgroundColor: const Color(0xff334155),
+                              // visualDensity: VisualDensity.compact,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              label: Text(
+                                selectedSource[index],
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onSelected: (bool selected) {
+                                setState(() {});
+                              },
+                              onDeleted: () {
+                                setState(() {
+                                  removeDuplicate();
+                                  selectedSubTaskSource.removeWhere((element) =>
+                                      element == selectedSource[index]);
+                                  listResource.removeAt(index);
+                                  selectedSource.removeAt(index);
+                                });
+                              },
+                            ),
+                          );
+                        },
                       ),
-                    )
-                  : Container(),
-            ],
-          ),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );
@@ -736,7 +845,7 @@ class _NewPhaseState extends State<NewPhase> {
                 children: [
                   clickedAddMileStone == false
                       ? titleHeadlineWidget("Milestones", 18.0)
-                      : titleHeadlineWidget(" Add Milestones", 18.0),
+                      : titleHeadlineWidget("Add Milestones", 18.0),
                   InkWell(
                     child: clickedAddMileStone == false
                         ? Container(
@@ -748,6 +857,9 @@ class _NewPhaseState extends State<NewPhase> {
                                   Icons.add,
                                   size: 20,
                                   color: Color(0xff93C5FD),
+                                ),
+                                SizedBox(
+                                  width: 10,
                                 ),
                                 titleSubHeadlineWidget("Add Milestone", 14.0),
                               ],
@@ -796,7 +908,7 @@ class _NewPhaseState extends State<NewPhase> {
                 : saveButtonClick
                     ? milestoneList(
                         context,
-                        _phaseDetails,
+                        phaseDetails,
                         callback: (values, index, action) {
                           setState(() {
                             if (action == "Delete") {
@@ -823,7 +935,9 @@ class _NewPhaseState extends State<NewPhase> {
                         print(mileStoneDate);
                       });
                     },
-                    startDate: AppUtil.stringToDate(mileStoneDate),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(mileStoneDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         return 'Please enter milestone date';
@@ -832,7 +946,7 @@ class _NewPhaseState extends State<NewPhase> {
                       }
                     },
                   ),
-            savePhaseClick && _phaseDetails.milestone!.isEmpty
+            savePhaseClick && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: const EdgeInsets.only(left: 30.0, top: 03),
@@ -860,9 +974,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   onDeleteMileStone(int index) {
     try {
-      if (_phaseDetails.milestone!.length >= index) {
+      if (phaseDetails.milestone!.length >= index) {
         setState(() {
-          _phaseDetails.milestone!.removeAt(index);
+          phaseDetails.milestone!.removeAt(index);
         });
       }
     } catch (e) {}
@@ -896,41 +1010,40 @@ class _NewPhaseState extends State<NewPhase> {
                 children: [
                   clickAddSubTask == false
                       ? titleHeadlineWidget("Subtasks", 18.0)
-                      : titleHeadlineWidget(" Add Subtasks", 18.0),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: InkWell(
-                      child: Container(
-                          child: clickAddSubTask == false
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    const Icon(
-                                      Icons.add,
-                                      size: 20,
-                                      color: Color(0xff93C5FD),
-                                    ),
-                                    titleSubHeadlineWidget(
-                                        "Add Subtasks", 14.0),
-                                  ],
-                                )
-                              : clickAddSubtask()),
-                      onTap: () {
-                        setState(() {
-                          savePhaseClick = true;
-                          Future.delayed(const Duration(microseconds: 500), () {
-                            if (_formKey.currentState!.validate()) {
-                              if (allValidate && selectedSource.isNotEmpty) {
-                                setState(() {
-                                  clickAddSubTask = true;
-                                });
-                              }
+                      : titleHeadlineWidget("Add Subtasks", 18.0),
+                  InkWell(
+                    child: Container(
+                        child: clickAddSubTask == false
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Color(0xff93C5FD),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  titleSubHeadlineWidget("Add Subtasks", 14.0),
+                                ],
+                              )
+                            : clickAddSubtask()),
+                    onTap: () {
+                      setState(() {
+                        savePhaseClick = true;
+                        Future.delayed(const Duration(microseconds: 500), () {
+                          if (_formKey.currentState!.validate()) {
+                            if (allValidate && selectedSource.isNotEmpty) {
+                              setState(() {
+                                clickAddSubTask = true;
+                              });
                             }
-                          });
+                          }
                         });
-                      },
-                    ),
+                      });
+                    },
                   )
                 ],
               ),
@@ -945,9 +1058,11 @@ class _NewPhaseState extends State<NewPhase> {
                 ? DatePicker(
                     title: "Start date",
                     callback: (value) {
-                      subTaskStartDate = value;
+                      subTaskStartDate = value.trim();
                     },
-                    startDate: DateTime.now(),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(subTaskStartDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         return 'Please enter start date';
@@ -964,9 +1079,11 @@ class _NewPhaseState extends State<NewPhase> {
                 ? DatePicker(
                     title: "End date",
                     callback: (value) {
-                      subTaskEndDate = value;
+                      subTaskEndDate = value.trim();
                     },
-                    startDate: AppUtil.stringToDate(subTaskStartDate),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(subTaskEndDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         checkFormStatus();
@@ -987,7 +1104,7 @@ class _NewPhaseState extends State<NewPhase> {
               height: 8.0,
             ),
             clickAddSubTask
-                ? titleHeadlineWidget("Resources need for subtask", 16)
+                ? titleHeadlineWidget("Resources needed for the subtasks", 16)
                 : Container(),
             clickAddSubTask && saveSubtaskClick && selectedSubTaskSource.isEmpty
                 ? Container(
@@ -1014,7 +1131,7 @@ class _NewPhaseState extends State<NewPhase> {
                 : saveButtonClickForSubtask
                     ? subTaskList(
                         context,
-                        _phaseDetails,
+                        phaseDetails,
                         callback: (values, index, subTaskAction) {
                           if (subTaskAction == 'Delete') {
                             onDeleteSubtask(index);
@@ -1029,7 +1146,7 @@ class _NewPhaseState extends State<NewPhase> {
                         },
                       )
                     : Container(),
-            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
+            savePhaseClick && phaseDetails.sub_tasks!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: const EdgeInsets.only(left: 30.0, top: 03),
@@ -1057,9 +1174,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   onDeleteSubtask(int index) {
     try {
-      if (_phaseDetails.sub_tasks!.length >= index) {
+      if (phaseDetails.sub_tasks!.length >= index) {
         setState(() {
-          _phaseDetails.sub_tasks!.removeAt(index);
+          phaseDetails.sub_tasks!.removeAt(index);
           subTaskStartDate = AppUtil.dateToString(DateTime.now());
           subTaskEndDate = AppUtil.dateToString(DateTime.now());
         });
@@ -1086,184 +1203,203 @@ class _NewPhaseState extends State<NewPhase> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.26,
-          child: Expanded(
-            child: Row(
-              children: [
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        top: 0,
+          child: Row(
+            children: [
+              Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xff334155),
+                        radius: 30,
+                        child: Icon(Icons.person_outline,
+                            size: 35, color: Color(0xffDADADA)),
+                      ),
+                    ),
+                    Positioned(
                         bottom: 0,
-                        child: CircleAvatar(
-                          backgroundColor: Color(0xff334155),
-                          radius: 40,
-                          child: Icon(Icons.person_outline, size: 30 ,color: Color(0xffDADADA), ),
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: Color(0xff10B981),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                                child: Icon(Icons.add,
-                                    color: Colors.white, size: 7)),
-                          ))
-                    ],
-                  ),
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Color(0xff10B981),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                              child: Icon(Icons.add,
+                                  color: Colors.white, size: 18)),
+                        ))
+                  ],
                 ),
-                Expanded(
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 30.0),
+                  height: 56.0,
+                  width: (MediaQuery.of(context).size.width * 0.22),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff334155),
+                    borderRadius: BorderRadius.circular(
+                      8.0,
+                    ),
+                  ),
                   child: Container(
-                    margin: const EdgeInsets.only(left: 30.0),
-                    height: 56.0,
-                    width: (MediaQuery.of(context).size.width * 0.22),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      height: 20.0,
-                      child: Container(child: StatefulBuilder(
-                        builder: (BuildContext context, StateSettersetState) {
-                          return DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              dropdownColor: ColorSelect.class_color,
-                              value: subtaskDepat,
-                              underline: Container(),
-                              hint: const Text(
-                                "Type",
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xffFFFFFF),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              isExpanded: true,
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Color(0xff64748B),
-                              ),
-                              items: removeDuplicate().map((items) {
-                                return DropdownMenuItem(
-                                  value: items.department,
-                                  child: Text(
-                                    items.department!,
-                                    style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedSubTaskSource.clear();
-                                });
-                                setState(() {
-                                  resourceSuggestions.clear();
-                                  for (var element in listResource) {
-                                    if (element.department!.toLowerCase() ==
-                                        newValue.toString().toLowerCase()) {
-                                      resourceSuggestions.add(element.details!);
-                                    }
-                                  }
-
-                                  subtaskDepat = newValue.toString();
-                                  if (newValue != null) {}
-                                });
-                              },
+                    margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    height: 20.0,
+                    child: Container(child: StatefulBuilder(
+                      builder: (BuildContext context, StateSettersetState) {
+                        return DropdownButtonHideUnderline(
+                          child: CustomDropdownButton(
+                            dropdownColor: ColorSelect.class_color,
+                            value: subtaskDepat,
+                            underline: Container(),
+                            hint: const Text(
+                              "Type",
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xffFFFFFF),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
                             ),
-                          );
-                        },
-                      )),
-                    ),
+                            //  isExpanded: true,
+                            icon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Color(0xff64748B),
+                            ),
+                            items: removeDuplicate().map((items) {
+                              return DropdownMenuItem(
+                                value: items.department,
+                                child: Text(
+                                  items.department!,
+                                  style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedSubTaskSource.clear();
+                              });
+                              setState(() {
+                                resourceSuggestions.clear();
+                                for (var element in listResource) {
+                                  if (element.department!.toLowerCase() ==
+                                      newValue.toString().toLowerCase()) {
+                                    resourceSuggestions.add(element.details!);
+                                  }
+                                }
+                                subtaskDepat = newValue.toString();
+                                if (newValue != null) {}
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    )),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.26,
-          margin: const EdgeInsets.only(top: 16),
-          decoration: BoxDecoration(),
+        Padding(
+          padding: EdgeInsets.only(right: 32),
           child: Container(
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: const Color(0xff334155),
-              borderRadius: BorderRadius.circular(
-                8.0,
-              ),
-            ),
-            child: Column(
-              children: [
-                subTaskResourcesSearchTextField = TypeAheadFormField(
-                  keepSuggestionsOnLoading: false,
-                  suggestionsBoxVerticalOffset: 0.0,
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(),
-                  hideOnLoading: true,
-                  suggestionsCallback: (pattern) {
-                    return getSuggestionsForSubTask(pattern);
-                  },
-                  textFieldConfiguration: TextFieldConfiguration(
-                    controller: _subTaskResourcesController,
-                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
-                    keyboardType: TextInputType.text,
-                    cursorColor: Colors.white,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 15.0),
-                      prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 4.0),
-                          child: Icon(
-                            Icons.search,
-                            color: Color(0xff64748B),
-                          )),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                          fontSize: 14.0,
-                          color: Color(0xff64748B),
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
+            width: MediaQuery.of(context).size.width * 0.24,
+            margin: const EdgeInsets.only(top: 16),
+            decoration: BoxDecoration(),
+            child: Material(
+              color: const Color(0xff1E293B),
+              shadowColor: Color(0xff1E293B),
+              elevation: 15,
+              child: Container(
+                height: 50.0,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff1E293B),
+                      // color: Colors.black,
+                      // .withOpacity(0.5), //color of shadow
+                      spreadRadius: 0.5, //spread radius
+                      blurRadius: 0.5, // blur radius
+                      offset: Offset(0.2, 0.2), // changes position of shadow
+                      //first paramerter of offset is left-right
+                      //second parameter is top to down
                     ),
+                  ],
+                  borderRadius: BorderRadius.circular(
+                    6.0,
                   ),
-                  itemBuilder: (context, item) {
-                    return rowResourceName(item);
-                  },
-                  transitionBuilder: (context, suggestionsBox, controller) {
-                    return suggestionsBox;
-                  },
-                  onSuggestionSelected: (item) {
-                    setState(() {
-                      subTaskResourceName = item.name!;
-                      _subTaskResourcesController.text = '';
-
-                      selectedSubTaskSource.clear();
-                      selectedSubTaskSource.add(ResourceData(
-                          department_id: item.departmentId,
-                          resource_id: item.userId,
-                          resource_name: item.name,
-                          profileImage: item.image,
-                          department_name: item.departmentName));
-                    });
-                  },
                 ),
-              ],
+                child: Column(
+                  children: [
+                    subTaskResourcesSearchTextField = TypeAheadFormField(
+                      keepSuggestionsOnLoading: false,
+                      suggestionsBoxVerticalOffset: 0.0,
+                      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                          color: const Color(0xff334155)),
+                      hideOnLoading: true,
+                      suggestionsCallback: (pattern) {
+                        return getSuggestionsForSubTask(pattern);
+                      },
+                      textFieldConfiguration: TextFieldConfiguration(
+                        controller: _subTaskResourcesController,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 14.0),
+                        keyboardType: TextInputType.text,
+                        cursorColor: Colors.white,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 15.0),
+                          prefixIcon: Padding(
+                              padding: EdgeInsets.only(top: 4.0),
+                              child: Icon(
+                                Icons.search,
+                                color: Color(0xff64748B),
+                              )),
+                          hintText: 'Search',
+                          hintStyle: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.white,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      itemBuilder: (context, item) {
+                        return rowResourceName(item);
+                      },
+                      transitionBuilder: (context, suggestionsBox, controller) {
+                        return suggestionsBox;
+                      },
+                      onSuggestionSelected: (item) {
+                        setState(() {
+                          subTaskResourceName = item.name!;
+                          _subTaskResourcesController.text = '';
+
+                          selectedSubTaskSource.clear();
+                          selectedSubTaskSource.add(ResourceData(
+                              department_id: item.departmentId,
+                              resource_id: item.userId,
+                              resource_name: item.name,
+                              profileImage: item.image,
+                              department_name: item.departmentName));
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -1317,9 +1453,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddMileStone() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 16),
+      padding: const EdgeInsets.only(top: 12, right: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
           InkWell(
@@ -1359,12 +1495,12 @@ class _NewPhaseState extends State<NewPhase> {
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
-                        _phaseDetails.milestone!.add(Milestones(
+                        phaseDetails.milestone!.add(Milestones(
                             title: mileStoneTitle, m_date: mileStoneDate));
                       } else {
-                        _phaseDetails.milestone![mileStoneEditIndex].title =
+                        phaseDetails.milestone![mileStoneEditIndex].title =
                             mileStoneTitle;
-                        _phaseDetails.milestone![mileStoneEditIndex].m_date =
+                        phaseDetails.milestone![mileStoneEditIndex].m_date =
                             mileStoneDate;
                       }
 
@@ -1393,7 +1529,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddSubtask() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 16),
+      padding: const EdgeInsets.only(top: 12, right: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -1438,14 +1574,14 @@ class _NewPhaseState extends State<NewPhase> {
                       subTaskEndDate.isNotEmpty) {
                     try {
                       if (subtaskActionType.isEmpty) {
-                        _phaseDetails.sub_tasks!.add(SubTasksModel(
+                        phaseDetails.sub_tasks!.add(SubTasksModel(
                           resource: selectedSubTaskSource[0],
                           end_date: subTaskEndDate,
                           start_date: subTaskStartDate,
                         ));
                         subtaskActionType = '';
                       } else {
-                        _phaseDetails.sub_tasks![subTaskEditIndex] =
+                        phaseDetails.sub_tasks![subTaskEditIndex] =
                             SubTasksModel(
                                 resource: selectedSubTaskSource[0],
                                 end_date: subTaskEndDate,
@@ -1476,22 +1612,21 @@ class _NewPhaseState extends State<NewPhase> {
 
   titleHeadlineWidget(String title, double i) {
     return Container(
-      margin: const EdgeInsets.only(left: 30.0, top: 10.0, bottom: 10.0),
+      margin: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
       child: Text(
         title,
         style: TextStyle(
             color: const Color(0xffFFFFFF),
             fontSize: i,
             fontFamily: 'Inter',
-            fontWeight: FontWeight.w700),
+            fontWeight: FontWeight.w500),
       ),
     );
   }
 
   titleSubHeadlineWidget(String title, double i) {
     return Container(
-      margin:
-          const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0, right: 20),
+      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 10),
       child: Text(
         title,
         style: TextStyle(
@@ -1504,12 +1639,12 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   createPhase() {
-    _phaseDetails.project_id = widget.id;
+    phaseDetails.project_id = widget.id;
     allValidate = true;
     if (_formKey.currentState!.validate()) {
-      if (allValidate && _phaseDetails.milestone!.isNotEmpty) {
-        if (_phaseDetails.milestone!.isNotEmpty &&
-            _phaseDetails.sub_tasks!.isNotEmpty) {
+      if (allValidate && phaseDetails.milestone!.isNotEmpty) {
+        if (phaseDetails.milestone!.isNotEmpty &&
+            phaseDetails.sub_tasks!.isNotEmpty) {
           if (widget.type == 1) {
             updatePhaseApi();
           } else {
@@ -1555,7 +1690,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
     try {
       CreatePhaseResp createPhaseResp =
-          await api.createNewPhase(json.encode(_phaseDetails), context);
+          await api.createNewPhase(json.encode(phaseDetails), context);
       if (createPhaseResp.status == true) {
         Navigator.pop(context);
       }
@@ -1576,7 +1711,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
     try {
       UpdatePhaseResp updatePhaseResp =
-          await api.updatePhase(json.encode(_phaseDetails), widget.id, context);
+          await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
         Navigator.pop(context);
       }
@@ -1615,8 +1750,8 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   beforeScreenLoad() {
-    _phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
-    _phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
+    phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
+    phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
     mileStoneDate = AppUtil.dateToString(DateTime.now());
     subTaskStartDate = AppUtil.dateToString(DateTime.now());
     subTaskEndDate = AppUtil.dateToString(DateTime.now());

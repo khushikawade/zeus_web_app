@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget formField( {
+Widget formField({
   required String labelText,
   required BuildContext context,
   dynamic hintText,
@@ -15,7 +15,7 @@ Widget formField( {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.26,
-          margin: const EdgeInsets.only(left: 30.0),
+          margin: const EdgeInsets.only(left: 10.0),
           height: 56,
           decoration: BoxDecoration(
             color: const Color(0xff334155),
@@ -54,7 +54,7 @@ Widget formField( {
                       top: 8, bottom: 8, right: 15, left: 15),
                   errorText: null,
                   border: InputBorder.none,
-                  hintText: hintText ?? labelText,
+                  hintText: hintText ?? '',
                   errorStyle: const TextStyle(color: Colors.green, height: 0),
                   hintStyle: const TextStyle(
                       fontSize: 14.0,

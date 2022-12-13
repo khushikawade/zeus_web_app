@@ -547,7 +547,7 @@ class ProjectHomeState extends State<ProjectHome> {
                           showCheckboxColumn: false,
                           dataRowHeight: 60,
                           dividerThickness: 0.7,
-                          columnSpacing: 80,
+                         
                           columns: [
                             DataColumn(
                               label: MouseRegion(
