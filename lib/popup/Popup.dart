@@ -1643,15 +1643,16 @@ showDailog(
                                   var endDate = phase.endDate;
 
                                   var _date = date.toString();
-                                  print(_date);
 
-                                  // var _date1 =
-                                  //     AppUtil.dateToString1(_date);
-
-                                  // print("pppppppppppp");
-                                  // print(_date1);
+                                  var date1 = AppUtil.getFormatedDate(_date);
+                                  var fromDate =
+                                      AppUtil.formattedDateYear1(date1);
 
                                   var _endDate = endDate.toString();
+
+                                  var date2 = AppUtil.getFormatedDate(_endDate);
+                                  var tillDate =
+                                      AppUtil.formattedDateYear1(date2);
 
                                   return Column(
                                     crossAxisAlignment:
@@ -1705,7 +1706,7 @@ showDailog(
                                             margin: const EdgeInsets.only(
                                                 top: 12.0, right: 42.0),
                                             child: Text(
-                                              "$_date",
+                                              "$fromDate",
                                               style: const TextStyle(
                                                   color: Color(0xff94A3B8),
                                                   fontSize: 14.0,
@@ -1717,7 +1718,7 @@ showDailog(
                                             margin: const EdgeInsets.only(
                                                 top: 12.0, right: 52.0),
                                             child: Text(
-                                              "$_endDate",
+                                              "$tillDate",
                                               style: const TextStyle(
                                                   color: Color(0xff94A3B8),
                                                   fontSize: 14.0,

@@ -15,7 +15,7 @@ Widget formField({
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.26,
-          margin: const EdgeInsets.only(left: 30.0),
+          margin: const EdgeInsets.only(left: 10.0),
           height: 56,
           decoration: BoxDecoration(
             color: const Color(0xff334155),

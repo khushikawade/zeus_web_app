@@ -46,19 +46,19 @@ class AppUtil {
     }
   }
 
-  // static String formattedDateYear1(String date) {
-  //   if (date != "0000-00-00 00:00:00") {
-  //     try {
-  //       DateTime dateTime = DateTime.parse(date);
-  //       // DateFormat dateFormat = DateFormat('MMM').format(date).toString();
-  //       // return dateFormat.format(dateTime).toString();
-  //     } catch (_) {
-  //       return 'N/A';
-  //     }
-  //   } else {
-  //     return 'N/A';
-  //   }
-  // }
+  static String formattedDateYear1(String date) {
+    if (date != "0000-00-00 00:00:00") {
+      try {
+        DateTime dateTime = DateTime.parse(date);
+        DateFormat dateFormat = DateFormat('d  MMM');
+        return dateFormat.format(dateTime).toString();
+      } catch (_) {
+        return 'N/A';
+      }
+    } else {
+      return 'N/A';
+    }
+  }
 
   static DateTime stringToDate(String date) {
     try {
@@ -95,7 +95,7 @@ class AppUtil {
     }
   }
 
-    static dateToString1(DateTime date) {
+  static dateToString1(DateTime date) {
     try {
       DateFormat formatter = DateFormat('MMM');
       String formatted = formatter.format(date);
@@ -103,6 +103,13 @@ class AppUtil {
     } catch (e) {
       return date.toString();
     }
+  }
+
+  static getFormatedDate(_date) {
+    var inputFormat = DateFormat('dd/MM/yyyy');
+    var inputDate = inputFormat.parse(_date);
+    var outputFormat = DateFormat('yyyy-MM-dd HH:mm');
+    return outputFormat.format(inputDate);
   }
 
   // show Anothrised Error Dialog

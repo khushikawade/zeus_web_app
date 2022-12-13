@@ -289,14 +289,14 @@ class _NewPhaseState extends State<NewPhase> {
                   children: [
                     phaseView(),
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
+                        height: MediaQuery.of(context).size.height * 1.5,
                         child: const VerticalDivider(
                           color: Color(0xff94A3B8),
                           thickness: 0.2,
                         )),
                     mileStoneView(),
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.99,
+                        height: MediaQuery.of(context).size.height * 1.5,
                         child: const VerticalDivider(
                           color: Color(0xff94A3B8),
                           thickness: 0.2,
@@ -338,12 +338,15 @@ class _NewPhaseState extends State<NewPhase> {
             const SizedBox(
               height: 8.0,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                titleHeadlineWidget("Phase details", 18.0),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  titleHeadlineWidget("Phase details", 18.0),
+                ],
+              ),
             ),
             const SizedBox(
               height: 8.0,
@@ -436,7 +439,7 @@ class _NewPhaseState extends State<NewPhase> {
             titleHeadlineWidget("Resources needed", 16.0),
             Container(
               width: MediaQuery.of(context).size.width * 0.26,
-              margin: const EdgeInsets.only(left: 30.0),
+              margin: const EdgeInsets.only(left: 20.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -479,7 +482,7 @@ class _NewPhaseState extends State<NewPhase> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 30.0),
+                      margin: const EdgeInsets.only(left: 20.0),
                       height: 56.0,
                       decoration: BoxDecoration(
                         color: const Color(0xff334155),
@@ -572,14 +575,14 @@ class _NewPhaseState extends State<NewPhase> {
                 ? loading == true
                     ? Center(child: const CircularProgressIndicator())
                     : Container(
-                        padding: EdgeInsets.only(left: 20),
-                        width: MediaQuery.of(context).size.width * 0.26,
-                        margin: const EdgeInsets.only(top: 16, left: 30),
+                        // padding: EdgeInsets.only(left: 20),
+                        width: MediaQuery.of(context).size.width * 0.22,
+                        margin: const EdgeInsets.only(top: 16, left: 20),
                         decoration: BoxDecoration(),
                         child: Material(
                           color: const Color(0xff1E293B),
                           shadowColor: Color(0xff1E293B),
-                          elevation: 20,
+                          elevation: 15,
                           child: Container(
                             height: 50.0,
                             decoration: BoxDecoration(
@@ -786,6 +789,9 @@ class _NewPhaseState extends State<NewPhase> {
                                   size: 20,
                                   color: Color(0xff93C5FD),
                                 ),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 titleSubHeadlineWidget("Add Milestone", 14.0),
                               ],
                             ),
@@ -934,40 +940,39 @@ class _NewPhaseState extends State<NewPhase> {
                   clickAddSubTask == false
                       ? titleHeadlineWidget("Subtasks", 18.0)
                       : titleHeadlineWidget("Add Subtasks", 18.0),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: InkWell(
-                      child: Container(
-                          child: clickAddSubTask == false
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    const Icon(
-                                      Icons.add,
-                                      size: 20,
-                                      color: Color(0xff93C5FD),
-                                    ),
-                                    titleSubHeadlineWidget(
-                                        "Add Subtasks", 14.0),
-                                  ],
-                                )
-                              : clickAddSubtask()),
-                      onTap: () {
-                        setState(() {
-                          savePhaseClick = true;
-                          Future.delayed(const Duration(microseconds: 500), () {
-                            if (_formKey.currentState!.validate()) {
-                              if (allValidate && selectedSource.isNotEmpty) {
-                                setState(() {
-                                  clickAddSubTask = true;
-                                });
-                              }
+                  InkWell(
+                    child: Container(
+                        child: clickAddSubTask == false
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Color(0xff93C5FD),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  titleSubHeadlineWidget("Add Subtasks", 14.0),
+                                ],
+                              )
+                            : clickAddSubtask()),
+                    onTap: () {
+                      setState(() {
+                        savePhaseClick = true;
+                        Future.delayed(const Duration(microseconds: 500), () {
+                          if (_formKey.currentState!.validate()) {
+                            if (allValidate && selectedSource.isNotEmpty) {
+                              setState(() {
+                                clickAddSubTask = true;
+                              });
                             }
-                          });
+                          }
                         });
-                      },
-                    ),
+                      });
+                    },
                   )
                 ],
               ),
@@ -1123,194 +1128,203 @@ class _NewPhaseState extends State<NewPhase> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.26,
-          child: Expanded(
-            child: Row(
-              children: [
-                Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        top: 0,
+          child: Row(
+            children: [
+              Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xff334155),
+                        radius: 30,
+                        child: Icon(Icons.person_outline,
+                            size: 35, color: Color(0xffDADADA)),
+                      ),
+                    ),
+                    Positioned(
                         bottom: 0,
-                        child: CircleAvatar(
-                          backgroundColor: Color(0xff334155),
-                          radius: 30,
-                          child: Icon(Icons.person_outline,
-                              size: 35, color: Color(0xffDADADA)),
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: Color(0xff10B981),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                                child: Icon(Icons.add,
-                                    color: Colors.white, size: 18)),
-                          ))
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 30.0),
-                    height: 56.0,
-                    width: (MediaQuery.of(context).size.width * 0.22),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      height: 20.0,
-                      child: Container(child: StatefulBuilder(
-                        builder: (BuildContext context, StateSettersetState) {
-                          return DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              dropdownColor: ColorSelect.class_color,
-                              value: subtaskDepat,
-                              underline: Container(),
-                              hint: const Text(
-                                "Type",
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color(0xffFFFFFF),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              isExpanded: true,
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: Color(0xff64748B),
-                              ),
-                              items: removeDuplicate().map((items) {
-                                return DropdownMenuItem(
-                                  value: items.department,
-                                  child: Text(
-                                    items.department!,
-                                    style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Color(0xffFFFFFF),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedSubTaskSource.clear();
-                                });
-                                setState(() {
-                                  resourceSuggestions.clear();
-                                  for (var element in listResource) {
-                                    if (element.department!.toLowerCase() ==
-                                        newValue.toString().toLowerCase()) {
-                                      resourceSuggestions.add(element.details!);
-                                    }
-                                  }
-
-                                  subtaskDepat = newValue.toString();
-                                  if (newValue != null) {}
-                                });
-                              },
-                            ),
-                          );
-                        },
-                      )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.26,
-          margin: const EdgeInsets.only(top: 16),
-          decoration: BoxDecoration(),
-          child: Material(
-            color: const Color(0xff1E293B),
-            shadowColor: Color(0xff1E293B),
-            elevation: 20,
-            child: Container(
-              height: 50.0,
-              decoration: BoxDecoration(
-                // color: const Color(0xff334155),
-                // borderRadius: BorderRadius.circular(
-                //   8.0,
-                // ),
-                borderRadius: BorderRadius.circular(
-                  6.0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Color(0xff10B981),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                              child: Icon(Icons.add,
+                                  color: Colors.white, size: 18)),
+                        ))
+                  ],
                 ),
               ),
-              child: Column(
-                children: [
-                  subTaskResourcesSearchTextField = TypeAheadFormField(
-                    keepSuggestionsOnLoading: false,
-                    suggestionsBoxVerticalOffset: 0.0,
-                    suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                        color: const Color(0xff334155)),
-                    hideOnLoading: true,
-                    suggestionsCallback: (pattern) {
-                      return getSuggestionsForSubTask(pattern);
-                    },
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: _subTaskResourcesController,
-                      style:
-                          const TextStyle(color: Colors.white, fontSize: 14.0),
-                      keyboardType: TextInputType.text,
-                      cursorColor: Colors.white,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 15.0),
-                        prefixIcon: Padding(
-                            padding: EdgeInsets.only(top: 4.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Color(0xff64748B),
-                            )),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400),
-                        border: InputBorder.none,
-                      ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 30.0),
+                  height: 56.0,
+                  width: (MediaQuery.of(context).size.width * 0.22),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff334155),
+                    borderRadius: BorderRadius.circular(
+                      8.0,
                     ),
-                    itemBuilder: (context, item) {
-                      return rowResourceName(item);
-                    },
-                    transitionBuilder: (context, suggestionsBox, controller) {
-                      return suggestionsBox;
-                    },
-                    onSuggestionSelected: (item) {
-                      setState(() {
-                        subTaskResourceName = item.name!;
-                        _subTaskResourcesController.text = '';
-
-                        selectedSubTaskSource.clear();
-                        selectedSubTaskSource.add(ResourceData(
-                            department_id: item.departmentId,
-                            resource_id: item.userId,
-                            resource_name: item.name,
-                            profileImage: item.image,
-                            department_name: item.departmentName));
-                      });
-                    },
                   ),
-                ],
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    height: 20.0,
+                    child: Container(child: StatefulBuilder(
+                      builder: (BuildContext context, StateSettersetState) {
+                        return DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            dropdownColor: ColorSelect.class_color,
+                            value: subtaskDepat,
+                            underline: Container(),
+                            hint: const Text(
+                              "Type",
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xffFFFFFF),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            isExpanded: true,
+                            icon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Color(0xff64748B),
+                            ),
+                            items: removeDuplicate().map((items) {
+                              return DropdownMenuItem(
+                                value: items.department,
+                                child: Text(
+                                  items.department!,
+                                  style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xffFFFFFF),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedSubTaskSource.clear();
+                              });
+                              setState(() {
+                                resourceSuggestions.clear();
+                                for (var element in listResource) {
+                                  if (element.department!.toLowerCase() ==
+                                      newValue.toString().toLowerCase()) {
+                                    resourceSuggestions.add(element.details!);
+                                  }
+                                }
+
+                                subtaskDepat = newValue.toString();
+                                if (newValue != null) {}
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    )),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 32),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.24,
+            margin: const EdgeInsets.only(top: 16),
+            decoration: BoxDecoration(),
+            child: Material(
+              color: const Color(0xff1E293B),
+              shadowColor: Color(0xff1E293B),
+              elevation: 15,
+              child: Container(
+                height: 50.0,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff1E293B),
+                      // color: Colors.black,
+                      // .withOpacity(0.5), //color of shadow
+                      spreadRadius: 0.5, //spread radius
+                      blurRadius: 0.5, // blur radius
+                      offset: Offset(0.2, 0.2), // changes position of shadow
+                      //first paramerter of offset is left-right
+                      //second parameter is top to down
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(
+                    6.0,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    subTaskResourcesSearchTextField = TypeAheadFormField(
+                      keepSuggestionsOnLoading: false,
+                      suggestionsBoxVerticalOffset: 0.0,
+                      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                          color: const Color(0xff334155)),
+                      hideOnLoading: true,
+                      suggestionsCallback: (pattern) {
+                        return getSuggestionsForSubTask(pattern);
+                      },
+                      textFieldConfiguration: TextFieldConfiguration(
+                        controller: _subTaskResourcesController,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 14.0),
+                        keyboardType: TextInputType.text,
+                        cursorColor: Colors.white,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 15.0),
+                          prefixIcon: Padding(
+                              padding: EdgeInsets.only(top: 4.0),
+                              child: Icon(
+                                Icons.search,
+                                color: Color(0xff64748B),
+                              )),
+                          hintText: 'Search',
+                          hintStyle: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.white,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      itemBuilder: (context, item) {
+                        return rowResourceName(item);
+                      },
+                      transitionBuilder: (context, suggestionsBox, controller) {
+                        return suggestionsBox;
+                      },
+                      onSuggestionSelected: (item) {
+                        setState(() {
+                          subTaskResourceName = item.name!;
+                          _subTaskResourcesController.text = '';
+
+                          selectedSubTaskSource.clear();
+                          selectedSubTaskSource.add(ResourceData(
+                              department_id: item.departmentId,
+                              resource_id: item.userId,
+                              resource_name: item.name,
+                              profileImage: item.image,
+                              department_name: item.departmentName));
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -1365,9 +1379,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddMileStone() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 32),
+      padding: const EdgeInsets.only(top: 12, right: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
           InkWell(
@@ -1441,7 +1455,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddSubtask() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 32),
+      padding: const EdgeInsets.only(top: 12, right: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -1524,7 +1538,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   titleHeadlineWidget(String title, double i) {
     return Container(
-      margin: const EdgeInsets.only(left: 30.0, top: 10.0, bottom: 10.0),
+      margin: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
       child: Text(
         title,
         style: TextStyle(
@@ -1538,8 +1552,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   titleSubHeadlineWidget(String title, double i) {
     return Container(
-      margin:
-          const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0, right: 20),
+      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 10),
       child: Text(
         title,
         style: TextStyle(
