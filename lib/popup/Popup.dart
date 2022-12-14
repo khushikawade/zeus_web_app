@@ -1075,7 +1075,9 @@ showDailog(
                                                           suggestionsBoxVerticalOffset:
                                                               0.0,
                                                           suggestionsBoxDecoration:
-                                                              SuggestionsBoxDecoration(),
+                                                              SuggestionsBoxDecoration(
+                                                                  color: Color(
+                                                                      0xff0F172A)),
                                                           suggestionsCallback:
                                                               (pattern) {
                                                             return getSuggestions(
@@ -1452,7 +1454,7 @@ showDailog(
                                       Container(
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.44,
+                                                0.38,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.99,

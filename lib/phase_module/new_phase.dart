@@ -179,136 +179,143 @@ class _NewPhaseState extends State<NewPhase> {
         content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.99,
           height: MediaQuery.of(context).size.height * 0.99,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    padding: EdgeInsets.only(top: 15, bottom: 15),
-                    // height: MediaQuery.of(context).size.height * 0.11,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      color: Color(0xff283345),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16.0),
-                        topLeft: Radius.circular(16.0),
+          child: RawScrollbar(
+            thumbColor: const Color(0xff4b5563),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            thickness: 8,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      padding: EdgeInsets.only(top: 15, bottom: 15),
+                      // height: MediaQuery.of(context).size.height * 0.11,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff283345),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16.0),
+                          topLeft: Radius.circular(16.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x26000000),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ),
+                        ],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x26000000),
-                          offset: Offset(
-                            0.0,
-                            1.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: titleHeadlineWidget("New Phase", 22.0),
                           ),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 12),
-                          child: titleHeadlineWidget("New Phase", 22.0),
-                        ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  width: 97.0,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: 97.0,
+                                    margin: const EdgeInsets.only(
+                                        top: 10.0, bottom: 10.0),
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff334155),
+                                      borderRadius: BorderRadius.circular(
+                                        40.0,
+                                      ),
                                     ),
-                                  ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xffFFFFFF),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              InkWell(
-                                child: Container(
-                                  width: 97,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, right: 20.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff7DD3FC),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
-                                    ),
-                                  ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Save",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xff000000),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
+                                const SizedBox(
+                                  width: 16,
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    savePhaseClick = true;
-                                  });
-                                  Future.delayed(
-                                      const Duration(microseconds: 500), () {
-                                    createPhase();
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    phaseView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 1.5,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    mileStoneView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 1.5,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    subtaskView()
-                  ],
-                ),
-              ],
+                                InkWell(
+                                  child: Container(
+                                    width: 97,
+                                    margin: const EdgeInsets.only(
+                                        top: 10.0, right: 20.0, bottom: 10.0),
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff7DD3FC),
+                                      borderRadius: BorderRadius.circular(
+                                        40.0,
+                                      ),
+                                    ),
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Save",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xff000000),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      savePhaseClick = true;
+                                    });
+                                    Future.delayed(
+                                        const Duration(microseconds: 500), () {
+                                      createPhase();
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      phaseView(),
+                      Container(
+                          height: MediaQuery.of(context).size.height * 1.5,
+                          child: const VerticalDivider(
+                            color: Color(0xff94A3B8),
+                            thickness: 0.2,
+                          )),
+                      mileStoneView(),
+                      Container(
+                          height: MediaQuery.of(context).size.height * 1.5,
+                          child: const VerticalDivider(
+                            color: Color(0xff94A3B8),
+                            thickness: 0.2,
+                          )),
+                      subtaskView()
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ));
@@ -716,48 +723,58 @@ class _NewPhaseState extends State<NewPhase> {
                 ? SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 28.0),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: selectedSource.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: 32.0,
-                            margin: const EdgeInsets.only(left: 12.0),
-                            child: InputChip(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              deleteIcon: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              backgroundColor: const Color(0xff334155),
-                              // visualDensity: VisualDensity.compact,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              label: Text(
-                                selectedSource[index],
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onSelected: (bool selected) {
-                                setState(() {});
-                              },
-                              onDeleted: () {
-                                setState(() {
-                                  removeDuplicate();
-                                  selectedSubTaskSource.removeWhere((element) =>
-                                      element == selectedSource[index]);
-                                  listResource.removeAt(index);
-                                  selectedSource.removeAt(index);
-                                });
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                        padding: EdgeInsets.only(left: 28.0),
+                        child:
+                            //  ListView.builder(
+                            //   scrollDirection: Axis.horizontal,
+                            //   itemCount: selectedSource.length,
+                            //   itemBuilder: (context, index) {
+                            //     return
+                            Wrap(
+                                spacing: 8,
+                                children: List.generate(selectedSource.length,
+                                    (index) {
+                                  return Container(
+                                    height: 32.0,
+                                    margin: const EdgeInsets.only(left: 12.0),
+                                    child: InputChip(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8))),
+                                      deleteIcon: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      backgroundColor: const Color(0xff334155),
+                                      visualDensity: VisualDensity.compact,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      label: Text(
+                                        selectedSource[index],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onSelected: (bool selected) {
+                                        setState(() {});
+                                      },
+                                      onDeleted: () {
+                                        setState(() {
+                                          removeDuplicate();
+                                          selectedSubTaskSource.removeWhere(
+                                              (element) =>
+                                                  element ==
+                                                  selectedSource[index]);
+                                          listResource.removeAt(index);
+                                          selectedSource.removeAt(index);
+                                        });
+                                      },
+                                      showCheckmark: false,
+                                    ),
+                                  );
+                                }))
+                        //   },
+                        // ),
+                        ),
                   )
                 : Container(),
           ],
