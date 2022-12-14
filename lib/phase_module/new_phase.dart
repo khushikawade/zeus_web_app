@@ -155,7 +155,7 @@ class _NewPhaseState extends State<NewPhase> {
                     profileImage:
                         element.assignResource?.resource?.image ?? '')));
           });
-          print(_phaseDetails);
+          print(phaseDetails);
         }
       }
     }
@@ -1090,7 +1090,7 @@ class _NewPhaseState extends State<NewPhase> {
                         padding: const EdgeInsets.only(right: 6.0),
                         child: subTaskList(
                           context,
-                          _phaseDetails,
+                          phaseDetails,
                           callback: (values, index, subTaskAction) {
                             if (subTaskAction == 'Delete') {
                               onDeleteSubtask(index);
