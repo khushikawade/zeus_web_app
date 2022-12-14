@@ -7,6 +7,8 @@ Widget formField({
   required controller,
   required Function(String values) callback,
   Function(String values)? validateCallback,
+  Function(String values)? onChangeCallback,
+  Function(String values)? onSubmitCallback,
 }) {
   String errorText = '';
 

@@ -911,7 +911,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   CustomFormField(
                                     controller: _newName,
-                                    hint: "MY HINT",
+                                    hint: 'Enter name',
                                     label: "MY label",
                                     validator: (val) {
                                       RegExp regex = RegExp(r'^[a-z A-Z]+$',

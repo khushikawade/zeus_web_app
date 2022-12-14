@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
@@ -14,6 +15,7 @@ import 'package:zeus/utility/util.dart';
 
 class CreateProjectPage extends StatefulWidget {
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
+
   CreateProjectPage({Key? key, this.formKey}) : super(key: key);
 
   @override
@@ -73,6 +75,7 @@ class _EditPageState extends State<CreateProjectPage> {
   bool imageavail = false;
   var isIndex = 0;
   var isLoading = false;
+
   Future<void> _selectDate(setState) async {
     selectedDate = DateTime.now();
     final DateTime? picked = await showDatePicker(
@@ -235,82 +238,18 @@ class _EditPageState extends State<CreateProjectPage> {
                           ))
                     ],
                   ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 15.0, left: 0.0, right: 0.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin:
-                                  const EdgeInsets.only(top: 24.0, left: 14.0),
-                              child: const Text(
-                                "Project title",
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Color(0xff64748B),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ],
-                      ),
-                      TextFormField(
-                        maxLength: 50,
-                        controller: _projecttitle,
-                        // inputFormatters: [UpperCaseTextFormatter()],
-                        textCapitalization: TextCapitalization.characters,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(
-                              bottom: 16.0,
-                              top: 54.0,
-                              right: 0,
-                              left: 14.0,
-                            ),
-                            errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        autovalidateMode: _submitted
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter';
-                          }
-                          return null;
-                        },
-                        onChanged: (text) => setState(() => name_ = text),
-                      ),
-                    ],
+                  SizedBox(height: 32),
+                  CustomFormField(
+                    controller: _projecttitle,
+                    hint: '',
+                    label: "Project title",
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +263,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           children: [
                             Container(
                               margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
+                                  const EdgeInsets.only(left: 0.0),
                               height: 60.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -435,7 +374,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           children: [
                             Container(
                               margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
+                                  const EdgeInsets.only(top: 0, left: 0.0),
                               height: 60.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -538,155 +477,30 @@ class _EditPageState extends State<CreateProjectPage> {
                       ),
                     ],
                   ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 24.0, left: 0.0, right: 0.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin:
-                                  const EdgeInsets.only(top: 33.0, left: 14.0),
-                              child: const Text(
-                                "CRM task ID",
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Color(0xff64748B),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ],
-                      ),
-                      TextFormField(
-                        maxLength: 20,
-                        controller: _crmtask,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            counterText: "",
-                            errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
-                            contentPadding: EdgeInsets.only(
-                              bottom: 16.0,
-                              top: 63.0,
-                              right: 0,
-                              left: 14.0,
-                            ),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        autovalidateMode: _submitted
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter';
-                          }
-                          return null;
-                        },
-                        onChanged: (text) => setState(() => name_ = text),
-                      ),
-                    ],
+                  SizedBox(height: 24),
+                  CustomFormField(
+                    controller: _crmtask,
+                    hint: '',
+                    label: "CRM task ID",
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
                   ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 15.0, left: 0.0, right: 0.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin:
-                                  const EdgeInsets.only(top: 26.0, left: 14.0),
-                              child: const Text(
-                                "Work Folder ID:",
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Color(0xff64748B),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ],
-                      ),
-                      TextFormField(
-                        maxLength: 20,
-                        controller: _warkfolderId,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            counterText: "",
-                            errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
-                            contentPadding: EdgeInsets.only(
-                              bottom: 16.0,
-                              top: 55.0,
-                              right: 0,
-                              left: 14.0,
-                            ),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        autovalidateMode: _submitted
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter';
-                          }
-                          return null;
-                        },
-                        onChanged: (text) => setState(() => name_ = text),
-                      ),
-                    ],
+                  CustomFormField(
+                    controller: _warkfolderId,
+                    hint: '',
+                    label: "Work Folder ID:",
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -694,88 +508,24 @@ class _EditPageState extends State<CreateProjectPage> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
-                        flex: 4,
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ), //BoxShadow
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 26.0, left: 14.0),
-                                    child: const Text(
-                                      "Budget",
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Color(0xff64748B),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                              ],
-                            ),
-                            TextFormField(
-                              maxLength: 8,
-                              controller: _budget,
-                              cursorColor: const Color(0xffFFFFFF),
-                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                              textAlignVertical: TextAlignVertical.bottom,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  counterText: "",
-                                  errorStyle:
-                                      TextStyle(fontSize: 15.0, height: 0.20),
-                                  contentPadding: EdgeInsets.only(
-                                    bottom: 18.0,
-                                    top: 55.0,
-                                    right: 0,
-                                    left: 14.0,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500)),
-                              autovalidateMode: _submitted
-                                  ? AutovalidateMode.onUserInteraction
-                                  : AutovalidateMode.disabled,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter';
-                                }
-                                return null;
-                              },
-                              onChanged: (text) => setState(() => name_ = text),
-                            ),
-                          ],
+                        child: CustomFormField(
+                          controller: _budget,
+                          hint: '',
+                          label: "Budget",
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter';
+                            }
+                            return null;
+                          },
+                          onChange: (text) => setState(() => name_ = text),
                         ),
                       ),
                       SizedBox(
                         width: 10,
                       ),
+
                       Expanded(
-                        flex: 3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -859,82 +609,17 @@ class _EditPageState extends State<CreateProjectPage> {
                         ),
                       ),
                       Expanded(
-                        flex: 7,
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, right: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 26.0, left: 14.0),
-                                    child: const Text(
-                                      "Estimated hours",
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Color(0xff64748B),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                              ],
-                            ),
-                            TextFormField(
-                              maxLength: 10,
-                              controller: _estimatehours,
-                              cursorColor: const Color(0xffFFFFFF),
-                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                              textAlignVertical: TextAlignVertical.bottom,
-                              keyboardType: TextInputType.text,
-                              decoration: const InputDecoration(
-                                  counterText: "",
-                                  errorStyle:
-                                      TextStyle(fontSize: 14.0, height: 0.20),
-                                  contentPadding: EdgeInsets.only(
-                                    bottom: 18.0,
-                                    top: 55.0,
-                                    right: 0,
-                                    left: 14.0,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500)),
-                              autovalidateMode: _submitted
-                                  ? AutovalidateMode.onUserInteraction
-                                  : AutovalidateMode.disabled,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter';
-                                }
-                                return null;
-                              },
-                              onChanged: (text) => setState(() => name_ = text),
-                            ),
-                          ],
+                        child: CustomFormField(
+                          controller: _estimatehours,
+                          hint: '',
+                          label: "Estimated hours",
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter';
+                            }
+                            return null;
+                          },
+                          onChange: (text) => setState(() => name_ = text),
                         ),
                       ),
                     ],
