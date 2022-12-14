@@ -155,9 +155,7 @@ class _NewPhaseState extends State<NewPhase> {
                     profileImage:
                         element.assignResource?.resource?.image ?? '')));
           });
-          print(phaseDetails);
-          print(phaseDetails);
-          print(phaseDetails);
+          print(_phaseDetails);
         }
       }
     }
@@ -185,132 +183,143 @@ class _NewPhaseState extends State<NewPhase> {
         content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.99,
           height: MediaQuery.of(context).size.height * 0.99,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.11,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      color: Color(0xff283345),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16.0),
-                        topLeft: Radius.circular(16.0),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x26000000),
-                          offset: Offset(
-                            0.0,
-                            1.0,
-                          ),
-                          blurRadius: 0.0,
-                          spreadRadius: 0.0,
+          child: RawScrollbar(
+            thumbColor: const Color(0xff4b5563),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            thickness: 8,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      padding: EdgeInsets.only(top: 15, bottom: 15),
+                      // height: MediaQuery.of(context).size.height * 0.11,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff283345),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16.0),
+                          topLeft: Radius.circular(16.0),
                         ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        titleHeadlineWidget("New Phase", 22.0),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  width: 97.0,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
-                                    ),
-                                  ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xffFFFFFF),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    savePhaseClick = true;
-                                  });
-                                  Future.delayed(
-                                      const Duration(microseconds: 500), () {
-                                    createPhase();
-                                  });
-                                },
-                                child: Container(
-                                  width: 97,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, right: 20.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff7DD3FC),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
-                                    ),
-                                  ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Save",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xff000000),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x26000000),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
                           ),
-                        )
-                      ],
-                    )),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    phaseView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 1.5,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    mileStoneView(),
-                    Container(
-                        height: MediaQuery.of(context).size.height * 1.5,
-                        child: const VerticalDivider(
-                          color: Color(0xff94A3B8),
-                          thickness: 0.2,
-                        )),
-                    subtaskView()
-                  ],
-                ),
-              ],
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: titleHeadlineWidget("New Phase", 22.0),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: 97.0,
+                                    margin: const EdgeInsets.only(
+                                        top: 10.0, bottom: 10.0),
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff334155),
+                                      borderRadius: BorderRadius.circular(
+                                        40.0,
+                                      ),
+                                    ),
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                InkWell(
+                                  child: Container(
+                                    width: 97,
+                                    margin: const EdgeInsets.only(
+                                        top: 10.0, right: 20.0, bottom: 10.0),
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff7DD3FC),
+                                      borderRadius: BorderRadius.circular(
+                                        40.0,
+                                      ),
+                                    ),
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Save",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xff000000),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      savePhaseClick = true;
+                                    });
+                                    Future.delayed(
+                                        const Duration(microseconds: 500), () {
+                                      createPhase();
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      phaseView(),
+                      Container(
+                          height: MediaQuery.of(context).size.height * 1.5,
+                          child: const VerticalDivider(
+                            color: Color(0xff94A3B8),
+                            thickness: 0.2,
+                          )),
+                      mileStoneView(),
+                      Container(
+                          height: MediaQuery.of(context).size.height * 1.5,
+                          child: const VerticalDivider(
+                            color: Color(0xff94A3B8),
+                            thickness: 0.2,
+                          )),
+                      subtaskView()
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ));
@@ -441,11 +450,8 @@ class _NewPhaseState extends State<NewPhase> {
                 }
               },
             ),
-            const SizedBox(
-              height: 10.0,
-            ),
             Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 10, bottom: 10),
               child: titleHeadlineWidget("Resources needed", 16.0),
             ),
             Container(
@@ -705,48 +711,58 @@ class _NewPhaseState extends State<NewPhase> {
                 ? SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 28.0),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: selectedSource.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: 32.0,
-                            margin: const EdgeInsets.only(left: 12.0),
-                            child: InputChip(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              deleteIcon: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              backgroundColor: const Color(0xff334155),
-                              // visualDensity: VisualDensity.compact,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              label: Text(
-                                selectedSource[index],
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onSelected: (bool selected) {
-                                setState(() {});
-                              },
-                              onDeleted: () {
-                                setState(() {
-                                  removeDuplicate();
-                                  selectedSubTaskSource.removeWhere((element) =>
-                                      element == selectedSource[index]);
-                                  listResource.removeAt(index);
-                                  selectedSource.removeAt(index);
-                                });
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                        padding: EdgeInsets.only(left: 28.0),
+                        child:
+                            //  ListView.builder(
+                            //   scrollDirection: Axis.horizontal,
+                            //   itemCount: selectedSource.length,
+                            //   itemBuilder: (context, index) {
+                            //     return
+                            Wrap(
+                                spacing: 8,
+                                children: List.generate(selectedSource.length,
+                                    (index) {
+                                  return Container(
+                                    height: 32.0,
+                                    margin: const EdgeInsets.only(left: 12.0),
+                                    child: InputChip(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8))),
+                                      deleteIcon: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      backgroundColor: const Color(0xff334155),
+                                      visualDensity: VisualDensity.compact,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      label: Text(
+                                        selectedSource[index],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onSelected: (bool selected) {
+                                        setState(() {});
+                                      },
+                                      onDeleted: () {
+                                        setState(() {
+                                          removeDuplicate();
+                                          selectedSubTaskSource.removeWhere(
+                                              (element) =>
+                                                  element ==
+                                                  selectedSource[index]);
+                                          listResource.removeAt(index);
+                                          selectedSource.removeAt(index);
+                                        });
+                                      },
+                                      showCheckmark: false,
+                                    ),
+                                  );
+                                }))
+                        //   },
+                        // ),
+                        ),
                   )
                 : Container(),
           ],
@@ -961,7 +977,11 @@ class _NewPhaseState extends State<NewPhase> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  titleSubHeadlineWidget("Add Subtasks", 14.0),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: titleSubHeadlineWidget(
+                                        "Add Subtasks", 14.0),
+                                  )
                                 ],
                               )
                             : clickAddSubtask()),
@@ -988,7 +1008,7 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             clickAddSubTask
                 ? Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding: const EdgeInsets.only(right: 8.0, top: 15),
                     child: DatePicker(
                       subtitle: 'subTask',
                       title: "Start date",
@@ -1036,12 +1056,9 @@ class _NewPhaseState extends State<NewPhase> {
                     ),
                   )
                 : Container(),
-            const SizedBox(
-              height: 8.0,
-            ),
             clickAddSubTask
                 ? Padding(
-                    padding: EdgeInsets.only(left: 5),
+                    padding: EdgeInsets.only(left: 5, bottom: 10),
                     child: titleHeadlineWidget(
                         "Resources needed for the subtasks", 16),
                   )
@@ -1069,21 +1086,24 @@ class _NewPhaseState extends State<NewPhase> {
             clickAddSubTask
                 ? subTaskResourcesView()
                 : saveButtonClickForSubtask
-                    ? subTaskList(
-                        context,
-                        phaseDetails,
-                        callback: (values, index, subTaskAction) {
-                          if (subTaskAction == 'Delete') {
-                            onDeleteSubtask(index);
-                          } else if (subTaskAction == 'Edit') {
-                            onEditSubtask(index, values);
-                          } else {
-                            setState(() {
-                              mileStoneTitle =
-                                  values.resource?.resource_name ?? '';
-                            });
-                          }
-                        },
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: subTaskList(
+                          context,
+                          _phaseDetails,
+                          callback: (values, index, subTaskAction) {
+                            if (subTaskAction == 'Delete') {
+                              onDeleteSubtask(index);
+                            } else if (subTaskAction == 'Edit') {
+                              onEditSubtask(index, values);
+                            } else {
+                              setState(() {
+                                mileStoneTitle =
+                                    values.resource?.resource_name ?? '';
+                              });
+                            }
+                          },
+                        ),
                       )
                     : Container(),
             savePhaseClick && phaseDetails.sub_tasks!.isEmpty
@@ -1144,8 +1164,8 @@ class _NewPhaseState extends State<NewPhase> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.only(left: 15),
-          width: MediaQuery.of(context).size.width * 0.26,
+          padding: EdgeInsets.only(left: 15, right: 18),
+          width: MediaQuery.of(context).size.width * 3,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -1185,7 +1205,7 @@ class _NewPhaseState extends State<NewPhase> {
               ),
               Expanded(
                 child: Container(
-                  width: (MediaQuery.of(context).size.width * 4),
+                  width: double.infinity,
                   margin: const EdgeInsets.only(left: 20.0),
                   height: 56.0,
                   decoration: BoxDecoration(
@@ -1462,7 +1482,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddSubtask() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 15),
+      padding: const EdgeInsets.only(top: 12, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -1545,7 +1565,10 @@ class _NewPhaseState extends State<NewPhase> {
 
   titleHeadlineWidget(String title, double i) {
     return Container(
-      margin: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
+      margin: title == "Resources needed" ||
+              title == "Resources needed for the subtasks"
+          ? const EdgeInsets.only(left: 10.0, top: 0.0, bottom: 10.0)
+          : const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
       child: Text(
         title,
         style: TextStyle(
@@ -1625,7 +1648,7 @@ class _NewPhaseState extends State<NewPhase> {
       CreatePhaseResp createPhaseResp =
           await api.createNewPhase(json.encode(phaseDetails), context);
       if (createPhaseResp.status == true) {
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       }
       SmartDialog.dismiss();
     } catch (e) {
@@ -1646,7 +1669,7 @@ class _NewPhaseState extends State<NewPhase> {
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       }
       SmartDialog.dismiss();
     } catch (e) {

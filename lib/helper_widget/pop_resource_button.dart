@@ -162,6 +162,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
+      tooltip: "",
+      constraints: const BoxConstraints.expand(width: 140, height: 120),
+      padding: EdgeInsets.only(left: 50, right: 50),
       offset: const Offset(-15, 12),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
@@ -178,7 +181,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
             borderRadius: const BorderRadius.all(Radius.circular(100))),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0.0),
             child: SvgPicture.asset(
               "images/edit.svg",
             ),
