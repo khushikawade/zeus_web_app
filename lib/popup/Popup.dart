@@ -893,7 +893,7 @@ showDailog(
                                   ),
                                   Align(
                                     alignment: Alignment.topRight,
-                                    child: GestureDetector(
+                                    child: InkWell(
                                       onTap: () {
                                         Navigator.of(context).pop();
                                       },

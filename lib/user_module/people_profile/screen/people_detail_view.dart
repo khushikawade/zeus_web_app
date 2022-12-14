@@ -617,11 +617,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     children: [
                       aboutMeWidget(),
                       SizedBox(
-                        height: 30,
+                        height: 45,
                       ),
                       availabilityWidget(),
                       SizedBox(
-                        height: 30,
+                        height: 45,
                       ),
                       skillsWidget(),
                     ],
