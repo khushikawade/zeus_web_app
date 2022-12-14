@@ -364,6 +364,7 @@ class _NavigationRailState extends State<MyHomePage>
     super.initState();
   }
 
+  final TextEditingController _newName = TextEditingController();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _nickName = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -845,7 +846,6 @@ class _NavigationRailState extends State<MyHomePage>
                                               ],
                                             ),
                                           ),
-                                          
                                         ],
                                       ),
                                       Container(
@@ -909,18 +909,22 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
-
                                   CustomFormField(
-                                    controller: _name,
+                                    controller: _newName,
                                     hint: "MY HINT",
                                     label: "MY label",
-                                      
-                                    
-                                    
+                                    validator: (val) {
+                                      RegExp regex = RegExp(r'^[a-z A-Z]+$',
+                                          caseSensitive: false);
+                                      if (val.isEmpty) {
+                                        return 'Please enter';
+                                      } else if (!regex.hasMatch(val)) {
+                                        return 'Please enter valid name';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
                                   ),
-
-
-
                                   Stack(
                                     children: [
                                       Column(
