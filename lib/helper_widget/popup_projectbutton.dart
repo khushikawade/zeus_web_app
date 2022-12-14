@@ -195,9 +195,16 @@ class _ProjectEditState extends State<ProjectEdit>
     updateControllerValue();
     return Center(
       child: PopupMenuButton<int>(
-        offset: widget.offset,
-        color: const Color(0xFF0F172A),
+          tooltip: "",
+        // offset: widget.offset,
+        // color: const Color(0xFF0F172A),
+        // position: PopupMenuPosition.under,
+        constraints: const BoxConstraints.expand(width: 140, height: 120),
+        // padding: EdgeInsets.only(left: 50, right: 50),
+        offset: const Offset(-30, 0),
         position: PopupMenuPosition.under,
+        color: const Color(0xFF0F172A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
         child: Container(
           margin:
@@ -1641,7 +1648,7 @@ class _ProjectEditState extends State<ProjectEdit>
                 height: 50,
                 width: double.infinity,
                 child: const Padding(
-                  padding: EdgeInsets.only(left: 10, top: 15),
+                  padding: EdgeInsets.only(left: 20, top: 15),
                   child: Text(
                     "Edit",
                     style: TextStyle(
@@ -1761,7 +1768,7 @@ class _ProjectEditState extends State<ProjectEdit>
                 width: double.infinity,
                 height: 50,
                 child: const Padding(
-                  padding: EdgeInsets.only(left: 10, top: 15),
+                  padding: EdgeInsets.only(left: 20, top: 15),
                   child: Text(
                     "Delete",
                     style: TextStyle(

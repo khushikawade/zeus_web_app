@@ -11,7 +11,7 @@ class ProjectHomeViewModel extends ChangeNotifier {
   bool loading = false;
   bool showProfile = false;
 
-  Future<void> getProjectDetail(String id) async {
+  Future<ProjectDetailResponse> getProjectDetail(String id) async {
     loading = true;
     projectDetailResponse = (await service.getIdelDetail(id));
 
@@ -19,6 +19,7 @@ class ProjectHomeViewModel extends ChangeNotifier {
     // print(peopleIdelResponse);
     loading = false;
     notifyListeners();
+    return projectDetailResponse!;
   }
 
   Future<void> getPeopleIdel({String? searchText}) async {
@@ -54,8 +55,4 @@ class ProjectHomeViewModel extends ChangeNotifier {
   ProjectDetailResponse productData() {
     return projectDetailResponse!;
   }
-
-
-
-
 }

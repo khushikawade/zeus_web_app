@@ -2672,88 +2672,91 @@ class _NavigationRailState extends State<MyHomePage>
           backgroundColor: const Color(0xff0F172A),
           elevation: 0,
           actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 5, right: 5),
-                  width: 475,
-                  height: 48.0,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff1e293b),
-                    borderRadius: BorderRadius.circular(
-                      42.0,
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 5, right: 5),
+                    width: 475,
+                    height: 48.0,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff1e293b),
+                      borderRadius: BorderRadius.circular(
+                        42.0,
+                      ),
                     ),
-                  ),
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: (val) {
-                      try {
-                        _debouncer.run(() async {
-                          if (_selectedIndex == 1) {
-                            if (val != null && val.isNotEmpty) {
-                              await Provider.of<ProjectHomeViewModel>(context,
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (val) {
+                        try {
+                          _debouncer.run(() async {
+                            if (_selectedIndex == 1) {
+                              if (val != null && val.isNotEmpty) {
+                                await Provider.of<ProjectHomeViewModel>(context,
+                                        listen: false)
+                                    .getPeopleIdel(searchText: val);
+                              }
+                            } else if (_selectedIndex == 2) {
+                              print(_selectedIndex);
+                            } else if (_selectedIndex == 3) {
+                              Provider.of<PeopleHomeViewModel>(context,
                                       listen: false)
-                                  .getPeopleIdel(searchText: val);
+                                  .getPeopleDataList(searchText: val);
                             }
-                          } else if (_selectedIndex == 2) {
-                            print(_selectedIndex);
-                          } else if (_selectedIndex == 3) {
-                            Provider.of<PeopleHomeViewModel>(context,
-                                    listen: false)
-                                .getPeopleDataList(searchText: val);
-                          }
-                        });
-                      } catch (e) {
-                        print(e);
-                        print(val);
-                      }
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 16.0),
-                      prefixIcon: const Padding(
-                          padding:
-                              EdgeInsets.only(top: 4.0, left: 15, right: 20),
-                          child: Icon(
-                            Icons.search,
+                          });
+                        } catch (e) {
+                          print(e);
+                          print(val);
+                        }
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 16.0),
+                        prefixIcon: const Padding(
+                            padding:
+                                EdgeInsets.only(top: 4.0, left: 15, right: 20),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(0xff64748B),
+                            )),
+                        hintText: _selectedIndex == 1
+                            ? 'Search Project'
+                            : _selectedIndex == 3
+                                ? 'Search People'
+                                : 'Search',
+                        hintStyle: const TextStyle(
+                            fontSize: 14.0,
                             color: Color(0xff64748B),
-                          )),
-                      hintText: _selectedIndex == 1
-                          ? 'Search Project'
-                          : _selectedIndex == 3
-                              ? 'Search People'
-                              : 'Search',
-                      hintStyle: const TextStyle(
-                          fontSize: 14.0,
-                          color: Color(0xff64748B),
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400),
+                        border: InputBorder.none,
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(color: Colors.white, fontSize: 14.0),
                     ),
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(color: Colors.white, fontSize: 14.0),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                    width: 40.0,
-                    height: 40.0,
-                    child: const CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage('images/images.jpeg'),
-                    )),
-                SizedBox(
-                  width: 10,
-                ),
-                LogOut(returnValue: () {}),
-                SizedBox(
-                  width: 30,
-                ),
-              ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                      width: 40.0,
+                      height: 40.0,
+                      child: const CircleAvatar(
+                        radius: 20,
+                        backgroundImage: AssetImage('images/images.jpeg'),
+                      )),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  LogOut(returnValue: () {}),
+                  SizedBox(
+                    width: 30,
+                  ),
+                ],
+              ),
             ),
           ],
           title: Row(
