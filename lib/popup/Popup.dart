@@ -12,14 +12,16 @@ import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
+import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
-
+import 'package:provider/provider.dart';
 import '../home_module/home_page.dart';
+import 'package:zeus/utility/debouncer.dart';
 
 showDailog(
     BuildContext context,
@@ -60,6 +62,7 @@ showDailog(
   var myFormat = DateFormat('yyyy-MM-dd');
 
   final TextEditingController _typeAheadController = TextEditingController();
+  Debouncer _debouncer = Debouncer();
 
   //Edit project_detail api
   Future<void> editProject() async {
@@ -175,7 +178,9 @@ showDailog(
     var token = 'Bearer ' + storage.read("token");
     try {
       var apiResponse = await http.post(
-        Uri.parse('${AppUrl.baseUrl}/project_detail/project_detail-dates/$_id'),
+        ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is
+        Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
+
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days":
@@ -1074,7 +1079,9 @@ showDailog(
                                                           suggestionsBoxVerticalOffset:
                                                               0.0,
                                                           suggestionsBoxDecoration:
-                                                              SuggestionsBoxDecoration(),
+                                                              SuggestionsBoxDecoration(
+                                                                  color: Color(
+                                                                      0xff0F172A)),
                                                           suggestionsCallback:
                                                               (pattern) {
                                                             return getSuggestions(
@@ -1173,9 +1180,6 @@ showDailog(
                                             ],
                                             elevation: 8.0,
                                           ),
-                                      
-                                      
-                                      
                                         ],
                                       ),
                                       Spacer(),
@@ -1265,7 +1269,14 @@ showDailog(
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.w500)),
                                       onChanged: (value) {
-                                        addDescriptionProject();
+                                        try {
+                                          _debouncer.run(() async {
+                                            addDescriptionProject();
+                                          });
+                                        } catch (e) {
+                                          print(e);
+                                          print(value);
+                                        }
                                       },
                                     ),
                                   ),
@@ -1454,7 +1465,7 @@ showDailog(
                                       Container(
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.50,
+                                                0.38,
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.99,
@@ -1472,12 +1483,13 @@ showDailog(
                       ),
                       //TODO VS
                       Container(
-                        height: 180,
+                        // color: Colors.red,
+                        height: response.data!.phase!.length == 0 ? 180 : 400,
                         width: MediaQuery.of(context).size.width * 0.99,
                         child: Column(
                           children: [
                             SizedBox(
-                                height: 30.0,
+                                height: 60.0,
                                 width: MediaQuery.of(context).size.width,
                                 child: const Divider(
                                   color: Color(0xff424D5F),
@@ -1552,21 +1564,34 @@ showDailog(
                                     ],
                                   ),
                                   onTap: () async {
-                                    Navigator.pop(context);
-                                    await showDialog(
+                                    // Navigator.pop(context);
+                                    bool result = await showDialog(
                                         context: context,
                                         builder: (context) {
                                           return NewPhase(id!, 0);
                                         });
+
+                                    if (result != null && result) {
+                                      response = await Provider.of<
+                                                  ProjectHomeViewModel>(context,
+                                              listen: false)
+                                          .getProjectDetail(
+                                              response.data!.id!.toString());
+
+                                      setState(() {});
+                                    }
                                   },
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.99,
                               margin: const EdgeInsets.only(
-                                  left: 30.0, top: 12.0, right: 30.0),
-                              height: 40,
+                                  left: 15.0, top: 12.0, right: 15.0),
+                              height: 50,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 borderRadius: BorderRadius.circular(
@@ -1602,7 +1627,7 @@ showDailog(
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(
-                                        left: 15.0, right: 50.0),
+                                        left: 16.0, right: 50.0),
                                     child: const Text(
                                       "Till",
                                       style: TextStyle(
@@ -1637,15 +1662,25 @@ showDailog(
                                   Phase phase = response.data!.phase![index];
                                   var title = phase.title;
                                   var phaseType = phase.phaseType;
-                                  String name = title!.substring(0, 2);
+                                  String name =
+                                      title!.substring(0, 2).toUpperCase();
                                   var date = phase.startDate;
                                   var endDate = phase.endDate;
 
                                   var _date = date.toString();
 
+                                  var date1 = AppUtil.getFormatedDate(_date);
+                                  var fromDate =
+                                      AppUtil.formattedDateYear1(date1);
+
                                   var _endDate = endDate.toString();
 
+                                  var date2 = AppUtil.getFormatedDate(_endDate);
+                                  var tillDate =
+                                      AppUtil.formattedDateYear1(date2);
+
                                   return Column(
+                                    mainAxisSize: MainAxisSize.max,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -1656,8 +1691,8 @@ showDailog(
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            height: 25.0,
-                                            width: 25.0,
+                                            height: 35.0,
+                                            width: 35.0,
                                             margin: const EdgeInsets.only(
                                                 left: 45.0, top: 10.0),
                                             decoration: BoxDecoration(
@@ -1671,9 +1706,10 @@ showDailog(
                                               alignment: Alignment.center,
                                               child: Text(
                                                 "$name",
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     color: Color(0xffFFFFFF),
-                                                    fontSize: 10.0,
+                                                    fontSize: 12.0,
                                                     fontFamily: 'Inter',
                                                     fontWeight:
                                                         FontWeight.w500),
@@ -1682,7 +1718,7 @@ showDailog(
                                           ),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                left: 16.0, top: 12.0),
+                                                left: 16.0, top: 18.0),
                                             child: Text(
                                               "$phaseType",
                                               style: const TextStyle(
@@ -1697,9 +1733,9 @@ showDailog(
                                             margin: const EdgeInsets.only(
                                                 top: 12.0, right: 42.0),
                                             child: Text(
-                                              "$_date",
+                                              "$fromDate",
                                               style: const TextStyle(
-                                                  color: Color(0xff94A3B8),
+                                                  color: Color(0xffffffff),
                                                   fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
@@ -1707,11 +1743,11 @@ showDailog(
                                           ),
                                           Container(
                                             margin: const EdgeInsets.only(
-                                                top: 12.0, right: 52.0),
+                                                top: 12.0, right: 36.0),
                                             child: Text(
-                                              "$_endDate",
+                                              "$tillDate",
                                               style: const TextStyle(
-                                                  color: Color(0xff94A3B8),
+                                                  color: Color(0xffffffff),
                                                   fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
@@ -1731,17 +1767,32 @@ showDailog(
                                                 },
                                                 onEditClick: () async {
                                                   Navigator.pop(context);
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return NewPhase(
-                                                            response
-                                                                .data!
-                                                                .phase![index]
-                                                                .id
-                                                                .toString(),
-                                                            1);
-                                                      });
+                                                  bool result =
+                                                      await showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return NewPhase(
+                                                                response
+                                                                    .data!
+                                                                    .phase![
+                                                                        index]
+                                                                    .id
+                                                                    .toString(),
+                                                                1);
+                                                          });
+
+                                                  if (result != null &&
+                                                      result) {
+                                                    response = await Provider
+                                                            .of<ProjectHomeViewModel>(
+                                                                context,
+                                                                listen: false)
+                                                        .getProjectDetail(
+                                                            response.data!.id!
+                                                                .toString());
+
+                                                    setState(() {});
+                                                  }
                                                 },
                                                 setState: setState,
                                                 response: response,

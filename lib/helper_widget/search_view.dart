@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:zeus/phase_module/model/department_model.dart';
 import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -164,17 +165,89 @@ Widget rowPhases(PhasesSortedResources items) {
   );
 }
 
-Widget rowResourceName(item) {
+//PhasesSortedResources items
+Widget rowPhasesType(DepartementData Language) {
   return Container(
-    padding: const EdgeInsets.all(11.0),
-    decoration: const BoxDecoration(
-      color: Color(0xff0F172A),
+    // width: 400,
+    color: Color(0xFF0F172A),
+    child: Padding(
+      padding: const EdgeInsets.all(11.0),
+      child: Text(
+        Language.name.toString(),
+        style: const TextStyle(fontSize: 16.0, color: Colors.white),
+      ),
     ),
+  );
+}
+
+Widget rowResourceName(item) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
     child: Row(
-      children: <Widget>[
+      children: [
+        SizedBox(
+          width: 6,
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Image.network(
+              'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+              width: 32,
+              height: 32,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 8,
+        ),
         Text(
           item.name.toString(),
           style: const TextStyle(fontSize: 16.0, color: Colors.white),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget rowResourceName1(item) {
+  return Container(
+    color: Color(0xff0F172A),
+    child: Row(
+      children: [
+        SizedBox(
+          width: 10,
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Image.network(
+              'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+              width: 32,
+              height: 32,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Container(
+          padding: const EdgeInsets.all(11.0),
+          decoration: const BoxDecoration(),
+          child: Row(
+            children: <Widget>[
+              Text(
+                item.name.toString(),
+                style: const TextStyle(fontSize: 16.0, color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ],
     ),

@@ -276,9 +276,9 @@ class _EditPageState extends State<CreateProjectPage> {
                         ],
                       ),
                       TextFormField(
-                        maxLength: 20,
+                        maxLength: 50,
                         controller: _projecttitle,
-                        inputFormatters: [UpperCaseTextFormatter()],
+                        // inputFormatters: [UpperCaseTextFormatter()],
                         textCapitalization: TextCapitalization.characters,
                         cursorColor: const Color(0xffFFFFFF),
                         style: const TextStyle(color: Color(0xffFFFFFF)),
