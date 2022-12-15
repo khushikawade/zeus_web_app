@@ -28,15 +28,15 @@ class DatePicker extends StatefulWidget {
 class _DatePickerState extends State<DatePicker> {
   DateTime? startDate;
   DateTime? endDate;
-  DateTime? selectedDate;
   TextEditingController controller = TextEditingController();
   String? errorText = "";
 
   @override
   void initState() {
-    startDate = widget.startDate ?? DateTime.now();
-    endDate = widget.endDate ?? DateTime.now().add(const Duration(days: 36500));
-    selectedDate = widget.initialDate ?? DateTime.now();
+    startDate = widget.startDate ?? null;
+    endDate = widget.endDate ??
+        null; //DateTime.now().add(const Duration(days: 36500));
+
   }
 
   @override

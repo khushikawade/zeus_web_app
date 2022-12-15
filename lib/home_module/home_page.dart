@@ -2669,6 +2669,7 @@ class _NavigationRailState extends State<MyHomePage>
       child: Scaffold(
         backgroundColor: Color(0xff0F172A),
         appBar: AppBar(
+          centerTitle: false,
           automaticallyImplyLeading: false,
           toolbarHeight: 70.0,
           backgroundColor: const Color(0xff0F172A),
@@ -2761,81 +2762,91 @@ class _NavigationRailState extends State<MyHomePage>
               ),
             ),
           ],
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: SvgPicture.asset(
-                  'images/hamburger.svg',
-                  width: 18.0,
-                  height: 12.0,
+          title: Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: SvgPicture.asset(
+                    'images/hamburger.svg',
+                    width: 18.0,
+                    height: 12.0,
+                  ),
                 ),
-              ),
-              SvgPicture.asset(
-                'images/logo.svg',
-              ),
-              SizedBox(
-                width: 25,
-              ),
-              FutureBuilder(
-                  future: getList,
-                  builder: (context, snapshot) {
-                    return Visibility(
-                      visible: snapshot.data as bool,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 12),
+                SvgPicture.asset(
+                  'images/logo.svg',
+                ),
+                // SizedBox(
+                //   width: 25,
+                // ),
+                FutureBuilder(
+                    future: getList,
+                    builder: (context, snapshot) {
+                      return Visibility(
+                        visible: snapshot.data as bool,
                         child: Column(
                           children: [
                             _selectedIndex == 1
-                                ? Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Text("List",
-                                              style: TextStyle(
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 12, left: 12),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text("List",
+                                                style: TextStyle(
+                                                    color: Color(0xff93C5FD),
+                                                    fontSize: 14.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500)),
+                                            const SizedBox(
+                                              height: 12,
+                                            ),
+                                            Container(
+                                              width: 25,
+                                              height: 3,
+                                              decoration: const BoxDecoration(
                                                   color: Color(0xff93C5FD),
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500)),
-                                          const SizedBox(
-                                            height: 12,
-                                          ),
-                                          Container(
-                                            width: 25,
-                                            height: 3,
-                                            decoration: const BoxDecoration(
-                                                color: Color(0xff93C5FD),
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(3),
-                                                    topRight:
-                                                        Radius.circular(3))),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 30,
-                                      ),
-                                      _selectedIndex == 1
-                                          ? Text("Timeline",
-                                              style: TextStyle(
-                                                  color: Color(0xffffffff),
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500))
-                                          : Container(),
-                                    ],
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  3),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  3))),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 30,
+                                        ),
+                                        _selectedIndex == 1
+                                            ? Text("Timeline",
+                                                style: TextStyle(
+                                                    color: Color(0xffffffff),
+                                                    fontSize: 14.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500))
+                                            : Container(),
+                                      ],
+                                    ),
                                   )
                                 : Container(),
                             _selectedIndex == 3
-                                ? Container(
-                                    color: Colors.red,
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
                                     child: const Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),
@@ -2846,10 +2857,10 @@ class _NavigationRailState extends State<MyHomePage>
                                 : Container(),
                           ],
                         ),
-                      ),
-                    );
-                  }),
-            ],
+                      );
+                    }),
+              ],
+            ),
           ),
         ),
         //body:
@@ -3462,8 +3473,6 @@ class _NavigationRailState extends State<MyHomePage>
                         //type: BottomNavigationBarType.fixed,
                         backgroundColor: const Color(0xff0F172A),
                         destinations: <NavigationRailDestination>[
-                          // navigation destinations
-
                           NavigationRailDestination(
                             padding: EdgeInsets.zero,
                             icon: Container(
@@ -3489,7 +3498,6 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                               ),
                             ),
-                            // selectedIcon: Icon(Icons.favorite),
                             label: const Text(''),
                           ),
 
@@ -3497,10 +3505,6 @@ class _NavigationRailState extends State<MyHomePage>
                             padding: EdgeInsets.zero,
                             icon: Tooltip(
                               verticalOffset: 40,
-                              // textStyle: const TextStyle(
-                              //     fontSize: 15,
-                              //     color: Colors.white,
-                              //     fontWeight: FontWeight.normal),
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 border:
@@ -3516,12 +3520,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   left: 20.0,
                                   right: 0.0,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(9.0),
-                                  // padding: EdgeInsets.zero,
-                                  child: SvgPicture.asset(
-                                    "images/notification_icon.svg",
-                                  ),
+                                child: SvgPicture.asset(
+                                  "images/notification_icon.svg",
                                 ),
                               ),
                             ),
@@ -3544,28 +3544,9 @@ class _NavigationRailState extends State<MyHomePage>
                               ),
                               child: Stack(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    // padding: EdgeInsets.zero,
-                                    child: SvgPicture.asset(
-                                      "images/notification_icon.svg",
-                                    ),
+                                  SvgPicture.asset(
+                                    "images/notification_icon.svg",
                                   ),
-                                  // Positioned(
-                                  //   right: 0,
-                                  //   top: 3,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
                                 ],
                               ),
                             ),
@@ -3618,12 +3599,8 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 child: Stack(
                                   children: [
-                                    Padding(
-                                      // padding: EdgeInsets.zero,
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: SvgPicture.asset(
-                                        "images/camera.svg",
-                                      ),
+                                    SvgPicture.asset(
+                                      "images/camera.svg",
                                     ),
                                     // Positioned(
                                     //   right: 0,
@@ -3774,31 +3751,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   18.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    // padding: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/people.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 0,
-                                  //   top: 6,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/people.svg",
                               ),
                             ),
                             label: const Align(
@@ -3844,31 +3798,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   18.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    // padding: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/button.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 2,
-                                  //   top: 6,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/button.svg",
                               ),
                             ),
                             label: const Text(''),
@@ -3905,31 +3836,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   18.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    // padding: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/bell.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 3,
-                                  //   top: 4,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/bell.svg",
                               ),
                             ),
                             label: const Text(''),
@@ -3966,31 +3874,8 @@ class _NavigationRailState extends State<MyHomePage>
                                   16.0,
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    // padding: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      "images/setting.svg",
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   right: 0,
-                                  //   top: 6,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.all(1),
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.red,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     constraints: const BoxConstraints(
-                                  //       minWidth: 8,
-                                  //       minHeight: 8,
-                                  //     ),
-                                  //   ),
-                                  // )
-                                ],
+                              child: SvgPicture.asset(
+                                "images/setting.svg",
                               ),
                             ),
                             label: const Text(''),
@@ -4002,6 +3887,7 @@ class _NavigationRailState extends State<MyHomePage>
                             const IconThemeData(color: Colors.black),
                         selectedLabelTextStyle:
                             const TextStyle(color: Colors.white),
+                        extended: false,
                       ),
                     ),
                   ),

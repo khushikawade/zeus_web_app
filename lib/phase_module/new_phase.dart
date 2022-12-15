@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
@@ -31,7 +32,7 @@ class NewPhase extends StatefulWidget {
 }
 
 class _NewPhaseState extends State<NewPhase> {
-  PhaseDetails _phaseDetails =
+  PhaseDetails phaseDetails =
       PhaseDetails(sub_tasks: [], resource: [], milestone: []);
   TextEditingController controller_next_phase = TextEditingController();
   TextEditingController controllerMilestoneTitle = TextEditingController();
@@ -46,8 +47,8 @@ class _NewPhaseState extends State<NewPhase> {
   String? selectUser, subtaskDepat;
   List _department = [];
   Api api = Api();
-  DateTime startDate = DateTime.now().subtract(Duration(days: 40));
-  DateTime endDate = DateTime.now().add(Duration(days: 40));
+  // DateTime startDates = DateTime.now().subtract(Duration(days: 40));
+  // DateTime endDates = DateTime.now().add(Duration(days: 40));
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Type';
   bool clickedAddMileStone = false;
@@ -97,14 +98,17 @@ class _NewPhaseState extends State<NewPhase> {
     if (getPhaseDetails != null &&
         getPhaseDetails!.statusCode == 200 &&
         getPhaseDetails!.status == true) {
-      _phaseDetails.statusCode = 200;
+      phaseDetails.statusCode = 200;
       if (getPhaseDetails!.data != null) {
-        _phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
-        _phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
-        _phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
+        setState(() {
+          phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
+          phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
+        });
+
+        phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
         controller_phase_type.text = getPhaseDetails?.data?.phaseType ?? "";
         controller_next_phase.text = getPhaseDetails?.data?.title ?? "";
-        _phaseDetails.title = getPhaseDetails?.data?.title ?? "";
+        phaseDetails.title = getPhaseDetails?.data?.title ?? "";
         if (getPhaseDetails!.data!.assignedResources != null &&
             getPhaseDetails!.data!.assignedResources!.isNotEmpty) {
           getPhaseDetails!.data!.assignedResources!.forEach((element) {
@@ -119,7 +123,7 @@ class _NewPhaseState extends State<NewPhase> {
 
             selectedSource.add(element.resource?.name ?? "");
 
-            _phaseDetails.resource!.add(ResourceData(
+            phaseDetails.resource!.add(ResourceData(
                 department_id: element.departmentId ?? 0,
                 resource_id: element.resourceId ?? 0,
                 resource_name: element.resource?.name ?? ''));
@@ -130,7 +134,7 @@ class _NewPhaseState extends State<NewPhase> {
             getPhaseDetails!.data!.milestone!.isNotEmpty) {
           saveButtonClick = true;
           getPhaseDetails!.data!.milestone!.forEach((element) {
-            _phaseDetails.milestone!
+            phaseDetails.milestone!
                 .add(Milestones(title: element.title, m_date: element.mDate));
           });
         }
@@ -139,7 +143,7 @@ class _NewPhaseState extends State<NewPhase> {
             getPhaseDetails!.data!.subTasks!.isNotEmpty) {
           saveButtonClickForSubtask = true;
           getPhaseDetails!.data!.subTasks!.forEach((element) {
-            _phaseDetails.sub_tasks!.add(SubTasksModel(
+            phaseDetails.sub_tasks!.add(SubTasksModel(
                 end_date: element.startDate,
                 start_date: element.endDate,
                 resource: ResourceData(
@@ -151,7 +155,7 @@ class _NewPhaseState extends State<NewPhase> {
                     profileImage:
                         element.assignResource?.resource?.image ?? '')));
           });
-          print(_phaseDetails);
+          print(phaseDetails);
         }
       }
     }
@@ -368,7 +372,7 @@ class _NewPhaseState extends State<NewPhase> {
                 labelText: "Phase Title",
                 callback: (values) {
                   setState(() {
-                    _phaseDetails.title = values;
+                    phaseDetails.title = values;
                   });
                 },
                 validateCallback: (value) {
@@ -386,7 +390,7 @@ class _NewPhaseState extends State<NewPhase> {
                 context: context,
                 callback: (values) {
                   setState(() {
-                    _phaseDetails.phase_type = values;
+                    phaseDetails.phase_type = values;
                   });
                 },
                 validateCallback: (value) {
@@ -403,7 +407,7 @@ class _NewPhaseState extends State<NewPhase> {
               title: "Start date",
               callback: (value) {
                 setState(() {
-                  _phaseDetails.start_date = value;
+                  phaseDetails.start_date = value;
                 });
                 setState(() {});
               },
@@ -425,20 +429,20 @@ class _NewPhaseState extends State<NewPhase> {
               title: "End date",
               callback: (value) {
                 setState(() {
-                  _phaseDetails.end_date = value;
+                  phaseDetails.end_date = value;
                 });
               },
-              startDate: _phaseDetails.sub_tasks!.isNotEmpty
+              startDate: phaseDetails.sub_tasks!.isNotEmpty
                   ? DateTime.now().add(Duration(days: 10))
                   : DateTime.now(),
               validationCallBack: (String values) {
                 if (values.isEmpty) {
                   checkFormStatus();
                   return 'Please enter end date';
-                } else if (_phaseDetails.end_date != null &&
-                    _phaseDetails.start_date != null) {
-                  if ((AppUtil.stringToDate(_phaseDetails.end_date!).isBefore(
-                      (AppUtil.stringToDate(_phaseDetails.start_date!))))) {
+                } else if (phaseDetails.end_date != null &&
+                    phaseDetails.start_date != null) {
+                  if ((AppUtil.stringToDate(phaseDetails.end_date!).isBefore(
+                      (AppUtil.stringToDate(phaseDetails.start_date!))))) {
                     return 'End date must be greater then the start date';
                   }
                 } else {
@@ -510,7 +514,7 @@ class _NewPhaseState extends State<NewPhase> {
                         child: Container(child: StatefulBuilder(
                           builder: (BuildContext context, StateSettersetState) {
                             return DropdownButtonHideUnderline(
-                              child: DropdownButton(
+                              child: CustomDropdownButton(
                                 dropdownColor: ColorSelect.class_color,
                                 value: _depat,
                                 underline: Container(),
@@ -522,7 +526,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w500),
                                 ),
-                                isExpanded: true,
+                                // isExpanded: true,
                                 icon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color(0xff64748B),
@@ -589,133 +593,117 @@ class _NewPhaseState extends State<NewPhase> {
                 ? loading == true
                     ? Center(child: const CircularProgressIndicator())
                     : Container(
-                        // padding: EdgeInsets.only(left: 20),
+                        height: 50.0,
                         width: MediaQuery.of(context).size.width * 0.22,
                         margin: const EdgeInsets.only(top: 16, left: 20),
-                        decoration: BoxDecoration(),
-                        child: Material(
+                        decoration: BoxDecoration(
                           color: const Color(0xff1E293B),
-                          shadowColor: Color(0xff1E293B),
-                          elevation: 15,
-                          child: Container(
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              // color: const Color(0xff334155),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xff1E293B),
-                                  // color: Colors.black,
-                                  // .withOpacity(0.5), //color of shadow
-                                  spreadRadius: 0.5, //spread radius
-                                  blurRadius: 0.5, // blur radius
-                                  offset: Offset(
-                                      0.2, 0.2), // changes position of shadow
-                                  //first paramerter of offset is left-right
-                                  //second parameter is top to down
-                                ),
-                                //you can set more BoxShadow() here
-                              ],
-                              borderRadius: BorderRadius.circular(
-                                6.0,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                searchTextField = TypeAheadFormField(
-                                  keepSuggestionsOnLoading: false,
-                                  suggestionsBoxVerticalOffset: 0.0,
-                                  suggestionsBoxDecoration:
-                                      SuggestionsBoxDecoration(
-                                          color: Color(0xff1E293B)),
-                                  hideOnLoading: true,
-                                  suggestionsCallback: (pattern) {
-                                    return getSuggestions(pattern);
-                                  },
-                                  textFieldConfiguration:
-                                      TextFieldConfiguration(
-                                    controller: _typeAheadController,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 14.0),
-                                    keyboardType: TextInputType.text,
-                                    cursorColor: Colors.white,
-                                    autofocus: true,
-                                    decoration: const InputDecoration(
-                                      // border: InputBorder.none,
-                                      contentPadding:
-                                          EdgeInsets.only(top: 15.0, left: 10),
-                                      prefixIcon: Padding(
-                                          padding: EdgeInsets.only(top: 4.0),
-                                          child: Icon(
-                                            Icons.search,
-                                            color: Color(0xff64748B),
-                                          )),
-                                      hintText: 'Search',
-                                      hintStyle: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Colors.white,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w400),
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                  itemBuilder: (context, item) {
-                                    return
-                                        // Text(
-                                        //   item.name.toString(),
-                                        //   style: const TextStyle(
-                                        //       fontSize: 16.0, color: Colors.white),
-                                        // );
-                                        // Text("khushi");
-                                        rowResourceName(item);
-                                  },
-                                  transitionBuilder:
-                                      (context, suggestionsBox, controller) {
-                                    return suggestionsBox;
-                                  },
-                                  onSuggestionSelected: (item) {
-                                    setState(() {
-                                      searchTextField!.textFieldConfiguration
-                                          .controller!.text = '';
-
-                                      if (selectedSource.isNotEmpty) {
-                                        if (selectedSource
-                                            .contains(item.name)) {
-                                        } else {
-                                          _phaseDetails.resource!.add(
-                                              ResourceData(
-                                                  resource_name: item.name,
-                                                  resource_id: item.userId,
-                                                  department_name:
-                                                      item.departmentName,
-                                                  department_id:
-                                                      item.departmentId ?? 0));
-                                          listResource.add(
-                                              PhasesSortedResources(
-                                                  department: _depat['name'],
-                                                  details: item));
-                                          selectedSource.add(item.name!);
-                                        }
-                                      } else {
-                                        listResource.add(PhasesSortedResources(
-                                            department: _depat['name'],
-                                            details: item));
-                                        _phaseDetails.resource!.add(
-                                            ResourceData(
-                                                resource_name: item.name,
-                                                resource_id: item.userId,
-                                                department_name:
-                                                    item.departmentName,
-                                                department_id:
-                                                    item.departmentId ?? 0,
-                                                profileImage: item.image));
-                                        selectedSource.add(item.name!);
-                                      }
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: const Color(0xff1E293B),
+                          //     offset: Offset(0, 1),
+                          //     spreadRadius: 1, //spread radius
+                          //     blurRadius: 1, // blur radius
+                          //   ),
+                          //   //you can set more BoxShadow() here
+                          // ],
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset: Offset(0.0, 0.75))
+                          ],
+                          borderRadius: BorderRadius.circular(
+                            6.0,
                           ),
+                        ),
+                        child: Column(
+                          children: [
+                            searchTextField = TypeAheadFormField(
+                              keepSuggestionsOnLoading: false,
+                              suggestionsBoxVerticalOffset: 0.0,
+                              suggestionsBoxDecoration:
+                                  SuggestionsBoxDecoration(
+                                      color: Color(0xff0F172A)),
+                              hideOnLoading: true,
+                              suggestionsCallback: (pattern) {
+                                return getSuggestions(pattern);
+                              },
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: _typeAheadController,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 14.0),
+                                keyboardType: TextInputType.text,
+                                cursorColor: Colors.white,
+                                autofocus: true,
+                                decoration: const InputDecoration(
+                                  // border: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsets.only(top: 15.0, left: 10),
+                                  prefixIcon: Padding(
+                                      padding: EdgeInsets.only(top: 4.0),
+                                      child: Icon(
+                                        Icons.search,
+                                        color: Color(0xff64748B),
+                                      )),
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.white,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w400),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                              itemBuilder: (context, item) {
+                                return
+                                    // Text(
+                                    //   item.name.toString(),
+                                    //   style: const TextStyle(
+                                    //       fontSize: 16.0, color: Colors.white),
+                                    // );
+                                    // Text("khushi");
+                                    rowResourceName(item);
+                              },
+                              transitionBuilder:
+                                  (context, suggestionsBox, controller) {
+                                return suggestionsBox;
+                              },
+                              onSuggestionSelected: (item) {
+                                setState(() {
+                                  searchTextField!.textFieldConfiguration
+                                      .controller!.text = '';
+
+                                  if (selectedSource.isNotEmpty) {
+                                    if (selectedSource.contains(item.name)) {
+                                    } else {
+                                      phaseDetails.resource!.add(ResourceData(
+                                          resource_name: item.name,
+                                          resource_id: item.userId,
+                                          department_name: item.departmentName,
+                                          department_id:
+                                              item.departmentId ?? 0));
+                                      listResource.add(PhasesSortedResources(
+                                          department: _depat['name'],
+                                          details: item));
+                                      selectedSource.add(item.name!);
+                                    }
+                                  } else {
+                                    listResource.add(PhasesSortedResources(
+                                        department: _depat['name'],
+                                        details: item));
+                                    phaseDetails.resource!.add(ResourceData(
+                                        resource_name: item.name,
+                                        resource_id: item.userId,
+                                        department_name: item.departmentName,
+                                        department_id: item.departmentId ?? 0,
+                                        profileImage: item.image));
+                                    selectedSource.add(item.name!);
+                                  }
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       )
                 : Container(),
@@ -870,7 +858,7 @@ class _NewPhaseState extends State<NewPhase> {
                 : saveButtonClick
                     ? milestoneList(
                         context,
-                        _phaseDetails,
+                        phaseDetails,
                         callback: (values, index, action) {
                           setState(() {
                             if (action == "Delete") {
@@ -898,14 +886,16 @@ class _NewPhaseState extends State<NewPhase> {
                         print(mileStoneDate);
                       });
                     },
-                    startDate: AppUtil.stringToDate(mileStoneDate),
+                    startDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(mileStoneDate),
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         return 'Please enter milestone date';
                       } else if (mileStoneDate != null &&
-                          _phaseDetails.start_date != null &&
-                          _phaseDetails.end_date != null) {
-                        if ((AppUtil.stringToDate(_phaseDetails.end_date!)
+                          phaseDetails.start_date != null &&
+                          phaseDetails.end_date != null) {
+                        if ((AppUtil.stringToDate(phaseDetails.end_date!)
                             .isBefore((AppUtil.stringToDate(mileStoneDate))))) {
                           return 'Milestone date must be greater then the phase end date';
                         }
@@ -914,7 +904,7 @@ class _NewPhaseState extends State<NewPhase> {
                       }
                     },
                   ),
-            savePhaseClick && _phaseDetails.milestone!.isEmpty
+            savePhaseClick && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: const EdgeInsets.only(left: 30.0, top: 03),
@@ -942,9 +932,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   onDeleteMileStone(int index) {
     try {
-      if (_phaseDetails.milestone!.length >= index) {
+      if (phaseDetails.milestone!.length >= index) {
         setState(() {
-          _phaseDetails.milestone!.removeAt(index);
+          phaseDetails.milestone!.removeAt(index);
         });
       }
     } catch (e) {}
@@ -1107,7 +1097,7 @@ class _NewPhaseState extends State<NewPhase> {
                         padding: const EdgeInsets.only(right: 6.0),
                         child: subTaskList(
                           context,
-                          _phaseDetails,
+                          phaseDetails,
                           callback: (values, index, subTaskAction) {
                             if (subTaskAction == 'Delete') {
                               onDeleteSubtask(index);
@@ -1123,7 +1113,7 @@ class _NewPhaseState extends State<NewPhase> {
                         ),
                       )
                     : Container(),
-            savePhaseClick && _phaseDetails.sub_tasks!.isEmpty
+            savePhaseClick && phaseDetails.sub_tasks!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: const EdgeInsets.only(left: 10.0, top: 03),
@@ -1151,9 +1141,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   onDeleteSubtask(int index) {
     try {
-      if (_phaseDetails.sub_tasks!.length >= index) {
+      if (phaseDetails.sub_tasks!.length >= index) {
         setState(() {
-          _phaseDetails.sub_tasks!.removeAt(index);
+          phaseDetails.sub_tasks!.removeAt(index);
           subTaskStartDate = AppUtil.dateToString(DateTime.now());
           subTaskEndDate = AppUtil.dateToString(DateTime.now());
         });
@@ -1239,7 +1229,7 @@ class _NewPhaseState extends State<NewPhase> {
                     child: StatefulBuilder(
                       builder: (BuildContext context, StateSettersetState) {
                         return DropdownButtonHideUnderline(
-                          child: DropdownButton(
+                          child: CustomDropdownButton(
                             dropdownColor: ColorSelect.class_color,
                             value: subtaskDepat,
                             underline: Container(),
@@ -1251,7 +1241,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w500),
                             ),
-                            isExpanded: true,
+                            //  isExpanded: true,
                             icon: const Icon(
                               Icons.arrow_drop_down,
                               color: Color(0xff64748B),
@@ -1281,7 +1271,6 @@ class _NewPhaseState extends State<NewPhase> {
                                     resourceSuggestions.add(element.details!);
                                   }
                                 }
-
                                 subtaskDepat = newValue.toString();
                                 if (newValue != null) {}
                               });
@@ -1299,91 +1288,78 @@ class _NewPhaseState extends State<NewPhase> {
         Padding(
           padding: EdgeInsets.only(left: 20),
           child: Container(
+            height: 50.0,
             width: MediaQuery.of(context).size.width * 0.24,
             margin: const EdgeInsets.only(top: 16),
-            decoration: BoxDecoration(),
-            child: Material(
-              color: const Color(0xff1E293B),
-              shadowColor: Color(0xff1E293B),
-              elevation: 15,
-              child: Container(
-                height: 50.0,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff1E293B),
-                      // color: Colors.black,
-                      // .withOpacity(0.5), //color of shadow
-                      spreadRadius: 0.5, //spread radius
-                      blurRadius: 0.5, // blur radius
-                      offset: Offset(0.2, 0.2), // changes position of shadow
-                      //first paramerter of offset is left-right
-                      //second parameter is top to down
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(
-                    6.0,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    subTaskResourcesSearchTextField = TypeAheadFormField(
-                      keepSuggestionsOnLoading: false,
-                      suggestionsBoxVerticalOffset: 0.0,
-                      suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                          color: const Color(0xff334155)),
-                      hideOnLoading: true,
-                      suggestionsCallback: (pattern) {
-                        return getSuggestionsForSubTask(pattern);
-                      },
-                      textFieldConfiguration: TextFieldConfiguration(
-                        controller: _subTaskResourcesController,
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 14.0),
-                        keyboardType: TextInputType.text,
-                        cursorColor: Colors.white,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 15.0),
-                          prefixIcon: Padding(
-                              padding: EdgeInsets.only(top: 4.0),
-                              child: Icon(
-                                Icons.search,
-                                color: Color(0xff64748B),
-                              )),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.white,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                      itemBuilder: (context, item) {
-                        return rowResourceName(item);
-                      },
-                      transitionBuilder: (context, suggestionsBox, controller) {
-                        return suggestionsBox;
-                      },
-                      onSuggestionSelected: (item) {
-                        setState(() {
-                          subTaskResourceName = item.name!;
-                          _subTaskResourcesController.text = '';
-
-                          selectedSubTaskSource.clear();
-                          selectedSubTaskSource.add(ResourceData(
-                              department_id: item.departmentId,
-                              resource_id: item.userId,
-                              resource_name: item.name,
-                              profileImage: item.image,
-                              department_name: item.departmentName));
-                        });
-                      },
-                    ),
-                  ],
-                ),
+            decoration: BoxDecoration(
+              color: Color(0xff1E293B),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 2.0,
+                    offset: Offset(0.0, 0.75))
+              ],
+              borderRadius: BorderRadius.circular(
+                6.0,
               ),
+            ),
+            child: Column(
+              children: [
+                subTaskResourcesSearchTextField = TypeAheadFormField(
+                  keepSuggestionsOnLoading: false,
+                  suggestionsBoxVerticalOffset: 0.0,
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                      color: const Color(0xff0F172A)),
+                  hideOnLoading: true,
+                  suggestionsCallback: (pattern) {
+                    return getSuggestionsForSubTask(pattern);
+                  },
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _subTaskResourcesController,
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 14.0),
+                    keyboardType: TextInputType.text,
+                    cursorColor: Colors.white,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 15.0),
+                      prefixIcon: Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: Icon(
+                            Icons.search,
+                            color: Color(0xff64748B),
+                          )),
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.white,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                  itemBuilder: (context, item) {
+                    return rowResourceName(item);
+                  },
+                  transitionBuilder: (context, suggestionsBox, controller) {
+                    return suggestionsBox;
+                  },
+                  onSuggestionSelected: (item) {
+                    setState(() {
+                      subTaskResourceName = item.name!;
+                      _subTaskResourcesController.text = '';
+
+                      selectedSubTaskSource.clear();
+                      selectedSubTaskSource.add(ResourceData(
+                          department_id: item.departmentId,
+                          resource_id: item.userId,
+                          resource_name: item.name,
+                          profileImage: item.image,
+                          department_name: item.departmentName));
+                    });
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -1479,12 +1455,12 @@ class _NewPhaseState extends State<NewPhase> {
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
-                        _phaseDetails.milestone!.add(Milestones(
+                        phaseDetails.milestone!.add(Milestones(
                             title: mileStoneTitle, m_date: mileStoneDate));
                       } else {
-                        _phaseDetails.milestone![mileStoneEditIndex].title =
+                        phaseDetails.milestone![mileStoneEditIndex].title =
                             mileStoneTitle;
-                        _phaseDetails.milestone![mileStoneEditIndex].m_date =
+                        phaseDetails.milestone![mileStoneEditIndex].m_date =
                             mileStoneDate;
                       }
 
@@ -1558,14 +1534,14 @@ class _NewPhaseState extends State<NewPhase> {
                       subTaskEndDate.isNotEmpty) {
                     try {
                       if (subtaskActionType.isEmpty) {
-                        _phaseDetails.sub_tasks!.add(SubTasksModel(
+                        phaseDetails.sub_tasks!.add(SubTasksModel(
                           resource: selectedSubTaskSource[0],
                           end_date: subTaskEndDate,
                           start_date: subTaskStartDate,
                         ));
                         subtaskActionType = '';
                       } else {
-                        _phaseDetails.sub_tasks![subTaskEditIndex] =
+                        phaseDetails.sub_tasks![subTaskEditIndex] =
                             SubTasksModel(
                                 resource: selectedSubTaskSource[0],
                                 end_date: subTaskEndDate,
@@ -1626,12 +1602,12 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   createPhase() {
-    _phaseDetails.project_id = widget.id;
+    phaseDetails.project_id = widget.id;
     allValidate = true;
     if (_formKey.currentState!.validate()) {
-      if (allValidate && _phaseDetails.milestone!.isNotEmpty) {
-        if (_phaseDetails.milestone!.isNotEmpty &&
-            _phaseDetails.sub_tasks!.isNotEmpty) {
+      if (allValidate && phaseDetails.milestone!.isNotEmpty) {
+        if (phaseDetails.milestone!.isNotEmpty &&
+            phaseDetails.sub_tasks!.isNotEmpty) {
           if (widget.type == 1) {
             updatePhaseApi();
           } else {
@@ -1677,7 +1653,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
     try {
       CreatePhaseResp createPhaseResp =
-          await api.createNewPhase(json.encode(_phaseDetails), context);
+          await api.createNewPhase(json.encode(phaseDetails), context);
       if (createPhaseResp.status == true) {
         Navigator.pop(context, true);
       }
@@ -1698,7 +1674,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
     try {
       UpdatePhaseResp updatePhaseResp =
-          await api.updatePhase(json.encode(_phaseDetails), widget.id, context);
+          await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
         Navigator.pop(context, true);
       }
@@ -1737,8 +1713,8 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   beforeScreenLoad() {
-    _phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
-    _phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
+    phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
+    phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
     mileStoneDate = AppUtil.dateToString(DateTime.now());
     subTaskStartDate = AppUtil.dateToString(DateTime.now());
     subTaskEndDate = AppUtil.dateToString(DateTime.now());

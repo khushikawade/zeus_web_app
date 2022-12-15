@@ -170,9 +170,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: Container(
+        // color: Colors.red,
         // margin: const EdgeInsets.only(right: 12.0, top: 16.0),
-        height: 45,
-        width: 45,
+        height: 38,
+        width: 38,
         decoration: BoxDecoration(
             color: const Color(0xff334155),
             border: Border.all(

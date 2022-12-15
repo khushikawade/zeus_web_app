@@ -590,7 +590,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               alignment: Alignment.topRight,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 3, right: 3),
+                                    const EdgeInsets.only(right: 12, top: 16),
                                 child: pop.MyMenu(
                                     data: list,
                                     title: 'Menu at bottom',
