@@ -2834,12 +2834,15 @@ class _NavigationRailState extends State<MyHomePage>
                                   )
                                 : Container(),
                             _selectedIndex == 3
-                                ? const Text("Profile",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 22.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700))
+                                ? Container(
+                                    color: Colors.red,
+                                    child: const Text("Profile",
+                                        style: TextStyle(
+                                            color: Color(0xffFFFFFF),
+                                            fontSize: 22.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700)),
+                                  )
                                 : Container(),
                           ],
                         ),
