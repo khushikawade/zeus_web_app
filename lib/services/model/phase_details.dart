@@ -1,11 +1,8 @@
-
 import 'dart:convert';
 
 import 'package:zeus/services/model/mileston_model.dart';
 import 'package:zeus/services/model/resourcedata.dart';
 import 'package:zeus/services/model/subtask_model.dart';
-
-
 
 PhaseDetails phaseDetailsFromJson(String str) =>
     PhaseDetails.fromJson(json.decode(str));
@@ -15,15 +12,15 @@ String phaseDetailsToJson(PhaseDetails data) => json.encode(data.toJson());
 class PhaseDetails {
   String? project_id;
   String? title;
-  String? phase_type="";
-  String? start_date="";
-  String? end_date="";
-  List<ResourceData>? resource=[];
-  List<Milestones>? milestone=[];
+  String? phase_type = "";
+  String? start_date = "";
+  String? end_date = "";
+  List<ResourceData>? resource = [];
+  List<Milestones>? milestone = [];
 
-  List<SubTasksModel>? sub_tasks=[];
+  List<SubTasksModel>? sub_tasks = [];
   int? statusCode;
-  String? error="";
+  String? error = "";
 
   PhaseDetails({
     this.project_id,

@@ -95,7 +95,6 @@ class _NewPhaseState extends State<NewPhase> {
       TextEditingController();
   final TextEditingController _phaseLangugaeController =
       TextEditingController();
-       
 
   checkFormStatus() {
     setState(() {
@@ -442,11 +441,13 @@ class _NewPhaseState extends State<NewPhase> {
               title: "Start date",
               callback: (value) {
                 setState(() {
-                  phaseDetails.start_date = value;
+                  phaseDetails.start_date = value.trim();
                 });
                 setState(() {});
               },
-              startDate: DateTime.now(),
+              startDate: widget.type == 0
+                  ? null
+                  : AppUtil.stringToDate(phaseDetails.start_date.toString()),
               validationCallBack: (String values) {
                 if (values.isEmpty) {
                   checkFormStatus();
@@ -464,12 +465,12 @@ class _NewPhaseState extends State<NewPhase> {
               title: "End date",
               callback: (value) {
                 setState(() {
-                  phaseDetails.end_date = value;
+                  phaseDetails.end_date = value.trim();
                 });
               },
-              startDate: phaseDetails.sub_tasks!.isNotEmpty
-                  ? DateTime.now().add(Duration(days: 10))
-                  : DateTime.now(),
+              startDate: widget.type == 0
+                  ? null
+                  : AppUtil.stringToDate(phaseDetails.end_date.toString()),
               validationCallBack: (String values) {
                 if (values.isEmpty) {
                   checkFormStatus();
@@ -1216,9 +1217,11 @@ class _NewPhaseState extends State<NewPhase> {
                       subtitle: 'subTask',
                       title: "Start date",
                       callback: (value) {
-                        subTaskStartDate = value;
+                        subTaskStartDate = value.trim();
                       },
-                      startDate: DateTime.now(),
+                      startDate: widget.type == 0
+                          ? null
+                          : AppUtil.stringToDate(subTaskStartDate),
                       validationCallBack: (String values) {
                         if (values.isEmpty) {
                           return 'Please enter start date';
@@ -1239,9 +1242,11 @@ class _NewPhaseState extends State<NewPhase> {
                       subtitle: 'subTask',
                       title: "End date",
                       callback: (value) {
-                        subTaskEndDate = value;
+                        subTaskEndDate = value.trim();
                       },
-                      startDate: AppUtil.stringToDate(subTaskStartDate),
+                      startDate: widget.type == 0
+                          ? null
+                          : AppUtil.stringToDate(subTaskEndDate),
                       validationCallBack: (String values) {
                         if (values.isEmpty) {
                           checkFormStatus();
@@ -1356,7 +1361,7 @@ class _NewPhaseState extends State<NewPhase> {
       subtaskActionType = "Edit";
       clickAddSubTask = true;
       selectedSubTaskSource.add(values.resource!);
-      subTaskEndDate = values.start_date!;
+      subTaskStartDate = values.start_date!;
       subTaskEndDate = values.end_date!;
     });
   }
@@ -1861,7 +1866,7 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 selectedSubTaskSource.clear();
-                subTaskEndDate = "";
+                subTaskStartDate = "";
                 subTaskEndDate = "";
                 clickAddSubTask = false;
                 saveButtonClickForSubtask = true;
@@ -1885,7 +1890,7 @@ class _NewPhaseState extends State<NewPhase> {
                 saveSubtaskClick = true;
                 if (_subtaskFormKey.currentState!.validate()) {
                   if (selectedSubTaskSource.isNotEmpty &&
-                      subTaskEndDate.isNotEmpty &&
+                      subTaskStartDate.isNotEmpty &&
                       subTaskEndDate.isNotEmpty) {
                     try {
                       if (subtaskActionType.isEmpty) {
@@ -1905,7 +1910,7 @@ class _NewPhaseState extends State<NewPhase> {
                       }
 
                       selectedSubTaskSource.clear();
-                      subTaskEndDate = "";
+                      subTaskStartDate = "";
                       subTaskEndDate = "";
                       clickAddSubTask = false;
                       saveButtonClickForSubtask = true;
