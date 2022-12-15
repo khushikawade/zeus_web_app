@@ -57,6 +57,12 @@ class _NavigationRailState extends State<MyHomePage>
   List<String> selectedDaysList = List.empty(growable: true);
   TimeRangeResult? _timeRange;
   Debouncer _debouncer = Debouncer();
+  bool peopleListTapIcon = false;
+  bool projectListTapIcon = true;
+  bool cameraTapIcon = false;
+  bool circleTapIcon = false;
+  bool bellTapIcon = false;
+  bool settingIcon = false;
 
   var items = [
     'Item 1',
@@ -2667,104 +2673,103 @@ class _NavigationRailState extends State<MyHomePage>
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
       child: Scaffold(
-        backgroundColor: Color(0xff0F172A),
-        appBar: AppBar(
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          toolbarHeight: 70.0,
-          backgroundColor: const Color(0xff0F172A),
-          elevation: 0,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 5, right: 5),
-                    width: 475,
-                    height: 48.0,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1e293b),
-                      borderRadius: BorderRadius.circular(
-                        42.0,
+          backgroundColor: Color(0xff0F172A),
+          appBar: AppBar(
+            centerTitle: false,
+            automaticallyImplyLeading: false,
+            toolbarHeight: 70.0,
+            backgroundColor: const Color(0xff0F172A),
+            elevation: 0,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      width: 475,
+                      height: 48.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff1e293b),
+                        borderRadius: BorderRadius.circular(
+                          42.0,
+                        ),
                       ),
-                    ),
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (val) {
-                        try {
-                          _debouncer.run(() async {
-                            if (_selectedIndex == 1) {
-                              if (val != null && val.isNotEmpty) {
-                                await Provider.of<ProjectHomeViewModel>(context,
+                      child: TextField(
+                        controller: searchController,
+                        onChanged: (val) {
+                          try {
+                            _debouncer.run(() async {
+                              if (projectListTapIcon) {
+                                if (val != null && val.isNotEmpty) {
+                                  await Provider.of<ProjectHomeViewModel>(
+                                          context,
+                                          listen: false)
+                                      .getPeopleIdel(searchText: val);
+                                }
+                              } else if (_selectedIndex == 2) {
+                                print(_selectedIndex);
+                              } else if (peopleListTapIcon) {
+                                Provider.of<PeopleHomeViewModel>(context,
                                         listen: false)
-                                    .getPeopleIdel(searchText: val);
+                                    .getPeopleDataList(searchText: val);
                               }
-                            } else if (_selectedIndex == 2) {
-                              print(_selectedIndex);
-                            } else if (_selectedIndex == 3) {
-                              Provider.of<PeopleHomeViewModel>(context,
-                                      listen: false)
-                                  .getPeopleDataList(searchText: val);
-                            }
-                          });
-                        } catch (e) {
-                          print(e);
-                          print(val);
-                        }
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 16.0),
-                        prefixIcon: const Padding(
-                            padding:
-                                EdgeInsets.only(top: 4.0, left: 15, right: 20),
-                            child: Icon(
-                              Icons.search,
+                            });
+                          } catch (e) {
+                            print(e);
+                            print(val);
+                          }
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 16.0),
+                          prefixIcon: const Padding(
+                              padding: EdgeInsets.only(
+                                  top: 4.0, left: 15, right: 20),
+                              child: Icon(
+                                Icons.search,
+                                color: Color(0xff64748B),
+                              )),
+                          hintText: projectListTapIcon
+                              ? 'Search Project'
+                              : peopleListTapIcon
+                                  ? 'Search People'
+                                  : 'Search',
+                          hintStyle: const TextStyle(
+                              fontSize: 14.0,
                               color: Color(0xff64748B),
-                            )),
-                        hintText: _selectedIndex == 1
-                            ? 'Search Project'
-                            : _selectedIndex == 3
-                                ? 'Search People'
-                                : 'Search',
-                        hintStyle: const TextStyle(
-                            fontSize: 14.0,
-                            color: Color(0xff64748B),
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400),
-                        border: InputBorder.none,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400),
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.white, fontSize: 14.0),
                       ),
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(color: Colors.white, fontSize: 14.0),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                      width: 40.0,
-                      height: 40.0,
-                      child: const CircleAvatar(
-                        radius: 20,
-                        backgroundImage: AssetImage('images/images.jpeg'),
-                      )),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  LogOut(returnValue: () {}),
-                  SizedBox(
-                    width: 30,
-                  ),
-                ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                        width: 40.0,
+                        height: 40.0,
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage('images/images.jpeg'),
+                        )),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    LogOut(returnValue: () {}),
+                    SizedBox(
+                      width: 30,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-          title: Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: Row(
+            ],
+            title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -2790,7 +2795,7 @@ class _NavigationRailState extends State<MyHomePage>
                         visible: snapshot.data as bool,
                         child: Column(
                           children: [
-                            _selectedIndex == 1
+                            projectListTapIcon
                                 ? Padding(
                                     padding: const EdgeInsets.only(
                                         top: 12, left: 12),
@@ -2831,7 +2836,8 @@ class _NavigationRailState extends State<MyHomePage>
                                         SizedBox(
                                           width: 30,
                                         ),
-                                        _selectedIndex == 1
+                                        projectListTapIcon
+                                            // _selectedIndex == 1
                                             ? Text("Timeline",
                                                 style: TextStyle(
                                                     color: Color(0xffffffff),
@@ -2844,9 +2850,9 @@ class _NavigationRailState extends State<MyHomePage>
                                     ),
                                   )
                                 : Container(),
-                            _selectedIndex == 3
+                            projectListTapIcon == false
                                 ? Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
+                                    padding: const EdgeInsets.only(left: 22.0),
                                     child: const Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),
@@ -2862,1043 +2868,758 @@ class _NavigationRailState extends State<MyHomePage>
               ],
             ),
           ),
-        ),
-        //body:
-
-        // Row(children: [
-        //   NavigationRail(
-        //     selectedIndex: _selectedIndex,
-        //     onDestinationSelected: (int index) {
-        //       isIndex = index;
-        //       position = index;
-        //       print(index);
-        //       if (index == 0) {
-        //         if (add1.length == 1) {
-        //           showAlertDialog(context);
-        //         } else if (add1[add1.length - 1] == 1) {
-        //           showAlertDialog(context);
-        //         } else if (add1[add1.length - 1] == 3) {
-        //           print('sizeeee' + _addtag.length.toString());
-        //           showAddPeople(context);
-        //         }
-        //       } else {
-        //         //
-        //         setState(() {
-        //           _selectedIndex = index;
-        //           searchController.clear();
-        //           add1.add(index);
-        //         });
-        //       }
-        //     },
-        //     // groupAlignment: 0.1,
-        //     // elevation: 0.0,
-
-        //     labelType: NavigationRailLabelType.selected,
-        //     //type: BottomNavigationBarType.fixed,
-        //     backgroundColor: const Color(0xff0F172A),
-        //     destinations: <NavigationRailDestination>[
-        //       // navigation destinations
-
-        //       NavigationRailDestination(
-        //         padding: EdgeInsets.zero,
-        //         icon: Container(
-        //           width: 46.0,
-        //           height: 46.0,
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff93C5FD),
-        //             border: Border.all(color: const Color(0xff93C5FD)),
-        //             borderRadius: BorderRadius.circular(
-        //               16.0,
-        //             ),
-        //           ),
-        //           margin: const EdgeInsets.only(
-        //             top: 40.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(16.0),
-        //             child: SvgPicture.asset(
-        //               "images/plus.svg",
-        //             ),
-        //           ),
-        //         ),
-        //         // selectedIcon: Icon(Icons.favorite),
-        //         label: const Text(''),
-        //       ),
-
-        //       NavigationRailDestination(
-        //         padding: EdgeInsets.zero,
-        //         icon: Tooltip(
-        //           verticalOffset: 40,
-        //           // textStyle: const TextStyle(
-        //           //     fontSize: 15,
-        //           //     color: Colors.white,
-        //           //     fontWeight: FontWeight.normal),
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff334155),
-        //             border: Border.all(color: const Color(0xff334155)),
-        //             borderRadius: BorderRadius.circular(
-        //               18.0,
-        //             ),
-        //           ),
-        //           message: 'Projects',
-        //           child: Container(
-        //             margin: const EdgeInsets.only(
-        //               top: 40.0,
-        //               left: 20.0,
-        //               right: 0.0,
-        //             ),
-        //             child: Padding(
-        //               padding: const EdgeInsets.all(9.0),
-        //               // padding: EdgeInsets.zero,
-        //               child: SvgPicture.asset(
-        //                 "images/notification_icon.svg",
-        //               ),
-        //             ),
-        //           ),
-        //         ),
-        //         selectedIcon: Container(
-        //           width: 56.0,
-        //           height: 32.0,
-        //           margin: const EdgeInsets.only(
-        //             top: 40.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           alignment: Alignment.center,
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff334155),
-        //             border: Border.all(color: const Color(0xff334155)),
-        //             borderRadius: BorderRadius.circular(
-        //               18.0,
-        //             ),
-        //           ),
-        //           child: Stack(
-        //             children: [
-        //               Padding(
-        //                 padding: const EdgeInsets.all(6.0),
-        //                 // padding: EdgeInsets.zero,
-        //                 child: SvgPicture.asset(
-        //                   "images/notification_icon.svg",
-        //                 ),
-        //               ),
-        //               // Positioned(
-        //               //   right: 0,
-        //               //   top: 3,
-        //               //   child: Container(
-        //               //     padding: const EdgeInsets.all(1),
-        //               //     decoration: BoxDecoration(
-        //               //       color: Colors.red,
-        //               //       borderRadius: BorderRadius.circular(6),
-        //               //     ),
-        //               //     constraints: const BoxConstraints(
-        //               //       minWidth: 8,
-        //               //       minHeight: 8,
-        //               //     ),
-        //               //   ),
-        //               // )
-        //             ],
-        //           ),
-        //         ),
-        //         label: const Align(
-        //             alignment: Alignment.center,
-        //             child: Padding(
-        //               padding: EdgeInsets.only(left: 25, top: 5),
-        //               child: Text(
-        //                 'Projects',
-        //                 textAlign: TextAlign.center,
-        //                 style: TextStyle(fontSize: 12),
-        //               ),
-        //             )),
-        //       ),
-
-        //       NavigationRailDestination(
-        //           padding: EdgeInsets.zero,
-        //           icon: Column(
-        //             children: [
-        //               Container(
-        //                 width: 20.0,
-        //                 height: 18.0,
-        //                 margin: const EdgeInsets.only(
-        //                   top: 0.0,
-        //                   left: 20.0,
-        //                   right: 0.0,
-        //                 ),
-        //                 child: SvgPicture.asset(
-        //                   "images/camera.svg",
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //           selectedIcon: Container(
-        //             width: 56.0,
-        //             height: 32.0,
-        //             margin: const EdgeInsets.only(
-        //               top: 0.0,
-        //               left: 20.0,
-        //               right: 0.0,
-        //             ),
-        //             alignment: Alignment.center,
-        //             decoration: BoxDecoration(
-        //               color: const Color(0xff334155),
-        //               border: Border.all(color: const Color(0xff334155)),
-        //               borderRadius: BorderRadius.circular(
-        //                 18.0,
-        //               ),
-        //             ),
-        //             child: Stack(
-        //               children: [
-        //                 Padding(
-        //                   // padding: EdgeInsets.zero,
-        //                   padding: const EdgeInsets.all(6.0),
-        //                   child: SvgPicture.asset(
-        //                     "images/camera.svg",
-        //                   ),
-        //                 ),
-        //                 // Positioned(
-        //                 //   right: 0,
-        //                 //   top: 3,
-        //                 //   child: Container(
-        //                 //     padding: const EdgeInsets.all(1),
-        //                 //     decoration: BoxDecoration(
-        //                 //       color: Colors.red,
-        //                 //       borderRadius: BorderRadius.circular(6),
-        //                 //     ),
-        //                 //     constraints: const BoxConstraints(
-        //                 //       minWidth: 8,
-        //                 //       minHeight: 8,
-        //                 //     ),
-        //                 //   ),
-        //                 // )
-        //               ],
-        //             ),
-        //           ),
-        //           label: Text('')),
-        //       // NavigationRailDestination(
-        //       //   icon: Container(
-        //       //     width: 20.0,
-        //       //     height: 18.0,
-        //       //     margin: const EdgeInsets.only(
-        //       //       top: 0.0,
-        //       //       left: 20.0,
-        //       //       right: 0.0,
-        //       //     ),
-        //       //     child: SvgPicture.asset(
-        //       //       "images/camera.svg",
-        //       //     ),
-        //       //   ),
-        //       //   selectedIcon: Container(
-        //       //     width: 56.0,
-        //       //     height: 32.0,
-        //       //     margin: const EdgeInsets.only(
-        //       //       top: 0.0,
-        //       //       left: 20.0,
-        //       //       right: 0.0,
-        //       //     ),
-        //       //     alignment: Alignment.center,
-        //       //     decoration: BoxDecoration(
-        //       //       color: const Color(0xff334155),
-        //       //       border:
-        //       //           Border.all(color: const Color(0xff334155)),
-        //       //       borderRadius: BorderRadius.circular(
-        //       //         18.0,
-        //       //       ),
-        //       //     ),
-        //       //     child: Stack(
-        //       //       children: [
-        //       //         // Positioned(
-        //       //         //   child: Container(
-        //       //         //       height: 8,
-        //       //         //       width: 8,
-        //       //         //       decoration: BoxDecoration(
-        //       //         //           color: Color(0xffEF4444),
-        //       //         //           borderRadius:
-        //       //         //               BorderRadius.circular(100))),
-        //       //         // ),
-
-        //       //         Padding(
-        //       //           padding: const EdgeInsets.all(6.0),
-        //       //           child: SvgPicture.asset(
-        //       //             "images/camera.svg",
-        //       //           ),
-        //       //         ),
-        //       //         Positioned(
-        //       //           right: 0,
-        //       //           top: 6,
-        //       //           child: Container(
-        //       //             padding: const EdgeInsets.all(1),
-        //       //             decoration: BoxDecoration(
-        //       //               color: Colors.red,
-        //       //               borderRadius: BorderRadius.circular(6),
-        //       //             ),
-        //       //             constraints: const BoxConstraints(
-        //       //               minWidth: 8,
-        //       //               minHeight: 8,
-        //       //             ),
-        //       //           ),
-        //       //         )
-        //       //       ],
-        //       //     ),
-        //       //   ),
-        //       //   label: const Align(
-        //       //       alignment: Alignment.center,
-        //       //       child: Padding(
-        //       //         padding: EdgeInsets.only(left: 25, top: 5),
-        //       //         child: Text(
-        //       //           'People',
-        //       //           textAlign: TextAlign.center,
-        //       //           style: TextStyle(fontSize: 12),
-        //       //         ),
-        //       //       )),
-        //       // ),
-
-        //       NavigationRailDestination(
-        //         padding: EdgeInsets.zero,
-        //         icon: Column(
-        //           children: [
-        //             Tooltip(
-        //               verticalOffset: 17,
-        //               padding: const EdgeInsets.symmetric(
-        //                   horizontal: 12.0, vertical: 5.0),
-        //               //  textAlign: TextAlign.center,
-        //               decoration: BoxDecoration(
-        //                 color: const Color(0xff334155),
-        //                 border: Border.all(color: const Color(0xff334155)),
-        //                 borderRadius: BorderRadius.circular(
-        //                   18.0,
-        //                 ),
-        //               ),
-        //               excludeFromSemantics: true,
-        //               preferBelow: true,
-        //               message: 'People',
-        //               child: Container(
-        //                 width: 20.0,
-        //                 height: 18.0,
-        //                 margin: const EdgeInsets.only(
-        //                   top: 0.0,
-        //                   left: 20.0,
-        //                   right: 0.0,
-        //                 ),
-        //                 child: SvgPicture.asset(
-        //                   "images/people.svg",
-        //                 ),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //         selectedIcon: Container(
-        //           width: 56.0,
-        //           height: 32.0,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           alignment: Alignment.center,
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff334155),
-        //             border: Border.all(color: const Color(0xff334155)),
-        //             borderRadius: BorderRadius.circular(
-        //               18.0,
-        //             ),
-        //           ),
-        //           child: Stack(
-        //             children: [
-        //               Padding(
-        //                 // padding: EdgeInsets.zero,
-        //                 padding: const EdgeInsets.all(6.0),
-        //                 child: SvgPicture.asset(
-        //                   "images/people.svg",
-        //                 ),
-        //               ),
-        //               // Positioned(
-        //               //   right: 0,
-        //               //   top: 6,
-        //               //   child: Container(
-        //               //     padding: const EdgeInsets.all(1),
-        //               //     decoration: BoxDecoration(
-        //               //       color: Colors.red,
-        //               //       borderRadius: BorderRadius.circular(6),
-        //               //     ),
-        //               //     constraints: const BoxConstraints(
-        //               //       minWidth: 8,
-        //               //       minHeight: 8,
-        //               //     ),
-        //               //   ),
-        //               // )
-        //             ],
-        //           ),
-        //         ),
-        //         label: const Align(
-        //             alignment: Alignment.center,
-        //             child: Padding(
-        //               padding: EdgeInsets.only(left: 25, top: 5),
-        //               child: Text(
-        //                 'People',
-        //                 textAlign: TextAlign.center,
-        //                 style: TextStyle(fontSize: 12),
-        //               ),
-        //             )),
-        //       ),
-
-        //       NavigationRailDestination(
-        //         padding: EdgeInsets.zero,
-        //         icon: Container(
-        //           width: 20.0,
-        //           height: 18.0,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           child: SvgPicture.asset(
-        //             "images/button.svg",
-        //           ),
-        //         ),
-        //         selectedIcon: Container(
-        //           width: 56.0,
-        //           height: 32.0,
-        //           alignment: Alignment.center,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff334155),
-        //             border: Border.all(color: const Color(0xff334155)),
-        //             borderRadius: BorderRadius.circular(
-        //               18.0,
-        //             ),
-        //           ),
-        //           child: Stack(
-        //             children: [
-        //               Padding(
-        //                 // padding: EdgeInsets.zero,
-        //                 padding: const EdgeInsets.all(6.0),
-        //                 child: SvgPicture.asset(
-        //                   "images/button.svg",
-        //                 ),
-        //               ),
-        //               // Positioned(
-        //               //   right: 2,
-        //               //   top: 6,
-        //               //   child: Container(
-        //               //     padding: const EdgeInsets.all(1),
-        //               //     decoration: BoxDecoration(
-        //               //       color: Colors.red,
-        //               //       borderRadius: BorderRadius.circular(6),
-        //               //     ),
-        //               //     constraints: const BoxConstraints(
-        //               //       minWidth: 8,
-        //               //       minHeight: 8,
-        //               //     ),
-        //               //   ),
-        //               // )
-        //             ],
-        //           ),
-        //         ),
-        //         label: const Text(''),
-        //       ),
-
-        //       NavigationRailDestination(
-        //         padding: EdgeInsets.zero,
-        //         icon: Container(
-        //           width: 20.0,
-        //           height: 18.0,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           child: SvgPicture.asset(
-        //             "images/bell.svg",
-        //           ),
-        //         ),
-        //         selectedIcon: Container(
-        //           width: 56.0,
-        //           height: 32.0,
-        //           alignment: Alignment.center,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff334155),
-        //             border: Border.all(color: const Color(0xff334155)),
-        //             borderRadius: BorderRadius.circular(
-        //               18.0,
-        //             ),
-        //           ),
-        //           child: Stack(
-        //             children: [
-        //               Padding(
-        //                 // padding: EdgeInsets.zero,
-        //                 padding: const EdgeInsets.all(6.0),
-        //                 child: SvgPicture.asset(
-        //                   "images/bell.svg",
-        //                 ),
-        //               ),
-        //               // Positioned(
-        //               //   right: 3,
-        //               //   top: 4,
-        //               //   child: Container(
-        //               //     padding: const EdgeInsets.all(1),
-        //               //     decoration: BoxDecoration(
-        //               //       color: Colors.red,
-        //               //       borderRadius: BorderRadius.circular(6),
-        //               //     ),
-        //               //     constraints: const BoxConstraints(
-        //               //       minWidth: 8,
-        //               //       minHeight: 8,
-        //               //     ),
-        //               //   ),
-        //               // )
-        //             ],
-        //           ),
-        //         ),
-        //         label: const Text(''),
-        //       ),
-
-        //       NavigationRailDestination(
-        //         padding: EdgeInsets.zero,
-        //         icon: Container(
-        //           width: 20.0,
-        //           height: 18.0,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           child: SvgPicture.asset(
-        //             "images/setting.svg",
-        //           ),
-        //         ),
-        //         selectedIcon: Container(
-        //           width: 56.0,
-        //           height: 32.0,
-        //           margin: const EdgeInsets.only(
-        //             top: 0.0,
-        //             left: 20.0,
-        //             right: 0.0,
-        //           ),
-        //           alignment: Alignment.center,
-        //           decoration: BoxDecoration(
-        //             color: const Color(0xff334155),
-        //             border: Border.all(color: const Color(0xff334155)),
-        //             borderRadius: BorderRadius.circular(
-        //               16.0,
-        //             ),
-        //           ),
-        //           child: Stack(
-        //             children: [
-        //               Padding(
-        //                 // padding: EdgeInsets.zero,
-        //                 padding: const EdgeInsets.all(6.0),
-        //                 child: SvgPicture.asset(
-        //                   "images/setting.svg",
-        //                 ),
-        //               ),
-        //               // Positioned(
-        //               //   right: 0,
-        //               //   top: 6,
-        //               //   child: Container(
-        //               //     padding: const EdgeInsets.all(1),
-        //               //     decoration: BoxDecoration(
-        //               //       color: Colors.red,
-        //               //       borderRadius: BorderRadius.circular(6),
-        //               //     ),
-        //               //     constraints: const BoxConstraints(
-        //               //       minWidth: 8,
-        //               //       minHeight: 8,
-        //               //     ),
-        //               //   ),
-        //               // )
-        //             ],
-        //           ),
-        //         ),
-        //         label: const Text(''),
-        //       ),
-        //     ],
-        //     selectedIconTheme: const IconThemeData(color: Colors.white),
-        //     unselectedIconTheme: const IconThemeData(color: Colors.black),
-        //     selectedLabelTextStyle: const TextStyle(color: Colors.white),
-        //   ),
-        //   // const VerticalDivider(thickness: 1, width: 2),
-        //   Expanded(child: _mainContents[_selectedIndex]),
-        // ]),
-        body: Row(
-          children: <Widget>[
-            LayoutBuilder(builder: (context, constraint) {
-              return Theme(
-                data: ThemeData(
-                  // highlightColor: Colors.transparent,
-                  colorScheme: ColorScheme.light(primary: Color(0xff0F172A)),
-                ),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: constraint.maxHeight),
-                    child: IntrinsicHeight(
-                      child: NavigationRail(
-                        selectedIndex: _selectedIndex,
-                        onDestinationSelected: (int index) {
-                          isIndex = index;
-                          position = index;
-                          print(index);
-                          if (index == 0) {
-                            if (add1.length == 1) {
-                              showAlertDialog(context);
-                            } else if (add1[add1.length - 1] == 1) {
-                              showAlertDialog(context);
-                            } else if (add1[add1.length - 1] == 3) {
-                              print('sizeeee' + _addtag.length.toString());
-                              showAddPeople(context);
-                            }
-                          } else {
-                            //
-                            setState(() {
-                              _selectedIndex = index;
-                              searchController.clear();
-                              add1.add(index);
-                            });
-                          }
-                        },
-                        // groupAlignment: 0.1,
-                        // elevation: 0.0,
-
-                        labelType: NavigationRailLabelType.selected,
-                        //type: BottomNavigationBarType.fixed,
-                        backgroundColor: const Color(0xff0F172A),
-                        destinations: <NavigationRailDestination>[
-                          NavigationRailDestination(
-                            padding: EdgeInsets.zero,
-                            icon: Container(
-                              width: 46.0,
-                              height: 46.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff93C5FD),
-                                border:
-                                    Border.all(color: const Color(0xff93C5FD)),
-                                borderRadius: BorderRadius.circular(
-                                  16.0,
-                                ),
-                              ),
-                              margin: const EdgeInsets.only(
-                                top: 40.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: SvgPicture.asset(
-                                  "images/plus.svg",
-                                ),
-                              ),
-                            ),
-                            label: const Text(''),
-                          ),
-
-                          NavigationRailDestination(
-                            padding: EdgeInsets.zero,
-                            icon: Tooltip(
-                              verticalOffset: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              message: 'Projects',
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                  top: 40.0,
-                                  left: 20.0,
-                                  right: 0.0,
-                                ),
-                                child: SvgPicture.asset(
-                                  "images/notification_icon.svg",
-                                ),
-                              ),
-                            ),
-                            selectedIcon: Container(
-                              width: 56.0,
-                              height: 32.0,
-                              margin: const EdgeInsets.only(
-                                top: 40.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Stack(
-                                children: [
-                                  SvgPicture.asset(
-                                    "images/notification_icon.svg",
-                                  ),
-                                ],
-                              ),
-                            ),
-                            label: const Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 25, top: 5),
-                                  child: Text(
-                                    'Projects',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                )),
-                          ),
-
-                          NavigationRailDestination(
-                              padding: EdgeInsets.zero,
-                              icon: Column(
-                                children: [
-                                  Container(
-                                    width: 20.0,
-                                    height: 18.0,
-                                    margin: const EdgeInsets.only(
-                                      top: 0.0,
-                                      left: 20.0,
-                                      right: 0.0,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "images/camera.svg",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              selectedIcon: Container(
-                                width: 56.0,
-                                height: 32.0,
-                                margin: const EdgeInsets.only(
-                                  top: 0.0,
-                                  left: 20.0,
-                                  right: 0.0,
-                                ),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff334155),
-                                  border: Border.all(
-                                      color: const Color(0xff334155)),
-                                  borderRadius: BorderRadius.circular(
-                                    18.0,
-                                  ),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    SvgPicture.asset(
-                                      "images/camera.svg",
-                                    ),
-                                    // Positioned(
-                                    //   right: 0,
-                                    //   top: 3,
-                                    //   child: Container(
-                                    //     padding: const EdgeInsets.all(1),
-                                    //     decoration: BoxDecoration(
-                                    //       color: Colors.red,
-                                    //       borderRadius: BorderRadius.circular(6),
-                                    //     ),
-                                    //     constraints: const BoxConstraints(
-                                    //       minWidth: 8,
-                                    //       minHeight: 8,
-                                    //     ),
-                                    //   ),
-                                    // )
-                                  ],
-                                ),
-                              ),
-                              label: Text('')),
-                          // NavigationRailDestination(
-                          //   icon: Container(
-                          //     width: 20.0,
-                          //     height: 18.0,
-                          //     margin: const EdgeInsets.only(
-                          //       top: 0.0,
-                          //       left: 20.0,
-                          //       right: 0.0,
-                          //     ),
-                          //     child: SvgPicture.asset(
-                          //       "images/camera.svg",
-                          //     ),
-                          //   ),
-                          //   selectedIcon: Container(
-                          //     width: 56.0,
-                          //     height: 32.0,
-                          //     margin: const EdgeInsets.only(
-                          //       top: 0.0,
-                          //       left: 20.0,
-                          //       right: 0.0,
-                          //     ),
-                          //     alignment: Alignment.center,
-                          //     decoration: BoxDecoration(
-                          //       color: const Color(0xff334155),
-                          //       border:
-                          //           Border.all(color: const Color(0xff334155)),
-                          //       borderRadius: BorderRadius.circular(
-                          //         18.0,
-                          //       ),
-                          //     ),
-                          //     child: Stack(
-                          //       children: [
-                          //         // Positioned(
-                          //         //   child: Container(
-                          //         //       height: 8,
-                          //         //       width: 8,
-                          //         //       decoration: BoxDecoration(
-                          //         //           color: Color(0xffEF4444),
-                          //         //           borderRadius:
-                          //         //               BorderRadius.circular(100))),
-                          //         // ),
-
-                          //         Padding(
-                          //           padding: const EdgeInsets.all(6.0),
-                          //           child: SvgPicture.asset(
-                          //             "images/camera.svg",
-                          //           ),
-                          //         ),
-                          //         Positioned(
-                          //           right: 0,
-                          //           top: 6,
-                          //           child: Container(
-                          //             padding: const EdgeInsets.all(1),
-                          //             decoration: BoxDecoration(
-                          //               color: Colors.red,
-                          //               borderRadius: BorderRadius.circular(6),
-                          //             ),
-                          //             constraints: const BoxConstraints(
-                          //               minWidth: 8,
-                          //               minHeight: 8,
-                          //             ),
-                          //           ),
-                          //         )
-                          //       ],
-                          //     ),
-                          //   ),
-                          //   label: const Align(
-                          //       alignment: Alignment.center,
-                          //       child: Padding(
-                          //         padding: EdgeInsets.only(left: 25, top: 5),
-                          //         child: Text(
-                          //           'People',
-                          //           textAlign: TextAlign.center,
-                          //           style: TextStyle(fontSize: 12),
-                          //         ),
-                          //       )),
-                          // ),
-
-                          NavigationRailDestination(
-                            padding: EdgeInsets.zero,
-                            icon: Column(
-                              children: [
-                                Tooltip(
-                                  verticalOffset: 17,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 5.0),
-                                  //  textAlign: TextAlign.center,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff334155)),
-                                    borderRadius: BorderRadius.circular(
-                                      18.0,
-                                    ),
-                                  ),
-                                  excludeFromSemantics: true,
-                                  preferBelow: true,
-                                  message: 'People',
-                                  child: Container(
-                                    width: 20.0,
-                                    height: 18.0,
-                                    margin: const EdgeInsets.only(
-                                      top: 0.0,
-                                      left: 20.0,
-                                      right: 0.0,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "images/people.svg",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            selectedIcon: Container(
-                              width: 56.0,
-                              height: 32.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: SvgPicture.asset(
-                                "images/people.svg",
-                              ),
-                            ),
-                            label: const Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 25, top: 5),
-                                  child: Text(
-                                    'People',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                )),
-                          ),
-
-                          NavigationRailDestination(
-                            padding: EdgeInsets.zero,
-                            icon: Container(
-                              width: 20.0,
-                              height: 18.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: SvgPicture.asset(
-                                "images/button.svg",
-                              ),
-                            ),
-                            selectedIcon: Container(
-                              width: 56.0,
-                              height: 32.0,
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: SvgPicture.asset(
-                                "images/button.svg",
-                              ),
-                            ),
-                            label: const Text(''),
-                          ),
-
-                          NavigationRailDestination(
-                            padding: EdgeInsets.zero,
-                            icon: Container(
-                              width: 20.0,
-                              height: 18.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: SvgPicture.asset(
-                                "images/bell.svg",
-                              ),
-                            ),
-                            selectedIcon: Container(
-                              width: 56.0,
-                              height: 32.0,
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: SvgPicture.asset(
-                                "images/bell.svg",
-                              ),
-                            ),
-                            label: const Text(''),
-                          ),
-
-                          NavigationRailDestination(
-                            padding: EdgeInsets.zero,
-                            icon: Container(
-                              width: 20.0,
-                              height: 18.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              child: SvgPicture.asset(
-                                "images/setting.svg",
-                              ),
-                            ),
-                            selectedIcon: Container(
-                              width: 56.0,
-                              height: 32.0,
-                              margin: const EdgeInsets.only(
-                                top: 0.0,
-                                left: 20.0,
-                                right: 0.0,
-                              ),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  16.0,
-                                ),
-                              ),
-                              child: SvgPicture.asset(
-                                "images/setting.svg",
-                              ),
-                            ),
-                            label: const Text(''),
-                          ),
-                        ],
-                        selectedIconTheme:
-                            const IconThemeData(color: Colors.white),
-                        unselectedIconTheme:
-                            const IconThemeData(color: Colors.black),
-                        selectedLabelTextStyle:
-                            const TextStyle(color: Colors.white),
-                        extended: false,
+          body: Row(children: [
+            Column(
+              children: [
+                Container(
+                  width: 46.0,
+                  height: 46.0,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff93C5FD),
+                    border: Border.all(color: const Color(0xff93C5FD)),
+                    borderRadius: BorderRadius.circular(
+                      16.0,
+                    ),
+                  ),
+                  margin: const EdgeInsets.only(
+                    top: 40.0,
+                    left: 10.0,
+                    right: 0.0,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        projectListTapIcon
+                            ? showAlertDialog(context)
+                            : Container();
+                        peopleListTapIcon
+                            ? showAddPeople(context)
+                            : Container();
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SvgPicture.asset(
+                        "images/plus.svg",
                       ),
                     ),
                   ),
                 ),
-              );
-            }),
-            // sayyamm
-            Expanded(child: _mainContents[_selectedIndex]),
-          ],
-        ),
-      ),
+                SizedBox(
+                  height: 100,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: Column(
+                    children: [
+                      projectListTapIcon
+                          ? Container(
+                              // height: 40,
+                              // width: 40,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16, top: 8, bottom: 8),
+                                child: SvgPicture.asset(
+                                  "images/notification_icon.svg",
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              child: SvgPicture.asset(
+                                "images/notification_icon.svg",
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  bellTapIcon = false;
+                                  settingIcon = false;
+                                  projectListTapIcon = true;
+                                  peopleListTapIcon = false;
+                                  cameraTapIcon = false;
+                                  circleTapIcon = false;
+                                });
+                              },
+                            ),
+                      projectListTapIcon
+                          ? Text(
+                              'Projects',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : Container(),
+                      SizedBox(height: 40),
+                      peopleListTapIcon
+                          ? Container(
+                              // height: 40,
+                              // width: 40,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16, top: 8, bottom: 8),
+                                child: SvgPicture.asset(
+                                  "images/people.svg",
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              child: SvgPicture.asset(
+                                "images/people.svg",
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  bellTapIcon = false;
+                                  settingIcon = false;
+                                  projectListTapIcon = false;
+                                  peopleListTapIcon = true;
+                                  cameraTapIcon = false;
+                                  circleTapIcon = false;
+                                });
+                              },
+                            ),
+                      peopleListTapIcon
+                          ? Text('People',
+                              style: TextStyle(color: Colors.white))
+                          : Container(),
+                      SizedBox(height: 40),
+                      cameraTapIcon
+                          ? Container(
+                              // height: 40,
+                              // width: 40,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16, top: 8, bottom: 8),
+                                child: SvgPicture.asset(
+                                  "images/camera.svg",
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              child: SvgPicture.asset(
+                                "images/camera.svg",
+                              ),
+                              onTap: () {
+                                bellTapIcon = false;
+                                settingIcon = false;
+                                projectListTapIcon = false;
+                                peopleListTapIcon = false;
+                                cameraTapIcon = true;
+                                circleTapIcon = false;
+                              },
+                            ),
+                      SizedBox(height: 40),
+                      circleTapIcon
+                          ? Container(
+                              // height: 40,
+                              // width: 40,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16, top: 8, bottom: 8),
+                                child: SvgPicture.asset(
+                                  "images/button.svg",
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                bellTapIcon = false;
+                                settingIcon = false;
+                                projectListTapIcon = false;
+                                peopleListTapIcon = false;
+                                cameraTapIcon = false;
+                                circleTapIcon = true;
+                              },
+                              child: SvgPicture.asset(
+                                "images/button.svg",
+                              ),
+                            ),
+                      SizedBox(height: 40),
+                      bellTapIcon
+                          ? Container(
+                              // height: 40,
+                              // width: 40,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16, top: 8, bottom: 8),
+                                child: SvgPicture.asset(
+                                  "images/bell.svg",
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                bellTapIcon = true;
+                                settingIcon = false;
+                                projectListTapIcon = false;
+                                peopleListTapIcon = false;
+                                cameraTapIcon = false;
+                                circleTapIcon = false;
+                                ;
+                              },
+                              child: SvgPicture.asset(
+                                "images/bell.svg",
+                              ),
+                            ),
+                      SizedBox(height: 40),
+                      settingIcon
+                          ? Container(
+                              // height: 40,
+                              // width: 40,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff334155),
+                                border:
+                                    Border.all(color: const Color(0xff334155)),
+                                borderRadius: BorderRadius.circular(
+                                  18.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16, top: 8, bottom: 8),
+                                child: SvgPicture.asset(
+                                  "images/setting.svg",
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                settingIcon = true;
+                                bellTapIcon = false;
+                                projectListTapIcon = false;
+                                peopleListTapIcon = false;
+                                cameraTapIcon = false;
+                                circleTapIcon = false;
+                              },
+                              child: SvgPicture.asset(
+                                "images/setting.svg",
+                              ),
+                            ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  width: 25,
+                ),
+              ],
+            ),
+            Expanded(
+                child: _mainContents[projectListTapIcon
+                    ? 1
+                    : peopleListTapIcon
+                        ? 3
+                        : 2]),
+          ])
+
+          // Row(
+          //   children: <Widget>[
+          //     LayoutBuilder(builder: (context, constraint) {
+          //       return Theme(
+          //         data: ThemeData(
+          //           // highlightColor: Colors.transparent,
+          //           colorScheme: ColorScheme.light(primary: Color(0xff0F172A)),
+          //         ),
+          //         child: SingleChildScrollView(
+          //           child: ConstrainedBox(
+          //             constraints:
+          //                 BoxConstraints(minHeight: constraint.maxHeight),
+          //             child: IntrinsicHeight(
+          //               child: NavigationRail(
+          //                 selectedIndex: _selectedIndex,
+          //                 onDestinationSelected: (int index) {
+          //                   isIndex = index;
+          //                   position = index;
+          //                   print(index);
+          //                   if (index == 0) {
+          //                     if (add1.length == 1) {
+          //                       showAlertDialog(context);
+          //                     } else if (add1[add1.length - 1] == 1) {
+          //                       showAlertDialog(context);
+          //                     } else if (add1[add1.length - 1] == 3) {
+          //                       print('sizeeee' + _addtag.length.toString());
+          //                       showAddPeople(context);
+          //                     }
+          //                   } else {
+          //                     //
+          //                     setState(() {
+          //                       _selectedIndex = index;
+          //                       searchController.clear();
+          //                       add1.add(index);
+          //                     });
+          //                   }
+          //                 },
+          //                 // groupAlignment: 0.1,
+          //                 // elevation: 0.0,
+
+          //                 labelType: NavigationRailLabelType.selected,
+          //                 //type: BottomNavigationBarType.fixed,
+          //                 backgroundColor: const Color(0xff0F172A),
+          //                 destinations: <NavigationRailDestination>[
+          //                   NavigationRailDestination(
+          //                     padding: EdgeInsets.zero,
+          //                     icon: Container(
+          //                       width: 46.0,
+          //                       height: 46.0,
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff93C5FD),
+          //                         border:
+          //                             Border.all(color: const Color(0xff93C5FD)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           16.0,
+          //                         ),
+          //                       ),
+          //                       margin: const EdgeInsets.only(
+          //                         top: 40.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       child: Padding(
+          //                         padding: const EdgeInsets.all(16.0),
+          //                         child: SvgPicture.asset(
+          //                           "images/plus.svg",
+          //                         ),
+          //                       ),
+          //                     ),
+          //                     label: const Text(''),
+          //                   ),
+
+          //                   NavigationRailDestination(
+          //                     padding: EdgeInsets.zero,
+          //                     icon: Tooltip(
+          //                       verticalOffset: 40,
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff334155),
+          //                         border:
+          //                             Border.all(color: const Color(0xff334155)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           18.0,
+          //                         ),
+          //                       ),
+          //                       message: 'Projects',
+          //                       child: Container(
+          //                         margin: const EdgeInsets.only(
+          //                           top: 40.0,
+          //                           left: 20.0,
+          //                           right: 0.0,
+          //                         ),
+          //                         child: SvgPicture.asset(
+          //                           "images/notification_icon.svg",
+          //                         ),
+          //                       ),
+          //                     ),
+          //                     selectedIcon: Container(
+          //                       width: 56.0,
+          //                       height: 32.0,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 40.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       alignment: Alignment.center,
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff334155),
+          //                         border:
+          //                             Border.all(color: const Color(0xff334155)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           18.0,
+          //                         ),
+          //                       ),
+          //                       child: Stack(
+          //                         children: [
+          //                           SvgPicture.asset(
+          //                             "images/notification_icon.svg",
+          //                           ),
+          //                         ],
+          //                       ),
+          //                     ),
+          //                     label: const Align(
+          //                         alignment: Alignment.center,
+          //                         child: Padding(
+          //                           padding: EdgeInsets.only(left: 25, top: 5),
+          //                           child: Text(
+          //                             'Projects',
+          //                             textAlign: TextAlign.center,
+          //                             style: TextStyle(fontSize: 12),
+          //                           ),
+          //                         )),
+          //                   ),
+
+          //                   NavigationRailDestination(
+          //                       padding: EdgeInsets.zero,
+          //                       icon: Column(
+          //                         children: [
+          //                           Container(
+          //                             width: 20.0,
+          //                             height: 18.0,
+          //                             margin: const EdgeInsets.only(
+          //                               top: 0.0,
+          //                               left: 20.0,
+          //                               right: 0.0,
+          //                             ),
+          //                             child: SvgPicture.asset(
+          //                               "images/camera.svg",
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       selectedIcon: Container(
+          //                         width: 56.0,
+          //                         height: 32.0,
+          //                         margin: const EdgeInsets.only(
+          //                           top: 0.0,
+          //                           left: 20.0,
+          //                           right: 0.0,
+          //                         ),
+          //                         alignment: Alignment.center,
+          //                         decoration: BoxDecoration(
+          //                           color: const Color(0xff334155),
+          //                           border: Border.all(
+          //                               color: const Color(0xff334155)),
+          //                           borderRadius: BorderRadius.circular(
+          //                             18.0,
+          //                           ),
+          //                         ),
+          //                         child: Stack(
+          //                           children: [
+          //                             SvgPicture.asset(
+          //                               "images/camera.svg",
+          //                             ),
+          //                             // Positioned(
+          //                             //   right: 0,
+          //                             //   top: 3,
+          //                             //   child: Container(
+          //                             //     padding: const EdgeInsets.all(1),
+          //                             //     decoration: BoxDecoration(
+          //                             //       color: Colors.red,
+          //                             //       borderRadius: BorderRadius.circular(6),
+          //                             //     ),
+          //                             //     constraints: const BoxConstraints(
+          //                             //       minWidth: 8,
+          //                             //       minHeight: 8,
+          //                             //     ),
+          //                             //   ),
+          //                             // )
+          //                           ],
+          //                         ),
+          //                       ),
+          //                       label: Text('')),
+          //                   // NavigationRailDestination(
+          //                   //   icon: Container(
+          //                   //     width: 20.0,
+          //                   //     height: 18.0,
+          //                   //     margin: const EdgeInsets.only(
+          //                   //       top: 0.0,
+          //                   //       left: 20.0,
+          //                   //       right: 0.0,
+          //                   //     ),
+          //                   //     child: SvgPicture.asset(
+          //                   //       "images/camera.svg",
+          //                   //     ),
+          //                   //   ),
+          //                   //   selectedIcon: Container(
+          //                   //     width: 56.0,
+          //                   //     height: 32.0,
+          //                   //     margin: const EdgeInsets.only(
+          //                   //       top: 0.0,
+          //                   //       left: 20.0,
+          //                   //       right: 0.0,
+          //                   //     ),
+          //                   //     alignment: Alignment.center,
+          //                   //     decoration: BoxDecoration(
+          //                   //       color: const Color(0xff334155),
+          //                   //       border:
+          //                   //           Border.all(color: const Color(0xff334155)),
+          //                   //       borderRadius: BorderRadius.circular(
+          //                   //         18.0,
+          //                   //       ),
+          //                   //     ),
+          //                   //     child: Stack(
+          //                   //       children: [
+          //                   //         // Positioned(
+          //                   //         //   child: Container(
+          //                   //         //       height: 8,
+          //                   //         //       width: 8,
+          //                   //         //       decoration: BoxDecoration(
+          //                   //         //           color: Color(0xffEF4444),
+          //                   //         //           borderRadius:
+          //                   //         //               BorderRadius.circular(100))),
+          //                   //         // ),
+
+          //                   //         Padding(
+          //                   //           padding: const EdgeInsets.all(6.0),
+          //                   //           child: SvgPicture.asset(
+          //                   //             "images/camera.svg",
+          //                   //           ),
+          //                   //         ),
+          //                   //         Positioned(
+          //                   //           right: 0,
+          //                   //           top: 6,
+          //                   //           child: Container(
+          //                   //             padding: const EdgeInsets.all(1),
+          //                   //             decoration: BoxDecoration(
+          //                   //               color: Colors.red,
+          //                   //               borderRadius: BorderRadius.circular(6),
+          //                   //             ),
+          //                   //             constraints: const BoxConstraints(
+          //                   //               minWidth: 8,
+          //                   //               minHeight: 8,
+          //                   //             ),
+          //                   //           ),
+          //                   //         )
+          //                   //       ],
+          //                   //     ),
+          //                   //   ),
+          //                   //   label: const Align(
+          //                   //       alignment: Alignment.center,
+          //                   //       child: Padding(
+          //                   //         padding: EdgeInsets.only(left: 25, top: 5),
+          //                   //         child: Text(
+          //                   //           'People',
+          //                   //           textAlign: TextAlign.center,
+          //                   //           style: TextStyle(fontSize: 12),
+          //                   //         ),
+          //                   //       )),
+          //                   // ),
+
+          //                   NavigationRailDestination(
+          //                     padding: EdgeInsets.zero,
+          //                     icon: Column(
+          //                       children: [
+          //                         Tooltip(
+          //                           verticalOffset: 17,
+          //                           padding: const EdgeInsets.symmetric(
+          //                               horizontal: 12.0, vertical: 5.0),
+          //                           //  textAlign: TextAlign.center,
+          //                           decoration: BoxDecoration(
+          //                             color: const Color(0xff334155),
+          //                             border: Border.all(
+          //                                 color: const Color(0xff334155)),
+          //                             borderRadius: BorderRadius.circular(
+          //                               18.0,
+          //                             ),
+          //                           ),
+          //                           excludeFromSemantics: true,
+          //                           preferBelow: true,
+          //                           message: 'People',
+          //                           child: Container(
+          //                             width: 20.0,
+          //                             height: 18.0,
+          //                             margin: const EdgeInsets.only(
+          //                               top: 0.0,
+          //                               left: 20.0,
+          //                               right: 0.0,
+          //                             ),
+          //                             child: SvgPicture.asset(
+          //                               "images/people.svg",
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ],
+          //                     ),
+          //                     selectedIcon: Container(
+          //                       width: 56.0,
+          //                       height: 32.0,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       alignment: Alignment.center,
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff334155),
+          //                         border:
+          //                             Border.all(color: const Color(0xff334155)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           18.0,
+          //                         ),
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/people.svg",
+          //                       ),
+          //                     ),
+          //                     label: const Align(
+          //                         alignment: Alignment.center,
+          //                         child: Padding(
+          //                           padding: EdgeInsets.only(left: 25, top: 5),
+          //                           child: Text(
+          //                             'People',
+          //                             textAlign: TextAlign.center,
+          //                             style: TextStyle(fontSize: 12),
+          //                           ),
+          //                         )),
+          //                   ),
+
+          //                   NavigationRailDestination(
+          //                     padding: EdgeInsets.zero,
+          //                     icon: Container(
+          //                       width: 20.0,
+          //                       height: 18.0,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/button.svg",
+          //                       ),
+          //                     ),
+          //                     selectedIcon: Container(
+          //                       width: 56.0,
+          //                       height: 32.0,
+          //                       alignment: Alignment.center,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff334155),
+          //                         border:
+          //                             Border.all(color: const Color(0xff334155)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           18.0,
+          //                         ),
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/button.svg",
+          //                       ),
+          //                     ),
+          //                     label: const Text(''),
+          //                   ),
+
+          //                   NavigationRailDestination(
+          //                     padding: EdgeInsets.zero,
+          //                     icon: Container(
+          //                       width: 20.0,
+          //                       height: 18.0,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/bell.svg",
+          //                       ),
+          //                     ),
+          //                     selectedIcon: Container(
+          //                       width: 56.0,
+          //                       height: 32.0,
+          //                       alignment: Alignment.center,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff334155),
+          //                         border:
+          //                             Border.all(color: const Color(0xff334155)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           18.0,
+          //                         ),
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/bell.svg",
+          //                       ),
+          //                     ),
+          //                     label: const Text(''),
+          //                   ),
+
+          //                   NavigationRailDestination(
+          //                     padding: EdgeInsets.zero,
+          //                     icon: Container(
+          //                       width: 20.0,
+          //                       height: 18.0,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/setting.svg",
+          //                       ),
+          //                     ),
+          //                     selectedIcon: Container(
+          //                       width: 56.0,
+          //                       height: 32.0,
+          //                       margin: const EdgeInsets.only(
+          //                         top: 0.0,
+          //                         left: 20.0,
+          //                         right: 0.0,
+          //                       ),
+          //                       alignment: Alignment.center,
+          //                       decoration: BoxDecoration(
+          //                         color: const Color(0xff334155),
+          //                         border:
+          //                             Border.all(color: const Color(0xff334155)),
+          //                         borderRadius: BorderRadius.circular(
+          //                           16.0,
+          //                         ),
+          //                       ),
+          //                       child: SvgPicture.asset(
+          //                         "images/setting.svg",
+          //                       ),
+          //                     ),
+          //                     label: const Text(''),
+          //                   ),
+          //                 ],
+          //                 selectedIconTheme:
+          //                     const IconThemeData(color: Colors.white),
+          //                 unselectedIconTheme:
+          //                     const IconThemeData(color: Colors.black),
+          //                 selectedLabelTextStyle:
+          //                     const TextStyle(color: Colors.white),
+          //                 extended: false,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     }),
+          //     // sayyamm
+          //     Expanded(child: _mainContents[_selectedIndex]),
+          //   ],
+          // ),
+          ),
     );
   }
 
