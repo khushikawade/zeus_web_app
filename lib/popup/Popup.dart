@@ -21,6 +21,7 @@ import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:provider/provider.dart';
 import '../home_module/home_page.dart';
+import 'package:zeus/utility/debouncer.dart';
 
 showDailog(
     BuildContext context,
@@ -61,6 +62,7 @@ showDailog(
   var myFormat = DateFormat('yyyy-MM-dd');
 
   final TextEditingController _typeAheadController = TextEditingController();
+  Debouncer _debouncer = Debouncer();
 
   //Edit project_detail api
   Future<void> editProject() async {
@@ -176,7 +178,9 @@ showDailog(
     var token = 'Bearer ' + storage.read("token");
     try {
       var apiResponse = await http.post(
-        Uri.parse('${AppUrl.baseUrl}/project_detail/project_detail-dates/$_id'),
+        ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is
+        Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
+
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days":
@@ -1281,7 +1285,21 @@ showDailog(
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500)),
                                         onChanged: (value) {
-                                          addDescriptionProject();
+                                          try {
+
+                                          _debouncer.run(() async {
+
+                                            addDescriptionProject();
+
+                                          });
+
+                                        } catch (e) {
+
+                                          print(e);
+
+                                          print(value);
+
+                                        }
                                         },
                                       ),
                                     ),

@@ -36,15 +36,12 @@ class _DatePickerState extends State<DatePicker> {
     startDate = widget.startDate ?? null;
     endDate = widget.endDate ??
         null; //DateTime.now().add(const Duration(days: 36500));
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-
-
         Container(
             width:
                 widget.title == 'Milestone Date' || widget.subtitle == 'subTask'
@@ -119,7 +116,7 @@ class _DatePickerState extends State<DatePicker> {
                                   keyboardType: TextInputType.text,
                                   controller: TextEditingController(
                                       text: startDate == null
-                                          ? 'Select Date'
+                                          ? 'dd/mm/yy'
                                           : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
                                   decoration: const InputDecoration(
                                       contentPadding: EdgeInsets.only(

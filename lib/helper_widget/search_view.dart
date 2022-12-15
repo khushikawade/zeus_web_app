@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:zeus/phase_module/model/department_model.dart';
+import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/util.dart';
@@ -144,6 +146,36 @@ Widget rowProject(SkillsData user) {
           style: const TextStyle(fontSize: 16.0, color: Colors.white),
         ),
       ],
+    ),
+  );
+}
+
+//PhasesSortedResources items
+Widget rowPhases(PhasesSortedResources items) {
+  return Container(
+    // width: 400,
+    color: Color(0xFF0F172A),
+    child: Padding(
+      padding: const EdgeInsets.all(11.0),
+      child: Text(
+        items.department.toString(),
+        style: const TextStyle(fontSize: 16.0, color: Colors.white),
+      ),
+    ),
+  );
+}
+
+//PhasesSortedResources items
+Widget rowPhasesType(DepartementData Language) {
+  return Container(
+    // width: 400,
+    color: Color(0xFF0F172A),
+    child: Padding(
+      padding: const EdgeInsets.all(11.0),
+      child: Text(
+        Language.name.toString(),
+        style: const TextStyle(fontSize: 16.0, color: Colors.white),
+      ),
     ),
   );
 }
