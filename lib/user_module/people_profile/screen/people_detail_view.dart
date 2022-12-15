@@ -823,8 +823,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                 Text(
                   list.resource != null
                       ? startDay == endDay
-                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
-                          : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
+                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                          : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
                       : 'TBD',
                   style: TextStyle(
                       color: ColorSelect.white_color,

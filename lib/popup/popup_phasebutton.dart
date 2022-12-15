@@ -127,8 +127,6 @@ class _MenuPhaseState extends State<MenuPhase>
 
   @override
   void initState() {
-
-
     _isSelected = false;
     getUsers();
     getDepartment();
@@ -140,8 +138,16 @@ class _MenuPhaseState extends State<MenuPhase>
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      offset: widget.offset,
-      color: Color(0xFF0F172A),
+      tooltip: "",
+      // tooltip: null,
+      // offset: widget.offset,
+      // color: Color(0xFF0F172A),
+      constraints: const BoxConstraints.expand(width: 140, height: 120),
+      // padding: EdgeInsets.only(left: 50, right: 50),
+      offset: const Offset(-15, 12),
+      position: PopupMenuPosition.under,
+      color: const Color(0xFF0F172A),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 7.0),
@@ -164,27 +170,46 @@ class _MenuPhaseState extends State<MenuPhase>
 
       itemBuilder: (context) => [
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 1,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               widget.onEditClick!();
             },
+            // child: Container(
+            //   width: 30,
+            //   child: const Text(
+            //     "Edit",
+            //     style: TextStyle(
+            //         fontSize: 14,
+            //         fontWeight: FontWeight.w500,
+            //         fontFamily: 'Inter',
+            //         color: ColorSelect.white_color),
+            //   ),
+            // ),
             child: Container(
-              width: 30,
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    color: ColorSelect.white_color),
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20.0, top: 15),
+                child: Text(
+                  "Edit",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
               ),
             ),
           ),
         ),
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 2,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -282,13 +307,20 @@ class _MenuPhaseState extends State<MenuPhase>
                     );
                   });
             },
-            child: const Text(
-              "Delete",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  color: ColorSelect.white_color),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20, top: 15),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
+              ),
             ),
           ),
         )
@@ -375,7 +407,6 @@ class _MenuPhaseState extends State<MenuPhase>
 
       users = user.data!;
 
-
       setState(() {
         loading = false;
       });
@@ -383,8 +414,6 @@ class _MenuPhaseState extends State<MenuPhase>
       AppUtil.showErrorDialog(context);
     } else {
       print("Error getting users.");
-
-
     }
   }
 

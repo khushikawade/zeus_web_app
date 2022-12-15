@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DatePicker extends StatefulWidget {
+  String? subtitle;
   String? title;
   DateTime? startDate;
   DateTime? initialDate;
@@ -11,7 +12,8 @@ class DatePicker extends StatefulWidget {
   Function(bool values)? isValidateCallBack;
 
   DatePicker(
-      {required this.title,
+      {required this.subtitle,
+      required this.title,
       required this.startDate,
       this.endDate,
       this.initialDate,
@@ -34,163 +36,166 @@ class _DatePickerState extends State<DatePicker> {
     startDate = widget.startDate ?? null;
     endDate = widget.endDate ??
         null; //DateTime.now().add(const Duration(days: 36500));
-   
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 0),
-      child: Column(
-        children: [
-          Container(
-              width: MediaQuery.of(context).size.width * 0.26,
-              margin: const EdgeInsets.only(left: 10.0),
-              height: 56.0,
-              decoration: BoxDecoration(
-                color: const Color(0xff334155),
-                //border: Border.all(color:  const Color(0xff1E293B)),
-                borderRadius: BorderRadius.circular(
-                  8.0,
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0xff475569),
-                    offset: Offset(
-                      0.0,
-                      2.0,
-                    ),
-                    blurRadius: 0.0,
-                    spreadRadius: 0.0,
-                  ), //BoxShadow
-                ],
+    return Column(
+      children: [
+
+
+        Container(
+            width:
+                widget.title == 'Milestone Date' || widget.subtitle == 'subTask'
+                    ? MediaQuery.of(context).size.width * 27
+                    : MediaQuery.of(context).size.width * 0.26,
+            margin:
+                widget.title == 'Milestone Date' || widget.subtitle == 'subTask'
+                    ? const EdgeInsets.only(left: 15.0, right: 10)
+                    : EdgeInsets.only(left: 15.0),
+            height: 56.0,
+            decoration: BoxDecoration(
+              color: const Color(0xff334155),
+              //border: Border.all(color:  const Color(0xff1E293B)),
+              borderRadius: BorderRadius.circular(
+                8.0,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        startDateF();
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 13.0),
-                            height: 22.0,
-                            width: 20.0,
-                            child: Image.asset('images/date.png'),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, left: 20.0),
-                                  child: Text(
-                                    widget.title!,
-                                    style: const TextStyle(
-                                        fontSize: 13.0,
-                                        color: Color(0xff64748B),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  )),
-                              Container(
-                                height: 30,
-                                width: 200,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 5.0),
-                                  child: TextFormField(
-                                    cursorColor: const Color(0xffFFFFFF),
-
-                                    enabled: false,
-
-                                    style: const TextStyle(
-                                        color: Color(0xffFFFFFF)),
-                                    textAlignVertical: TextAlignVertical.bottom,
-                                    keyboardType: TextInputType.text,
-                                    controller: TextEditingController(
-                                        text: startDate == null ||
-                                                startDate.toString().isEmpty
-                                            ? 'dd/mm/yyyy'
-                                            : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
-                                    decoration: const InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                          bottom: 16.0,
-                                          top: 0.0,
-                                          right: 10,
-                                          left: 15.0,
-                                        ),
-                                        border: InputBorder.none,
-                                        enabled: false,
-                                        errorStyle:
-                                            TextStyle(height: 0, fontSize: 0)),
-                                    onChanged: (value) {
-                                      //filterSearchResults(value);
-                                      //  controller = value;
-                                      // callback(controller);
-                                    },
-
-                                    validator: (value) {
-                                      setState(() {
-                                        errorText = widget
-                                                .validationCallBack!(value!) ??
-                                            "";
-                                      });
-                                      return null;
-                                    },
-                                    // onSaved: (value) {
-                                    //   controller = value;
-                                    //   callback(controller);
-                                    // },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0xff475569),
+                  offset: Offset(
+                    0.0,
+                    2.0,
                   ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        startDate = null;
-                        endDate = null;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 5.0, right: 10.0),
-                      height: 20.0,
-                      child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: SvgPicture.asset('images/cross.svg')),
-                    ),
-                  ),
-                ],
-              )),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.26,
-            margin: const EdgeInsets.only(left: 30.0, top: 03),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  errorText ?? '',
-                  style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.red,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400),
-                ),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
               ],
             ),
-          )
-        ],
-      ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      startDateF();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 13.0),
+                          height: 22.0,
+                          width: 20.0,
+                          child: Image.asset('images/date.png'),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.only(
+                                    top: 10.0, left: 20.0),
+                                child: Text(
+                                  widget.title!,
+                                  style: const TextStyle(
+                                      fontSize: 13.0,
+                                      color: Color(0xff64748B),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            Container(
+                              height: 30,
+                              width: 200,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: TextFormField(
+                                  cursorColor: const Color(0xffFFFFFF),
+                                  enabled: false,
+
+                                  style:
+                                      const TextStyle(color: Color(0xffFFFFFF)),
+                                  textAlignVertical: TextAlignVertical.bottom,
+                                  keyboardType: TextInputType.text,
+                                  controller: TextEditingController(
+                                      text: startDate == null
+                                          ? 'Select Date'
+                                          : '${startDate!.day} / ${startDate!.month} / ${startDate!.year}'),
+                                  decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                        bottom: 16.0,
+                                        top: 0.0,
+                                        right: 10,
+                                        left: 15.0,
+                                      ),
+                                      border: InputBorder.none,
+                                      enabled: false,
+                                      errorStyle:
+                                          TextStyle(height: 0, fontSize: 0)),
+                                  onChanged: (value) {
+                                    //filterSearchResults(value);
+                                    //  controller = value;
+                                    // callback(controller);
+                                  },
+
+                                  validator: (value) {
+                                    setState(() {
+                                      errorText =
+                                          widget.validationCallBack!(value!) ??
+                                              "";
+                                    });
+                                    return null;
+                                  },
+                                  // onSaved: (value) {
+                                  //   controller = value;
+                                  //   callback(controller);
+                                  // },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      startDate = null;
+                      endDate = null;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 5.0, right: 10.0),
+                    height: 20.0,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: SvgPicture.asset('images/cross.svg')),
+                  ),
+                ),
+              ],
+            )),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.26,
+          margin: const EdgeInsets.only(left: 30.0, top: 03),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                errorText ?? '',
+                style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.red,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
