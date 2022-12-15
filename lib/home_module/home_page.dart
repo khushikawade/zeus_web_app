@@ -2673,6 +2673,7 @@ class _NavigationRailState extends State<MyHomePage>
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
       child: Scaffold(
+          // resizeToAvoidBottomInset: true,
           backgroundColor: Color(0xff0F172A),
           appBar: AppBar(
             centerTitle: false,

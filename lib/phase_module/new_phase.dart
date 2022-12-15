@@ -476,7 +476,7 @@ class _NewPhaseState extends State<NewPhase> {
                             radius: 30,
                             child: Icon(
                               Icons.person_outline,
-                              size: 35,
+                              size: 30,
                               color: Color(0xffDADADA),
                             ),
                           ),
@@ -1191,7 +1191,7 @@ class _NewPhaseState extends State<NewPhase> {
                         backgroundColor: Color(0xff334155),
                         radius: 30,
                         child: Icon(Icons.person_outline,
-                            size: 35, color: Color(0xffDADADA)),
+                            size: 30, color: Color(0xffDADADA)),
                       ),
                     ),
                     Positioned(
@@ -1308,16 +1308,15 @@ class _NewPhaseState extends State<NewPhase> {
                 subTaskResourcesSearchTextField = TypeAheadFormField(
                   keepSuggestionsOnLoading: false,
                   suggestionsBoxVerticalOffset: 0.0,
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                      color: const Color(0xff0F172A)),
+                  suggestionsBoxDecoration:
+                      SuggestionsBoxDecoration(color: const Color(0xff0F172A)),
                   hideOnLoading: true,
                   suggestionsCallback: (pattern) {
                     return getSuggestionsForSubTask(pattern);
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _subTaskResourcesController,
-                    style: const TextStyle(
-                        color: Colors.white, fontSize: 14.0),
+                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.white,
                     autofocus: true,

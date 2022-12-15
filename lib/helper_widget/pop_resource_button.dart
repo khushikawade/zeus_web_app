@@ -442,7 +442,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           });
                                         },
                                         child: const Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
+                                          padding: EdgeInsets.only(right: 10.0),
                                           child: Text(
                                             "Delete",
                                             style: TextStyle(
