@@ -57,9 +57,17 @@ class _ProjectEditState extends State<ProjectEdit>
   var isLoading = false;
   // var status = widget.response.data!.status; //response.data!.status;
   bool _submitted = true;
-  bool selectDeliveryDate = false;
-  bool createButtonClick = false;
 
+
+ String name_ = '';
+
+  bool selectAccountablePerson = false;
+  bool selectCurrency = false;
+  bool selectStatus = false;
+  bool selectCustomer = false;
+  bool createButtonClick = false;
+    bool selectDeliveryDate = false;
+  bool createProjectValidate = true;
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
   final TextEditingController _warkfolderId = TextEditingController();
@@ -195,9 +203,16 @@ class _ProjectEditState extends State<ProjectEdit>
     updateControllerValue();
     return Center(
       child: PopupMenuButton<int>(
-        offset: widget.offset,
-        color: const Color(0xFF0F172A),
+          tooltip: "",
+        // offset: widget.offset,
+        // color: const Color(0xFF0F172A),
+        // position: PopupMenuPosition.under,
+        constraints: const BoxConstraints.expand(width: 140, height: 120),
+        // padding: EdgeInsets.only(left: 50, right: 50),
+        offset: const Offset(-30, 0),
         position: PopupMenuPosition.under,
+        color: const Color(0xFF0F172A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
         child: Container(
           margin:
@@ -393,8 +408,14 @@ class _ProjectEditState extends State<ProjectEdit>
                                             //  onChanged: (text) => setState(() => name_ = text),
                                           ),
                                         ),
+                                    
+                                    
+                                    
                                       ],
                                     ),
+                                 
+                                 
+                                 
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -1641,7 +1662,7 @@ class _ProjectEditState extends State<ProjectEdit>
                 height: 50,
                 width: double.infinity,
                 child: const Padding(
-                  padding: EdgeInsets.only(left: 10, top: 15),
+                  padding: EdgeInsets.only(left: 20, top: 15),
                   child: Text(
                     "Edit",
                     style: TextStyle(
@@ -1761,7 +1782,7 @@ class _ProjectEditState extends State<ProjectEdit>
                 width: double.infinity,
                 height: 50,
                 child: const Padding(
-                  padding: EdgeInsets.only(left: 10, top: 15),
+                  padding: EdgeInsets.only(left: 20, top: 15),
                   child: Text(
                     "Delete",
                     style: TextStyle(

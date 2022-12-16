@@ -1,6 +1,6 @@
 class ResourceData {
   int? resource_id = 0;
-  int? department_id = 0;
+  dynamic department_id = 0;
   String? resource_name = "";
   String? department_name = "";
   String? profileImage = "";

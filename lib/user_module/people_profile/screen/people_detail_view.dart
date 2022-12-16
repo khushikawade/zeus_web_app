@@ -590,7 +590,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               alignment: Alignment.topRight,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 3, right: 3),
+                                    const EdgeInsets.only(right: 12, top: 16),
                                 child: pop.MyMenu(
                                     data: list,
                                     title: 'Menu at bottom',
@@ -617,11 +617,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     children: [
                       aboutMeWidget(),
                       SizedBox(
-                        height: 30,
+                        height: 45,
                       ),
                       availabilityWidget(),
                       SizedBox(
-                        height: 30,
+                        height: 45,
                       ),
                       skillsWidget(),
                     ],
@@ -823,8 +823,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                 Text(
                   list.resource != null
                       ? startDay == endDay
-                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
-                          : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
+                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                          : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
                       : 'TBD',
                   style: TextStyle(
                       color: ColorSelect.white_color,
