@@ -41,6 +41,7 @@ class _EditPageState extends State<CreateProjectPage> {
   bool selectCustomer = false;
   bool createButtonClick = false;
   bool selectDeliveryDate = false;
+  bool createProjectValidate = true;
 
   TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -245,6 +246,10 @@ class _EditPageState extends State<CreateProjectPage> {
                     label: "Project title",
                     validator: (value) {
                       if (value.isEmpty) {
+                        setState(() {
+                          createProjectValidate = false;
+                        });
+
                         return 'Please enter';
                       }
                       return null;
@@ -262,8 +267,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin:
-                                  const EdgeInsets.only(left: 0.0),
+                              margin: const EdgeInsets.only(left: 0.0),
                               height: 60.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -373,8 +377,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin:
-                                  const EdgeInsets.only(top: 0, left: 0.0),
+                              margin: const EdgeInsets.only(top: 0, left: 0.0),
                               height: 60.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -484,6 +487,9 @@ class _EditPageState extends State<CreateProjectPage> {
                     label: "CRM task ID",
                     validator: (value) {
                       if (value.isEmpty) {
+                        setState(() {
+                          createProjectValidate = false;
+                        });
                         return 'Please enter';
                       }
                       return null;
@@ -496,6 +502,9 @@ class _EditPageState extends State<CreateProjectPage> {
                     label: "Work Folder ID:",
                     validator: (value) {
                       if (value!.isEmpty) {
+                        setState(() {
+                          createProjectValidate = false;
+                        });
                         return 'Please enter';
                       }
                       return null;
@@ -508,12 +517,16 @@ class _EditPageState extends State<CreateProjectPage> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
+                        flex: 3,
                         child: CustomFormField(
                           controller: _budget,
                           hint: '',
                           label: "Budget",
                           validator: (value) {
                             if (value!.isEmpty) {
+                              setState(() {
+                                createProjectValidate = false;
+                              });
                               return 'Please enter';
                             }
                             return null;
@@ -524,15 +537,15 @@ class _EditPageState extends State<CreateProjectPage> {
                       SizedBox(
                         width: 10,
                       ),
-
                       Expanded(
+                        flex: 5,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               margin: const EdgeInsets.only(
-                                  left: 0.0, top: 16.0, bottom: 8.0),
+                                  left: 0.0, top: 0.0, bottom: 8.0),
                               height: 56.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -609,12 +622,16 @@ class _EditPageState extends State<CreateProjectPage> {
                         ),
                       ),
                       Expanded(
+                        flex: 5,
                         child: CustomFormField(
                           controller: _estimatehours,
                           hint: '',
                           label: "Estimated hours",
                           validator: (value) {
                             if (value!.isEmpty) {
+                              setState(() {
+                                createProjectValidate = false;
+                              });
                               return 'Please enter';
                             }
                             return null;
@@ -635,8 +652,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
+                              margin:const EdgeInsets.only( left: 0.0),
                               height: 56.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -721,7 +737,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           children: [
                             Container(
                               margin:
-                                  const EdgeInsets.only(top: 15.0, right: 0.0),
+                                  const EdgeInsets.only(right: 0.0),
                               height: 56.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -888,27 +904,28 @@ class _EditPageState extends State<CreateProjectPage> {
                         width: 16,
                       ),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
+                            createProjectValidate = true;
                             createButtonClick = true;
                           });
-                          if (widget.formKey!.currentState!.validate()) {
-                            if (selectAccountablePerson == true &&
-                                selectCustomer == true &&
-                                selectCurrency == true &&
-                                selectStatus == true &&
-                                selectDeliveryDate == true) {
-                              SmartDialog.showLoading(
-                                msg:
-                                    "Your request is in progress please wait for a while...",
-                              );
-
-                              Future.delayed(const Duration(seconds: 2), () {
-                                createProject(context);
-                              });
-                              print(
-                                  "after -------------------------check validation");
-                            }
+                          if (await widget.formKey!.currentState!.validate()) {
+                            Future.delayed(const Duration(microseconds: 500),
+                                () {
+                              if (createProjectValidate) {
+                                if (selectAccountablePerson == true &&
+                                    selectCustomer == true &&
+                                    selectCurrency == true &&
+                                    selectStatus == true &&
+                                    selectDeliveryDate == true) {
+                                  SmartDialog.showLoading(
+                                    msg:
+                                        "Your request is in progress please wait for a while...",
+                                  );
+                                  createProject(context);
+                                }
+                              }
+                            });
                           }
                         },
                         child: Container(
