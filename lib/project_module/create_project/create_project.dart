@@ -187,29 +187,35 @@ class _EditPageState extends State<CreateProjectPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.33,
-          child: RawScrollbar(
+        createProjectView()
+      ],
+    );
+  }
+
+ Widget createProjectView(){
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.33,
+      child: RawScrollbar(
+        controller: verticalScroll,
+        thumbColor: const Color(0xff4b5563),
+        crossAxisMargin: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        thickness: 8,
+        child: ScrollConfiguration(
+          behavior:
+          ScrollConfiguration.of(context).copyWith(scrollbars: false),
+          child: ListView(
             controller: verticalScroll,
-            thumbColor: const Color(0xff4b5563),
-            crossAxisMargin: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            thickness: 8,
-            child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: ListView(
-                controller: verticalScroll,
-                padding: EdgeInsets.all(20),
-                shrinkWrap: true,
+            padding: EdgeInsets.all(20),
+            shrinkWrap: true,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: const Text(
+                  Container(
+                      child: const Text(
                         'Create Project',
                         style: TextStyle(
                             color: Color(0xffFFFFFF),
@@ -217,99 +223,99 @@ class _EditPageState extends State<CreateProjectPage> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w700),
                       )),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xff1E293B),
-                              border: Border.all(
-                                  color: Color(0xff334155), width: 0.6),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: SvgPicture.asset(
-                                'images/cross.svg',
-                              ),
-                            ),
-                          ))
-                    ],
-                  ),
-                  SizedBox(height: 32),
-                  CustomFormField(
-                    controller: _projecttitle,
-                    hint: '',
-                    label: "Project title",
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        setState(() {
-                          createProjectValidate = false;
-                        });
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xff1E293B),
+                          border: Border.all(
+                              color: Color(0xff334155), width: 0.6),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            'images/cross.svg',
+                          ),
+                        ),
+                      ))
+                ],
+              ),
+              SizedBox(height: 32),
+              CustomFormField(
+                controller: _projecttitle,
+                hint: '',
+                label: "Project title",
+                validator: (value) {
+                  if (value.isEmpty) {
+                    setState(() {
+                      createProjectValidate = false;
+                    });
 
-                        return 'Please enter';
-                      }
-                      return null;
-                    },
-                    onChange: (text) => setState(() => name_ = text),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(left: 0.0),
-                              height: 60.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
+                    return 'Please enter';
+                  }
+                  return null;
+                },
+                onChange: (text) => setState(() => name_ = text),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 0.0),
+                          height: 60.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
                                 ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
                               ),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                            top: 4.0, left: 14.0),
-                                        child: const Text(
-                                          "AP",
-                                          style: TextStyle(
-                                              fontSize: 13.0,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                    StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSettersetState) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 0, top: 2),
-                                        child: DropdownButtonHideUnderline(
-                                            child: CustomDropdownButton(
+                            ],
+                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 4.0, left: 14.0),
+                                    child: const Text(
+                                      "AP",
+                                      style: TextStyle(
+                                          fontSize: 13.0,
+                                          color: Color(0xff64748B),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                StatefulBuilder(builder:
+                                    (BuildContext context,
+                                    StateSettersetState) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 0, top: 2),
+                                    child: DropdownButtonHideUnderline(
+                                        child: CustomDropdownButton(
                                           isDense: true,
                                           dropdownColor: Color(0xff0F172A),
                                           value: _account,
@@ -337,7 +343,7 @@ class _EditPageState extends State<CreateProjectPage> {
                                                     color: Color(0xffFFFFFF),
                                                     fontFamily: 'Inter',
                                                     fontWeight:
-                                                        FontWeight.w500),
+                                                    FontWeight.w500),
                                               ),
                                             );
                                           }).toList(),
@@ -349,80 +355,80 @@ class _EditPageState extends State<CreateProjectPage> {
                                             });
                                           },
                                         )),
-                                      );
-                                    }),
-                                  ]),
-                            ),
-                            createButtonClick
-                                ? selectAccountablePerson
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 26,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
+                                  );
+                                }),
+                              ]),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 0, left: 0.0),
-                              height: 60.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
+                        createButtonClick
+                            ? selectAccountablePerson
+                            ? const Text(
+                          " ",
+                        )
+                            : Padding(
+                            padding: EdgeInsets.only(
+                              top: 8,
+                              left: 26,
+                            ),
+                            child: errorWidget())
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 0, left: 0.0),
+                          height: 60.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
                                 ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
                               ),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                            top: 4.0, left: 14.0),
-                                        child: const Text(
-                                          "Customer",
-                                          style: TextStyle(
-                                              fontSize: 13.0,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                    StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSettersetState) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 0, top: 2),
-                                        child: DropdownButtonHideUnderline(
-                                            child: CustomDropdownButton(
+                            ],
+                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 4.0, left: 14.0),
+                                    child: const Text(
+                                      "Customer",
+                                      style: TextStyle(
+                                          fontSize: 13.0,
+                                          color: Color(0xff64748B),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                StatefulBuilder(builder:
+                                    (BuildContext context,
+                                    StateSettersetState) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 0, top: 2),
+                                    child: DropdownButtonHideUnderline(
+                                        child: CustomDropdownButton(
                                           isDense: true,
                                           dropdownColor:
-                                              ColorSelect.class_color,
+                                          ColorSelect.class_color,
                                           value: _custome,
                                           underline: Container(),
                                           hint: const Text(
@@ -447,7 +453,7 @@ class _EditPageState extends State<CreateProjectPage> {
                                                     color: Color(0xffFFFFFF),
                                                     fontFamily: 'Inter',
                                                     fontWeight:
-                                                        FontWeight.w500),
+                                                    FontWeight.w500),
                                               ),
                                             );
                                           }).toList(),
@@ -459,458 +465,463 @@ class _EditPageState extends State<CreateProjectPage> {
                                             });
                                           },
                                         )),
-                                      );
-                                    })
-                                  ]),
+                                  );
+                                })
+                              ]),
+                        ),
+                        createButtonClick
+                            ? selectAccountablePerson
+                            ? const Text(
+                          " ",
+                        )
+                            : Padding(
+                            padding: EdgeInsets.only(
+                              top: 8,
+                              left: 26,
                             ),
-                            createButtonClick
-                                ? selectAccountablePerson
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 26,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                    ],
+                            child: errorWidget())
+                            : Container(),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 24),
-                  CustomFormField(
-                    controller: _crmtask,
-                    hint: '',
-                    label: "CRM task ID",
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        setState(() {
-                          createProjectValidate = false;
-                        });
-                        return 'Please enter';
-                      }
-                      return null;
-                    },
-                    onChange: (text) => setState(() => name_ = text),
-                  ),
-                  CustomFormField(
-                    controller: _warkfolderId,
-                    hint: '',
-                    label: "Work Folder ID:",
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        setState(() {
-                          createProjectValidate = false;
-                        });
-                        return 'Please enter';
-                      }
-                      return null;
-                    },
-                    onChange: (text) => setState(() => name_ = text),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: CustomFormField(
-                          controller: _budget,
-                          hint: '',
-                          label: "Budget",
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              setState(() {
-                                createProjectValidate = false;
-                              });
-                              return 'Please enter';
-                            }
-                            return null;
-                          },
-                          onChange: (text) => setState(() => name_ = text),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 0.0, top: 0.0, bottom: 8.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                              ),
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 12.0, right: 5.0),
-                                  child: StatefulBuilder(
-                                    builder: (BuildContext context,
-                                        StateSettersetState) {
-                                      return DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          dropdownColor:
-                                              ColorSelect.class_color,
-                                          value: _curren,
-                                          underline: Container(),
-                                          hint: const Text(
-                                            "Select",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          icon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            color: Color(0xff64748B),
-                                          ),
-                                          items: _currencyName.map((items) {
-                                            return DropdownMenuItem(
-                                              value: items['id'].toString(),
-                                              child: Text(
-                                                items['currency']['symbol'],
-                                                style: const TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            StateSettersetState(() {
-                                              _curren = newValue;
-                                              setState(() {
-                                                selectCurrency = true;
-                                              });
-                                            });
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  )),
-                            ),
-                            createButtonClick
-                                ? selectCurrency
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : const Padding(
-                                        padding: EdgeInsets.only(left: 13),
-                                        child: Text("Please Select ",
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 221, 49, 60),
-                                                fontSize: 14)),
-                                      )
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: CustomFormField(
-                          controller: _estimatehours,
-                          hint: '',
-                          label: "Estimated hours",
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              setState(() {
-                                createProjectValidate = false;
-                              });
-                              return 'Please enter';
-                            }
-                            return null;
-                          },
-                          onChange: (text) => setState(() => name_ = text),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:const EdgeInsets.only( left: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                              ),
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 16.0, right: 0.0),
-                                  child: StatefulBuilder(
-                                    builder: (BuildContext context,
-                                        StateSettersetState) {
-                                      return DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          dropdownColor:
-                                              ColorSelect.class_color,
-                                          value: _status,
-                                          underline: Container(),
-                                          hint: const Text(
-                                            "Select Status",
-                                            style: TextStyle(
-                                                fontSize: 15.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          icon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            color: Color(0xff64748B),
-                                          ),
-                                          items: _statusList.map((items) {
-                                            return DropdownMenuItem(
-                                              value: items['id'].toString(),
-                                              child: Text(
-                                                items['title'],
-                                                style: const TextStyle(
-                                                    fontSize: 15.0,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              _status = newValue;
-                                              print(
-                                                  'value of status' + _status!);
-                                              selectStatus = true;
-                                            });
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  )),
-                            ),
-                            createButtonClick
-                                ? selectStatus
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 26,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(right: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      _selectDate(setState);
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(left: 13.0),
-                                      child: Image.asset(
-                                        'images/date.png',
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                            top: 8.0,
-                                            left: 20.0,
-                                          ),
-                                          child: const Text(
-                                            "Delivery Date",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                overflow: TextOverflow.fade,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          setState(() {
-                                            _selectDate(setState);
-                                            // selectDeliveryDate = true;
-                                          });
-                                        },
-                                        child: Container(
-                                            margin: const EdgeInsets.only(
-                                              top: 3.0,
-                                              left: 20.0,
-                                            ),
-                                            child: selectedDate == null
-                                                ? const Text(
-                                                    'Select Date',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w300),
-                                                  )
-                                                : Text(
-                                                    '${selectedDate!.day} / ${selectedDate!.month} / ${selectedDate!.year}',
-                                                    style: const TextStyle(
-                                                        fontSize: 14,
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                      ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedDate = null;
-                                          selectDeliveryDate = false;
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            createButtonClick
-                                ? selectDeliveryDate
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 20,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                    ],
+                ],
+              ),
+              SizedBox(height: 24),
+              CustomFormField(
+                controller: _crmtask,
+                hint: '',
+                label: "CRM task ID",
+                validator: (value) {
+                  if (value.isEmpty) {
+                    setState(() {
+                      createProjectValidate = false;
+                    });
+                    return 'Please enter';
+                  }
+                  return null;
+                },
+                onChange: (text) => setState(() => name_ = text),
+              ),
+              CustomFormField(
+                controller: _warkfolderId,
+                hint: '',
+                label: "Work Folder ID:",
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    setState(() {
+                      createProjectValidate = false;
+                    });
+                    return 'Please enter';
+                  }
+                  return null;
+                },
+                onChange: (text) => setState(() => name_ = text),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: CustomFormField(
+                      controller: _budget,
+                      hint: '',
+                      label: "Budget",
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
                   ),
                   SizedBox(
-                    height: 20,
+                    width: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          width: 97,
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
                           margin: const EdgeInsets.only(
-                            top: 16.0,
-                          ),
-                          height: 40.0,
+                              left: 0.0, top: 0.0, bottom: 8.0),
+                          height: 56.0,
                           decoration: BoxDecoration(
                             color: const Color(0xff334155),
                             borderRadius: BorderRadius.circular(
-                              40.0,
+                              8.0,
                             ),
                           ),
-                          child: const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Cancel",
+                          child: Container(
+                              margin: const EdgeInsets.only(
+                                  left: 12.0, right: 5.0),
+                              child: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSettersetState) {
+                                  return DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      dropdownColor:
+                                      ColorSelect.class_color,
+                                      value: _curren,
+                                      underline: Container(),
+                                      hint: const Text(
+                                        "Select",
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Color(0xff64748B),
+                                      ),
+                                      items: _currencyName.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items['id'].toString(),
+                                          child: Text(
+                                            items['currency']['symbol'],
+                                            style: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight:
+                                                FontWeight.w400),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        StateSettersetState(() {
+                                          _curren = newValue;
+                                          setState(() {
+                                            selectCurrency = true;
+                                          });
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              )),
+                        ),
+                        createButtonClick
+                            ? selectCurrency
+                            ? const Text(
+                          " ",
+                        )
+                            : const Padding(
+                          padding: EdgeInsets.only(left: 13),
+                          child: Text("Please Select ",
                               style: TextStyle(
-                                  fontSize: 15.0,
-                                  color: ColorSelect.white_color,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700),
+                                  color: Color.fromARGB(
+                                      255, 221, 49, 60),
+                                  fontSize: 14)),
+                        )
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: CustomFormField(
+                      controller: _estimatehours,
+                      hint: '',
+                      label: "Estimated hours",
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(left: 0.0),
+                          height: 56.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
                             ),
+                          ),
+                          child: Container(
+                              margin: const EdgeInsets.only(
+                                  left: 16.0, right: 0.0),
+                              child: StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSettersetState) {
+                                  return DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      dropdownColor:
+                                      ColorSelect.class_color,
+                                      value: _status,
+                                      underline: Container(),
+                                      hint: const Text(
+                                        "Select Status",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Color(0xffFFFFFF),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Color(0xff64748B),
+                                      ),
+                                      items: _statusList.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items['id'].toString(),
+                                          child: Text(
+                                            items['title'],
+                                            style: const TextStyle(
+                                                fontSize: 15.0,
+                                                color: Color(0xffFFFFFF),
+                                                fontFamily: 'Inter',
+                                                fontWeight:
+                                                FontWeight.w500),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _status = newValue;
+                                          print(
+                                              'value of status' + _status!);
+                                          selectStatus = true;
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              )),
+                        ),
+                        createButtonClick
+                            ? selectStatus
+                            ? const Text(
+                          " ",
+                        )
+                            : Padding(
+                            padding: EdgeInsets.only(
+                              top: 8,
+                              left: 26,
+                            ),
+                            child: errorWidget())
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(right: 0.0),
+                          height: 56.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xff475569),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
+                                ),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _selectDate(setState);
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 13.0),
+                                  child: Image.asset(
+                                    'images/date.png',
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      margin: const EdgeInsets.only(
+                                        top: 8.0,
+                                        left: 20.0,
+                                      ),
+                                      child: const Text(
+                                        "Delivery Date",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            overflow: TextOverflow.fade,
+                                            color: Color(0xff64748B),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      setState(() {
+                                        _selectDate(setState);
+                                        // selectDeliveryDate = true;
+                                      });
+                                    },
+                                    child: Container(
+                                        margin: const EdgeInsets.only(
+                                          top: 3.0,
+                                          left: 20.0,
+                                        ),
+                                        child: selectedDate == null
+                                            ? const Text(
+                                          'Select Date',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              overflow:
+                                              TextOverflow.fade,
+                                              color:
+                                              Color(0xffFFFFFF),
+                                              fontFamily: 'Inter',
+                                              fontWeight:
+                                              FontWeight.w300),
+                                        )
+                                            : Text(
+                                          '${selectedDate!.day} / ${selectedDate!.month} / ${selectedDate!.year}',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              overflow:
+                                              TextOverflow.fade,
+                                              color:
+                                              Color(0xffFFFFFF),
+                                              fontFamily: 'Inter',
+                                              fontWeight:
+                                              FontWeight.w500),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Padding(
+                                padding: EdgeInsets.only(right: 8),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedDate = null;
+                                      selectDeliveryDate = false;
+                                    });
+                                  },
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        createButtonClick
+                            ? selectDeliveryDate
+                            ? const Text(
+                          " ",
+                        )
+                            : Padding(
+                            padding: EdgeInsets.only(
+                              top: 8,
+                              left: 20,
+                            ),
+                            child: errorWidget())
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: 97,
+                      margin: const EdgeInsets.only(
+                        top: 16.0,
                       ),
-                      SizedBox(
-                        width: 16,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff334155),
+                        borderRadius: BorderRadius.circular(
+                          40.0,
+                        ),
                       ),
-                      InkWell(
-                        onTap: () async {
-                          setState(() {
-                            createProjectValidate = true;
-                            createButtonClick = true;
-                          });
-                          if (await widget.formKey!.currentState!.validate()) {
-                            Future.delayed(const Duration(microseconds: 500),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: ColorSelect.white_color,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      setState(() {
+                        createProjectValidate = true;
+                        createButtonClick = true;
+                      });
+                      if (await widget.formKey!.currentState!.validate()) {
+                        Future.delayed(const Duration(microseconds: 500),
                                 () {
                               if (createProjectValidate) {
                                 if (selectAccountablePerson == true &&
@@ -920,50 +931,50 @@ class _EditPageState extends State<CreateProjectPage> {
                                     selectDeliveryDate == true) {
                                   SmartDialog.showLoading(
                                     msg:
-                                        "Your request is in progress please wait for a while...",
+                                    "Your request is in progress please wait for a while...",
                                   );
                                   createProject(context);
                                 }
                               }
                             });
-                          }
-                        },
-                        child: Container(
-                          width: 97.0,
-                          margin: const EdgeInsets.only(
-                            top: 16.0,
-                            right: 10.0,
-                          ),
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff7DD3FC),
-                            borderRadius: BorderRadius.circular(
-                              40.0,
-                            ),
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Create",
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  color: ColorSelect.black_color,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
+                      }
+                    },
+                    child: Container(
+                      width: 97.0,
+                      margin: const EdgeInsets.only(
+                        top: 16.0,
+                        right: 10.0,
+                      ),
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff7DD3FC),
+                        borderRadius: BorderRadius.circular(
+                          40.0,
                         ),
                       ),
-                    ],
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Create",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: ColorSelect.black_color,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
+
+
 
   //Create project_detail Api
   createProject(BuildContext context) async {
