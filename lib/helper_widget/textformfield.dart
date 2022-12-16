@@ -7,8 +7,6 @@ Widget formField({
   required controller,
   required Function(String values) callback,
   Function(String values)? validateCallback,
-  Function(String values)? onChangeCallback,
-  Function(String values)? onSubmitCallback,
 }) {
   String errorText = '';
 
@@ -52,7 +50,7 @@ Widget formField({
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   labelText: labelText,
                   labelStyle: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 13.0,
                       color: Color(0xff64748B),
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500),

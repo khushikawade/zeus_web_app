@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zeus/phase_module/model/department_model.dart';
 import 'package:zeus/services/api_client.dart';
 
 import 'package:http/http.dart';
@@ -12,7 +13,6 @@ import 'package:zeus/services/response_model/update_phase_resp.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:zeus/utility/constant.dart';
-
 
 class Api {
   AppUrl appUrl = AppUrl();
@@ -43,8 +43,7 @@ class Api {
         }
       } catch (e) {
         print(e);
-        return PhaseDetails(
-            error: somethingWentWorng, statusCode: 500);
+        return PhaseDetails(error: somethingWentWorng, statusCode: 500);
       }
     } else {
       return PhaseDetails(
@@ -84,9 +83,10 @@ class Api {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> map = jsonDecode(response.body.toString());
-      List<dynamic> mdata = map["data"];
-      department = mdata;
-      return department;
+      // List<dynamic> mdata = map["data"];
+      DepartementModel res = departementModelFromJson(response.body.toString());
+
+      return res;
     } else if (response.statusCode == 401) {
       AppUtil.showErrorDialog(context);
     } else {
@@ -119,8 +119,7 @@ class Api {
         }
       } catch (e) {
         print(e);
-        return ResourceNeededModel(
-            error: somethingWentWorng, statusCode: 500);
+        return ResourceNeededModel(error: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
@@ -161,15 +160,13 @@ class Api {
         }
       } catch (e) {
         print(e);
-        return CreatePhaseResp(
-            message: somethingWentWorng, statusCode: 500);
+        return CreatePhaseResp(message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return CreatePhaseResp(
-          message: somethingWentWorng,
-          statusCode: response.statusCode);
+          message: somethingWentWorng, statusCode: response.statusCode);
     }
   }
 
@@ -204,15 +201,13 @@ class Api {
         }
       } catch (e) {
         print(e);
-        return GetPhaseDetails(
-            message: somethingWentWorng, statusCode: 500);
+        return GetPhaseDetails(message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return GetPhaseDetails(
-          message: somethingWentWorng,
-          statusCode: response.statusCode);
+          message: somethingWentWorng, statusCode: response.statusCode);
     }
   }
 
@@ -247,15 +242,13 @@ class Api {
         }
       } catch (e) {
         print(e);
-        return UpdatePhaseResp(
-            message: somethingWentWorng, statusCode: 500);
+        return UpdatePhaseResp(message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
       return AppUtil.showErrorDialog(context);
     } else {
       return UpdatePhaseResp(
-          message: somethingWentWorng,
-          statusCode: response.statusCode);
+          message: somethingWentWorng, statusCode: response.statusCode);
     }
   }
 }

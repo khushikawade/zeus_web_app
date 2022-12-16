@@ -170,9 +170,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: Container(
-        margin: const EdgeInsets.only(right: 12.0, top: 16.0),
-        height: 30,
-        width: 30,
+        // color: Colors.red,
+        // margin: const EdgeInsets.only(right: 12.0, top: 16.0),
+        height: 38,
+        width: 38,
         decoration: BoxDecoration(
             color: const Color(0xff334155),
             border: Border.all(
@@ -181,7 +182,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
             borderRadius: const BorderRadius.all(Radius.circular(100))),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(8.0),
             child: SvgPicture.asset(
               "images/edit.svg",
             ),
@@ -441,7 +442,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           });
                                         },
                                         child: const Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
+                                          padding: EdgeInsets.only(right: 10.0),
                                           child: Text(
                                             "Delete",
                                             style: TextStyle(

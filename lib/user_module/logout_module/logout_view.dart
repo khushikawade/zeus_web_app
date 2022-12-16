@@ -36,7 +36,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
       position: PopupMenuPosition.under,
-      offset: const Offset(-20, 20),
+      offset: const Offset(-2, 20),
       color: const Color(0xff334155),
       tooltip: '',
       child: Container(

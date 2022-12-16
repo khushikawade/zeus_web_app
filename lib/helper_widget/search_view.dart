@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:zeus/phase_module/model/department_model.dart';
+import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/util.dart';
@@ -148,7 +150,55 @@ Widget rowProject(SkillsData user) {
   );
 }
 
+//PhasesSortedResources items
+Widget rowPhases(PhasesSortedResources items) {
+  return Container(
+    // width: 400,
+    color: Color(0xFF0F172A),
+    child: Padding(
+      padding: const EdgeInsets.all(11.0),
+      child: Text(
+        items.department.toString(),
+        style: const TextStyle(fontSize: 16.0, color: Colors.white),
+      ),
+    ),
+  );
+}
+
+//PhasesSortedResources items
+Widget rowPhasesType(DepartementData Language) {
+  return Container(
+    // width: 400,
+    color: Color(0xFF0F172A),
+    child: Padding(
+      padding: const EdgeInsets.all(11.0),
+      child: Text(
+        Language.name.toString(),
+        style: const TextStyle(fontSize: 16.0, color: Colors.white),
+      ),
+    ),
+  );
+}
+
 Widget rowResourceName(item) {
+  String firstName = "";
+  String lastName = "";
+  String fullName = '';
+
+  var names;
+  if (item.name != null && item.name!.isNotEmpty) {
+    if (item.name!.contains(" ")) {
+      List<String> splitedList = item.name!.split(" ");
+
+      firstName = splitedList[0];
+      lastName = splitedList[1];
+
+      fullName = firstName.substring(0, 1).toUpperCase() +
+          lastName.substring(0, 1).toUpperCase();
+    } else {
+      fullName = item.name!.substring(0, 1).toUpperCase();
+    }
+  }
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -156,19 +206,52 @@ Widget rowResourceName(item) {
         SizedBox(
           width: 6,
         ),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            width: 32,
-            height: 32,
-            child: Image.network(
-              'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
-              width: 32,
-              height: 32,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+        item.image != null && item.image.isNotEmpty
+            ? Container(
+                width: 38.0,
+                height: 36.0,
+                margin: const EdgeInsets.only(left: 0.0, bottom: 2.0),
+                decoration: BoxDecoration(
+                  color: const Color(0xff334155),
+                  borderRadius: BorderRadius.circular(
+                    40.0,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(item.image),
+                ))
+            : Container(
+                width: 32,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: Color(0xffF2F2F2)),
+                child: Text(
+                  fullName.isNotEmpty ? fullName : '',
+                  style: const TextStyle(
+                      fontFamily: 'Inter-Medium',
+                      fontSize: 14,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: -0.33,
+                      color: Color(0xff8B8B8B)),
+                ),
+              ),
+        // ClipRRect(
+        //   borderRadius: BorderRadius.circular(100),
+        //   child: Container(
+        //     width: 32,
+        //     height: 32,
+        //     child: NetworkImage(image)
+        //     // Image.network(
+        //     //   'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+        //       // width: 32,
+        //       // height: 32,
+        //       // fit: BoxFit.cover,
+        //     ),
+        //   ),
+
         SizedBox(
           width: 8,
         ),
