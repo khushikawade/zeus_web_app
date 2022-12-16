@@ -190,7 +190,7 @@ class _NewPhaseState extends State<NewPhase> {
         backgroundColor: const Color(0xff1E293B),
         content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.99,
-          height: MediaQuery.of(context).size.height * 0.99,
+          height: double.infinity,
           child: RawScrollbar(
             thumbColor: const Color(0xff4b5563),
             shape: RoundedRectangleBorder(
@@ -311,14 +311,14 @@ class _NewPhaseState extends State<NewPhase> {
                     children: [
                       phaseView(),
                       Container(
-                          height: MediaQuery.of(context).size.height * 1.5,
+                          height: MediaQuery.of(context).size.height * 1.2,
                           child: const VerticalDivider(
                             color: Color(0xff94A3B8),
                             thickness: 0.2,
                           )),
                       mileStoneView(),
                       Container(
-                          height: MediaQuery.of(context).size.height * 1.5,
+                          height: MediaQuery.of(context).size.height * 1.2,
                           child: const VerticalDivider(
                             color: Color(0xff94A3B8),
                             thickness: 0.2,
@@ -512,7 +512,7 @@ class _NewPhaseState extends State<NewPhase> {
                             radius: 30,
                             child: Icon(
                               Icons.person_outline,
-                              size: 35,
+                              size: 30,
                               color: Color(0xffDADADA),
                             ),
                           ),
@@ -1096,6 +1096,13 @@ class _NewPhaseState extends State<NewPhase> {
                     validationCallBack: (String values) {
                       if (values.isEmpty) {
                         return 'Please enter milestone date';
+                      } else if (mileStoneDate != null &&
+                          phaseDetails.start_date != null &&
+                          phaseDetails.end_date != null) {
+                        if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                            .isBefore((AppUtil.stringToDate(mileStoneDate))))) {
+                          return 'Milestone date must be greater then the phase end date';
+                        }
                       } else {
                         return null;
                       }
@@ -1392,7 +1399,7 @@ class _NewPhaseState extends State<NewPhase> {
                         backgroundColor: Color(0xff334155),
                         radius: 30,
                         child: Icon(Icons.person_outline,
-                            size: 35, color: Color(0xffDADADA)),
+                            size: 30, color: Color(0xffDADADA)),
                       ),
                     ),
                     Positioned(
