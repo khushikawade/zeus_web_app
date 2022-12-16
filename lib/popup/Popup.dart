@@ -1732,10 +1732,10 @@ showDailog(
                                               CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              height: 35.0,
-                                              width: 35.0,
+                                              height: 38.0,
+                                              width: 38.0,
                                               margin: const EdgeInsets.only(
-                                                  left: 45.0, top: 10.0),
+                                                  left: 45.0, top: 12.0),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xff334155),
                                                 borderRadius:
@@ -1759,7 +1759,7 @@ showDailog(
                                             ),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  left: 16.0, top: 18.0),
+                                                  left: 16.0, top: 20.0),
                                               child: Text(
                                                 "$phaseType",
                                                 style: const TextStyle(
@@ -1773,7 +1773,7 @@ showDailog(
                                             const Spacer(),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  top: 12.0, right: 42.0),
+                                                  top: 22.0, right: 42.0),
                                               child: Text(
                                                 "$fromDate",
                                                 style: const TextStyle(
@@ -1786,7 +1786,7 @@ showDailog(
                                             ),
                                             Container(
                                               margin: const EdgeInsets.only(
-                                                  top: 12.0, right: 36.0),
+                                                  top: 22.0, right: 36.0),
                                               child: Text(
                                                 "$tillDate",
                                                 style: const TextStyle(

@@ -152,8 +152,8 @@ class _NewPhaseState extends State<NewPhase> {
           saveButtonClickForSubtask = true;
           getPhaseDetails!.data!.subTasks!.forEach((element) {
             phaseDetails.sub_tasks!.add(SubTasksModel(
-                end_date: element.startDate,
-                start_date: element.endDate,
+                end_date: element.endDate,
+                start_date: element.startDate,
                 resource: ResourceData(
                     department_id: element.assignResource?.departmentId ?? 0,
                     resource_id: element.assignResource?.resourceId ?? 0,
@@ -449,7 +449,9 @@ class _NewPhaseState extends State<NewPhase> {
                   ? null
                   : AppUtil.stringToDate(phaseDetails.start_date.toString()),
               validationCallBack: (String values) {
-                if (values.isEmpty) {
+                if (values.isEmpty ||
+                    phaseDetails.start_date == null ||
+                    phaseDetails.start_date!.isEmpty) {
                   checkFormStatus();
                   return 'Please enter start date';
                 } else {
@@ -472,15 +474,19 @@ class _NewPhaseState extends State<NewPhase> {
                   ? null
                   : AppUtil.stringToDate(phaseDetails.end_date.toString()),
               validationCallBack: (String values) {
-                if (values.isEmpty) {
+                if (values.isEmpty ||
+                    phaseDetails.end_date == null ||
+                    phaseDetails.end_date!.isEmpty) {
                   checkFormStatus();
                   return 'Please enter end date';
-                } else if (phaseDetails.end_date != null &&
-                    phaseDetails.start_date != null) {
-                  if ((AppUtil.stringToDate(phaseDetails.end_date!).isBefore(
-                      (AppUtil.stringToDate(phaseDetails.start_date!))))) {
-                    return 'End date must be greater then the start date';
-                  }
+                } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                    .isBefore(
+                        (AppUtil.stringToDate(phaseDetails.start_date!))))) {
+                  return 'End date must be greater then the start date';
+                } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                    .isAtSameMomentAs(
+                        (AppUtil.stringToDate(phaseDetails.start_date!))))) {
+                  return 'End date should not be same as start date';
                 } else {
                   return null;
                 }
@@ -1100,15 +1106,13 @@ class _NewPhaseState extends State<NewPhase> {
                         ? null
                         : AppUtil.stringToDate(mileStoneDate),
                     validationCallBack: (String values) {
-                      if (values.isEmpty) {
+                      if (values.isEmpty ||
+                          mileStoneDate.isEmpty ||
+                          mileStoneDate == null) {
                         return 'Please enter milestone date';
-                      } else if (mileStoneDate != null &&
-                          phaseDetails.start_date != null &&
-                          phaseDetails.end_date != null) {
-                        if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                            .isBefore((AppUtil.stringToDate(mileStoneDate))))) {
-                          return 'Milestone date must be greater then the phase end date';
-                        }
+                      } else if ((AppUtil.stringToDate(mileStoneDate).isBefore(
+                          (AppUtil.stringToDate(phaseDetails.end_date!))))) {
+                        return 'Milestone date must be less then the phase end date';
                       } else {
                         return null;
                       }
@@ -1227,22 +1231,29 @@ class _NewPhaseState extends State<NewPhase> {
                 ? Padding(
                     padding: const EdgeInsets.only(right: 8.0, top: 15),
                     child: DatePicker(
-                      subtitle: 'subTask',
-                      title: "Start date",
-                      callback: (value) {
-                        subTaskStartDate = value.trim();
-                      },
-                      startDate: widget.type == 0
-                          ? null
-                          : AppUtil.stringToDate(subTaskStartDate),
-                      validationCallBack: (String values) {
-                        if (values.isEmpty) {
-                          return 'Please enter start date';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
+                        subtitle: 'subTask',
+                        title: "Start date",
+                        callback: (value) {
+                          subTaskStartDate = value.trim();
+                        },
+                        startDate: widget.type == 0
+                            ? null
+                            : AppUtil.stringToDate(subTaskStartDate),
+                        validationCallBack: (String values) {
+                          if (values.isEmpty ||
+                              subTaskStartDate == null ||
+                              subTaskStartDate.isEmpty) {
+                            return 'Please enter start date';
+                          } else if ((AppUtil.stringToDate(
+                                  phaseDetails.end_date!)
+                              .isBefore(
+                                  (AppUtil.stringToDate(subTaskStartDate))))) {
+                            return 'Subtask start date must be less then the phase end date';
+                          } else {
+                            return null;
+                          }
+                          ;
+                        }),
                   )
                 : Container(),
             const SizedBox(
@@ -1261,15 +1272,23 @@ class _NewPhaseState extends State<NewPhase> {
                           ? null
                           : AppUtil.stringToDate(subTaskEndDate),
                       validationCallBack: (String values) {
-                        if (values.isEmpty) {
+                        if (values.isEmpty ||
+                            subTaskEndDate == null ||
+                            subTaskEndDate.isEmpty) {
                           checkFormStatus();
                           return 'Please enter end date';
-                        } else if (subTaskStartDate.isNotEmpty &&
-                            subTaskEndDate.isNotEmpty) {
-                          if ((AppUtil.stringToDate(subTaskEndDate).isBefore(
-                              (AppUtil.stringToDate(subTaskStartDate))))) {
-                            return 'End date must be greater then the start date';
-                          }
+                        } else if ((AppUtil.stringToDate(subTaskEndDate)
+                            .isBefore(
+                                (AppUtil.stringToDate(subTaskStartDate))))) {
+                          return 'End date must be greater then the start date';
+                        } else if ((AppUtil.stringToDate(subTaskEndDate)
+                            .isAtSameMomentAs(
+                                (AppUtil.stringToDate(subTaskStartDate))))) {
+                          return 'End date should not be same as start date';
+                        } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                            .isBefore(
+                                (AppUtil.stringToDate(subTaskEndDate))))) {
+                          return 'Subtask End date must be less then the phase end date';
                         } else {
                           return null;
                         }
@@ -2097,11 +2116,11 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   beforeScreenLoad() {
-    phaseDetails.start_date = AppUtil.dateToString(DateTime.now());
-    phaseDetails.end_date = AppUtil.dateToString(DateTime.now());
-    mileStoneDate = AppUtil.dateToString(DateTime.now());
-    subTaskStartDate = AppUtil.dateToString(DateTime.now());
-    subTaskEndDate = AppUtil.dateToString(DateTime.now());
+    phaseDetails.start_date = "";
+    phaseDetails.end_date = "";
+    mileStoneDate = "";
+    subTaskStartDate = "";
+    subTaskEndDate = "";
   }
 
   void editPhaseApi() {}

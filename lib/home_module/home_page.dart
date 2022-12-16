@@ -2764,7 +2764,7 @@ class _NavigationRailState extends State<MyHomePage>
                     ),
                     LogOut(returnValue: () {}),
                     SizedBox(
-                      width: 30,
+                      width: 15,
                     ),
                   ],
                 ),
@@ -2851,7 +2851,11 @@ class _NavigationRailState extends State<MyHomePage>
                                     ),
                                   )
                                 : Container(),
-                            projectListTapIcon == false
+                            projectListTapIcon == false &&
+                                    cameraTapIcon == false &&
+                                    circleTapIcon == false &&
+                                    settingIcon == false &&
+                                    bellTapIcon == false
                                 ? Padding(
                                     padding: const EdgeInsets.only(left: 22.0),
                                     child: const Text("Profile",
@@ -2967,49 +2971,6 @@ class _NavigationRailState extends State<MyHomePage>
                                     )
                                   : Container(),
                               SizedBox(height: 40),
-                              peopleListTapIcon
-                                  ? Container(
-                                      // height: 40,
-                                      // width: 40,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        border: Border.all(
-                                            color: const Color(0xff334155)),
-                                        borderRadius: BorderRadius.circular(
-                                          18.0,
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
-                                        child: SvgPicture.asset(
-                                          "images/people.svg",
-                                        ),
-                                      ),
-                                    )
-                                  : InkWell(
-                                      child: SvgPicture.asset(
-                                        "images/people.svg",
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          bellTapIcon = false;
-                                          settingIcon = false;
-                                          projectListTapIcon = false;
-                                          peopleListTapIcon = true;
-                                          cameraTapIcon = false;
-                                          circleTapIcon = false;
-                                        });
-                                      },
-                                    ),
-                              peopleListTapIcon
-                                  ? Text('People',
-                                      style: TextStyle(color: Colors.white))
-                                  : Container(),
-                              SizedBox(height: 40),
                               cameraTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3038,14 +2999,57 @@ class _NavigationRailState extends State<MyHomePage>
                                         "images/camera.svg",
                                       ),
                                       onTap: () {
+                                        setState(() {
+                                          bellTapIcon = false;
+                                          settingIcon = false;
+                                          projectListTapIcon = false;
+                                          peopleListTapIcon = false;
+                                          cameraTapIcon = true;
+                                          circleTapIcon = false;
+                                        });
+                                      },
+                                    ),
+                              SizedBox(height: 40),
+                              peopleListTapIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/people.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      child: SvgPicture.asset(
+                                        "images/people.svg",
+                                      ),
+                                      onTap: () {
                                         bellTapIcon = false;
                                         settingIcon = false;
                                         projectListTapIcon = false;
-                                        peopleListTapIcon = false;
-                                        cameraTapIcon = true;
+                                        peopleListTapIcon = true;
+                                        cameraTapIcon = false;
                                         circleTapIcon = false;
                                       },
                                     ),
+                              peopleListTapIcon
+                                  ? Text('People',
+                                      style: TextStyle(color: Colors.white))
+                                  : Container(),
                               SizedBox(height: 40),
                               circleTapIcon
                                   ? Container(
