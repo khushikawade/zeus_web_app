@@ -464,7 +464,7 @@ class _EditPageState extends State<CreateProjectPage> {
                                   ]),
                             ),
                             createButtonClick
-                                ? selectAccountablePerson
+                                ? selectCustomer
                                     ? const Text(
                                         " ",
                                       )
@@ -652,7 +652,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin:const EdgeInsets.only( left: 0.0),
+                              margin: const EdgeInsets.only(left: 0.0),
                               height: 56.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
@@ -736,8 +736,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              margin:
-                                  const EdgeInsets.only(right: 0.0),
+                              margin: const EdgeInsets.only(right: 0.0),
                               height: 56.0,
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),

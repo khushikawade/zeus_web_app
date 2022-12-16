@@ -9,6 +9,7 @@ class CustomFormField extends StatefulWidget {
   Function(String val)? validator;
   Function(String value)? onChange;
   Function(String value)? onFieldSubmitted;
+  int? type; //type == 0 (Project ) ,type == 1 (People)
 
   CustomFormField(
       {this.controller,
@@ -16,7 +17,8 @@ class CustomFormField extends StatefulWidget {
       this.hint,
       this.validator,
       this.onChange,
-      this.onFieldSubmitted});
+      this.onFieldSubmitted,
+      this.type});
 
   @override
   State<StatefulWidget> createState() {
@@ -38,7 +40,7 @@ class CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 9),
+      margin: EdgeInsets.only(bottom: 10),
       child: Column(
         children: [
           Container(
@@ -76,12 +78,15 @@ class CustomFormFieldState extends State<CustomFormField> {
                   widget.onChange!(value);
                 }
               },
+              minLines: 1,
+              maxLength: 30,
               decoration: InputDecoration(
                 counterText: "",
                 border: InputBorder.none,
                 labelText: widget.label ?? '',
                 labelStyle: TextStyle(
                   fontSize: 11.0,
+                  letterSpacing: widget.type == 1 ? 0.5 : 0,
                   color: Color(0xff64748B),
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
@@ -100,13 +105,14 @@ class CustomFormFieldState extends State<CustomFormField> {
                     color: Color(0xff64748B),
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w500),
-                contentPadding: EdgeInsets.all(10),
+                contentPadding: widget.type == 1
+                    ? EdgeInsets.only(bottom: 12.0, left: 10, right: 10, top: 7)
+                    : EdgeInsets.all(10),
                 alignLabelWithHint: true,
               ),
             ),
           ),
-
-               Row(
+          Row(
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 15),
@@ -116,7 +122,6 @@ class CustomFormFieldState extends State<CustomFormField> {
               ),
             ],
           )
-
         ],
       ),
     );

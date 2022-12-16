@@ -29,6 +29,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:http_parser/http_parser.dart';
 import '../utility/constant.dart';
 import '../utility/upertextformate.dart';
+import 'package:zeus/helper_widget/custom_form_field.dart';
 
 class MyHomePage extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -81,7 +82,7 @@ class _NavigationRailState extends State<MyHomePage>
 
   var startTime1;
   var endTime2;
-  bool saveButtonClick = false;
+
   bool selectDepartment = false;
   bool selectSalary = false;
   bool selectDays = false;
@@ -89,7 +90,9 @@ class _NavigationRailState extends State<MyHomePage>
   bool selectTime = false;
   bool selectTimeZone = false;
   bool selectImage = false;
-
+  bool saveButtonClick = false;
+  bool createProjectValidate = true;
+  String name_ = '';
   getformattedTime(TimeOfDay time) {
     DateTime tempDate = DateFormat("hh:mm")
         .parse(time.hour.toString() + ":" + time.minute.toString());
@@ -123,7 +126,7 @@ class _NavigationRailState extends State<MyHomePage>
 
   Future? _getTag;
   List addSkills = [];
-  String name_ = '';
+
   String name1 = '';
   bool _autoValidate = false;
 
@@ -913,6 +916,38 @@ class _NavigationRailState extends State<MyHomePage>
                                             setStateView(() => name1 = text),
                                       ),
                                     ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 25,
+                                      left: 30.0,
+                                      bottom: 0,
+                                    ),
+                                    child: CustomFormField(
+                                      controller: _name,
+                                      hint: 'Enter name',
+                                      label: '\nName',
+                                      type: 1,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$',
+                                            caseSensitive: false);
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+                                          return 'Please enter valid name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
                                   Stack(
                                     children: [
