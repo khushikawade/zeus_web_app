@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
+import 'package:zeus/clickup_login/webview_page.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
 import 'package:zeus/routers/routers_class.dart';
+import 'package:zeus/services/register_webview_web_stubs.dart' if(dart.library.html) 'package:zeus/services/register_web_webview.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/user_module/people_profile/screen/people_detail_view.dart';
@@ -16,9 +20,11 @@ import 'package:url_strategy/url_strategy.dart';
 import 'home_module/home_page.dart';
 import 'package:provider/provider.dart';
 
+
 void main() async {
   await GetStorage.init();
   setPathUrlStrategy();
+  registerWebViewWebImplementation();
   runApp(MyApp());
 }
 
@@ -60,12 +66,20 @@ class MyApp extends StatelessWidget {
             ),
             routeInformationParser: VxInformationParser(),
             routerDelegate: VxNavigator(routes: {
-              "/": (_, __) => storage.read(isLogin) == null
+          
+              "/": (uri, params) { 
+                print("<<<<<<<<<<<<<<<<<<<<<ROUT PARAM gfffgffff>>>>>>>>>>>>>>>>>>>>>");
+                print(uri);
+                print(params);
+                return storage.read(isLogin) == null
                   ? MaterialPage(child: LoginScreen(onSubmit: ((value) {})))
                   : MaterialPage(
                       child: MyHomePage(
-                          onSubmit: (value) {}, adOnSubmit: (value) {})),
+                          onSubmit: (value) {}, adOnSubmit: (value) {}));},
               MyRoutes.homeRoute: (uri, params) {
+                print("<<<<<<<<<<<<<<<<<<<<<ROUT PARAM>>>>>>>>>>>>>>>>>>>>>");
+                print(uri);
+                print(params);
                 return MaterialPage(
                     child: MyHomePage(
                         onSubmit: (value) {}, adOnSubmit: (value) {}));
@@ -78,7 +92,13 @@ class MyApp extends StatelessWidget {
                     child: ProfileDetail(
                   list: params,
                 ));
-              })
+              }),
+              MyRoutes.clickUpWebView: ((uri, params) {
+                // final peopleUrl = (VxState.store as MyStore)
+                //     .data!
+                //     .getById(int.parse(uri.queryParameters["id"]!));
+                return MaterialPage(child: WebViewPage());
+              }),
             }),
             // home: storage.read(isLogin) == null
             //     ? LoginScreen(

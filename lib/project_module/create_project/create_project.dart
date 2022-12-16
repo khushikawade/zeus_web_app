@@ -106,7 +106,7 @@ class _EditPageState extends State<CreateProjectPage> {
           _statusList = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -133,7 +133,7 @@ class _EditPageState extends State<CreateProjectPage> {
           _accountableId = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -160,7 +160,7 @@ class _EditPageState extends State<CreateProjectPage> {
           _customerName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -276,9 +276,9 @@ class _EditPageState extends State<CreateProjectPage> {
                         ],
                       ),
                       TextFormField(
-                        maxLength: 20,
+                        maxLength: 50,
                         controller: _projecttitle,
-                        inputFormatters: [UpperCaseTextFormatter()],
+                        // inputFormatters: [UpperCaseTextFormatter()],
                         textCapitalization: TextCapitalization.characters,
                         cursorColor: const Color(0xffFFFFFF),
                         style: const TextStyle(color: Color(0xffFFFFFF)),
@@ -1304,7 +1304,7 @@ class _EditPageState extends State<CreateProjectPage> {
             (Route<dynamic> route) => false);
       } else if (response.statusCode == 401) {
         SmartDialog.dismiss();
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         SmartDialog.dismiss();
         Navigator.of(context)
@@ -1338,7 +1338,7 @@ class _EditPageState extends State<CreateProjectPage> {
           _currencyName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -1363,7 +1363,7 @@ class _EditPageState extends State<CreateProjectPage> {
 
         print("yes to much");
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -1390,7 +1390,7 @@ class _EditPageState extends State<CreateProjectPage> {
           addTag = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

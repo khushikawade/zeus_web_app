@@ -19,7 +19,7 @@ Widget formField({
               : MediaQuery.of(context).size.width * 0.26,
           margin: labelText == 'Milestone Title'
               ? const EdgeInsets.only(left: 15.0)
-              : EdgeInsets.only(left: 0.0),
+              : EdgeInsets.only(left: 15.0),
           height: 56,
           decoration: BoxDecoration(
             color: const Color(0xff334155),
@@ -50,7 +50,7 @@ Widget formField({
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   labelText: labelText,
                   labelStyle: TextStyle(
-                      fontSize: 11.0,
+                      fontSize: 13.0,
                       color: Color(0xff64748B),
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500),

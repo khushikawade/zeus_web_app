@@ -27,4 +27,5 @@ class MyRoutes {
   static String homeRoute = "/home";
   static String peopleDetailsRoute = "/people_detail";
   static const String peopleRoute = "/people";
+  static const String clickUpWebView = "/webview";
 }

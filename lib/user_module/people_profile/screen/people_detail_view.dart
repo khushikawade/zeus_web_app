@@ -70,7 +70,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
         loading = false;
       });
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
     }
@@ -133,7 +133,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
       print("yes");
       print("===============================???UPdated Successfully");
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       print(responseString);
       print("failed");
@@ -589,7 +589,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                               alignment: Alignment.topRight,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 3, right: 3),
+                                    const EdgeInsets.only(right: 12, top: 16),
                                 child: pop.MyMenu(
                                     data: list,
                                     title: 'Menu at bottom',
@@ -616,11 +616,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     children: [
                       aboutMeWidget(),
                       SizedBox(
-                        height: 30,
+                        height: 45,
                       ),
                       availabilityWidget(),
                       SizedBox(
-                        height: 30,
+                        height: 45,
                       ),
                       skillsWidget(),
                     ],
@@ -822,8 +822,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                 Text(
                   list.resource != null
                       ? startDay == endDay
-                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
-                          : "${startDay} - ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset$timezome"
+                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                          : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
                       : 'TBD',
                   style: TextStyle(
                       color: ColorSelect.white_color,
@@ -931,7 +931,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
           _timeline = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -958,7 +958,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
           _currencyName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -985,7 +985,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
           _department = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

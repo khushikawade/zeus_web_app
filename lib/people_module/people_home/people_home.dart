@@ -378,7 +378,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                             return Container(
                               height: 25.0,
                               margin: const EdgeInsets.only(
-                                  top: 16.0, bottom: 16, right: 12),
+                                  top: 10.0, bottom: 10, right: 12),
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 borderRadius: BorderRadius.circular(
@@ -389,8 +389,8 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                                 alignment: Alignment.center,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 6.0,
-                                      bottom: 6.0,
+                                      top: 8.0,
+                                      bottom: 8.0,
                                       right: 12.0,
                                       left: 12.0),
                                   child: Text(
@@ -414,25 +414,21 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500))),
                 DataCell(
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0, bottom: 15),
-                    child: Stack(children: [
-                      pop.MyMenu(
-                        peopleList: data.peopleList!.data,
-                        data: data.peopleList!.data![index],
-                        title: 'Menu at bottom',
-                        alignment: Alignment.bottomRight,
-                        buildContext: context,
-                        returnValue: () {
-                          print(
-                              "Value returned --------------------------------------");
-                          Provider.of<PeopleHomeViewModel>(context,
-                                  listen: false)
-                              .getPeopleDataList();
-                        },
-                      )
-                    ]),
-                  ),
+                  Stack(children: [
+                    pop.MyMenu(
+                      peopleList: data.peopleList!.data,
+                      data: data.peopleList!.data![index],
+                      title: 'Menu at bottom',
+                      alignment: Alignment.bottomRight,
+                      buildContext: context,
+                      returnValue: () {
+                        print(
+                            "Value returned --------------------------------------");
+                        Provider.of<PeopleHomeViewModel>(context, listen: false)
+                            .getPeopleDataList();
+                      },
+                    )
+                  ]),
                 )
               ]));
         });
@@ -567,7 +563,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
           _timeline = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

@@ -30,7 +30,7 @@ class _MyDropdownDataState extends State<MyDropdownData> {
         });
       }
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       setState(() {
         error = true;

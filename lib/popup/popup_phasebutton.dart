@@ -127,8 +127,6 @@ class _MenuPhaseState extends State<MenuPhase>
 
   @override
   void initState() {
-
-
     _isSelected = false;
     getUsers();
     getDepartment();
@@ -140,8 +138,16 @@ class _MenuPhaseState extends State<MenuPhase>
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      offset: widget.offset,
-      color: Color(0xFF0F172A),
+      tooltip: "",
+      // tooltip: null,
+      // offset: widget.offset,
+      // color: Color(0xFF0F172A),
+      constraints: const BoxConstraints.expand(width: 140, height: 120),
+      // padding: EdgeInsets.only(left: 50, right: 50),
+      offset: const Offset(-15, 12),
+      position: PopupMenuPosition.under,
+      color: const Color(0xFF0F172A),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
       child: Container(
         margin: const EdgeInsets.only(right: 12.0, top: 7.0),
@@ -164,27 +170,46 @@ class _MenuPhaseState extends State<MenuPhase>
 
       itemBuilder: (context) => [
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 1,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               widget.onEditClick!();
             },
+            // child: Container(
+            //   width: 30,
+            //   child: const Text(
+            //     "Edit",
+            //     style: TextStyle(
+            //         fontSize: 14,
+            //         fontWeight: FontWeight.w500,
+            //         fontFamily: 'Inter',
+            //         color: ColorSelect.white_color),
+            //   ),
+            // ),
             child: Container(
-              width: 30,
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    color: ColorSelect.white_color),
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20.0, top: 15),
+                child: Text(
+                  "Edit",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
               ),
             ),
           ),
         ),
         PopupMenuItem(
+          padding: EdgeInsets.zero,
           value: 2,
           child: InkWell(
+            hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
               showDialog(
@@ -204,7 +229,7 @@ class _MenuPhaseState extends State<MenuPhase>
                               Container(
                                 margin: const EdgeInsets.only(right: 20.0),
                                 child: const Text(
-                                  "Do you want to delete this person?",
+                                  "Do you want to delete this phase?",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
@@ -215,7 +240,7 @@ class _MenuPhaseState extends State<MenuPhase>
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted,you will not find this person in project_detail list ",
+                                  "Once deleted, you will not find this phase in phase list ",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -229,7 +254,7 @@ class _MenuPhaseState extends State<MenuPhase>
                                   child: Row(
                                     children: [
                                       Spacer(),
-                                      GestureDetector(
+                                      InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
@@ -246,7 +271,7 @@ class _MenuPhaseState extends State<MenuPhase>
                                           ),
                                         ),
                                       ),
-                                      GestureDetector(
+                                      InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
                                           SmartDialog.showLoading(
@@ -282,13 +307,20 @@ class _MenuPhaseState extends State<MenuPhase>
                     );
                   });
             },
-            child: const Text(
-              "Delete",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  color: ColorSelect.white_color),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20, top: 15),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
+                ),
+              ),
             ),
           ),
         )
@@ -323,7 +355,7 @@ class _MenuPhaseState extends State<MenuPhase>
           _department = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -351,7 +383,7 @@ class _MenuPhaseState extends State<MenuPhase>
           _timeline = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -375,16 +407,13 @@ class _MenuPhaseState extends State<MenuPhase>
 
       users = user.data!;
 
-
       setState(() {
         loading = false;
       });
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
-
-
     }
   }
 
@@ -410,10 +439,10 @@ class _MenuPhaseState extends State<MenuPhase>
       widget.returnValue!();
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -442,7 +471,7 @@ class _MenuPhaseState extends State<MenuPhase>
           _currencyName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

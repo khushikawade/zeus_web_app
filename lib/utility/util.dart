@@ -115,7 +115,7 @@ class AppUtil {
   }
 
   // show Anothrised Error Dialog
-  static showErrorDialog(BuildContext context) {
+  static showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -130,9 +130,9 @@ class AppUtil {
                   fontSize: 18.0,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold)),
-          content: const Padding(
+          content: Padding(
             padding: EdgeInsets.only(left: 25, right: 25, top: 16, bottom: 10),
-            child: Text('Your Session has been expired, Please try again!',
+            child: Text(message,
                 style: TextStyle(
                     color: Color(0xffFFFFFF),
                     fontSize: 16.0,

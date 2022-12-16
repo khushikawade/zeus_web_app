@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/routers/routers_class.dart';
@@ -12,6 +14,8 @@ import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:zeus/utility/util.dart';
+import 'dart:html' as html;
 
 class LoginScreen extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -43,6 +47,26 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       widget.onSubmit(_name);
     }
+  }
+
+  @override
+  void initState() {
+    html.window.addEventListener('message', listen, true);
+    
+    super.initState();
+  }
+
+  void listen(html.Event event) {
+    
+    var data = (event as html.MessageEvent).data;
+    print(data['sender']);
+    print(data['message']);
+    print(html.window.locationbar);
+    print(html.window.location.href);
+    
+    setState(() {
+      //...
+    });
   }
 
   @override
@@ -415,13 +439,14 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        sharedPreferences.setBool('isLogin', true);
-        sharedPreferences.setString('login', responseJson['data']['token']);
-        sharedPreferences.setString(
-            'user_id', responseJson['data']['user']['id'].toString());
-        storage.write(isLogin, true);
-        storage.write("token", responseJson['data']['token']);
-        storage.write("user_id", responseJson['data']['user']['id'].toString());
+        // sharedPreferences.setBool('isLogin', true);
+        // sharedPreferences.setString('login', responseJson['data']['token']);
+        // sharedPreferences.setString(
+        //     'user_id', responseJson['data']['user']['id'].toString());
+        // storage.write(isLogin, true);
+        // storage.write("token", responseJson['data']['token']);
+        // storage.write("user_id", responseJson['data']['user']['id'].toString());
+        
         // await sharedPreferences.setString('user',responseJson['name']);
         //  ==========edited sayyamyadav
         //Navigator.pushNamed(context, "/home");
@@ -444,7 +469,11 @@ class _LoginScreenState extends State<LoginScreen> {
         //             )),
         //     (Route<dynamic> route) => route is MyHomePage);
 
-        context.vxNav.clearAndPush(Uri.parse(MyRoutes.homeRoute));
+        //context.vxNav.clearAndPush(Uri.parse(MyRoutes.homeRoute));
+        testLaunch();
+        //launchClickUpsUrl();
+
+        //context.vxNav.clearAndPush(Uri.parse(MyRoutes.clickUpWebView));
       } else {
         Fluttertoast.showToast(
           msg: 'Please check Email and Password',
@@ -457,5 +486,53 @@ class _LoginScreenState extends State<LoginScreen> {
       SmartDialog.dismiss();
       _submit();
     }
+  }
+  testLaunch(){
+    Uri url = Uri.parse(AppUrl.clickUpsUrl);
+    WindowBase base=window.open(url.toString(), '_self');
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<object>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    print("${context.vxNav.routes.values}");
+    print(base);
+  
+    context.vxNav.clearAndPush(Uri.parse(MyRoutes.clickUpWebView));
+    base.addEventListener('click', (event)  {
+      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<object>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+      print(event.path);
+      print(event.target);
+      print(event.currentTarget);
+      
+    });
+  }
+
+  // launch click ups url
+  launchClickUpsUrl() async {
+    Uri url = Uri.parse(AppUrl.clickUpsUrl);
+    
+      
+    if (await canLaunchUrl(url)) {
+      launchUrl(url).then((value) => {
+        print(value)
+      });
+      await launchUrl(url,
+          //webOnlyWindowName: '_self',
+          mode: LaunchMode.inAppWebView,
+          webViewConfiguration: WebViewConfiguration(
+              enableJavaScript: true, enableDomStorage: true,
+              ),
+
+              );
+
+      //listenEvent();
+    } else {
+      AppUtil.showErrorDialog(context, "Could not launch $url");
+      throw "Could not launch $url";
+    }
+
+  }
+
+  // listen Event
+  listenEvent() {
+    var url = window.location.href;
+    print("URL -------------------------- $url");
   }
 }

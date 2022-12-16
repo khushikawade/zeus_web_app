@@ -162,14 +162,18 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
+      tooltip: "",
+      constraints: const BoxConstraints.expand(width: 140, height: 120),
+      padding: EdgeInsets.only(left: 50, right: 50),
       offset: const Offset(-15, 12),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: Container(
-        margin: const EdgeInsets.only(right: 12.0, top: 16.0),
-        height: 30,
-        width: 30,
+        // color: Colors.red,
+        // margin: const EdgeInsets.only(right: 12.0, top: 16.0),
+        height: 38,
+        width: 38,
         decoration: BoxDecoration(
             color: const Color(0xff334155),
             border: Border.all(
@@ -438,7 +442,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           });
                                         },
                                         child: const Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
+                                          padding: EdgeInsets.only(right: 10.0),
                                           child: Text(
                                             "Delete",
                                             style: TextStyle(
@@ -2159,7 +2163,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           _department = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print('department error===========>>>>>>>>');
         print("failed to much");
@@ -2187,7 +2191,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           _timeline = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -2215,7 +2219,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         loading = false;
       });
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
     }
@@ -2283,7 +2287,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       SmartDialog.dismiss();
 
@@ -2310,7 +2314,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       widget.returnValue!();
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -2339,7 +2343,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           _currencyName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

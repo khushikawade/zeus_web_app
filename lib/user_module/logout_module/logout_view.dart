@@ -38,7 +38,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
       position: PopupMenuPosition.under,
-      offset: const Offset(-20, 20),
+      offset: const Offset(-2, 20),
       color: const Color(0xff334155),
       tooltip: '',
       child: Container(
@@ -133,7 +133,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       context.vxNav.clearAndPush(Uri.parse(MyRoutes.loginRoute));
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       SmartDialog.dismiss();
       var user = userFromJson(response.body);
