@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:ui' as ui;
 
 class CustomFormField extends StatefulWidget {
   TextEditingController? controller;
@@ -9,7 +10,10 @@ class CustomFormField extends StatefulWidget {
   Function(String val)? validator;
   Function(String value)? onChange;
   Function(String value)? onFieldSubmitted;
-  int? type; //type == 0 (Project ) ,type == 1 (People)
+  double? hintTextHeight;
+  EdgeInsets? contentpadding;
+  int? maxline;
+  double? fontSizeForLabel;
 
   CustomFormField(
       {this.controller,
@@ -18,7 +22,10 @@ class CustomFormField extends StatefulWidget {
       this.validator,
       this.onChange,
       this.onFieldSubmitted,
-      this.type});
+      this.hintTextHeight,
+      this.contentpadding,
+      this.maxline,
+      this.fontSizeForLabel});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +47,7 @@ class CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 9),
       child: Column(
         children: [
           Container(
@@ -63,6 +70,8 @@ class CustomFormFieldState extends State<CustomFormField> {
             ),
             padding: EdgeInsets.only(bottom: 3),
             child: TextFormField(
+              maxLines: widget.maxline ?? 1,
+              
               cursorColor: const Color(0xffFFFFFF),
               style: const TextStyle(color: Color(0xffFFFFFF)),
               controller: widget.controller ?? TextEditingController(),
@@ -78,15 +87,12 @@ class CustomFormFieldState extends State<CustomFormField> {
                   widget.onChange!(value);
                 }
               },
-              minLines: 1,
-              maxLength: 30,
               decoration: InputDecoration(
                 counterText: "",
                 border: InputBorder.none,
                 labelText: widget.label ?? '',
                 labelStyle: TextStyle(
-                  fontSize: 11.0,
-                  letterSpacing: widget.type == 1 ? 0.5 : 0,
+                  fontSize: widget.fontSizeForLabel ?? 11.0,
                   color: Color(0xff64748B),
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
@@ -95,7 +101,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                 hintStyle: TextStyle(
                     fontSize: 14.0,
                     letterSpacing: 0.25,
-                    height: 2,
+                    height: widget.hintTextHeight ?? 2,
                     color: Color(0xffFFFFFF),
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w400),
@@ -105,9 +111,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                     color: Color(0xff64748B),
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w500),
-                contentPadding: widget.type == 1
-                    ? EdgeInsets.only(bottom: 12.0, left: 10, right: 10, top: 7)
-                    : EdgeInsets.all(10),
+                contentPadding: widget.contentpadding ?? EdgeInsets.all(10),
                 alignLabelWithHint: true,
               ),
             ),
