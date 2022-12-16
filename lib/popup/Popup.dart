@@ -1298,16 +1298,18 @@ showDailog(
                                         },
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 30.0, top: 20.0),
-                                      child: const Text(
-                                        "Potential roadblocks",
-                                        style: TextStyle(
-                                            color: Color(0xffFFFFFF),
-                                            fontSize: 16.0,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500),
+                                    Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 30.0, top: 20.0),
+                                        child: const Text(
+                                          "Potential roadblocks",
+                                          style: TextStyle(
+                                              color: Color(0xffFFFFFF),
+                                              fontSize: 16.0,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                     ),
                                     Container(
@@ -1491,16 +1493,19 @@ showDailog(
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
+                                          // color: Colors.green,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.38,
+                                              0.37,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               0.99,
                                           decoration: const BoxDecoration(
-                                            color: Color(0xff263143),
+                                            color:
+                                                // Colors.red,
+                                                Color(0xff263143),
                                           ),
                                         ),
                                       ],
