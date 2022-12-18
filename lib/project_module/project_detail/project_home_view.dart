@@ -41,6 +41,7 @@ class ProjectHomeState extends State<ProjectHome> {
   ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
 
+
   bool? amIHovering;
   bool? amIHovering1;
 
@@ -215,8 +216,10 @@ class ProjectHomeState extends State<ProjectHome> {
   // ScrollController _controller = ScrollController();
 
   Future? getListData() async {
-    return await Provider.of<ProjectHomeViewModel>(context, listen: false)
+    var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
+
+    return result;
   }
 
   Future? getList;
@@ -226,11 +229,11 @@ class ProjectHomeState extends State<ProjectHome> {
         .changeProfile();
   }
 
-  @override
-  void didChangeDependencies() {
-    getList = getListData1();
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getList = getListData1();
+  //   super.didChangeDependencies();
+  // }
 
   void change() async {
     var prefs = await SharedPreferences.getInstance();
@@ -241,24 +244,35 @@ class ProjectHomeState extends State<ProjectHome> {
   initState() {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
-    getListData();
-    change();
-    getSelectStatus();
-    getAccountable();
-    getAccountable();
-    getCustomer();
-    getCurrency();
-    getUsers();
-
+    getAllData();
     super.initState();
+  }
+
+  getAllData() async {
+    await getListData();
+    change();
+    await getSelectStatus();
+    await getAccountable();
+    await getAccountable();
+    await getCustomer();
+    await getCurrency();
+    getUsers();
+    //await getData();
+  }
+
+  // get provider data
+  getData() {
+    var data = context.watch<ProjectHomeViewModel>();
+
+
   }
 
   // Make People List widget or Data Table
   Widget makeProjectList(ProjectHomeViewModel? data) {
     List<DataRow> rows = [];
-
     if (data!.projectDetailsResponse != null) {
       if (data.projectDetailsResponse!.data!.isNotEmpty) {
+        print("ONE");
         print(data.projectDetailsResponse!.data!.length);
         print(data.projectDetailsResponse!.data!.length);
         data.projectDetailsResponse!.data!.asMap().forEach((index, element) {
@@ -342,7 +356,7 @@ class ProjectHomeState extends State<ProjectHome> {
               _projectData.accountablePerson!.name!.isNotEmpty) {
             if (_projectData.accountablePerson!.name!.contains(" ")) {
               List<String> splitedList =
-                  _projectData.accountablePerson!.name!.split(" ");
+              _projectData.accountablePerson!.name!.split(" ");
               splitedList.removeWhere((element) => element.isEmpty);
 
               firstName = splitedList[0];
@@ -505,7 +519,6 @@ class ProjectHomeState extends State<ProjectHome> {
         });
       }
     }
-
     return Row(
       key: Key("show_more_ink_well"),
       mainAxisAlignment: MainAxisAlignment.start,
@@ -905,6 +918,7 @@ class ProjectHomeState extends State<ProjectHome> {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
+
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
       child: Scaffold(
@@ -961,8 +975,8 @@ class ProjectHomeState extends State<ProjectHome> {
                                 controller: _scrollController,
                                 shrinkWrap: true,
                                 children: [
-                                  makeProjectList(data),
-                                ],
+                                   makeProjectList(data)
+                                  ],
                               ),
                             ),
                           ));
