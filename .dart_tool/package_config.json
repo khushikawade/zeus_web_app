@@ -134,6 +134,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dropdown_button2",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/dropdown_button2-1.9.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "equatable",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/equatable-2.0.5",
       "packageUri": "lib/",
@@ -656,7 +662,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-12-18T06:30:43.523838Z",
+  "generated": "2022-12-18T11:30:58.038256Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }
