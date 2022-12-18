@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
                   PointerDeviceKind.touch,
                   PointerDeviceKind.stylus,
                   PointerDeviceKind.unknown
-
                 },
               ),
               builder: (context, child) => ResponsiveWrapper.builder(
@@ -62,17 +61,16 @@ class MyApp extends StatelessWidget {
                   const ResponsiveBreakpoint.resize(1440, name: DESKTOP),
                   const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
                 ],
-
               ),
-              home: MyHomePageDropDown(),
-              // home: storage.read(isLogin) == null
-              //     ? LoginScreen(
-              //         onSubmit: (String value) {},
-              //       )
-              //     : MyHomePage(
-              //         onSubmit: (String value) {},
-              //         adOnSubmit: (String value) {},
-              //       ),
+              // home: MyHomePageDropDown(),
+              home: storage.read(isLogin) == null
+                  ? LoginScreen(
+                      onSubmit: (String value) {},
+                    )
+                  : MyHomePage(
+                      onSubmit: (String value) {},
+                      adOnSubmit: (String value) {},
+                    ),
               navigatorObservers: [FlutterSmartDialog.observer],
               onGenerateRoute: generateRoute,
               debugShowCheckedModeBanner: false,
