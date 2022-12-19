@@ -14,11 +14,8 @@ class CustomFormField extends StatefulWidget {
   EdgeInsets? contentpadding;
   int? maxline;
   double? fontSizeForLabel;
-<<<<<<< HEAD
   int? maxLength;
-=======
   bool? obsecqureText;
->>>>>>> 8127a7c3feff0ce23c957c46572afdc41480bc06
 
   CustomFormField(
       {this.controller,
@@ -31,11 +28,8 @@ class CustomFormField extends StatefulWidget {
       this.contentpadding,
       this.maxline,
       this.fontSizeForLabel,
-<<<<<<< HEAD
-      this.maxLength});
-=======
+      this.maxLength,
       this.obsecqureText});
->>>>>>> 8127a7c3feff0ce23c957c46572afdc41480bc06
 
   @override
   State<StatefulWidget> createState() {
@@ -81,11 +75,8 @@ class CustomFormFieldState extends State<CustomFormField> {
             padding: EdgeInsets.only(bottom: 3.sp),
             child: TextFormField(
               maxLines: widget.maxline ?? 1,
-<<<<<<< HEAD
               maxLength: widget.maxLength ?? null,
-=======
               obscureText: widget.obsecqureText ?? false,
->>>>>>> 8127a7c3feff0ce23c957c46572afdc41480bc06
               cursorColor: const Color(0xffFFFFFF),
               style: const TextStyle(color: Color(0xffFFFFFF)),
               controller: widget.controller ?? TextEditingController(),
