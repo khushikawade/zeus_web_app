@@ -3,6 +3,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/test_view.dart';
@@ -251,11 +252,11 @@ class _EditPageState extends State<CreateProjectPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                      child: const Text(
+                      child: Text(
                     'Create Project',
                     style: TextStyle(
                         color: Color(0xffFFFFFF),
-                        fontSize: 18.0,
+                        fontSize: 18.sp,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w700),
                   )),
@@ -281,7 +282,8 @@ class _EditPageState extends State<CreateProjectPage> {
                       ))
                 ],
               ),
-              SizedBox(height: 32),
+              SizedBox(height: 32.w),
+
               CustomFormField(
                 controller: _projecttitle,
                 hint: '',
@@ -311,7 +313,7 @@ class _EditPageState extends State<CreateProjectPage> {
                     items: accountablePersonList!,
                     onChange: ((DropdownModel value) {
                       setState(() {
-                        _account = value!.id;
+                        _account = value.id;
                         print("account:${_account}");
                         selectAccountablePerson = true;
                       });
@@ -749,7 +751,7 @@ class _EditPageState extends State<CreateProjectPage> {
                     hint: 'Select Status',
                     label: "",
                     errorText: createButtonClick &&
-                            (_curren == null || _curren!.isEmpty)
+                            (_status == null || _status!.isEmpty)
                         ? 'Please Select this field'
                         : '',
                     items: projectStatusList!,
@@ -845,131 +847,150 @@ class _EditPageState extends State<CreateProjectPage> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(right: 0.0),
-                          height: 56.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xff475569),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
-                                ),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  _selectDate(setState);
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(left: 13.0),
-                                  child: Image.asset(
-                                    'images/date.png',
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 8.0,
-                                        left: 20.0,
-                                      ),
-                                      child: const Text(
-                                        "Delivery Date",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            overflow: TextOverflow.fade,
-                                            color: Color(0xff64748B),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500),
-                                      )),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      setState(() {
-                                        _selectDate(setState);
-                                        // selectDeliveryDate = true;
-                                      });
-                                    },
-                                    child: Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 3.0,
-                                          left: 20.0,
-                                        ),
-                                        child: selectedDate == null
-                                            ? const Text(
-                                                'Select Date',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    overflow: TextOverflow.fade,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                              )
-                                            : Text(
-                                                '${selectedDate!.day} / ${selectedDate!.month} / ${selectedDate!.year}',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    overflow: TextOverflow.fade,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: EdgeInsets.only(right: 8),
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedDate = null;
-                                      selectDeliveryDate = false;
-                                    });
-                                  },
-                                  child: const Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        createButtonClick
-                            ? selectDeliveryDate
-                                ? const Text(
-                                    " ",
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 8,
-                                      left: 20,
-                                    ),
-                                    child: errorWidget())
-                            : Container(),
-                      ],
+                    child: CustomDatePicker(
+                      hint: 'Select Date',
+                      label: 'Delivery Date',
+                      onChange: (date) {
+                        setState(() {
+                          selectedDate = date;
+                        });
+                      },
+                      onCancel: () {
+                        setState(() {
+                          selectedDate = null;
+                        });
+                      },
+                      errorText: (createButtonClick && selectedDate == null)
+                          ? 'Please select this field'
+                          : "",
+                      validator: (value) {},
                     ),
+
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    //     Container(
+                    //       width: double.infinity,
+                    //       margin: const EdgeInsets.only(right: 0.0),
+                    //       height: 56.0,
+                    //       decoration: BoxDecoration(
+                    //         color: const Color(0xff334155),
+                    //         borderRadius: BorderRadius.circular(
+                    //           8.0,
+                    //         ),
+                    //         boxShadow: const [
+                    //           BoxShadow(
+                    //             color: Color(0xff475569),
+                    //             offset: Offset(
+                    //               0.0,
+                    //               2.0,
+                    //             ),
+                    //             blurRadius: 0.0,
+                    //             spreadRadius: 0.0,
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //         children: [
+                    //           GestureDetector(
+                    //             onTap: () {
+                    //               _selectDate(setState);
+                    //             },
+                    //             child: Container(
+                    //               margin: const EdgeInsets.only(left: 13.0),
+                    //               child: Image.asset(
+                    //                 'images/date.png',
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Container(
+                    //                   margin: const EdgeInsets.only(
+                    //                     top: 8.0,
+                    //                     left: 20.0,
+                    //                   ),
+                    //                   child: const Text(
+                    //                     "Delivery Date",
+                    //                     style: TextStyle(
+                    //                         fontSize: 15,
+                    //                         overflow: TextOverflow.fade,
+                    //                         color: Color(0xff64748B),
+                    //                         fontFamily: 'Inter',
+                    //                         fontWeight: FontWeight.w500),
+                    //                   )),
+                    //               GestureDetector(
+                    //                 onTap: () async {
+                    //                   setState(() {
+                    //                     _selectDate(setState);
+                    //                     // selectDeliveryDate = true;
+                    //                   });
+                    //                 },
+                    //                 child: Container(
+                    //                     margin: const EdgeInsets.only(
+                    //                       top: 3.0,
+                    //                       left: 20.0,
+                    //                     ),
+                    //                     child: selectedDate == null
+                    //                         ? const Text(
+                    //                             'Select Date',
+                    //                             style: TextStyle(
+                    //                                 fontSize: 14,
+                    //                                 overflow: TextOverflow.fade,
+                    //                                 color: Color(0xffFFFFFF),
+                    //                                 fontFamily: 'Inter',
+                    //                                 fontWeight:
+                    //                                     FontWeight.w300),
+                    //                           )
+                    //                         : Text(
+                    //                             '${selectedDate!.day} / ${selectedDate!.month} / ${selectedDate!.year}',
+                    //                             style: const TextStyle(
+                    //                                 fontSize: 14,
+                    //                                 overflow: TextOverflow.fade,
+                    //                                 color: Color(0xffFFFFFF),
+                    //                                 fontFamily: 'Inter',
+                    //                                 fontWeight:
+                    //                                     FontWeight.w500),
+                    //                           )),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           const Spacer(),
+                    //           Padding(
+                    //             padding: EdgeInsets.only(right: 8),
+                    //             child: InkWell(
+                    //               onTap: () {
+                    //                 setState(() {
+                    //                   selectedDate = null;
+                    //                   selectDeliveryDate = false;
+                    //                 });
+                    //               },
+                    //               child: const Icon(
+                    //                 Icons.close,
+                    //                 color: Colors.white,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     createButtonClick
+                    //         ? selectDeliveryDate
+                    //             ? const Text(
+                    //                 " ",
+                    //               )
+                    //             : Padding(
+                    //                 padding: EdgeInsets.only(
+                    //                   top: 8,
+                    //                   left: 20,
+                    //                 ),
+                    //                 child: errorWidget())
+                    //         : Container(),
+                    //   ],
+                    // ),
                   ),
                 ],
               ),
@@ -1024,7 +1045,7 @@ class _EditPageState extends State<CreateProjectPage> {
                                 selectCustomer == true &&
                                 selectCurrency == true &&
                                 selectStatus == true &&
-                                selectDeliveryDate == true) {
+                                selectedDate != null) {
                               SmartDialog.showLoading(
                                 msg:
                                     "Your request is in progress please wait for a while...",
