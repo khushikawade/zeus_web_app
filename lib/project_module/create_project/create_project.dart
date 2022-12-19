@@ -858,7 +858,8 @@ class _EditPageState extends State<CreateProjectPage> {
                                       child: const Text(
                                         "Delivery Date",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 11,
+                                            letterSpacing: 0.5,
                                             overflow: TextOverflow.fade,
                                             color: Color(0xff64748B),
                                             fontFamily: 'Inter',

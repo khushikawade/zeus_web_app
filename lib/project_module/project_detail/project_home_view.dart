@@ -41,7 +41,6 @@ class ProjectHomeState extends State<ProjectHome> {
   ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
 
-
   bool? amIHovering;
   bool? amIHovering1;
 
@@ -225,7 +224,8 @@ class ProjectHomeState extends State<ProjectHome> {
   Future? getList;
 
   Future getListData1() {
-    return Provider.of<ProjectHomeViewModel>(context, listen: false).changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: false)
+        .changeProfile();
   }
 
   // @override
@@ -262,8 +262,6 @@ class ProjectHomeState extends State<ProjectHome> {
   // get provider data
   getData() {
     var data = context.watch<ProjectHomeViewModel>();
-
-
   }
 
   // Make People List widget or Data Table
@@ -355,7 +353,7 @@ class ProjectHomeState extends State<ProjectHome> {
               _projectData.accountablePerson!.name!.isNotEmpty) {
             if (_projectData.accountablePerson!.name!.contains(" ")) {
               List<String> splitedList =
-              _projectData.accountablePerson!.name!.split(" ");
+                  _projectData.accountablePerson!.name!.split(" ");
               splitedList.removeWhere((element) => element.isEmpty);
 
               firstName = splitedList[0];
@@ -546,7 +544,6 @@ class ProjectHomeState extends State<ProjectHome> {
                           showCheckboxColumn: false,
                           dataRowHeight: 60,
                           dividerThickness: 0.7,
-                         
                           columns: [
                             DataColumn(
                               label: MouseRegion(
@@ -723,7 +720,7 @@ class ProjectHomeState extends State<ProjectHome> {
                             DataColumn(
                               label: InkWell(
                                 child: Text(
-                                  "Potential roadblock",
+                                  "Potential roadblocks",
                                   key: key8,
                                   style: const TextStyle(
                                       color: ColorSelect.text_color,
@@ -973,9 +970,7 @@ class ProjectHomeState extends State<ProjectHome> {
                               child: ListView(
                                 controller: _scrollController,
                                 shrinkWrap: true,
-                                children: [
-                                   makeProjectList(data)
-                                  ],
+                                children: [makeProjectList(data)],
                               ),
                             ),
                           ));

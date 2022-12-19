@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/helper_widget/test_view.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
@@ -64,6 +65,7 @@ class _NavigationRailState extends State<MyHomePage>
   bool circleTapIcon = false;
   bool bellTapIcon = false;
   bool settingIcon = false;
+  bool createButtonClick = false;
 
   var items = [
     'Item 1',
@@ -636,57 +638,62 @@ class _NavigationRailState extends State<MyHomePage>
                                 const SizedBox(
                                   width: 16,
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      createProjectValidate = true;
-                                    });
-
-                                    if (_formKey.currentState!.validate()) {
-                                      Future.delayed(
-                                          const Duration(microseconds: 500),
-                                          () {
-                                        if (createProjectValidate) {
-                                          if (selectImage == true &&
-                                              selectDepartment == true &&
-                                              selectDays == true &&
-                                              selectSkill == true &&
-                                              selectTime == true &&
-                                              selectTimeZone == true) {
-                                            SmartDialog.showLoading(
-                                              msg:
-                                                  "Your request is in progress please wait for a while...",
-                                            );
-
-                                            createPeople(context, setStateView);
-                                          }
-                                        }
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10.0, right: 30.0, bottom: 10.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        createProjectValidate = true;
+                                        createButtonClick = true;
                                       });
-                                    }
-                                    setStateView(() {
-                                      saveButtonClick = true;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 97,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, right: 30.0, bottom: 10.0),
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff7DD3FC),
-                                      borderRadius: BorderRadius.circular(
-                                        40.0,
+
+                                      if (_formKey.currentState!.validate()) {
+                                        Future.delayed(
+                                            const Duration(microseconds: 500),
+                                            () {
+                                          if (createProjectValidate) {
+                                            if (selectImage == true &&
+                                                selectDepartment == true &&
+                                                selectDays == true &&
+                                                selectSkill == true &&
+                                                selectTime == true &&
+                                                selectTimeZone == true) {
+                                              SmartDialog.showLoading(
+                                                msg:
+                                                    "Your request is in progress please wait for a while...",
+                                              );
+
+                                              createPeople(
+                                                  context, setStateView);
+                                            }
+                                          }
+                                        });
+                                      }
+                                      setStateView(() {
+                                        saveButtonClick = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 97,
+                                      margin: const EdgeInsets.only(),
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff7DD3FC),
+                                        borderRadius: BorderRadius.circular(
+                                          40.0,
+                                        ),
                                       ),
-                                    ),
-                                    child: const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Save",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xff000000),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700),
+                                      child: const Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Save",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: Color(0xff000000),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -733,85 +740,92 @@ class _NavigationRailState extends State<MyHomePage>
                                                       width: 36.0,
                                                     )),
                                           )),
-                                      InkWell(
-                                        onTap: () async {
-                                          final image = await ImagePickerWeb
-                                              .getImageAsBytes();
-                                          setStateView(() {
-                                            webImage = image!;
-                                            imageavail = true;
-                                            selectImage = true;
-                                          });
-                                        },
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 35.0,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.11,
-                                              margin: const EdgeInsets.only(
-                                                  left: 48.0, top: 57.0),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  40.0,
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 48.0, top: 57.0),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                final image =
+                                                    await ImagePickerWeb
+                                                        .getImageAsBytes();
+                                                setStateView(() {
+                                                  webImage = image!;
+                                                  imageavail = true;
+                                                  selectImage = true;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 35.0,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.11,
+                                                // margin: const EdgeInsets.only(
+                                                //     left: 48.0, top: 57.0),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  //color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    40.0,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 16.0),
+                                                      child: const Icon(
+                                                          Icons.camera_alt,
+                                                          size: 18,
+                                                          color: Color(
+                                                              0xffFFFFFF)),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 11.0),
+                                                      child: const Text(
+                                                        "Upload new",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0),
-                                                    child: const Icon(
-                                                        Icons.camera_alt,
-                                                        size: 18,
-                                                        color:
-                                                            Color(0xffFFFFFF)),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 11.0),
-                                                    child: const Text(
-                                                      "Upload new",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontSize: 14.0,
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
                                             ),
-                                            Row(
-                                              children: [
-                                                SizedBox(width: 10),
-                                                saveButtonClick
-                                                    ? selectImage
-                                                        ? const Text(
-                                                            " ",
-                                                          )
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              top: 8,
-                                                              left: 0,
-                                                            ),
-                                                            child:
-                                                                errorWidget())
-                                                    : Text(''),
-                                              ],
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              saveButtonClick
+                                                  ? selectImage
+                                                      ? const Text(
+                                                          " ",
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 8,
+                                                            left: 0,
+                                                          ),
+                                                          child: errorWidget())
+                                                  : Text(''),
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -1812,7 +1826,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     .width *
                                                 0.26,
                                             margin: const EdgeInsets.only(
-                                                left: 30.0),
+                                                left: 30.0, right: 29.6),
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
@@ -1850,78 +1864,75 @@ class _NavigationRailState extends State<MyHomePage>
                                       Container(
                                         margin: const EdgeInsets.only(
                                             left: 30.0,
-                                            right: 30.0,
+                                            right: 55,
                                             top: 26,
                                             bottom: 10),
                                         height: 20.0,
-                                        child: Container(child: StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSettersetState) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16, right: 70),
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                child: DropdownButton(
-                                                  dropdownColor:
-                                                      ColorSelect.class_color,
-                                                  underline: Container(),
-                                                  hint: const Text(
-                                                    "Select",
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  isExpanded: true,
-                                                  icon: const Icon(
-                                                    Icons.arrow_drop_down,
-                                                    color: Color(0xff64748B),
-                                                  ),
-                                                  items: items1
-                                                      .map((String items1) {
-                                                    return DropdownMenuItem(
-                                                      value: items1,
-                                                      child: Text(items1,
-                                                          style:
-                                                              (const TextStyle(
-                                                                  color: Colors
-                                                                      .white))),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    setStateView(() {
-                                                      _day = newValue;
-                                                      _shortday =
-                                                          _day!.substring(0, 3);
-                                                      if (selectedDaysList
-                                                          .isNotEmpty) {
+                                        child: Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 16.0, right: 20.0),
+                                            child: StatefulBuilder(
+                                              builder: (BuildContext context,
+                                                  StateSettersetState) {
+                                                return DropdownButtonHideUnderline(
+                                                  child: CustomDropdownButton(
+                                                    dropdownColor:
+                                                        ColorSelect.class_color,
+                                                    underline: Container(),
+                                                    hint: const Text(
+                                                      "Select",
+                                                      style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    // isExpanded: true,
+                                                    icon: const Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Color(0xff64748B),
+                                                    ),
+                                                    items: items1
+                                                        .map((String items1) {
+                                                      return DropdownMenuItem(
+                                                        value: items1,
+                                                        child: Text(items1,
+                                                            style: (const TextStyle(
+                                                                color: Colors
+                                                                    .white))),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged:
+                                                        (String? newValue) {
+                                                      setStateView(() {
+                                                        _day = newValue;
+                                                        _shortday = _day!
+                                                            .substring(0, 3);
                                                         if (selectedDaysList
-                                                            .contains(
-                                                                _shortday)) {
+                                                            .isNotEmpty) {
+                                                          if (selectedDaysList
+                                                              .contains(
+                                                                  _shortday)) {
+                                                          } else {
+                                                            selectedDaysList
+                                                                .add(_shortday!
+                                                                    .toString());
+                                                            selectDays = true;
+                                                          }
                                                         } else {
                                                           selectedDaysList.add(
                                                               _shortday!
                                                                   .toString());
                                                           selectDays = true;
                                                         }
-                                                      } else {
-                                                        selectedDaysList.add(
-                                                            _shortday!
-                                                                .toString());
-                                                        selectDays = true;
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        )),
+                                                      });
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            )),
                                       ),
                                     ],
                                   ),
@@ -2860,11 +2871,14 @@ class _NavigationRailState extends State<MyHomePage>
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
+                                        // width:
+                                        //     MediaQuery.of(context).size.width *
+                                        //         0.26,
                                         margin: const EdgeInsets.only(
-                                            top: 0.0, left: 30.0),
+                                          top: 0.0,
+                                          left: 30.0,
+                                          right: 70,
+                                        ),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2970,7 +2984,7 @@ class _NavigationRailState extends State<MyHomePage>
               Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -3019,9 +3033,9 @@ class _NavigationRailState extends State<MyHomePage>
                                 color: Color(0xff64748B),
                               )),
                           hintText: projectListTapIcon
-                              ? 'Search Project'
+                              ? 'Search project'
                               : peopleListTapIcon
-                                  ? 'Search People'
+                                  ? 'Search people'
                                   : 'Search',
                           hintStyle: const TextStyle(
                               fontSize: 14.0,
