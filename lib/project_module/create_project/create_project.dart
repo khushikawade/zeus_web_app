@@ -50,7 +50,8 @@ class _EditPageState extends State<CreateProjectPage> {
   final TextEditingController _budget = TextEditingController();
   final TextEditingController _estimatehours = TextEditingController();
 
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController descriptionController =
+      TextEditingController(text: '');
 
   final ScrollController verticalScroll = ScrollController();
 
@@ -62,10 +63,11 @@ class _EditPageState extends State<CreateProjectPage> {
   List _timeline = [];
   List addTag = [];
 
-  List<String>? accountablePersonList = [];
-  List<String>? consumerList = [];
+  List<DropdownModel>? accountablePersonList = [];
+  List<DropdownModel>? consumerList = [];
+  List<DropdownModel>? projectStatusList = [];
 
-  List<String>? currencyList = [];
+  List<DropdownModel>? currencyList = [];
   List<String>? addTag1 = [];
   List<int> add1 = [1];
   bool imageavail = false;
@@ -103,6 +105,22 @@ class _EditPageState extends State<CreateProjectPage> {
         List<dynamic> mdata = map["data"];
         setState(() {
           _statusList = mdata;
+          try {
+            projectStatusList!.clear();
+
+            _statusList.forEach((element) {
+              projectStatusList!.add(
+                  DropdownModel(element['id'].toString(), element['title']));
+            });
+
+            // _accountableId.map((result) {
+            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
+            //   print(result);
+            //   accountablePersonList!.add(result['name']);
+            // });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -134,7 +152,8 @@ class _EditPageState extends State<CreateProjectPage> {
             accountablePersonList!.clear();
 
             _accountableId.forEach((element) {
-              accountablePersonList!.add(element['name']);
+              accountablePersonList!.add(
+                  DropdownModel(element['id'].toString(), element['name']));
             });
 
             // _accountableId.map((result) {
@@ -176,7 +195,8 @@ class _EditPageState extends State<CreateProjectPage> {
             consumerList!.clear();
 
             _customerName.forEach((element) {
-              consumerList!.add(element['name']);
+              consumerList!.add(
+                  DropdownModel(element['id'].toString(), element['name']));
             });
           } catch (e) {
             print(e);
@@ -289,10 +309,10 @@ class _EditPageState extends State<CreateProjectPage> {
                         ? 'Please Select this field'
                         : '',
                     items: accountablePersonList!,
-                    onChange: ((value) {
+                    onChange: ((DropdownModel value) {
                       setState(() {
-                        _account = value;
-                        print("account:$_account");
+                        _account = value!.id;
+                        print("account:${_account}");
                         selectAccountablePerson = true;
                       });
                     }),
@@ -311,7 +331,7 @@ class _EditPageState extends State<CreateProjectPage> {
                     items: consumerList!,
                     onChange: ((value) {
                       setState(() {
-                        _custome = value;
+                        _custome = value.id;
                         print("account:$_custome");
                         selectCustomer = true;
                       });
@@ -319,7 +339,6 @@ class _EditPageState extends State<CreateProjectPage> {
                   )),
                 ],
               ),
-
               // Row(
               //   crossAxisAlignment: CrossAxisAlignment.start,
               //   mainAxisAlignment: MainAxisAlignment.start,
@@ -607,7 +626,7 @@ class _EditPageState extends State<CreateProjectPage> {
                             : '',
                         items: currencyList!,
                         onChange: ((value) {
-                          _curren = value;
+                          _curren = value.id;
                           setState(() {
                             selectCurrency = true;
                           });
@@ -726,85 +745,103 @@ class _EditPageState extends State<CreateProjectPage> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(left: 0.0),
-                          height: 56.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                          ),
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 16.0, right: 0.0),
-                              child: StatefulBuilder(
-                                builder: (BuildContext context,
-                                    StateSettersetState) {
-                                  return DropdownButtonHideUnderline(
-                                    child: DropdownButton(
-                                      dropdownColor: ColorSelect.class_color,
-                                      value: _status,
-                                      underline: Container(),
-                                      hint: const Text(
-                                        "Select Status",
-                                        style: TextStyle(
-                                            fontSize: 15.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      icon: const Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Color(0xff64748B),
-                                      ),
-                                      items: _statusList.map((items) {
-                                        return DropdownMenuItem(
-                                          value: items['id'].toString(),
-                                          child: Text(
-                                            items['title'],
-                                            style: const TextStyle(
-                                                fontSize: 15.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          _status = newValue;
-                                          print('value of status' + _status!);
-                                          selectStatus = true;
-                                        });
-                                      },
-                                    ),
-                                  );
-                                },
-                              )),
-                        ),
-                        createButtonClick
-                            ? selectStatus
-                                ? const Text(
-                                    " ",
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 8,
-                                      left: 26,
-                                    ),
-                                    child: errorWidget())
-                            : Container(),
-                      ],
-                    ),
-                  ),
+                      child: CustomSearchDropdown(
+                    hint: 'Select Status',
+                    label: "",
+                    errorText: createButtonClick &&
+                            (_curren == null || _curren!.isEmpty)
+                        ? 'Please Select this field'
+                        : '',
+                    items: projectStatusList!,
+                    onChange: ((value) {
+                      setState(() {
+                        _status = value.id;
+                        print('value of status' + _status!);
+                        selectStatus = true;
+                      });
+                    }),
+                  )),
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         width: double.infinity,
+                  //         margin: const EdgeInsets.only(left: 0.0),
+                  //         height: 56.0,
+                  //         decoration: BoxDecoration(
+                  //           color: const Color(0xff334155),
+                  //           borderRadius: BorderRadius.circular(
+                  //             8.0,
+                  //           ),
+                  //         ),
+                  //         child: Container(
+                  //             margin:
+                  //                 const EdgeInsets.only(left: 16.0, right: 0.0),
+                  //             child: StatefulBuilder(
+                  //               builder: (BuildContext context,
+                  //                   StateSettersetState) {
+                  //                 return DropdownButtonHideUnderline(
+                  //                   child: DropdownButton(
+                  //                     dropdownColor: ColorSelect.class_color,
+                  //                     value: _status,
+                  //                     underline: Container(),
+                  //                     hint: const Text(
+                  //                       "Select Status",
+                  //                       style: TextStyle(
+                  //                           fontSize: 15.0,
+                  //                           color: Color(0xffFFFFFF),
+                  //                           fontFamily: 'Inter',
+                  //                           fontWeight: FontWeight.w300),
+                  //                     ),
+                  //                     icon: const Icon(
+                  //                       Icons.arrow_drop_down,
+                  //                       color: Color(0xff64748B),
+                  //                     ),
+                  //                     items: _statusList.map((items) {
+                  //                       return DropdownMenuItem(
+                  //                         value: items['id'].toString(),
+                  //                         child: Text(
+                  //                           items['title'],
+                  //                           style: const TextStyle(
+                  //                               fontSize: 15.0,
+                  //                               color: Color(0xffFFFFFF),
+                  //                               fontFamily: 'Inter',
+                  //                               fontWeight: FontWeight.w500),
+                  //                         ),
+                  //                       );
+                  //                     }).toList(),
+                  //                     onChanged: (String? newValue) {
+                  //                       setState(() {
+                  //                         _status = newValue;
+                  //                         print('value of status' + _status!);
+                  //                         selectStatus = true;
+                  //                       });
+                  //                     },
+                  //                   ),
+                  //                 );
+                  //               },
+                  //             )),
+                  //       ),
+                  //       createButtonClick
+                  //           ? selectStatus
+                  //               ? const Text(
+                  //                   " ",
+                  //                 )
+                  //               : Padding(
+                  //                   padding: EdgeInsets.only(
+                  //                     top: 8,
+                  //                     left: 26,
+                  //                   ),
+                  //                   child: errorWidget())
+                  //           : Container(),
+                  //     ],
+                  //   ),
+                  // ),
+
                   SizedBox(
-                    width: 10,
+                    width: 10.w,
                   ),
                   Expanded(
                     flex: 1,
@@ -938,7 +975,7 @@ class _EditPageState extends State<CreateProjectPage> {
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -1109,8 +1146,11 @@ class _EditPageState extends State<CreateProjectPage> {
           _currencyName = mdata;
           try {
             currencyList!.clear();
-            _accountableId.forEach((element) {
-              currencyList!.add(element['currency']['symbol']);
+            _currencyName.forEach((element) {
+              if (!currencyList!.contains(element['currency']['symbol'])) {
+                currencyList!.add(DropdownModel(
+                    element['id'].toString(), element['currency']['symbol']));
+              }
             });
           } catch (e) {
             print(e);

@@ -323,7 +323,9 @@ showDailog(
         response.data!.tags != null &&
         response.data!.tags!.isNotEmpty) {
       response.data!.tags!.forEach((element) {
-        abc.add(element.name!);
+        if (!abc.contains(element.name)) {
+          abc.add(element.name!);
+        }
       });
     }
     // _status = response.data != null &&
@@ -965,6 +967,9 @@ showDailog(
                                                 MainAxisAlignment.start,
                                             children: [
                                               Container(
+                                                // width: 256,
+                                                // margin:
+                                                //     EdgeInsets.only(right: 40),
                                                 // color: Colors.red,
                                                 child: Wrap(
                                                   spacing: 8,
