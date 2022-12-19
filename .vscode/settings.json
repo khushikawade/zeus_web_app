@@ -5,5 +5,8 @@
         "editorUnnecessaryCode.border": "#f38383",
         "editorUnnecessaryCode.opacity": "#f38383",
         
-    }
+    },
+    "cSpell.words": [
+        "fluttertoast"
+    ]
 }

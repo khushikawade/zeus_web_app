@@ -5,6 +5,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
@@ -97,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Center(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.30,
+                    width: MediaQuery.of(context).size.width * 0.35, //0.30
                     margin: const EdgeInsets.only(
                       top: 49.0,
                     ),

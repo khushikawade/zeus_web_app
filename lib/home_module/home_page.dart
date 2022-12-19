@@ -29,6 +29,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:http_parser/http_parser.dart';
 import '../utility/constant.dart';
 import '../utility/upertextformate.dart';
+import 'package:zeus/helper_widget/custom_form_field.dart';
 
 class MyHomePage extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -81,7 +82,7 @@ class _NavigationRailState extends State<MyHomePage>
 
   var startTime1;
   var endTime2;
-  bool saveButtonClick = false;
+
   bool selectDepartment = false;
   bool selectSalary = false;
   bool selectDays = false;
@@ -89,7 +90,9 @@ class _NavigationRailState extends State<MyHomePage>
   bool selectTime = false;
   bool selectTimeZone = false;
   bool selectImage = false;
-
+  bool saveButtonClick = false;
+  bool createProjectValidate = true;
+  String name_ = '';
   getformattedTime(TimeOfDay time) {
     DateTime tempDate = DateFormat("hh:mm")
         .parse(time.hour.toString() + ":" + time.minute.toString());
@@ -123,7 +126,7 @@ class _NavigationRailState extends State<MyHomePage>
 
   Future? _getTag;
   List addSkills = [];
-  String name_ = '';
+
   String name1 = '';
   bool _autoValidate = false;
 
@@ -635,23 +638,30 @@ class _NavigationRailState extends State<MyHomePage>
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      if (selectImage == true &&
-                                          selectDepartment == true &&
-                                          selectDays == true &&
-                                          selectSkill == true &&
-                                          selectTime == true &&
-                                          selectTimeZone == true) {
-                                        SmartDialog.showLoading(
-                                          msg:
-                                              "Your request is in progress please wait for a while...",
-                                        );
+                                    setState(() {
+                                      createProjectValidate = true;
+                                    });
 
-                                        Future.delayed(
-                                            const Duration(seconds: 2), () {
-                                          createPeople(context, setStateView);
-                                        });
-                                      }
+                                    if (_formKey.currentState!.validate()) {
+                                      Future.delayed(
+                                          const Duration(microseconds: 500),
+                                          () {
+                                        if (createProjectValidate) {
+                                          if (selectImage == true &&
+                                              selectDepartment == true &&
+                                              selectDays == true &&
+                                              selectSkill == true &&
+                                              selectTime == true &&
+                                              selectTimeZone == true) {
+                                            SmartDialog.showLoading(
+                                              msg:
+                                                  "Your request is in progress please wait for a while...",
+                                            );
+
+                                            createPeople(context, setStateView);
+                                          }
+                                        }
+                                      });
                                     }
                                     setStateView(() {
                                       saveButtonClick = true;
@@ -821,267 +831,278 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 16.0,
                                   ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, right: 25.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget2(validateName)
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 11.0,
-                                          left: 45.0,
-                                        ),
-                                        child: const Text(
-                                          "Name",
-                                          style: TextStyle(
-                                              fontSize: 11.0,
-                                              letterSpacing: 0.5,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      TextFormField(
-                                        controller: _name,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        minLines: 1,
-                                        maxLength: 30,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 36.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter name',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.25,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex = RegExp(r'^[a-z A-Z]+$',
-                                              caseSensitive: false);
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid name';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 25,
+                                      left: 30.0,
+                                      bottom: 0,
+                                    ),
+                                    child: CustomFormField(
+                                      controller: _name,
+                                      hint: 'Enter name',
+                                      label: 'Name',
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$',
+                                            caseSensitive: false);
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+                                          return 'Please enter valid name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.99,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0,
-                                                top: 5.0,
-                                                right: 25.0,
-                                                bottom: 10),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 14.0, left: 45.0),
-                                          child: const Text(
-                                            "Nickname",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        controller: _nickName,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        maxLength: 30,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 45.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter nickname',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  //  const SizedBox(
+                                  //   height: 16.0,
+                                  // ),
+
+                                  // Stack(
+                                  //   children: [
+                                  //     Column(
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         Container(
+                                  //           width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width *
+                                  //               0.99,
+                                  //           margin: const EdgeInsets.only(
+                                  //               left: 30.0,
+                                  //               top: 5.0,
+                                  //               right: 25.0,
+                                  //               bottom: 10),
+                                  //           height: 56.0,
+                                  //           decoration: BoxDecoration(
+                                  //             color: const Color(0xff334155),
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(
+                                  //               8.0,
+                                  //             ),
+                                  //             boxShadow: const [
+                                  //               BoxShadow(
+                                  //                 color: Color(0xff475569),
+                                  //                 offset: Offset(
+                                  //                   0.0,
+                                  //                   2.0,
+                                  //                 ),
+                                  //                 blurRadius: 0.0,
+                                  //                 spreadRadius: 0.0,
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 14.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Nickname",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       controller: _nickName,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       maxLength: 30,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 45.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter nickname',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w400)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 25, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      controller: _nickName,
+                                      hint: 'Enter nickname',
+                                      label: 'Nickname',
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.99,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0, right: 25.0),
-                                        height: 110.0,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xff334155),
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(8.0),
-                                            topLeft: Radius.circular(8.0),
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
-                                          child: const Text(
-                                            "Your bio",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLines: 5,
-                                        controller: _bio,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 10.0,
-                                              top: 47.0,
-                                              right: 40,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter your bio',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 25,
+                                      left: 30.0,
+                                    ),
+                                    child: CustomFormField(
+                                      controller: _bio,
+                                      maxline: 4,
+                                      fontSizeForLabel: 14,
+                                      hint: 'Enter your bio',
+                                      label: 'Your bio',
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
+                                  // Stack(
+                                  //   children: [
+                                  //     Container(
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.99,
+                                  //       margin: const EdgeInsets.only(
+                                  //           left: 30.0, top: 16.0, right: 25.0),
+                                  //       height: 110.0,
+                                  //       decoration: const BoxDecoration(
+                                  //         color: Color(0xff334155),
+                                  //         borderRadius: BorderRadius.only(
+                                  //           topRight: Radius.circular(8.0),
+                                  //           topLeft: Radius.circular(8.0),
+                                  //         ),
+                                  //         boxShadow: [
+                                  //           BoxShadow(
+                                  //             color: Color(0xff475569),
+                                  //             offset: Offset(
+                                  //               0.0,
+                                  //               2.0,
+                                  //             ),
+                                  //             blurRadius: 0.0,
+                                  //             spreadRadius: 0.0,
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 22.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Your bio",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       maxLines: 5,
+                                  //       controller: _bio,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 10.0,
+                                  //             top: 47.0,
+                                  //             right: 40,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter your bio',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w400)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+
                                   Padding(
                                     padding: const EdgeInsets.only(top: 3.0),
                                     child: Row(
@@ -1092,106 +1113,139 @@ class _NavigationRailState extends State<MyHomePage>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: Stack(
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.12,
-                                                margin: const EdgeInsets.only(
-                                                    left: 30.0,
-                                                    top: 16.0,
-                                                    right: 16.0),
-                                                height: 56.0,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xff334155),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    8.0,
-                                                  ),
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      color: Color(0xff475569),
-                                                      offset: Offset(
-                                                        0.0,
-                                                        2.0,
-                                                      ),
-                                                      blurRadius: 0.0,
-                                                      spreadRadius: 0.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 23.0, left: 45.0),
-                                                  child: const Text(
-                                                    "Designation",
-                                                    style: TextStyle(
-                                                        fontSize: 11.0,
-                                                        color:
-                                                            Color(0xff64748B),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                              TextFormField(
-                                                controller: _designation,
-                                                // inputFormatters: [
-                                                //   UpperCaseTextFormatter()
-                                                // ],
-                                                maxLength: 20,
-                                                cursorColor:
-                                                    const Color(0xffFFFFFF),
-                                                style: const TextStyle(
-                                                    color: Color(0xffFFFFFF)),
-                                                textAlignVertical:
-                                                    TextAlignVertical.bottom,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        counterText: "",
-                                                        errorStyle: TextStyle(
-                                                            fontSize: 14,
-                                                            height: 0.20),
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                          bottom: 16.0,
-                                                          top: 53.0,
-                                                          right: 10,
-                                                          left: 45.0,
-                                                        ),
-                                                        border:
-                                                            InputBorder.none,
-                                                        hintText: 'Enter',
-                                                        hintStyle: TextStyle(
-                                                            fontSize: 14.0,
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            fontFamily: 'Inter',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500)),
-                                                autovalidateMode: _addSubmitted
-                                                    ? AutovalidateMode
-                                                        .onUserInteraction
-                                                    : AutovalidateMode.disabled,
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Please enter';
-                                                  }
-                                                  return null;
-                                                },
-                                                onChanged: (text) =>
-                                                    setStateView(
-                                                        () => name1 = text),
-                                              ),
-                                            ],
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              right: 16.0,
+                                              left: 30.0,
+                                            ),
+                                            child: CustomFormField(
+                                              controller: _designation,
+                                              maxLength: 20,
+                                              fontSizeForLabel: 14,
+                                              hint: 'Enter ',
+                                              label: 'Designation',
+                                              contentpadding: EdgeInsets.only(
+                                                  left: 16,
+                                                  bottom: 10,
+                                                  right: 10,
+                                                  top: 10),
+                                              hintTextHeight: 1.7,
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  setState(() {
+                                                    createProjectValidate =
+                                                        false;
+                                                  });
+
+                                                  return 'Please enter';
+                                                }
+                                                return null;
+                                              },
+                                              onChange: (text) =>
+                                                  setState(() => name_ = text),
+                                            ),
                                           ),
                                         ),
+                                        // Expanded(
+                                        //   child: Stack(
+                                        //     children: [
+                                        //       Container(
+                                        // width: MediaQuery.of(context)
+                                        //         .size
+                                        //         .width *
+                                        //     0.12,
+                                        //         margin: const EdgeInsets.only(
+                                        //             left: 30.0, right: 16.0),
+                                        //         height: 56.0,
+                                        //         decoration: BoxDecoration(
+                                        //           color:
+                                        //               const Color(0xff334155),
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //             8.0,
+                                        //           ),
+                                        //           boxShadow: const [
+                                        //             BoxShadow(
+                                        //               color: Color(0xff475569),
+                                        //               offset: Offset(
+                                        //                 0.0,
+                                        //                 2.0,
+                                        //               ),
+                                        //               blurRadius: 0.0,
+                                        //               spreadRadius: 0.0,
+                                        //             ),
+                                        //           ],
+                                        //         ),
+                                        //       ),
+                                        //       Container(
+                                        //           margin: const EdgeInsets.only(
+                                        //               top: 23.0, left: 45.0),
+                                        //           child: const Text(
+                                        //             "Designation",
+                                        //             style: TextStyle(
+                                        //                 fontSize: 11.0,
+                                        //                 color:
+                                        //                     Color(0xff64748B),
+                                        //                 fontFamily: 'Inter',
+                                        //                 fontWeight:
+                                        //                     FontWeight.w500),
+                                        //           )),
+                                        //       TextFormField(
+                                        //         controller: _designation,
+                                        //         // inputFormatters: [
+                                        //         //   UpperCaseTextFormatter()
+                                        //         // ],
+                                        //         maxLength: 20,
+                                        //         cursorColor:
+                                        //             const Color(0xffFFFFFF),
+                                        //         style: const TextStyle(
+                                        //             color: Color(0xffFFFFFF)),
+                                        //         textAlignVertical:
+                                        //             TextAlignVertical.bottom,
+                                        //         keyboardType:
+                                        //             TextInputType.text,
+                                        //         decoration:
+                                        //             const InputDecoration(
+                                        //                 counterText: "",
+                                        //                 errorStyle: TextStyle(
+                                        //                     fontSize: 14,
+                                        //                     height: 0.20),
+                                        //                 contentPadding:
+                                        //                     EdgeInsets.only(
+                                        //                   bottom: 16.0,
+                                        //                   top: 53.0,
+                                        //                   right: 10,
+                                        //                   left: 45.0,
+                                        //                 ),
+                                        //                 border:
+                                        //                     InputBorder.none,
+                                        //                 hintText: 'Enter',
+                                        //                 hintStyle: TextStyle(
+                                        //                     fontSize: 14.0,
+                                        //                     color: Color(
+                                        //                         0xffFFFFFF),
+                                        //                     fontFamily: 'Inter',
+                                        //                     fontWeight:
+                                        //                         FontWeight
+                                        //                             .w500)),
+                                        //         autovalidateMode: _addSubmitted
+                                        //             ? AutovalidateMode
+                                        //                 .onUserInteraction
+                                        //             : AutovalidateMode.disabled,
+                                        //         validator: (value) {
+                                        //           if (value!.isEmpty) {
+                                        //             return 'Please enter';
+                                        //           }
+                                        //           return null;
+                                        //         },
+                                        //         onChanged: (text) =>
+                                        //             setStateView(
+                                        //                 () => name1 = text),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
+
                                         SizedBox(
                                           width: 8,
                                         ),
@@ -1206,7 +1260,6 @@ class _NavigationRailState extends State<MyHomePage>
                                                   Container(
                                                     margin:
                                                         const EdgeInsets.only(
-                                                            top: 16.0,
                                                             right: 30),
                                                     height: 56.0,
                                                     decoration: BoxDecoration(
@@ -1365,87 +1418,117 @@ class _NavigationRailState extends State<MyHomePage>
                                       ],
                                     ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.99,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 10.0, right: 26.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
-                                          child: const Text(
-                                            "Associated with",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        controller: _association,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        maxLength: 30,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 52.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter team name',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 25, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      controller: _association,
+                                      maxLength: 30,
+                                      hint: 'Enter team name',
+                                      label: "Associated with",
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
+                                  // Stack(
+                                  //   children: [
+                                  //     Container(
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.99,
+                                  //       margin: const EdgeInsets.only(
+                                  //           left: 30.0, top: 10.0, right: 26.0),
+                                  //       height: 56.0,
+                                  //       decoration: BoxDecoration(
+                                  //         color: const Color(0xff334155),
+                                  //         borderRadius: BorderRadius.circular(
+                                  //           8.0,
+                                  //         ),
+                                  //         boxShadow: const [
+                                  //           BoxShadow(
+                                  //             color: Color(0xff475569),
+                                  //             offset: Offset(
+                                  //               0.0,
+                                  //               2.0,
+                                  //             ),
+                                  //             blurRadius: 0.0,
+                                  //             spreadRadius: 0.0,
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 22.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Associated with",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       controller: _association,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       maxLength: 30,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 52.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter team name',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+
                                   Container(
                                     margin: const EdgeInsets.only(
-                                        left: 30.0, top: 16.0),
+                                        left: 30.0, top: 0.0),
                                     child: const Text(
                                       "Salary",
                                       style: TextStyle(
@@ -1466,7 +1549,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 0.10,
                                             margin: const EdgeInsets.only(
                                                 left: 30.0,
-                                                top: 16.0,
+                                                top: 8.0,
                                                 bottom: 16.0),
                                             height: 56.0,
                                             decoration: BoxDecoration(
@@ -1547,99 +1630,141 @@ class _NavigationRailState extends State<MyHomePage>
                                         width: 8.0,
                                       ),
                                       Expanded(
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.12,
-                                              margin: const EdgeInsets.only(
-                                                  top: 16.0, bottom: 16.0),
-                                              height: 56.0,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  8.0,
-                                                ),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Color(0xff475569),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                    blurRadius: 0.0,
-                                                    spreadRadius: 0.0,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 23.0, left: 15.0),
-                                                child: const Text(
-                                                  "Monthly Salary",
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      color: Color(0xff64748B),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )),
-                                            TextFormField(
-                                              maxLength: 15,
-                                              controller: _salary,
-                                              cursorColor:
-                                                  const Color(0xffFFFFFF),
-                                              style: const TextStyle(
-                                                  color: Color(0xffFFFFFF)),
-                                              textAlignVertical:
-                                                  TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  counterText: "",
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 52.0,
-                                                    right: 10,
-                                                    left: 15.0,
-                                                  ),
-                                                  border: InputBorder.none,
-                                                  hintText: '0.00',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              autovalidateMode: _addSubmitted
-                                                  ? AutovalidateMode
-                                                      .onUserInteraction
-                                                  : AutovalidateMode.disabled,
-                                              validator: (value) {
-                                                RegExp regex = RegExp(
-                                                    r'^\D+|(?<=\d),(?=\d)');
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 14,
+                                              right: 25,
+                                              left: 30.0,
+                                              bottom: 0),
+                                          child: CustomFormField(
+                                            controller: _salary,
+                                            maxLength: 15,
+                                            hint: '0.00',
+                                            label: "Monthly Salary",
+                                            fontSizeForLabel: 14,
+                                            contentpadding: EdgeInsets.only(
+                                                left: 16,
+                                                bottom: 10,
+                                                right: 10,
+                                                top: 10),
+                                            hintTextHeight: 1.7,
+                                            validator: (value) {
+                                              RegExp regex = RegExp(
+                                                  r'^\D+|(?<=\d),(?=\d)');
+                                              if (value.isEmpty) {
+                                                setState(() {
+                                                  createProjectValidate = false;
+                                                });
 
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter';
-                                                } else if (regex
-                                                    .hasMatch(value)) {
-                                                  return 'Please enter valid salary';
-                                                }
-                                                return null;
-                                              },
-                                              onChanged: (text) => setStateView(
-                                                  () => name1 = text),
-                                            ),
-                                          ],
+                                                return 'Please enter';
+                                              } else if (regex
+                                                  .hasMatch(value)) {
+                                                setState(() {
+                                                  createProjectValidate = false;
+                                                });
+                                                return 'Please enter valid salary';
+                                              }
+                                              return null;
+                                            },
+                                            onChange: (text) =>
+                                                setState(() => name_ = text),
+                                          ),
                                         ),
                                       ),
+                                      // Expanded(
+                                      //   child: Stack(
+                                      //     children: [
+                                      //       Container(
+                                      //         width: MediaQuery.of(context)
+                                      //                 .size
+                                      //                 .width *
+                                      //             0.12,
+                                      //         margin: const EdgeInsets.only(
+                                      //             top: 8.0, bottom: 16.0),
+                                      //         height: 56.0,
+                                      //         decoration: BoxDecoration(
+                                      //           color: const Color(0xff334155),
+                                      //           borderRadius:
+                                      //               BorderRadius.circular(
+                                      //             8.0,
+                                      //           ),
+                                      //           boxShadow: const [
+                                      //             BoxShadow(
+                                      //               color: Color(0xff475569),
+                                      //               offset: Offset(
+                                      //                 0.0,
+                                      //                 2.0,
+                                      //               ),
+                                      //               blurRadius: 0.0,
+                                      //               spreadRadius: 0.0,
+                                      //             ),
+                                      //           ],
+                                      //         ),
+                                      //       ),
+                                      //       Container(
+                                      //           margin: const EdgeInsets.only(
+                                      //               top: 23.0, left: 15.0),
+                                      //           child: const Text(
+                                      //             "Monthly Salary",
+                                      //             style: TextStyle(
+                                      //                 fontSize: 11.0,
+                                      //                 color: Color(0xff64748B),
+                                      //                 fontFamily: 'Inter',
+                                      //                 fontWeight:
+                                      //                     FontWeight.w500),
+                                      //           )),
+                                      //       TextFormField(
+                                      //         maxLength: 15,
+                                      //         controller: _salary,
+                                      //         cursorColor:
+                                      //             const Color(0xffFFFFFF),
+                                      //         style: const TextStyle(
+                                      //             color: Color(0xffFFFFFF)),
+                                      //         textAlignVertical:
+                                      //             TextAlignVertical.bottom,
+                                      //         keyboardType: TextInputType.text,
+                                      //         decoration: const InputDecoration(
+                                      //             counterText: "",
+                                      //             errorStyle: TextStyle(
+                                      //                 fontSize: 14,
+                                      //                 height: 0.20),
+                                      //             contentPadding:
+                                      //                 EdgeInsets.only(
+                                      //               bottom: 16.0,
+                                      //               top: 52.0,
+                                      //               right: 10,
+                                      //               left: 15.0,
+                                      //             ),
+                                      //             border: InputBorder.none,
+                                      //             hintText: '0.00',
+                                      //             hintStyle: TextStyle(
+                                      //                 fontSize: 14.0,
+                                      //                 color: Color(0xffFFFFFF),
+                                      //                 fontFamily: 'Inter',
+                                      //                 fontWeight:
+                                      //                     FontWeight.w500)),
+                                      //         autovalidateMode: _addSubmitted
+                                      //             ? AutovalidateMode
+                                      //                 .onUserInteraction
+                                      //             : AutovalidateMode.disabled,
+                                      //         validator: (value) {
+                                      //           RegExp regex = RegExp(
+                                      //               r'^\D+|(?<=\d),(?=\d)');
+
+                                      //           if (value!.isEmpty) {
+                                      //             return 'Please enter';
+                                      //           } else if (regex
+                                      //               .hasMatch(value)) {
+                                      //             return 'Please enter valid salary';
+                                      //           }
+                                      //           return null;
+                                      //         },
+                                      //         onChanged: (text) => setStateView(
+                                      //             () => name1 = text),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ],
@@ -2214,361 +2339,521 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 8.0,
                                   ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget2(validateCountry)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 6.0, left: 45.0),
-                                          child: const Text(
-                                            "Country",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 20,
-                                        controller: _country,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 35.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter country',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex =
-                                              RegExp(r'^[a-z A-Z]+$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid  country name';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, top: 7.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget2(validateCity)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 12.0, left: 45.0),
-                                          child: const Text(
-                                            "City",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 20,
-                                        controller: _enterCity,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 40.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter city',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex =
-                                              RegExp(r'^[a-z A-Z]+$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid  city name';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 7.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 12.0, left: 45.0),
-                                          child: const Text(
-                                            "Phone number",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 10,
-                                        controller: _phoneNumber,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 40.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter number',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          String pattern =
-                                              r'(^(?:[+0]9)?[0-9]{10}$)';
-                                          RegExp regExp = new RegExp(pattern);
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regExp.hasMatch(value)) {
-                                            return 'Please enter valid mobile number';
-                                          }
 
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 70, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      maxLength: 20,
+                                      controller: _country,
+                                      hint: 'Enter country',
+                                      label: "Country",
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$');
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter valid  country name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 20.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 25.0, left: 45.0),
-                                          child: const Text(
-                                            "Email address",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 20,
-                                        controller: _emailAddress,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 50.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter email address',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex = RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                                          if (value!.isEmpty) {
-                                            return 'Please enter email';
-                                          }
-                                          if (!regex.hasMatch(value)) {
-                                            return 'Enter valid Email';
-                                          }
-                                          if (regex.hasMatch(values)) {
-                                            return 'please enter valid email';
-                                          }
-                                          if (value.length > 50) {
-                                            return 'No more length 50';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  // Stack(
+                                  //   children: [
+                                  //     Column(
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         Container(
+                                  //           width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width *
+                                  //               0.26,
+                                  //           margin: const EdgeInsets.only(
+                                  //               left: 30.0),
+                                  //           height: 56.0,
+                                  //           decoration: BoxDecoration(
+                                  //             color: const Color(0xff334155),
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(
+                                  //               8.0,
+                                  //             ),
+                                  //             boxShadow: const [
+                                  //               BoxShadow(
+                                  //                 color: Color(0xff475569),
+                                  //                 offset: Offset(
+                                  //                   0.0,
+                                  //                   2.0,
+                                  //                 ),
+                                  //                 blurRadius: 0.0,
+                                  //                 spreadRadius: 0.0,
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //         errorWidget2(validateCountry)
+                                  //       ],
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 6.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Country",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       maxLength: 20,
+                                  //       controller: _country,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 35.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter country',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         RegExp regex =
+                                  //             RegExp(r'^[a-z A-Z]+$');
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         } else if (!regex.hasMatch(value)) {
+                                  //           return 'Please enter valid  country name';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 70, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      maxLength: 20,
+                                      controller: _enterCity,
+                                      hint: 'Enter city',
+                                      label: "City",
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$');
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter valid  city name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
+                                  // Stack(
+                                  //   children: [
+                                  //     Column(
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         Container(
+                                  //           width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width *
+                                  //               0.26,
+                                  //           margin: const EdgeInsets.only(
+                                  //               left: 30.0, top: 7.0),
+                                  //           height: 56.0,
+                                  //           decoration: BoxDecoration(
+                                  //             color: const Color(0xff334155),
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(
+                                  //               8.0,
+                                  //             ),
+                                  //             boxShadow: const [
+                                  //               BoxShadow(
+                                  //                 color: Color(0xff475569),
+                                  //                 offset: Offset(
+                                  //                   0.0,
+                                  //                   2.0,
+                                  //                 ),
+                                  //                 blurRadius: 0.0,
+                                  //                 spreadRadius: 0.0,
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //         errorWidget2(validateCity)
+                                  //       ],
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 12.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "City",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       maxLength: 20,
+                                  //       controller: _enterCity,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 40.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter city',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         RegExp regex =
+                                  //             RegExp(r'^[a-z A-Z]+$');
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         } else if (!regex.hasMatch(value)) {
+                                  //           return 'Please enter valid  city name';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 70, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      maxLength: 10,
+                                      controller: _phoneNumber,
+                                      hint: 'Enter number',
+                                      label: "Phone number",
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        String pattern =
+                                            r'(^(?:[+0]9)?[0-9]{10}$)';
+                                        RegExp regExp = new RegExp(pattern);
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        } else if (!regExp.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter valid mobile number';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
+                                  ),
+                                  // Stack(
+                                  //   children: [
+                                  //     Container(
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.26,
+                                  //       margin: const EdgeInsets.only(
+                                  //           left: 30.0, top: 7.0),
+                                  //       height: 56.0,
+                                  //       decoration: BoxDecoration(
+                                  //         color: const Color(0xff334155),
+                                  //         borderRadius: BorderRadius.circular(
+                                  //           8.0,
+                                  //         ),
+                                  //         boxShadow: const [
+                                  //           BoxShadow(
+                                  //             color: Color(0xff475569),
+                                  //             offset: Offset(
+                                  //               0.0,
+                                  //               2.0,
+                                  //             ),
+                                  //             blurRadius: 0.0,
+                                  //             spreadRadius: 0.0,
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 12.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Phone number",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       maxLength: 10,
+                                  //       controller: _phoneNumber,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 40.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter number',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         String pattern =
+                                  //             r'(^(?:[+0]9)?[0-9]{10}$)';
+                                  //         RegExp regExp = new RegExp(pattern);
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         } else if (!regExp.hasMatch(value)) {
+                                  //           return 'Please enter valid mobile number';
+                                  //         }
+
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 70, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      maxLength: 20,
+                                      controller: _emailAddress,
+                                      hint: 'Enter email address',
+                                      label: "Email address",
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter email';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Enter valid Email';
+                                        }
+                                        if (regex.hasMatch(values)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+                                          return 'please enter valid email';
+                                        }
+                                        if (value.length > 50) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+                                          return 'No more length 50';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
+                                  ),
+                                  // Stack(
+                                  //   children: [
+                                  //     Container(
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.26,
+                                  //       margin: const EdgeInsets.only(
+                                  //           left: 30.0, top: 20.0),
+                                  //       height: 56.0,
+                                  //       decoration: BoxDecoration(
+                                  //         color: const Color(0xff334155),
+                                  //         borderRadius: BorderRadius.circular(
+                                  //           8.0,
+                                  //         ),
+                                  //         boxShadow: const [
+                                  //           BoxShadow(
+                                  //             color: Color(0xff475569),
+                                  //             offset: Offset(
+                                  //               0.0,
+                                  //               2.0,
+                                  //             ),
+                                  //             blurRadius: 0.0,
+                                  //             spreadRadius: 0.0,
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 25.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Email address",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       maxLength: 20,
+                                  //       controller: _emailAddress,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 50.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter email address',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         RegExp regex = RegExp(
+                                  //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter email';
+                                  //         }
+                                  //         if (!regex.hasMatch(value)) {
+                                  //           return 'Enter valid Email';
+                                  //         }
+                                  //         if (regex.hasMatch(values)) {
+                                  //           return 'please enter valid email';
+                                  //         }
+                                  //         if (value.length > 50) {
+                                  //           return 'No more length 50';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -2579,7 +2864,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             MediaQuery.of(context).size.width *
                                                 0.26,
                                         margin: const EdgeInsets.only(
-                                            top: 26.0, left: 30.0),
+                                            top: 0.0, left: 30.0),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2764,7 +3049,7 @@ class _NavigationRailState extends State<MyHomePage>
                     ),
                     LogOut(returnValue: () {}),
                     SizedBox(
-                      width: 30,
+                      width: 15,
                     ),
                   ],
                 ),
@@ -2851,7 +3136,11 @@ class _NavigationRailState extends State<MyHomePage>
                                     ),
                                   )
                                 : Container(),
-                            projectListTapIcon == false
+                            projectListTapIcon == false &&
+                                    cameraTapIcon == false &&
+                                    circleTapIcon == false &&
+                                    settingIcon == false &&
+                                    bellTapIcon == false
                                 ? Padding(
                                     padding: const EdgeInsets.only(left: 22.0),
                                     child: const Text("Profile",
@@ -2869,287 +3158,316 @@ class _NavigationRailState extends State<MyHomePage>
               ],
             ),
           ),
-          body: Row(children: [
-            Column(
+          body: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 46.0,
-                  height: 46.0,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff93C5FD),
-                    border: Border.all(color: const Color(0xff93C5FD)),
-                    borderRadius: BorderRadius.circular(
-                      16.0,
+                ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context)
+                      .copyWith(scrollbars: false),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 46.0,
+                          height: 46.0,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff93C5FD),
+                            border: Border.all(color: const Color(0xff93C5FD)),
+                            borderRadius: BorderRadius.circular(
+                              16.0,
+                            ),
+                          ),
+                          margin: const EdgeInsets.only(
+                            top: 40.0,
+                            left: 10.0,
+                            right: 0.0,
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                projectListTapIcon
+                                    ? showAlertDialog(context)
+                                    : Container();
+                                peopleListTapIcon
+                                    ? showAddPeople(context)
+                                    : Container();
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SvgPicture.asset(
+                                "images/plus.svg",
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Column(
+                            children: [
+                              projectListTapIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/notification_icon.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      child: SvgPicture.asset(
+                                        "images/notification_icon.svg",
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          bellTapIcon = false;
+                                          settingIcon = false;
+                                          projectListTapIcon = true;
+                                          peopleListTapIcon = false;
+                                          cameraTapIcon = false;
+                                          circleTapIcon = false;
+                                        });
+                                      },
+                                    ),
+                              projectListTapIcon
+                                  ? Text(
+                                      'Projects',
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  : Container(),
+                              SizedBox(height: 40),
+                              cameraTapIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/camera.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      child: SvgPicture.asset(
+                                        "images/camera.svg",
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          bellTapIcon = false;
+                                          settingIcon = false;
+                                          projectListTapIcon = false;
+                                          peopleListTapIcon = false;
+                                          cameraTapIcon = true;
+                                          circleTapIcon = false;
+                                        });
+                                      },
+                                    ),
+                              SizedBox(height: 40),
+                              peopleListTapIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/people.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      child: SvgPicture.asset(
+                                        "images/people.svg",
+                                      ),
+                                      onTap: () {
+                                        bellTapIcon = false;
+                                        settingIcon = false;
+                                        projectListTapIcon = false;
+                                        peopleListTapIcon = true;
+                                        cameraTapIcon = false;
+                                        circleTapIcon = false;
+                                      },
+                                    ),
+                              peopleListTapIcon
+                                  ? Text('People',
+                                      style: TextStyle(color: Colors.white))
+                                  : Container(),
+                              SizedBox(height: 40),
+                              circleTapIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/button.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        bellTapIcon = false;
+                                        settingIcon = false;
+                                        projectListTapIcon = false;
+                                        peopleListTapIcon = false;
+                                        cameraTapIcon = false;
+                                        circleTapIcon = true;
+                                      },
+                                      child: SvgPicture.asset(
+                                        "images/button.svg",
+                                      ),
+                                    ),
+                              SizedBox(height: 40),
+                              bellTapIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/bell.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        bellTapIcon = true;
+                                        settingIcon = false;
+                                        projectListTapIcon = false;
+                                        peopleListTapIcon = false;
+                                        cameraTapIcon = false;
+                                        circleTapIcon = false;
+                                        ;
+                                      },
+                                      child: SvgPicture.asset(
+                                        "images/bell.svg",
+                                      ),
+                                    ),
+                              SizedBox(height: 40),
+                              settingIcon
+                                  ? Container(
+                                      // height: 40,
+                                      // width: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16,
+                                            top: 8,
+                                            bottom: 8),
+                                        child: SvgPicture.asset(
+                                          "images/setting.svg",
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () {
+                                        settingIcon = true;
+                                        bellTapIcon = false;
+                                        projectListTapIcon = false;
+                                        peopleListTapIcon = false;
+                                        cameraTapIcon = false;
+                                        circleTapIcon = false;
+                                      },
+                                      child: SvgPicture.asset(
+                                        "images/setting.svg",
+                                      ),
+                                    ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  margin: const EdgeInsets.only(
-                    top: 40.0,
-                    left: 10.0,
-                    right: 0.0,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        projectListTapIcon
-                            ? showAlertDialog(context)
-                            : Container();
-                        peopleListTapIcon
-                            ? showAddPeople(context)
-                            : Container();
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SvgPicture.asset(
-                        "images/plus.svg",
-                      ),
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 25,
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(
-                  height: 100,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Column(
-                    children: [
-                      projectListTapIcon
-                          ? Container(
-                              // height: 40,
-                              // width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16, top: 8, bottom: 8),
-                                child: SvgPicture.asset(
-                                  "images/notification_icon.svg",
-                                ),
-                              ),
-                            )
-                          : InkWell(
-                              child: SvgPicture.asset(
-                                "images/notification_icon.svg",
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  bellTapIcon = false;
-                                  settingIcon = false;
-                                  projectListTapIcon = true;
-                                  peopleListTapIcon = false;
-                                  cameraTapIcon = false;
-                                  circleTapIcon = false;
-                                });
-                              },
-                            ),
-                      projectListTapIcon
-                          ? Text(
-                              'Projects',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          : Container(),
-                      SizedBox(height: 40),
-                      peopleListTapIcon
-                          ? Container(
-                              // height: 40,
-                              // width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16, top: 8, bottom: 8),
-                                child: SvgPicture.asset(
-                                  "images/people.svg",
-                                ),
-                              ),
-                            )
-                          : InkWell(
-                              child: SvgPicture.asset(
-                                "images/people.svg",
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  bellTapIcon = false;
-                                  settingIcon = false;
-                                  projectListTapIcon = false;
-                                  peopleListTapIcon = true;
-                                  cameraTapIcon = false;
-                                  circleTapIcon = false;
-                                });
-                              },
-                            ),
-                      peopleListTapIcon
-                          ? Text('People',
-                              style: TextStyle(color: Colors.white))
-                          : Container(),
-                      SizedBox(height: 40),
-                      cameraTapIcon
-                          ? Container(
-                              // height: 40,
-                              // width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16, top: 8, bottom: 8),
-                                child: SvgPicture.asset(
-                                  "images/camera.svg",
-                                ),
-                              ),
-                            )
-                          : InkWell(
-                              child: SvgPicture.asset(
-                                "images/camera.svg",
-                              ),
-                              onTap: () {
-                                bellTapIcon = false;
-                                settingIcon = false;
-                                projectListTapIcon = false;
-                                peopleListTapIcon = false;
-                                cameraTapIcon = true;
-                                circleTapIcon = false;
-                              },
-                            ),
-                      SizedBox(height: 40),
-                      circleTapIcon
-                          ? Container(
-                              // height: 40,
-                              // width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16, top: 8, bottom: 8),
-                                child: SvgPicture.asset(
-                                  "images/button.svg",
-                                ),
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () {
-                                bellTapIcon = false;
-                                settingIcon = false;
-                                projectListTapIcon = false;
-                                peopleListTapIcon = false;
-                                cameraTapIcon = false;
-                                circleTapIcon = true;
-                              },
-                              child: SvgPicture.asset(
-                                "images/button.svg",
-                              ),
-                            ),
-                      SizedBox(height: 40),
-                      bellTapIcon
-                          ? Container(
-                              // height: 40,
-                              // width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16, top: 8, bottom: 8),
-                                child: SvgPicture.asset(
-                                  "images/bell.svg",
-                                ),
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () {
-                                bellTapIcon = true;
-                                settingIcon = false;
-                                projectListTapIcon = false;
-                                peopleListTapIcon = false;
-                                cameraTapIcon = false;
-                                circleTapIcon = false;
-                                ;
-                              },
-                              child: SvgPicture.asset(
-                                "images/bell.svg",
-                              ),
-                            ),
-                      SizedBox(height: 40),
-                      settingIcon
-                          ? Container(
-                              // height: 40,
-                              // width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                border:
-                                    Border.all(color: const Color(0xff334155)),
-                                borderRadius: BorderRadius.circular(
-                                  18.0,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16, top: 8, bottom: 8),
-                                child: SvgPicture.asset(
-                                  "images/setting.svg",
-                                ),
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () {
-                                settingIcon = true;
-                                bellTapIcon = false;
-                                projectListTapIcon = false;
-                                peopleListTapIcon = false;
-                                cameraTapIcon = false;
-                                circleTapIcon = false;
-                              },
-                              child: SvgPicture.asset(
-                                "images/setting.svg",
-                              ),
-                            ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  width: 25,
-                ),
-              ],
-            ),
-            Expanded(
-                child: _mainContents[projectListTapIcon
-                    ? 1
-                    : peopleListTapIcon
-                        ? 3
-                        : 2]),
-          ])
+                Expanded(
+                    child: _mainContents[projectListTapIcon
+                        ? 1
+                        : peopleListTapIcon
+                            ? 3
+                            : 2]),
+              ])
 
           // Row(
           //   children: <Widget>[

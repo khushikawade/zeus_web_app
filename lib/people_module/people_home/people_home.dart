@@ -7,9 +7,8 @@ import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/user_module/people_profile/screen/people_detail_view.dart';
-
 import 'package:zeus/utility/app_url.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:zeus/utility/util.dart';
@@ -28,8 +27,6 @@ class PeopleHomeView extends StatefulWidget {
 }
 
 class _PeopleHomeViewState extends State<PeopleHomeView> {
-  List _timeline = [];
-  String? _depat, _account, _custome, _curren, _status, _time, _tag;
   String token = "";
   var dataPeople = 'people_data';
   bool imageavail = false;
@@ -37,25 +34,15 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
   var postion;
   SharedPreferences? sharedPreferences;
 
-  final _verticalScrollController = ScrollController();
-  final _horizontalScrollController = ScrollController();
   final ScrollController horizontalScroll = ScrollController();
   final ScrollController verticalScroll = ScrollController();
 
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
-  final double width = 18;
-  final double widthVertical = 10;
 
-  Future? getList;
   Future getListData1() {
     return Provider.of<ProjectHomeViewModel>(context, listen: false)
         .changeProfile();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   void change() async {
@@ -65,9 +52,6 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
   @override
   void initState() {
-    print(
-        "Called second time ------------------------------------------- gff gf f");
-
     Provider.of<PeopleHomeViewModel>(context, listen: false)
         .getPeopleDataList();
     change();
@@ -99,13 +83,13 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
               ? MediaQuery.of(context).size.width * 2
               : MediaQuery.of(context).size.width - 160,
           height: 969,
-          margin: const EdgeInsets.only(
-              left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+          margin: EdgeInsets.only(
+              left: 40.sp, right: 30.sp, bottom: 10.sp, top: 40.sp),
           decoration: BoxDecoration(
             color: const Color(0xff1E293B),
             border: Border.all(color: const Color(0xff1E293B)),
             borderRadius: BorderRadius.circular(
-              12.0,
+              12.r,
             ),
           ),
           child: Column(
@@ -119,13 +103,15 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                         child: Center(child: CircularProgressIndicator()))
                     : data.peopleList == null || data.peopleList!.data!.isEmpty
                         ? Expanded(
-                            child: const Center(
+                            child: Center(
                                 child: Text(
                               "No Records Found!",
                               style: TextStyle(
                                   color: Color(0xffFFFFFF),
-                                  fontSize: 22.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: 22.sp,
+                                  fontFamily: 'Inter-Medium',
+                                  letterSpacing: 0.1,
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             )),
                           )
@@ -135,7 +121,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               thumbColor: const Color(0xff4b5563),
                               crossAxisMargin: 2,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(20.r),
                               ),
                               thickness: 8,
                               child: ScrollConfiguration(
@@ -243,71 +229,60 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                   children: [
                     image != null && image.isNotEmpty
                         ? Container(
-                            width: 38.0,
-                            height: 36.0,
-                            margin:
-                                const EdgeInsets.only(left: 0.0, bottom: 2.0),
+                            width: 32.w,
+                            height: 32.h,
                             decoration: BoxDecoration(
-                              color: const Color(0xff334155),
-                              borderRadius: BorderRadius.circular(
-                                40.0,
-                              ),
-                            ),
+                                color: const Color(0xff334155),
+                                shape: BoxShape.circle),
                             child: CircleAvatar(
-                              radius: 20,
+                              radius: 20.r,
                               backgroundImage: NetworkImage(image),
                             ))
                         : Container(
-                            width: 32,
-                            height: 50,
+                            width: 32.w,
+                            height: 32.h,
                             alignment: Alignment.center,
                             decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0xffF2F2F2)),
                             child: Text(
                               fullName.isNotEmpty ? fullName : '',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontFamily: 'Inter-Medium',
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500,
-                                  letterSpacing: -0.33,
+                                  letterSpacing: 0.1,
                                   color: Color(0xff8B8B8B)),
                             ),
                           ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
+                      padding: EdgeInsets.only(left: 12.sp),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                              left: 16.0,
-                            ),
-                            child: Text(
-                              "$name",
-                              style: const TextStyle(
-                                  color: ColorSelect.white_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
-                            ),
+                          Text(
+                            "$name",
+                            style: TextStyle(
+                                color: ColorSelect.white_color,
+                                fontSize: 14.sp,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.1,
+                                fontFamily: 'Inter-Medium',
+                                fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(height: 4),
-                          Container(
-                            padding: EdgeInsets.zero,
-                            margin:
-                                const EdgeInsets.only(left: 16.0, bottom: 0),
-                            child: Text(
-                              "$designation, $associate",
-                              style: const TextStyle(
-                                  color: ColorSelect.designation_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
-                            ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            "$designation, $associate",
+                            style: TextStyle(
+                                color: ColorSelect.designation_color,
+                                fontSize: 14.sp,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.1,
+                                fontFamily: 'Inter-Medium',
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -317,46 +292,56 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 DataCell(
                   Text(
                     "@$nickname",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: 0.1,
+                        fontFamily: 'Inter-Medium',
                         fontWeight: FontWeight.w500),
                   ),
                 ),
                 DataCell(
                   Text(
                     "$capacity" "h/week",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: 0.1,
+                        fontFamily: 'Inter-Medium',
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
                     "TBD",
                     style: TextStyle(
                         color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: 0.1,
+                        fontFamily: 'Inter-Medium',
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
                     "TBD",
                     style: TextStyle(
                         color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: 0.1,
+                        fontFamily: 'Inter-Medium',
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                DataCell(_peopleList.resource != null
+                DataCell(_peopleList.resource != null &&
+                        _peopleList.resource!.skills != null &&
+                        _peopleList.resource!.skills!.isNotEmpty
                     ? Container(
-                        width: 250,
+                        width: 240.w,
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
@@ -369,29 +354,31 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                             var skill = _skills.title;
                             postion = index;
                             return Container(
-                              height: 25.0,
-                              margin: const EdgeInsets.only(
-                                  top: 10.0, bottom: 10, right: 12),
+                              height: 32.h,
+                              margin: EdgeInsets.only(
+                                  top: 10.sp, bottom: 10.sp, right: 12.sp),
                               decoration: BoxDecoration(
                                 color: const Color(0xff334155),
                                 borderRadius: BorderRadius.circular(
-                                  8.0,
+                                  8.r,
                                 ),
                               ),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0,
-                                      bottom: 8.0,
-                                      right: 12.0,
-                                      left: 12.0),
+                                  padding: EdgeInsets.only(
+                                      top: 8.sp,
+                                      bottom: 8.sp,
+                                      right: 12.sp,
+                                      left: 12.sp),
                                   child: Text(
                                     '$skill',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: ColorSelect.white_color,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
+                                        fontSize: 14.sp,
+                                        letterSpacing: 0.1,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: 'Inter-Regular',
                                         fontWeight: FontWeight.w400),
                                   ),
                                 ),
@@ -400,12 +387,14 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                           },
                         ),
                       )
-                    : const Text('TBD',
+                    : Text('N/A',
                         style: TextStyle(
                             color: ColorSelect.white_color,
-                            fontSize: 14.0,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500))),
+                            fontSize: 14.sp,
+                            letterSpacing: 0.1,
+                            fontStyle: FontStyle.normal,
+                            fontFamily: 'Inter-Regular',
+                            fontWeight: FontWeight.w400))),
                 DataCell(
                   Stack(children: [
                     pop.MyMenu(
@@ -440,29 +429,30 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
             child: RawScrollbar(
               controller: horizontalScroll,
               thumbColor: const Color(0xff4b5563),
-              radius: Radius.circular(20),
+              radius: Radius.circular(20.r),
               thickness: 10,
               child: SingleChildScrollView(
                 controller: horizontalScroll,
                 scrollDirection: Axis.horizontal,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: EdgeInsets.only(left: 20.sp, right: 20.sp),
                   child: Theme(
                     data: Theme.of(context)
                         .copyWith(dividerColor: Color(0xff525f72)),
                     child: DataTable(
                         horizontalMargin: 0,
                         showCheckboxColumn: false,
-                        dataRowHeight: 60,
+                        dataRowHeight: 60.h,
                         dividerThickness: 0.7,
-                        columns: const [
+                        columns: [
                           DataColumn(
                             label: Text(
                               "Name",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -471,8 +461,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               "Nickname",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -481,8 +472,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               "Capacity",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -491,8 +483,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               "Occupied till",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -501,8 +494,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               "Scheduled on",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -511,8 +505,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               "Skills",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -521,8 +516,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                               "Action",
                               style: TextStyle(
                                   color: ColorSelect.text_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: ScreenUtil().setSp(14.sp),
+                                  fontFamily: 'Inter-Medium',
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -536,32 +532,5 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
         )),
       ],
     );
-  }
-
-  Future<String?> getTimeline() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _timeline = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
   }
 }

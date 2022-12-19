@@ -55,11 +55,20 @@ class _ProjectEditState extends State<ProjectEdit>
   // var _id = widget.id;
   var _formKey = GlobalKey<FormState>();
   var isLoading = false;
+
   // var status = widget.response.data!.status; //response.data!.status;
   bool _submitted = true;
-  bool selectDeliveryDate = false;
-  bool createButtonClick = false;
 
+
+ String name_ = '';
+
+  bool selectAccountablePerson = false;
+  bool selectCurrency = false;
+  bool selectStatus = false;
+  bool selectCustomer = false;
+  bool createButtonClick = false;
+    bool selectDeliveryDate = false;
+  bool createProjectValidate = true;
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
   final TextEditingController _warkfolderId = TextEditingController();
@@ -195,7 +204,7 @@ class _ProjectEditState extends State<ProjectEdit>
     updateControllerValue();
     return Center(
       child: PopupMenuButton<int>(
-          tooltip: "",
+        tooltip: "",
         // offset: widget.offset,
         // color: const Color(0xFF0F172A),
         // position: PopupMenuPosition.under,
@@ -208,10 +217,11 @@ class _ProjectEditState extends State<ProjectEdit>
 
         child: Container(
           margin:
-              const EdgeInsets.only(right: 0.0, top: 0.0, bottom: 20, left: 80),
-          height: 30,
-          width: 30,
+              const EdgeInsets.only(right: 0.0, top: 0.0, bottom: 38, left: 80),
+          height: 38,
+          width: 38,
           decoration: BoxDecoration(
+              color: const Color(0xff334155),
               border: Border.all(
                 color: ColorSelect.box_decoration,
               ),
@@ -271,7 +281,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                             margin: const EdgeInsets.only(
                                                 top: 0.0, left: 10.0),
                                             child: const Text(
-                                              'Edit Project',
+                                              'Editttt Project',
                                               style: TextStyle(
                                                   color: Color(0xffFFFFFF),
                                                   fontSize: 18.0,
@@ -400,8 +410,14 @@ class _ProjectEditState extends State<ProjectEdit>
                                             //  onChanged: (text) => setState(() => name_ = text),
                                           ),
                                         ),
+                                    
+                                    
+                                    
                                       ],
                                     ),
+                                 
+                                 
+                                 
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -490,7 +506,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                                           icon: const Icon(
                                                             // Add this
                                                             Icons
-                                                                .arrow_drop_down, // Add this
+                                                                .arrow_drop_down,
+                                                            // Add this
                                                             color: Color(
                                                                 0xff64748B),
 
@@ -622,7 +639,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                                             icon: const Icon(
                                                               // Add this
                                                               Icons
-                                                                  .arrow_drop_down, // Add this
+                                                                  .arrow_drop_down,
+                                                              // Add this
                                                               color: Color(
                                                                   0xff64748B),
 
@@ -1029,8 +1047,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                                         isExpanded: true,
                                                         icon: const Icon(
                                                           // Add this
-                                                          Icons
-                                                              .arrow_drop_down, // Add this
+                                                          Icons.arrow_drop_down,
+                                                          // Add this
                                                           color:
                                                               Color(0xff64748B),
 
@@ -1232,8 +1250,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                                       isExpanded: true,
                                                       icon: const Icon(
                                                         // Add this
-                                                        Icons
-                                                            .arrow_drop_down, // Add this
+                                                        Icons.arrow_drop_down,
+                                                        // Add this
                                                         color:
                                                             Color(0xff64748B),
 
@@ -1551,8 +1569,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                             Navigator.of(context).pop();
                                           },
                                           child: Container(
-                                            width:
-                                                97, //MediaQuery.of(context).size.width * 0.22,
+                                            width: 97,
+                                            //MediaQuery.of(context).size.width * 0.22,
                                             margin: const EdgeInsets.only(
                                                 top: 15.0, bottom: 0.0),
                                             height: 40.0,
@@ -1602,8 +1620,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                             }
                                           },
                                           child: Container(
-                                            width:
-                                                97.0, //MediaQuery.of(context).size.width * 0.22,
+                                            width: 97.0,
+                                            //MediaQuery.of(context).size.width * 0.22,
                                             margin: const EdgeInsets.only(
                                               top: 15.0,
                                               bottom: 0.0,
