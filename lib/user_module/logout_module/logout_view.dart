@@ -14,7 +14,7 @@ import 'package:zeus/utility/util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:zeus/utility/app_url.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../helper_widget/search_view.dart';
 
 class LogOut extends StatefulWidget {
@@ -42,22 +42,22 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       color: const Color(0xff334155),
       tooltip: '',
       child: Container(
-        width: 24.0,
-        height: 24.0,
+        width: 24.w,
+        height: 24.h,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: const Color(0xff334155),
           border: Border.all(color: const Color(0xff334155)),
           borderRadius: BorderRadius.circular(
-            10.0,
+            10.r,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 3),
+          padding: EdgeInsets.only(top: 3.sp),
           child: SvgPicture.asset(
             "images/drop_arrow.svg",
-            width: 8,
-            height: 5,
+            width: 8.w,
+            height: 5.h,
             alignment: Alignment.center,
           ),
         ),
@@ -69,7 +69,6 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           child: InkWell(
             hoverColor: Color(0xff1e293b),
             onTap: () {
-              Colors.red;
               SmartDialog.showLoading(
                 msg: "Your request is in progress please wait for a while...",
               );
@@ -78,22 +77,24 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
               });
             },
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.sp),
               child: Row(
-                children: const [
+                children: [
                   SizedBox(
-                    width: 8,
+                    width: 8.sp,
                   ),
                   Icon(Icons.logout),
                   SizedBox(
-                    width: 8,
+                    width: 8.sp,
                   ),
                   Text(
                     "LogOut",
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'Inter',
+                        fontFamily: 'Inter-Medium',
+                        letterSpacing: 0.1,
+                        fontStyle: FontStyle.normal,
                         color: ColorSelect.white_color),
                   ),
                 ],
@@ -133,7 +134,8 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       context.vxNav.clearAndPush(Uri.parse(MyRoutes.loginRoute));
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       SmartDialog.dismiss();
       var user = userFromJson(response.body);

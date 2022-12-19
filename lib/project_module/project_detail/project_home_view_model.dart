@@ -14,6 +14,7 @@ class ProjectHomeViewModel extends ChangeNotifier {
   Future<ProjectDetailResponse> getProjectDetail(String id) async {
     loading = true;
     projectDetailResponse = (await service.getIdelDetail(id));
+
     print("projectDetailData");
     // print(peopleIdelResponse);
     loading = false;

@@ -59,6 +59,7 @@ showDailog(
   final TextEditingController _commentController = TextEditingController();
   ScrollController _ScrollController = ScrollController();
   ScrollController _horizontalScrollController = ScrollController();
+  ScrollController _verticalScrollController = ScrollController();
   var myFormat = DateFormat('yyyy-MM-dd');
 
   final TextEditingController _typeAheadController = TextEditingController();
@@ -1286,33 +1287,29 @@ showDailog(
                                                 fontWeight: FontWeight.w500)),
                                         onChanged: (value) {
                                           try {
+                                            _debouncer.run(() async {
+                                              addDescriptionProject();
+                                            });
+                                          } catch (e) {
+                                            print(e);
 
-                                          _debouncer.run(() async {
-
-                                            addDescriptionProject();
-
-                                          });
-
-                                        } catch (e) {
-
-                                          print(e);
-
-                                          print(value);
-
-                                        }
+                                            print(value);
+                                          }
                                         },
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 30.0, top: 20.0),
-                                      child: const Text(
-                                        "Potential roadblocks",
-                                        style: TextStyle(
-                                            color: Color(0xffFFFFFF),
-                                            fontSize: 16.0,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500),
+                                    Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 30.0, top: 20.0),
+                                        child: const Text(
+                                          "Potential roadblocks",
+                                          style: TextStyle(
+                                              color: Color(0xffFFFFFF),
+                                              fontSize: 16.0,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                     ),
                                     Container(
@@ -1496,16 +1493,19 @@ showDailog(
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
+                                          // color: Colors.green,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.38,
+                                              0.37,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
                                               0.99,
                                           decoration: const BoxDecoration(
-                                            color: Color(0xff263143),
+                                            color:
+                                                // Colors.red,
+                                                Color(0xff263143),
                                           ),
                                         ),
                                       ],
@@ -1518,62 +1518,36 @@ showDailog(
                         ),
                       ),
                       //TODO VS
-                      Container(
-                        // color: Colors.red,
-                        height: response.data!.phase!.length == 0 ? 180 : 400,
-                        width: MediaQuery.of(context).size.width * 0.99,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                                height: 60.0,
-                                width: MediaQuery.of(context).size.width,
-                                child: const Divider(
-                                  color: Color(0xff424D5F),
-                                  thickness: 0.7,
-                                )),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 50.0, top: 0.0),
-                                  child: const Text(
-                                    "Timeline",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 16.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700),
+                      Expanded(
+                        child: Container(
+                          // color: Colors.red,
+                          height: response.data!.phase!.length == 0 ? 180 : 400,
+                          width: MediaQuery.of(context).size.width * 0.99,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                  height: 60.0,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: const Divider(
+                                    color: Color(0xff424D5F),
+                                    thickness: 0.7,
+                                  )),
+                              Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 50.0, top: 0.0),
+                                    child: const Text(
+                                      "Timeline",
+                                      style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontSize: 16.0,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                   ),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          right: 8.0, top: 0.0),
-                                      child: SvgPicture.asset(
-                                        'images/plus.svg',
-                                        color: const Color(0xff93C5FD),
-                                        width: 10.0,
-                                        height: 10.0,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          right: 45.0, top: 0.0),
-                                      child: const Text(
-                                        "Request resources",
-                                        style: TextStyle(
-                                            color: Color(0xff93C5FD),
-                                            fontSize: 12.0,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                InkWell(
-                                  child: Row(
+                                  const Spacer(),
+                                  Row(
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(
@@ -1587,9 +1561,9 @@ showDailog(
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            right: 80.0, top: 0.0),
+                                            right: 45.0, top: 0.0),
                                         child: const Text(
-                                          "New phase",
+                                          "Request resources",
                                           style: TextStyle(
                                               color: Color(0xff93C5FD),
                                               fontSize: 12.0,
@@ -1599,272 +1573,307 @@ showDailog(
                                       ),
                                     ],
                                   ),
-                                  onTap: () async {
-                                    // Navigator.pop(context);
-                                    bool result = await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return NewPhase(id!, 0);
-                                        });
+                                  InkWell(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              right: 8.0, top: 0.0),
+                                          child: SvgPicture.asset(
+                                            'images/plus.svg',
+                                            color: const Color(0xff93C5FD),
+                                            width: 10.0,
+                                            height: 10.0,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              right: 80.0, top: 0.0),
+                                          child: const Text(
+                                            "New phase",
+                                            style: TextStyle(
+                                                color: Color(0xff93C5FD),
+                                                fontSize: 12.0,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () async {
+                                      // Navigator.pop(context);
+                                      bool result = await showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return NewPhase(id!, 0);
+                                          });
 
-                                    if (result != null && result) {
-                                      response = await Provider.of<
-                                                  ProjectHomeViewModel>(context,
-                                              listen: false)
-                                          .getProjectDetail(
-                                              response.data!.id!.toString());
+                                      if (result != null && result) {
+                                        response = await Provider.of<
+                                                    ProjectHomeViewModel>(
+                                                context,
+                                                listen: false)
+                                            .getProjectDetail(
+                                                response.data!.id!.toString());
 
-                                      setState(() {});
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.99,
-                              margin: const EdgeInsets.only(
-                                  left: 15.0, top: 12.0, right: 15.0),
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  12.0,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 15.0, top: 0.0),
-                                    child: const Text(
-                                      "Phase",
-                                      style: TextStyle(
-                                          color: Color(0xff94A3B8),
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 40.0, top: 0.0),
-                                    child: const Text(
-                                      "From",
-                                      style: TextStyle(
-                                          color: Color(0xff94A3B8),
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 16.0, right: 50.0),
-                                    child: const Text(
-                                      "Till",
-                                      style: TextStyle(
-                                          color: Color(0xff94A3B8),
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 15.0, right: 50.0),
-                                    child: const Text(
-                                      "Action",
-                                      style: TextStyle(
-                                          color: Color(0xff94A3B8),
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
+                                        setState(() {});
+                                      }
+                                    },
                                   ),
                                 ],
                               ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: response.data!.phase!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  Phase phase = response.data!.phase![index];
-                                  var title = phase.title;
-                                  var phaseType = phase.phaseType;
-                                  String name =
-                                      title!.substring(0, 2).toUpperCase();
-                                  var date = phase.startDate;
-                                  var endDate = phase.endDate;
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.99,
+                                margin: const EdgeInsets.only(
+                                    left: 15.0, top: 12.0, right: 15.0),
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  borderRadius: BorderRadius.circular(
+                                    12.0,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 15.0, top: 0.0),
+                                      child: const Text(
+                                        "Phase",
+                                        style: TextStyle(
+                                            color: Color(0xff94A3B8),
+                                            fontSize: 14.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          right: 40.0, top: 0.0),
+                                      child: const Text(
+                                        "From",
+                                        style: TextStyle(
+                                            color: Color(0xff94A3B8),
+                                            fontSize: 14.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 16.0, right: 50.0),
+                                      child: const Text(
+                                        "Till",
+                                        style: TextStyle(
+                                            color: Color(0xff94A3B8),
+                                            fontSize: 14.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 15.0, right: 50.0),
+                                      child: const Text(
+                                        "Action",
+                                        style: TextStyle(
+                                            color: Color(0xff94A3B8),
+                                            fontSize: 14.0,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: ListView.builder(
+                                  controller: _verticalScrollController,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: response.data!.phase!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Phase phase = response.data!.phase![index];
+                                    var title = phase.title;
+                                    var phaseType = phase.phaseType;
+                                    String name =
+                                        title!.substring(0, 2).toUpperCase();
+                                    var date = phase.startDate;
+                                    var endDate = phase.endDate;
 
-                                  var _date = date.toString();
+                                    var _date = date.toString();
 
-                                  var date1 = AppUtil.getFormatedDate(_date);
-                                  var fromDate =
-                                      AppUtil.formattedDateYear1(date1);
+                                    var date1 = AppUtil.getFormatedDate(_date);
+                                    var fromDate =
+                                        AppUtil.formattedDateYear1(date1);
 
-                                  var _endDate = endDate.toString();
+                                    var _endDate = endDate.toString();
 
-                                  var date2 = AppUtil.getFormatedDate(_endDate);
-                                  var tillDate =
-                                      AppUtil.formattedDateYear1(date2);
+                                    var date2 =
+                                        AppUtil.getFormatedDate(_endDate);
+                                    var tillDate =
+                                        AppUtil.formattedDateYear1(date2);
 
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 35.0,
-                                            width: 35.0,
-                                            margin: const EdgeInsets.only(
-                                                left: 45.0, top: 10.0),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                30.0,
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 38.0,
+                                              width: 38.0,
+                                              margin: const EdgeInsets.only(
+                                                  left: 45.0, top: 12.0),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff334155),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  30.0,
+                                                ),
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "$name",
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                      color: Color(0xffFFFFFF),
+                                                      fontSize: 12.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
                                               ),
                                             ),
-                                            child: Align(
-                                              alignment: Alignment.center,
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 16.0, top: 20.0),
                                               child: Text(
-                                                "$name",
-                                                textAlign: TextAlign.center,
+                                                "$phaseType",
                                                 style: const TextStyle(
-                                                    color: Color(0xffFFFFFF),
-                                                    fontSize: 12.0,
+                                                    color: Color(0xffE2E8F0),
+                                                    fontSize: 14.0,
                                                     fontFamily: 'Inter',
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 16.0, top: 18.0),
-                                            child: Text(
-                                              "$phaseType",
-                                              style: const TextStyle(
-                                                  color: Color(0xffE2E8F0),
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500),
+                                            const Spacer(),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 22.0, right: 42.0),
+                                              child: Text(
+                                                "$fromDate",
+                                                style: const TextStyle(
+                                                    color: Color(0xffffffff),
+                                                    fontSize: 14.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
                                             ),
-                                          ),
-                                          const Spacer(),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                top: 12.0, right: 42.0),
-                                            child: Text(
-                                              "$fromDate",
-                                              style: const TextStyle(
-                                                  color: Color(0xffffffff),
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 22.0, right: 36.0),
+                                              child: Text(
+                                                "$tillDate",
+                                                style: const TextStyle(
+                                                    color: Color(0xffffffff),
+                                                    fontSize: 14.0,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
                                             ),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                top: 12.0, right: 36.0),
-                                            child: Text(
-                                              "$tillDate",
-                                              style: const TextStyle(
-                                                  color: Color(0xffffffff),
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 62.0, bottom: 8),
-                                            child: Stack(children: [
-                                              MenuPhase(
-                                                index: index,
-                                                onDeleteSuccess: () {
-                                                  setState(() {
-                                                    response.data!.phase!
-                                                        .removeAt(index);
-                                                  });
-                                                },
-                                                onEditClick: () async {
-                                                  Navigator.pop(context);
-                                                  bool result =
-                                                      await showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return NewPhase(
-                                                                response
-                                                                    .data!
-                                                                    .phase![
-                                                                        index]
-                                                                    .id
-                                                                    .toString(),
-                                                                1);
-                                                          });
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 62.0, bottom: 8),
+                                              child: Stack(children: [
+                                                MenuPhase(
+                                                  index: index,
+                                                  onDeleteSuccess: () {
+                                                    setState(() {
+                                                      response.data!.phase!
+                                                          .removeAt(index);
+                                                    });
+                                                  },
+                                                  onEditClick: () async {
+                                                    Navigator.pop(context);
+                                                    bool result =
+                                                        await showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return NewPhase(
+                                                                  response
+                                                                      .data!
+                                                                      .phase![
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
+                                                                  1);
+                                                            });
 
-                                                  if (result != null &&
-                                                      result) {
-                                                    response = await Provider
-                                                            .of<ProjectHomeViewModel>(
-                                                                context,
-                                                                listen: false)
-                                                        .getProjectDetail(
-                                                            response.data!.id!
-                                                                .toString());
+                                                    if (result != null &&
+                                                        result) {
+                                                      response = await Provider
+                                                              .of<ProjectHomeViewModel>(
+                                                                  context,
+                                                                  listen: false)
+                                                          .getProjectDetail(
+                                                              response.data!.id!
+                                                                  .toString());
 
-                                                    setState(() {});
-                                                  }
-                                                },
-                                                setState: setState,
-                                                response: response,
-                                                data: phase,
-                                                title: 'Menu at bottom',
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                buildContext: context,
-                                                returnValue: () {
-                                                  print(
-                                                      "Value returned --------------------------------------");
-                                                },
-                                              )
-                                            ]),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              left: 30.0,
-                                              right: 30.0,
-                                              bottom: 0.0),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              100.0,
-                                          child: const Divider(
-                                            color: Color(0xff94A3B8),
-                                            thickness: 0.1,
-                                          )),
-                                    ],
-                                  );
-                                },
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  setState: setState,
+                                                  response: response,
+                                                  data: phase,
+                                                  title: 'Menu at bottom',
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  buildContext: context,
+                                                  returnValue: () {
+                                                    print(
+                                                        "Value returned --------------------------------------");
+                                                  },
+                                                )
+                                              ]),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 30.0,
+                                                right: 30.0,
+                                                bottom: 0.0),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                100.0,
+                                            child: const Divider(
+                                              color: Color(0xff94A3B8),
+                                              thickness: 0.1,
+                                            )),
+                                      ],
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     ],
