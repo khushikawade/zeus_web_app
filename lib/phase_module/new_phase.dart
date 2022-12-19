@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
@@ -83,6 +84,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   bool addMilestoneBtnClick = false;
   bool addSubtaskBtnClick = false;
+
+  bool savePhaseValidate = true;
+  String name_ = '';
 
   TypeAheadFormField? searchTextField;
   TypeAheadFormField? subTaskResourcesSearchTextField;
@@ -281,7 +285,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     child: const Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        "Save",
+                                        "Save1",
                                         style: TextStyle(
                                             fontSize: 14.0,
                                             color: Color(0xff000000),
@@ -293,10 +297,14 @@ class _NewPhaseState extends State<NewPhase> {
                                   onTap: () {
                                     setState(() {
                                       savePhaseClick = true;
+                                      // savePhaseValidate = true;
                                     });
                                     Future.delayed(
                                         const Duration(microseconds: 500), () {
                                       createPhase();
+                                      // if (savePhaseValidate) {
+
+                                      // }
                                     });
                                   },
                                 ),
@@ -400,39 +408,98 @@ class _NewPhaseState extends State<NewPhase> {
             const SizedBox(
               height: 8.0,
             ),
-            formField(
+            // formField(
+            //     controller: controller_next_phase,
+            //     context: context,
+            //     labelText: "Phase Title",
+            //     callback: (values) {
+            //       setState(() {
+            //         phaseDetails.title = values;
+            //       });
+            //     },
+            //     validateCallback: (value) {
+            //       if (value.isEmpty ||
+            //           phaseDetails.title!.isEmpty ||
+            //           phaseDetails.title == null) {
+            //         // setState(() {
+            //         //   //savePhaseValidate = false;
+            //         // });
+            //         return 'Please enter phase title';
+            //       }
+            //       return null;
+            //     }),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 80),
+              child: CustomFormField(
                 controller: controller_next_phase,
-                context: context,
-                labelText: "Phase Title",
-                callback: (values) {
-                  setState(() {
-                    phaseDetails.title = values;
-                  });
-                },
-                validateCallback: (value) {
+                maxline: 1,
+                fontSizeForLabel: 14,
+                label: 'Phase Title',
+                // contentpadding:
+                //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                // hintTextHeight: 1.7,
+                validator: (value) {
                   if (value.isEmpty) {
+                    setState(() {
+                      //savePhaseValidate = false;
+                    });
+
                     return 'Please enter phase title';
                   }
                   return null;
-                }),
+                },
+                onChange: (text) => setState(() => name_ = text),
+              ),
+            ),
+
             const SizedBox(
               height: 10.0,
             ),
-            formField(
+            // formField(
+            //     controller: controller_phase_type,
+            //     labelText: "Phase Type",
+            //     context: context,
+            //     callback: (values) {
+            //       setState(() {
+            //         phaseDetails.phase_type = values;
+            //       });
+            //     },
+            //     validateCallback: (value) {
+            //       if (value.isEmpty ||
+            //           phaseDetails.phase_type!.isEmpty ||
+            //           phaseDetails.phase_type == null) {
+            //         // setState(() {
+            //         //   //savePhaseValidate = false;
+            //         // });
+            //         return 'Please enter phase type';
+            //       }
+            //       return null;
+            //     }),
+
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 80),
+              child: CustomFormField(
                 controller: controller_phase_type,
-                labelText: "Phase Type",
-                context: context,
-                callback: (values) {
-                  setState(() {
-                    phaseDetails.phase_type = values;
-                  });
-                },
-                validateCallback: (value) {
+                maxline: 1,
+                fontSizeForLabel: 14,
+                label: 'Phase Title',
+                // contentpadding:
+                //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                // hintTextHeight: 1.7,
+                validator: (value) {
                   if (value.isEmpty) {
+                    setState(() {
+                      //savePhaseValidate = false;
+                    });
+
                     return 'Please enter phase type';
                   }
                   return null;
-                }),
+                },
+                onChange: (text) => setState(() => name_ = text),
+              ),
+            ),
+
             const SizedBox(
               height: 10.0,
             ),
@@ -449,10 +516,12 @@ class _NewPhaseState extends State<NewPhase> {
                   ? null
                   : AppUtil.stringToDate(phaseDetails.start_date.toString()),
               validationCallBack: (String values) {
+                // setState(() {
+                //   // checkFormStatus();
+                // });
                 if (values.isEmpty ||
                     phaseDetails.start_date == null ||
                     phaseDetails.start_date!.isEmpty) {
-                  checkFormStatus();
                   return 'Please enter start date';
                 } else {
                   return null;
@@ -475,9 +544,10 @@ class _NewPhaseState extends State<NewPhase> {
                   : AppUtil.stringToDate(phaseDetails.end_date.toString()),
               validationCallBack: (String values) {
                 if (values.isEmpty ||
+                    values == null ||
                     phaseDetails.end_date == null ||
                     phaseDetails.end_date!.isEmpty) {
-                  checkFormStatus();
+                  // checkFormStatus();
                   return 'Please enter end date';
                 } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
                     .isBefore(
@@ -1051,24 +1121,50 @@ class _NewPhaseState extends State<NewPhase> {
               height: 8.0,
             ),
             clickedAddMileStone
-                ? Container(
-                    // color: Colors.red,
-                    child: formField(
+                ?
+                // ? Container(
+                // color: Colors.red,
+                // child: formField(
+                //   controller: controllerMilestoneTitle,
+                //   context: context,
+                //   labelText: "Milestone Title",
+                //   validateCallback: (values) {
+                //     if (values.isEmpty) {
+                //       return 'Please enter milestone title';
+                //     } else {
+                //       return null;
+                //     }
+                //   },
+                //   callback: (values) {
+                //     setState(() {
+                //       mileStoneTitle = values;
+                //     });
+                //   },
+                // ),
+
+                // )
+                Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: CustomFormField(
                       controller: controllerMilestoneTitle,
-                      context: context,
-                      labelText: "Milestone Title",
-                      validateCallback: (values) {
-                        if (values.isEmpty) {
+                      maxline: 1,
+                      fontSizeForLabel: 14,
+                      label: 'Milestone Title',
+                      // contentpadding:
+                      //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                      // hintTextHeight: 1.7,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            mileStoneTitle = value;
+                            //savePhaseValidate = false;
+                          });
+
                           return 'Please enter milestone title';
-                        } else {
-                          return null;
                         }
+                        return null;
                       },
-                      callback: (values) {
-                        setState(() {
-                          mileStoneTitle = values;
-                        });
-                      },
+                      onChange: (text) => setState(() => name_ = text),
                     ),
                   )
                 : saveButtonClick
@@ -2116,8 +2212,8 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   beforeScreenLoad() {
-    phaseDetails.start_date = "";
-    phaseDetails.end_date = "";
+    phaseDetails.start_date = null;
+    phaseDetails.end_date = null;
     mileStoneDate = "";
     subTaskStartDate = "";
     subTaskEndDate = "";

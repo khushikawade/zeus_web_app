@@ -59,15 +59,14 @@ class _ProjectEditState extends State<ProjectEdit>
   // var status = widget.response.data!.status; //response.data!.status;
   bool _submitted = true;
 
-
- String name_ = '';
+  String name_ = '';
 
   bool selectAccountablePerson = false;
   bool selectCurrency = false;
   bool selectStatus = false;
   bool selectCustomer = false;
   bool createButtonClick = false;
-    bool selectDeliveryDate = false;
+  bool selectDeliveryDate = false;
   bool createProjectValidate = true;
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -145,8 +144,12 @@ class _ProjectEditState extends State<ProjectEdit>
       widget.currencyList.asMap().forEach((index, element) {
         if (element['id'].toString() == widget.response.data!.currency) {
           _curren = element['id'].toString();
+          print("(_curren--------------------------------${_curren}");
+          print(_curren!.length);
         }
       });
+    } else {
+      print("-----------------------------------------------------.");
     }
     if (widget.response.data != null &&
         widget.response.data!.deliveryDate!.isNotEmpty &&
@@ -410,14 +413,9 @@ class _ProjectEditState extends State<ProjectEdit>
                                             //  onChanged: (text) => setState(() => name_ = text),
                                           ),
                                         ),
-                                    
-                                    
-                                    
                                       ],
                                     ),
-                                 
-                                 
-                                 
+
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -1027,6 +1025,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                           StateSettersetState) {
                                                     return DropdownButtonHideUnderline(
                                                       child: DropdownButton(
+                                                        isDense: true,
                                                         dropdownColor:
                                                             ColorSelect
                                                                 .class_color,
@@ -1605,7 +1604,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                           onTap: () {
                                             if (_formKey.currentState!
                                                 .validate()) {
-                                              if (selectDeliveryDate == true) {
+                                              {
                                                 SmartDialog.showLoading(
                                                   msg:
                                                       "Your request is in progress please wait for a while...",
@@ -1875,7 +1874,7 @@ class _ProjectEditState extends State<ProjectEdit>
 
       try {
         var response = await http.post(
-          Uri.parse('${AppUrl.baseUrl}/project_detail/${widget.id}/update'),
+          Uri.parse('${AppUrl.baseUrl}/project/${widget.id}/update'),
           body: map,
           headers: {
             "Accept": "application/json",
@@ -1883,7 +1882,7 @@ class _ProjectEditState extends State<ProjectEdit>
           },
         );
         // ignore: unrelated_type_equality_checks
-
+        print(response.statusCode);
         if (response.statusCode == 200) {
           var responseJson =
               jsonDecode(response.body.toString()) as Map<String, dynamic>;

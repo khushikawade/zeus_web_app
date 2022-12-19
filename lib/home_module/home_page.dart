@@ -1120,8 +1120,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             ),
                                             child: CustomFormField(
                                               controller: _designation,
-
-                                              //maxLength: 20,
+                                              maxLength: 20,
                                               fontSizeForLabel: 14,
                                               hint: 'Enter ',
                                               label: 'Designation',
@@ -1424,7 +1423,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         right: 25, left: 30.0, bottom: 0),
                                     child: CustomFormField(
                                       controller: _association,
-                                      // maxLength: 30,
+                                      maxLength: 30,
                                       hint: 'Enter team name',
                                       label: "Associated with",
                                       fontSizeForLabel: 14,
@@ -1639,7 +1638,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               bottom: 0),
                                           child: CustomFormField(
                                             controller: _salary,
-                                            // maxLength: 15,
+                                            maxLength: 15,
                                             hint: '0.00',
                                             label: "Monthly Salary",
                                             fontSizeForLabel: 14,
@@ -2345,7 +2344,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     padding: const EdgeInsets.only(
                                         right: 70, left: 30.0, bottom: 0),
                                     child: CustomFormField(
-                                      //   maxLength: 20,
+                                      maxLength: 20,
                                       controller: _country,
                                       hint: 'Enter country',
                                       label: "Country",
@@ -2472,7 +2471,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     padding: const EdgeInsets.only(
                                         right: 70, left: 30.0, bottom: 0),
                                     child: CustomFormField(
-                                      //   maxLength: 20,
+                                      maxLength: 20,
                                       controller: _enterCity,
                                       hint: 'Enter city',
                                       label: "City",
@@ -2599,7 +2598,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     padding: const EdgeInsets.only(
                                         right: 70, left: 30.0, bottom: 0),
                                     child: CustomFormField(
-                                      //   maxLength: 10,
+                                      maxLength: 10,
                                       controller: _phoneNumber,
                                       hint: 'Enter number',
                                       label: "Phone number",
@@ -2721,7 +2720,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     padding: const EdgeInsets.only(
                                         right: 70, left: 30.0, bottom: 0),
                                     child: CustomFormField(
-                                      //   maxLength: 20,
+                                      maxLength: 20,
                                       controller: _emailAddress,
                                       hint: 'Enter email address',
                                       label: "Email address",
