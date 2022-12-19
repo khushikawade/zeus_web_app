@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
+import 'package:zeus/helper_widget/test_view.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:zeus/utility/constant.dart';
-import 'package:zeus/utility/upertextformate.dart';
 import 'package:zeus/utility/util.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateProjectPage extends StatefulWidget {
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
@@ -53,7 +54,6 @@ class _EditPageState extends State<CreateProjectPage> {
 
   final ScrollController verticalScroll = ScrollController();
 
-  bool _submitted = true;
   bool _addSubmitted = false;
   List _accountableId = [];
   List _customerName = [];
@@ -61,16 +61,11 @@ class _EditPageState extends State<CreateProjectPage> {
   List _statusList = [];
   List _timeline = [];
   List addTag = [];
-  List<String> _tag1 = [];
-  GlobalKey<ScaffoldState>? _key;
-  bool? _isSelected;
-  List<String>? _filters1 = [
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface'
-  ];
+
+  List<String>? accountablePersonList = [];
+  List<String>? consumerList = [];
+
+  List<String>? currencyList = [];
   List<String>? addTag1 = [];
   List<int> add1 = [1];
   bool imageavail = false;
@@ -135,6 +130,21 @@ class _EditPageState extends State<CreateProjectPage> {
         List<dynamic> mdata = map["data"];
         setState(() {
           _accountableId = mdata;
+          try {
+            accountablePersonList!.clear();
+
+            _accountableId.forEach((element) {
+              accountablePersonList!.add(element['name']);
+            });
+
+            // _accountableId.map((result) {
+            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
+            //   print(result);
+            //   accountablePersonList!.add(result['name']);
+            // });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -162,6 +172,15 @@ class _EditPageState extends State<CreateProjectPage> {
         List<dynamic> mdata = map["data"];
         setState(() {
           _customerName = mdata;
+          try {
+            consumerList!.clear();
+
+            _customerName.forEach((element) {
+              consumerList!.add(element['name']);
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -192,7 +211,7 @@ class _EditPageState extends State<CreateProjectPage> {
 
   Widget createProjectView() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.33,
+      width: 523.w,
       child: RawScrollbar(
         controller: verticalScroll,
         thumbColor: const Color(0xff4b5563),
@@ -260,225 +279,267 @@ class _EditPageState extends State<CreateProjectPage> {
                 onChange: (text) => setState(() => name_ = text),
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 0.0),
-                          height: 60.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xff475569),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
-                                ),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 4.0, left: 14.0),
-                                    child: const Text(
-                                      "AP",
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Color(0xff64748B),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                StatefulBuilder(builder: (BuildContext context,
-                                    StateSettersetState) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 14, right: 0, top: 2),
-                                    child: DropdownButtonHideUnderline(
-                                        child: CustomDropdownButton(
-                                      isDense: true,
-                                      dropdownColor: Color(0xff0F172A),
-                                      value: _account,
-                                      underline: Container(),
-                                      hint: const Text(
-                                        "Select Accountable Person",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      icon: const Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Color(0xff64748B),
-                                      ),
-                                      elevation: 12,
-                                      items: _accountableId.map((items) {
-                                        return DropdownMenuItem(
-                                          value: items['id'].toString(),
-                                          child: Text(
-                                            items['name'],
-                                            style: const TextStyle(
-                                                fontSize: 15.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          _account = newValue;
-                                          print("account:$_account");
-                                          selectAccountablePerson = true;
-                                        });
-                                      },
-                                    )),
-                                  );
-                                }),
-                              ]),
-                        ),
-                        createButtonClick
-                            ? selectAccountablePerson
-                                ? const Text(
-                                    " ",
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 8,
-                                      left: 26,
-                                    ),
-                                    child: errorWidget())
-                            : Container(),
-                      ],
-                    ),
-                  ),
+                      child: CustomSearchDropdown(
+                    label: 'AP',
+                    hint: 'Select Accountable Person',
+                    errorText: createButtonClick &&
+                            (_account == null || _account!.isEmpty)
+                        ? 'Please Select this field'
+                        : '',
+                    items: accountablePersonList!,
+                    onChange: ((value) {
+                      setState(() {
+                        _account = value;
+                        print("account:$_account");
+                        selectAccountablePerson = true;
+                      });
+                    }),
+                  )),
                   SizedBox(
-                    width: 10,
+                    width: 16.w,
                   ),
                   Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 0, left: 0.0),
-                          height: 60.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0xff475569),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
-                                ),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 4.0, left: 14.0),
-                                    child: const Text(
-                                      "Customer",
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Color(0xff64748B),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                StatefulBuilder(builder: (BuildContext context,
-                                    StateSettersetState) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 14, right: 0, top: 2),
-                                    child: DropdownButtonHideUnderline(
-                                        child: CustomDropdownButton(
-                                      isDense: true,
-                                      dropdownColor: ColorSelect.class_color,
-                                      value: _custome,
-                                      underline: Container(),
-                                      hint: const Text(
-                                        "Select Customer",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      icon: const Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Color(0xff64748B),
-                                      ),
-                                      items: _customerName.map((items) {
-                                        return DropdownMenuItem(
-                                          value: items['id'].toString(),
-                                          child: Text(
-                                            items['name'],
-                                            style: const TextStyle(
-                                                fontSize: 15.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          _custome = newValue;
-                                          print("account:$_custome");
-                                          selectCustomer = true;
-                                        });
-                                      },
-                                    )),
-                                  );
-                                })
-                              ]),
-                        ),
-                        createButtonClick
-                            ? selectAccountablePerson
-                                ? const Text(
-                                    " ",
-                                  )
-                                : Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 8,
-                                      left: 26,
-                                    ),
-                                    child: errorWidget())
-                            : Container(),
-                      ],
-                    ),
-                  ),
+                      child: CustomSearchDropdown(
+                    label: 'Customer',
+                    hint: 'Select Customer',
+                    errorText: createButtonClick &&
+                            (_custome == null || _custome!.isEmpty)
+                        ? 'Please Select this field'
+                        : '',
+                    items: consumerList!,
+                    onChange: ((value) {
+                      setState(() {
+                        _custome = value;
+                        print("account:$_custome");
+                        selectCustomer = true;
+                      });
+                    }),
+                  )),
                 ],
               ),
-              SizedBox(height: 24),
+
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   mainAxisSize: MainAxisSize.max,
+              //   children: [
+              //     Expanded(
+              //       flex: 1,
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Container(
+              //             margin: const EdgeInsets.only(left: 0.0),
+              //             height: 60.0,
+              //             decoration: BoxDecoration(
+              //               color: const Color(0xff334155),
+              //               borderRadius: BorderRadius.circular(
+              //                 8.0,
+              //               ),
+              //               boxShadow: const [
+              //                 BoxShadow(
+              //                   color: Color(0xff475569),
+              //                   offset: Offset(
+              //                     0.0,
+              //                     2.0,
+              //                   ),
+              //                   blurRadius: 0.0,
+              //                   spreadRadius: 0.0,
+              //                 ),
+              //               ],
+              //             ),
+              //             child: Column(
+              //                 mainAxisAlignment: MainAxisAlignment.start,
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 mainAxisSize: MainAxisSize.min,
+              //                 children: [
+              //                   Container(
+              //                       margin: const EdgeInsets.only(
+              //                           top: 4.0, left: 14.0),
+              //                       child: const Text(
+              //                         "AP",
+              //                         style: TextStyle(
+              //                             fontSize: 13.0,
+              //                             color: Color(0xff64748B),
+              //                             fontFamily: 'Inter',
+              //                             fontWeight: FontWeight.w500),
+              //                       )),
+              //                   StatefulBuilder(builder: (BuildContext context,
+              //                       StateSettersetState) {
+              //                     return Padding(
+              //                       padding: const EdgeInsets.only(
+              //                           left: 14, right: 0, top: 2),
+              //                       child: DropdownButtonHideUnderline(
+              //                           child: CustomDropdownButton(
+              //                         isDense: true,
+              //                         dropdownColor: Color(0xff0F172A),
+              //                         value: _account,
+              //                         underline: Container(),
+              //                         hint: const Text(
+              //                           "Select Accountable Person",
+              //                           style: TextStyle(
+              //                               fontSize: 14.0,
+              //                               color: Color(0xffFFFFFF),
+              //                               fontFamily: 'Inter',
+              //                               fontWeight: FontWeight.w300),
+              //                         ),
+              //                         icon: const Icon(
+              //                           Icons.arrow_drop_down,
+              //                           color: Color(0xff64748B),
+              //                         ),
+              //                         elevation: 12,
+              //                         items: _accountableId.map((items) {
+              //                           return DropdownMenuItem(
+              //                             value: items['id'].toString(),
+              //                             child: Text(
+              //                               items['name'],
+              //                               style: const TextStyle(
+              //                                   fontSize: 15.0,
+              //                                   color: Color(0xffFFFFFF),
+              //                                   fontFamily: 'Inter',
+              //                                   fontWeight: FontWeight.w500),
+              //                             ),
+              //                           );
+              //                         }).toList(),
+              //                         onChanged: (String? newValue) {
+              //                           setState(() {
+              //                             _account = newValue;
+              //                             print("account:$_account");
+              //                             selectAccountablePerson = true;
+              //                           });
+              //                         },
+              //                       )),
+              //                     );
+              //                   }),
+              //                 ]),
+              //           ),
+              //           createButtonClick
+              //               ? selectAccountablePerson
+              //                   ? const Text(
+              //                       " ",
+              //                     )
+              //                   : Padding(
+              //                       padding: EdgeInsets.only(
+              //                         top: 8,
+              //                         left: 26,
+              //                       ),
+              //                       child: errorWidget())
+              //               : Container(),
+              //         ],
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     Expanded(
+              //       flex: 1,
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Container(
+              //             margin: const EdgeInsets.only(top: 0, left: 0.0),
+              //             height: 60.0,
+              //             decoration: BoxDecoration(
+              //               color: const Color(0xff334155),
+              //               borderRadius: BorderRadius.circular(
+              //                 8.0,
+              //               ),
+              //               boxShadow: const [
+              //                 BoxShadow(
+              //                   color: Color(0xff475569),
+              //                   offset: Offset(
+              //                     0.0,
+              //                     2.0,
+              //                   ),
+              //                   blurRadius: 0.0,
+              //                   spreadRadius: 0.0,
+              //                 ),
+              //               ],
+              //             ),
+              //             child: Column(
+              //                 mainAxisAlignment: MainAxisAlignment.start,
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 mainAxisSize: MainAxisSize.min,
+              //                 children: [
+              //                   Container(
+              //                       margin: const EdgeInsets.only(
+              //                           top: 4.0, left: 14.0),
+              //                       child: const Text(
+              //                         "Customer",
+              //                         style: TextStyle(
+              //                             fontSize: 13.0,
+              //                             color: Color(0xff64748B),
+              //                             fontFamily: 'Inter',
+              //                             fontWeight: FontWeight.w500),
+              //                       )),
+              //                   StatefulBuilder(builder: (BuildContext context,
+              //                       StateSettersetState) {
+              //                     return Padding(
+              //                       padding: const EdgeInsets.only(
+              //                           left: 14, right: 0, top: 2),
+              //                       child: DropdownButtonHideUnderline(
+              //                           child: CustomDropdownButton(
+              //                         isDense: true,
+              //                         dropdownColor: ColorSelect.class_color,
+              //                         value: _custome,
+              //                         underline: Container(),
+              //                         hint: const Text(
+              //                           "Select Customer",
+              //                           style: TextStyle(
+              //                               fontSize: 14.0,
+              //                               color: Color(0xffFFFFFF),
+              //                               fontFamily: 'Inter',
+              //                               fontWeight: FontWeight.w300),
+              //                         ),
+              //                         icon: const Icon(
+              //                           Icons.arrow_drop_down,
+              //                           color: Color(0xff64748B),
+              //                         ),
+              //                         items: _customerName.map((items) {
+              //                           return DropdownMenuItem(
+              //                             value: items['id'].toString(),
+              //                             child: Text(
+              //                               items['name'],
+              //                               style: const TextStyle(
+              //                                   fontSize: 15.0,
+              //                                   color: Color(0xffFFFFFF),
+              //                                   fontFamily: 'Inter',
+              //                                   fontWeight: FontWeight.w500),
+              //                             ),
+              //                           );
+              //                         }).toList(),
+              //                         onChanged: (String? newValue) {
+              //                           setState(() {
+              //                             _custome = newValue;
+              //                             print("account:$_custome");
+              //                             selectCustomer = true;
+              //                           });
+              //                         },
+              //                       )),
+              //                     );
+              //                   })
+              //                 ]),
+              //           ),
+              //           createButtonClick
+              //               ? selectAccountablePerson
+              //                   ? const Text(
+              //                       " ",
+              //                     )
+              //                   : Padding(
+              //                       padding: EdgeInsets.only(
+              //                         top: 8,
+              //                         left: 26,
+              //                       ),
+              //                       child: errorWidget())
+              //               : Container(),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 24),
               CustomFormField(
                 controller: _crmtask,
                 hint: '',
@@ -499,7 +560,7 @@ class _EditPageState extends State<CreateProjectPage> {
                 hint: '',
                 label: "Work Folder ID:",
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (value.isEmpty) {
                     setState(() {
                       createProjectValidate = false;
                     });
@@ -521,7 +582,7 @@ class _EditPageState extends State<CreateProjectPage> {
                       hint: '',
                       label: "Budget",
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value.isEmpty) {
                           setState(() {
                             createProjectValidate = false;
                           });
@@ -533,93 +594,111 @@ class _EditPageState extends State<CreateProjectPage> {
                     ),
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 10.w,
                   ),
                   Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(
-                              left: 0.0, top: 0.0, bottom: 8.0),
-                          height: 56.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                          ),
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 12.0, right: 5.0),
-                              child: StatefulBuilder(
-                                builder: (BuildContext context,
-                                    StateSettersetState) {
-                                  return DropdownButtonHideUnderline(
-                                    child: DropdownButton(
-                                      dropdownColor: ColorSelect.class_color,
-                                      value: _curren,
-                                      underline: Container(),
-                                      hint: const Text(
-                                        "Select",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      icon: const Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Color(0xff64748B),
-                                      ),
-                                      items: _currencyName.map((items) {
-                                        return DropdownMenuItem(
-                                          value: items['id'].toString(),
-                                          child: Text(
-                                            items['currency']['symbol'],
-                                            style: const TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        StateSettersetState(() {
-                                          _curren = newValue;
-                                          setState(() {
-                                            selectCurrency = true;
-                                          });
-                                        });
-                                      },
-                                    ),
-                                  );
-                                },
-                              )),
-                        ),
-                        createButtonClick
-                            ? selectCurrency
-                                ? const Text(
-                                    " ",
-                                  )
-                                : const Padding(
-                                    padding: EdgeInsets.only(left: 13),
-                                    child: Text("Please Select ",
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 221, 49, 60),
-                                            fontSize: 14)),
-                                  )
-                            : Container(),
-                      ],
-                    ),
-                  ),
+                      flex: 2,
+                      child: CustomSearchDropdown(
+                        hint: 'Select',
+                        label: "A",
+                        errorText: createButtonClick &&
+                                (_curren == null || _curren!.isEmpty)
+                            ? 'Please Select this field'
+                            : '',
+                        items: currencyList!,
+                        onChange: ((value) {
+                          _curren = value;
+                          setState(() {
+                            selectCurrency = true;
+                          });
+                        }),
+                      )),
+                  // Expanded(
+                  //   flex: 2,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         width: double.infinity,
+                  //         margin: const EdgeInsets.only(
+                  //             left: 0.0, top: 0.0, bottom: 8.0),
+                  //         height: 56.0,
+                  //         decoration: BoxDecoration(
+                  //           color: const Color(0xff334155),
+                  //           borderRadius: BorderRadius.circular(
+                  //             8.0,
+                  //           ),
+                  //         ),
+                  //         child: Container(
+                  //             margin:
+                  //                 const EdgeInsets.only(left: 12.0, right: 5.0),
+                  //             child: StatefulBuilder(
+                  //               builder: (BuildContext context,
+                  //                   StateSettersetState) {
+                  //                 return DropdownButtonHideUnderline(
+                  //                   child: DropdownButton(
+                  //                     dropdownColor: ColorSelect.class_color,
+                  //                     value: _curren,
+                  //                     underline: Container(),
+                  //                     hint: const Text(
+                  //                       "Select",
+                  //                       style: TextStyle(
+                  //                           fontSize: 14.0,
+                  //                           color: Color(0xffFFFFFF),
+                  //                           fontFamily: 'Inter',
+                  //                           fontWeight: FontWeight.w300),
+                  //                     ),
+                  //                     icon: const Icon(
+                  //                       Icons.arrow_drop_down,
+                  //                       color: Color(0xff64748B),
+                  //                     ),
+                  //                     items: _currencyName.map((items) {
+                  //                       return DropdownMenuItem(
+                  //                         value: items['id'].toString(),
+                  //                         child: Text(
+                  //                           items['currency']['symbol'],
+                  //                           style: const TextStyle(
+                  //                               fontSize: 14.0,
+                  //                               color: Color(0xffFFFFFF),
+                  //                               fontFamily: 'Inter',
+                  //                               fontWeight: FontWeight.w400),
+                  //                         ),
+                  //                       );
+                  //                     }).toList(),
+                  //                     onChanged: (String? newValue) {
+                  //                       StateSettersetState(() {
+                  //                         _curren = newValue;
+                  //                         setState(() {
+                  //                           selectCurrency = true;
+                  //                         });
+                  //                       });
+                  //                     },
+                  //                   ),
+                  //                 );
+                  //               },
+                  //             )),
+                  //       ),
+                  //       createButtonClick
+                  //           ? selectCurrency
+                  //               ? const Text(
+                  //                   " ",
+                  //                 )
+                  //               : const Padding(
+                  //                   padding: EdgeInsets.only(left: 13),
+                  //                   child: Text("Please Select ",
+                  //                       style: TextStyle(
+                  //                           color: Color.fromARGB(
+                  //                               255, 221, 49, 60),
+                  //                           fontSize: 14)),
+                  //                 )
+                  //           : Container(),
+                  //     ],
+                  //   ),
+                  // ),
+
                   SizedBox(
-                    width: 10,
+                    width: 10.w,
                   ),
                   Expanded(
                     flex: 5,
@@ -1027,6 +1106,14 @@ class _EditPageState extends State<CreateProjectPage> {
         List<dynamic> mdata = map["data"];
         setState(() {
           _currencyName = mdata;
+          try {
+            currencyList!.clear();
+            _accountableId.forEach((element) {
+              currencyList!.add(element['currency']['symbol']);
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
