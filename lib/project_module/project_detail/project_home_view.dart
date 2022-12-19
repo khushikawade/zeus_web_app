@@ -13,6 +13,8 @@ import '../../popup/Popup.dart';
 
 import 'project_home_view_model.dart';
 import '../../services/response_model/project_idel_response.dart';
+import 'package:zeus/services/response_model/project_idel_response.dart';
+
 import 'package:provider/provider.dart';
 
 class ProjectHome extends StatefulWidget {
@@ -273,7 +275,7 @@ class ProjectHomeState extends State<ProjectHome> {
         print(data.projectDetailsResponse!.data!.length);
         print(data.projectDetailsResponse!.data!.length);
         data.projectDetailsResponse!.data!.asMap().forEach((index, element) {
-          Data _projectData = data.projectDetailsResponse!.data![index];
+          Datum _projectData = data.projectDetailsResponse!.data![index];
 
           var projectName = '';
           var projectStatus = '';
@@ -334,15 +336,19 @@ class ProjectHomeState extends State<ProjectHome> {
           } else {
             //print("96939633");
           }
+          //nextMileStone = AppUtil.formattedDate(_projectData.phase?[index].milestone?[index].mDate ?? "N/A");
 
-          if (_projectData.currentPhase != null &&
-              _projectData.currentPhase!.currentMilestone != null &&
-              _projectData.currentPhase!.currentMilestone!.mDate != null) {
-            nextMileStone = AppUtil.formattedDate(
-                _projectData.currentPhase!.currentMilestone!.mDate!);
-          } else {
-            nextMileStone = 'N/A';
-          }
+          // if (_projectData.currentPhase != null &&
+          //     _projectData.currentPhase!.milestone != null &&
+          //     _projectData.currentPhase!.currentMilestone!.mDate != null) {
+
+          // }
+          // // else if (_projectData.currentPhase!.currentMilestone == null) {
+          // //   nextMileStone = 'N/A';
+          // // }
+          // else {
+          //   nextMileStone = 'N/A';
+          // }
 
           String firstName = "";
           String lastName = "";
@@ -474,7 +480,14 @@ class ProjectHomeState extends State<ProjectHome> {
                 ),
                 DataCell(
                   Text(
-                    '$nextMileStone',
+                    _projectData.phase != null &&
+                            _projectData.phase!.isNotEmpty &&
+                            _projectData.phase?[0]?.milestone != null &&
+                            _projectData.phase![0].milestone!.isNotEmpty
+                        ? AppUtil.formattedDateYear1(AppUtil.getFormatedDate(
+                            _projectData.phase?[0].milestone?[0].mDate ??
+                                "N/A"))
+                        : 'N/A',
                     style: const TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,

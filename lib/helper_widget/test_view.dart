@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: must_be_immutable
 class CustomSearchDropdown extends StatefulWidget {
   bool? showSearchBar = false;
-  List<String> items = [];
+  List<DropdownModel> items = [];
   String? label;
   String? hint;
   String? errorText;
 
-  Function(String value)? onChange;
+  Function(DropdownModel value)? onChange;
   CustomSearchDropdown(
       {this.showSearchBar,
       required this.items,
@@ -24,7 +24,7 @@ class CustomSearchDropdown extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<CustomSearchDropdown> {
-  String? selectedValue;
+  DropdownModel? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -85,10 +85,10 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                         ),
                       ),
                       items: widget.items
-                          .map((item) => DropdownMenuItem<String>(
+                          .map((item) => DropdownMenuItem<DropdownModel>(
                                 value: item,
                                 child: Text(
-                                  item,
+                                  item.item,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500,
@@ -100,15 +100,16 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                           .toList(),
                       value: selectedValue,
                       onChanged: (value) {
+                        print(value);
                         setState(() {
                           if (widget.onChange != null) {
-                            widget.onChange!(value.toString());
+                            widget.onChange!(value as DropdownModel);
                           }
-                          selectedValue = value as String;
+                          selectedValue = value as DropdownModel;
                         });
                       },
 
-                      dropdownMaxHeight: 200,
+                      dropdownMaxHeight: 150.h,
                       dropdownDecoration:
                           BoxDecoration(color: Color(0xff0F172A)),
 
@@ -171,4 +172,10 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
       ],
     );
   }
+}
+
+class DropdownModel {
+  String id = "";
+  String item = "";
+  DropdownModel(this.id, this.item);
 }
