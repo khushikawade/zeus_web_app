@@ -58,9 +58,17 @@ class _ProjectEditState extends State<ProjectEdit>
 
   // var status = widget.response.data!.status; //response.data!.status;
   bool _submitted = true;
-  bool selectDeliveryDate = false;
-  bool createButtonClick = false;
 
+
+ String name_ = '';
+
+  bool selectAccountablePerson = false;
+  bool selectCurrency = false;
+  bool selectStatus = false;
+  bool selectCustomer = false;
+  bool createButtonClick = false;
+    bool selectDeliveryDate = false;
+  bool createProjectValidate = true;
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
   final TextEditingController _warkfolderId = TextEditingController();
@@ -209,10 +217,11 @@ class _ProjectEditState extends State<ProjectEdit>
 
         child: Container(
           margin:
-              const EdgeInsets.only(right: 0.0, top: 0.0, bottom: 20, left: 80),
-          height: 30,
-          width: 30,
+              const EdgeInsets.only(right: 0.0, top: 0.0, bottom: 38, left: 80),
+          height: 38,
+          width: 38,
           decoration: BoxDecoration(
+              color: const Color(0xff334155),
               border: Border.all(
                 color: ColorSelect.box_decoration,
               ),
@@ -401,8 +410,14 @@ class _ProjectEditState extends State<ProjectEdit>
                                             //  onChanged: (text) => setState(() => name_ = text),
                                           ),
                                         ),
+                                    
+                                    
+                                    
                                       ],
                                     ),
+                                 
+                                 
+                                 
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

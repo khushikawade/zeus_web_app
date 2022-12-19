@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => CreateProjectModel())
         ],
         child: ScreenUtilInit(
-          designSize: const Size(1440, 1024),
+          designSize: const Size(1366, 758),
           minTextAdapt: true,
           splitScreenMode: true,
           builder: (context, child) => MaterialApp(
@@ -62,7 +62,8 @@ class MyApp extends StatelessWidget {
                   const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
                 ],
               ),
-              // home: MyHomePageDropDown(),
+              //home:
+              //MyHomePageDropDown(),
               home: storage.read(isLogin) == null
                   ? LoginScreen(
                       onSubmit: (String value) {},

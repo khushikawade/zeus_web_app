@@ -150,10 +150,11 @@ class _MenuPhaseState extends State<MenuPhase>
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
       child: Container(
-        margin: const EdgeInsets.only(right: 12.0, top: 7.0),
-        height: 30,
-        width: 30,
+        margin: const EdgeInsets.only(right: 12.0, top: 12.0),
+        height: 38,
+        width: 38,
         decoration: BoxDecoration(
+            color: const Color(0xff334155),
             border: Border.all(
               color: ColorSelect.box_decoration,
             ),
