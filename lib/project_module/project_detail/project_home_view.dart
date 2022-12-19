@@ -225,8 +225,7 @@ class ProjectHomeState extends State<ProjectHome> {
   Future? getList;
 
   Future getListData1() {
-    return Provider.of<ProjectHomeViewModel>(context, listen: false)
-        .changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: false).changeProfile();
   }
 
   // @override
