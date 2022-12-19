@@ -30,6 +30,7 @@ import 'package:http_parser/http_parser.dart';
 import '../utility/constant.dart';
 import '../utility/upertextformate.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyHomePage extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -51,12 +52,10 @@ class _NavigationRailState extends State<MyHomePage>
   static List<Datum> users = <Datum>[];
   bool loading = true;
   List<int>? _selectedFile;
-  Uint8List? _bytesData;
   GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   List<String> abc = [];
   List<String> selectedDaysList = List.empty(growable: true);
-  TimeRangeResult? _timeRange;
   Debouncer _debouncer = Debouncer();
   bool peopleListTapIcon = false;
   bool projectListTapIcon = true;
@@ -64,14 +63,6 @@ class _NavigationRailState extends State<MyHomePage>
   bool circleTapIcon = false;
   bool bellTapIcon = false;
   bool settingIcon = false;
-
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
   bool ishover = false;
   var startTime;
   var endTime;
@@ -259,62 +250,14 @@ class _NavigationRailState extends State<MyHomePage>
     }
   }
 
-  //Create project_detail Api
-  createProject() async {
-    var token = 'Bearer ' + storage.read("token");
-    try {
-      var response = await http.post(
-        Uri.parse(AppUrl.create_project),
-        body: jsonEncode({
-          "title": _projecttitle.text.toString(),
-          "accountable_person_id": _account,
-          "customer_id": _custome,
-          "crm_task_id": _crmtask.text.toString(),
-          "work_folder_id": _warkfolderId.text.toString(),
-          "budget": _budget.toString(),
-          "currency": "&",
-          "estimation_hours": '80',
-          "status": _status,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes Creaete");
-        print(response.body);
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failuree");
-        Fluttertoast.showToast(
-          msg: 'Something Went Wrong',
-          backgroundColor: Colors.grey,
-        );
-      }
-    } catch (e) {
-      // print('error caught: $e');
-    }
-  }
-
-  /* Future? getProject() {
-    return Provider.of<TagDetail>(context, listen: false).getTagData();
-  }*/
-
   MyDropdownData myDropdownData = MyDropdownData();
   int _selectedIndex = 1;
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Item 1';
   ImagePicker picker = ImagePicker();
   String? _depat;
-  String? _account, _custome, _curren, _status, _time, _tag, _day, _shortday;
+  String? _curren, _time, _day, _shortday;
 
-  bool _addSubmitted = true;
   String name = '';
 
   List _department = [];
@@ -336,15 +279,8 @@ class _NavigationRailState extends State<MyHomePage>
   List _timeline = [];
   List addTag = [];
   List<String> _tag1 = [];
-  GlobalKey<ScaffoldState>? _key;
   bool? _isSelected;
-  List<String>? _filters1 = [
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface'
-  ];
+
   List<String>? addTag1 = [];
   List<int> add1 = [1];
   bool imageavail = false;
@@ -388,40 +324,7 @@ class _NavigationRailState extends State<MyHomePage>
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _emailAddress = TextEditingController();
 
-  //creatrptoject
-  TextEditingController _projecttitle = TextEditingController();
-  final TextEditingController _crmtask = TextEditingController();
-  final TextEditingController _warkfolderId = TextEditingController();
-  final TextEditingController _budget = TextEditingController();
-  final TextEditingController _estimatehours = TextEditingController();
-
   final ScrollController verticalScroll = ScrollController();
-
-  Future<void> _selectDate(setState) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-              primaryColor: const Color(0xff0F172A),
-              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-              colorScheme: ColorScheme.light(primary: const Color(0xff0F172A))
-                  .copyWith(secondary: const Color(0xff0F172A)),
-            ),
-            child: child!,
-          );
-        },
-        initialDate: selectedDate,
-        firstDate: new DateTime.now().subtract(new Duration(days: 0)),
-        initialEntryMode: DatePickerEntryMode.calendarOnly,
-        lastDate: DateTime(2101));
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
 
   final List<Widget> _mainContents = [
     Container(
@@ -2963,25 +2866,25 @@ class _NavigationRailState extends State<MyHomePage>
           appBar: AppBar(
             centerTitle: false,
             automaticallyImplyLeading: false,
-            toolbarHeight: 70.0,
+            toolbarHeight: 70.h,
             backgroundColor: const Color(0xff0F172A),
             elevation: 0,
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: EdgeInsets.only(right: 16.sp),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
-                      width: 475,
-                      height: 48.0,
+                      padding: EdgeInsets.only(left: 5.sp, right: 5.sp),
+                      width: 475.w,
+                      height: 48.h,
                       decoration: BoxDecoration(
                         color: const Color(0xff1e293b),
                         borderRadius: BorderRadius.circular(
-                          42.0,
+                          42.r,
                         ),
                       ),
                       child: TextField(
@@ -3010,10 +2913,10 @@ class _NavigationRailState extends State<MyHomePage>
                           }
                         },
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 16.0),
-                          prefixIcon: const Padding(
+                          contentPadding: EdgeInsets.only(top: 16.sp),
+                          prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0, left: 15, right: 20),
+                                  top: 4.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),
@@ -3023,33 +2926,41 @@ class _NavigationRailState extends State<MyHomePage>
                               : peopleListTapIcon
                                   ? 'Search People'
                                   : 'Search',
-                          hintStyle: const TextStyle(
-                              fontSize: 14.0,
+                          hintStyle: TextStyle(
+                              fontSize: 14.sp,
                               color: Color(0xff64748B),
-                              fontFamily: 'Inter',
+                              fontFamily: 'Inter-Recgular',
+                              fontStyle: FontStyle.normal,
+                              letterSpacing: 0.1,
                               fontWeight: FontWeight.w400),
                           border: InputBorder.none,
                         ),
                         keyboardType: TextInputType.text,
-                        style: TextStyle(color: Colors.white, fontSize: 14.0),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontFamily: 'Inter-Medium',
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: 0.1,
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     Container(
-                        width: 40.0,
-                        height: 40.0,
-                        child: const CircleAvatar(
-                          radius: 20,
+                        width: 40.w,
+                        height: 40.h,
+                        child: CircleAvatar(
+                          radius: 20.r,
                           backgroundImage: AssetImage('images/images.jpeg'),
                         )),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     LogOut(returnValue: () {}),
                     SizedBox(
-                      width: 15,
+                      width: 15.w,
                     ),
                   ],
                 ),
@@ -3064,8 +2975,8 @@ class _NavigationRailState extends State<MyHomePage>
                   onTap: () {},
                   child: SvgPicture.asset(
                     'images/hamburger.svg',
-                    width: 18.0,
-                    height: 12.0,
+                    width: 18.w,
+                    height: 12.h,
                   ),
                 ),
                 SvgPicture.asset(
@@ -3083,8 +2994,8 @@ class _NavigationRailState extends State<MyHomePage>
                           children: [
                             projectListTapIcon
                                 ? Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12, left: 12),
+                                    padding: EdgeInsets.only(
+                                        top: 12.sp, left: 12.sp),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -3096,39 +3007,43 @@ class _NavigationRailState extends State<MyHomePage>
                                             Text("List",
                                                 style: TextStyle(
                                                     color: Color(0xff93C5FD),
-                                                    fontSize: 14.0,
-                                                    fontFamily: 'Inter',
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Medium',
+                                                    fontStyle: FontStyle.normal,
+                                                    letterSpacing: 0.1,
                                                     fontWeight:
                                                         FontWeight.w500)),
-                                            const SizedBox(
-                                              height: 12,
+                                            SizedBox(
+                                              height: 12.h,
                                             ),
                                             Container(
-                                              width: 25,
-                                              height: 3,
-                                              decoration: const BoxDecoration(
+                                              width: 25.w,
+                                              height: 3.h,
+                                              decoration: BoxDecoration(
                                                   color: Color(0xff93C5FD),
                                                   borderRadius:
                                                       BorderRadius.only(
                                                           topLeft:
                                                               Radius.circular(
-                                                                  3),
+                                                                  3.r),
                                                           topRight:
                                                               Radius.circular(
-                                                                  3))),
+                                                                  3.r))),
                                             )
                                           ],
                                         ),
                                         SizedBox(
-                                          width: 30,
+                                          width: 30.w,
                                         ),
                                         projectListTapIcon
                                             // _selectedIndex == 1
                                             ? Text("Timeline",
                                                 style: TextStyle(
                                                     color: Color(0xffffffff),
-                                                    fontSize: 14.0,
-                                                    fontFamily: 'Inter',
+                                                    fontSize: 14.sp,
+                                                    letterSpacing: 0.1,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontFamily: 'Inter-Medium',
                                                     fontWeight:
                                                         FontWeight.w500))
                                             : Container(),
@@ -3142,12 +3057,14 @@ class _NavigationRailState extends State<MyHomePage>
                                     settingIcon == false &&
                                     bellTapIcon == false
                                 ? Padding(
-                                    padding: const EdgeInsets.only(left: 22.0),
-                                    child: const Text("Profile",
+                                    padding: EdgeInsets.only(left: 22.sp),
+                                    child: Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),
-                                            fontSize: 22.0,
-                                            fontFamily: 'Inter',
+                                            fontSize: 22.sp,
+                                            fontFamily: 'Inter-Medium',
+                                            letterSpacing: 0.1,
+                                            fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w700)),
                                   )
                                 : Container(),
@@ -3171,18 +3088,18 @@ class _NavigationRailState extends State<MyHomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: 46.0,
-                          height: 46.0,
+                          width: 56.w,
+                          height: 56.h,
                           decoration: BoxDecoration(
                             color: const Color(0xff93C5FD),
                             border: Border.all(color: const Color(0xff93C5FD)),
                             borderRadius: BorderRadius.circular(
-                              16.0,
+                              16.r,
                             ),
                           ),
-                          margin: const EdgeInsets.only(
-                            top: 40.0,
-                            left: 10.0,
+                          margin: EdgeInsets.only(
+                            top: 40.sp,
+                            left: 10.sp,
                             right: 0.0,
                           ),
                           child: InkWell(
@@ -3197,7 +3114,7 @@ class _NavigationRailState extends State<MyHomePage>
                               });
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: EdgeInsets.all(20.sp),
                               child: SvgPicture.asset(
                                 "images/plus.svg",
                               ),
@@ -3205,10 +3122,10 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
                         ),
                         SizedBox(
-                          height: 100,
+                          height: 100.h,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
+                          padding: EdgeInsets.only(left: 12.sp),
                           child: Column(
                             children: [
                               projectListTapIcon
@@ -3220,15 +3137,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/notification_icon.svg",
                                         ),
@@ -3255,7 +3172,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       style: TextStyle(color: Colors.white),
                                     )
                                   : Container(),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               cameraTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3265,15 +3182,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/camera.svg",
                                         ),
@@ -3294,7 +3211,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         });
                                       },
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               peopleListTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3304,15 +3221,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/people.svg",
                                         ),
@@ -3335,7 +3252,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ? Text('People',
                                       style: TextStyle(color: Colors.white))
                                   : Container(),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               circleTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3345,15 +3262,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/button.svg",
                                         ),
@@ -3372,7 +3289,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         "images/button.svg",
                                       ),
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               bellTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3382,15 +3299,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/bell.svg",
                                         ),
@@ -3410,7 +3327,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         "images/bell.svg",
                                       ),
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               settingIcon
                                   ? Container(
                                       // height: 40,
@@ -3420,15 +3337,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/setting.svg",
                                         ),
@@ -3457,7 +3374,7 @@ class _NavigationRailState extends State<MyHomePage>
                 Column(
                   children: [
                     SizedBox(
-                      width: 25,
+                      width: 25.w,
                     ),
                   ],
                 ),

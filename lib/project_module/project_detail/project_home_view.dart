@@ -10,7 +10,7 @@ import 'dart:convert';
 import '../../helper_widget/custom_popups.dart';
 import '../../utility/app_url.dart';
 import '../../popup/Popup.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'project_home_view_model.dart';
 import '../../services/response_model/project_idel_response.dart';
 import 'package:provider/provider.dart';
@@ -41,179 +41,14 @@ class ProjectHomeState extends State<ProjectHome> {
   ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
 
-
   bool? amIHovering;
   bool? amIHovering1;
-
-  Future? _getProjectDetail;
   Offset exitFrom = const Offset(0, 0);
   bool hovered = false;
-  bool _isDownArrow = true;
   final ScrollController horizontalScroll = ScrollController();
-  final double width = 18;
-
-  final ScrollController verticalScrollcontroller = ScrollController();
-
-  final _verticalScrollController = ScrollController();
-  final _horizontalScrollController = ScrollController();
 
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
-  double? _scrollPosition = 0;
-  double? _opacity = 0;
-
-  _scrollListener() {
-    setState(() {
-      _scrollPosition;
-    });
-  }
-
-  showMenus(BuildContext context, int index) async {
-    await showMenu(
-      color: Color(0xff334155),
-      context: context,
-      position: RelativeRect.fromLTRB(450, 240, 120, 0),
-      items: [
-        PopupMenuItem(
-          child: Column(
-            children: [
-              Container(
-                width: 219.0,
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 219.0,
-                margin: EdgeInsets.only(top: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 219.0,
-                margin: EdgeInsets.only(top: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 219.0,
-                margin: EdgeInsets.only(top: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          /* const PopupMenuItem(
-          child: Text("Edit"),),
-        const PopupMenuItem(
-
-          child: Text("Delete"),),*/
-        ),
-      ],
-    );
-  }
-
-  // ScrollController _controller = ScrollController();
 
   Future? getListData() async {
     var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
@@ -222,17 +57,10 @@ class ProjectHomeState extends State<ProjectHome> {
     return result;
   }
 
-  Future? getList;
-
   Future getListData1() {
-    return Provider.of<ProjectHomeViewModel>(context, listen: false).changeProfile();
+    return Provider.of<ProjectHomeViewModel>(context, listen: false)
+        .changeProfile();
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   getList = getListData1();
-  //   super.didChangeDependencies();
-  // }
 
   void change() async {
     var prefs = await SharedPreferences.getInstance();
@@ -262,8 +90,6 @@ class ProjectHomeState extends State<ProjectHome> {
   // get provider data
   getData() {
     var data = context.watch<ProjectHomeViewModel>();
-
-
   }
 
   // Make People List widget or Data Table
@@ -355,7 +181,7 @@ class ProjectHomeState extends State<ProjectHome> {
               _projectData.accountablePerson!.name!.isNotEmpty) {
             if (_projectData.accountablePerson!.name!.contains(" ")) {
               List<String> splitedList =
-              _projectData.accountablePerson!.name!.split(" ");
+                  _projectData.accountablePerson!.name!.split(" ");
               splitedList.removeWhere((element) => element.isEmpty);
 
               firstName = splitedList[0];
@@ -390,128 +216,148 @@ class ProjectHomeState extends State<ProjectHome> {
               },
               cells: [
                 DataCell(Container(
-                  width: 32,
-                  height: 50,
+                  width: 32.w,
+                  height: 32.w,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Color(0xff334155)),
                   child: Text(
                     fullName.isNotEmpty ? fullName : '',
                     // 'AP',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontFamily: 'Inter-Medium',
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w500,
-                        letterSpacing: -0.33,
+                        letterSpacing: 0.1,
                         color: Colors.white),
                   ),
                 )),
                 DataCell(
                   Text(
                     "$projectName",
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
                 DataCell(
                   Text(
                     "$currentPhase",
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
                 DataCell(
                   Container(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, top: 10, bottom: 10),
+                    padding: EdgeInsets.only(
+                        left: 16.sp, right: 16.sp, top: 10.sp, bottom: 10.sp),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                         color: AppUtil.getStatusContainerColor(projectStatus)),
                     child: Text(
                       projectStatus,
-                      style: const TextStyle(
-                          color: ColorSelect.white_color,
-                          fontSize: 14.0,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontFamily: 'Inter-Medium',
+                          fontSize: 14.sp,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.1,
+                          color: Colors.white),
                     ),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
                     "TBD",
                     style: TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
                     "TBD",
                     style: TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
                 DataCell(
                   Text(
                     updatedAt,
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
                 DataCell(
                   Text(
                     '$nextMileStone',
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
                 DataCell(
                   Text(
                     deliveryDate,
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
                 DataCell(
                   Text(
                     deadlineDate,
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
                     "TBD",
                     style: TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                        fontFamily: 'Inter-Medium',
+                        fontSize: 14.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: Colors.white),
                   ),
                 ),
               ]));
@@ -531,13 +377,13 @@ class ProjectHomeState extends State<ProjectHome> {
               child: RawScrollbar(
                 controller: horizontalScroll,
                 thumbColor: const Color(0xff4b5563),
-                radius: Radius.circular(20),
+                radius: Radius.circular(20.r),
                 thickness: 10,
                 child: SingleChildScrollView(
                   controller: horizontalScroll,
                   scrollDirection: Axis.horizontal,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    padding: EdgeInsets.only(left: 16.sp, right: 16.sp),
                     child: Theme(
                       data: Theme.of(context)
                           .copyWith(dividerColor: Color(0xff525f72)),
@@ -546,7 +392,6 @@ class ProjectHomeState extends State<ProjectHome> {
                           showCheckboxColumn: false,
                           dataRowHeight: 60,
                           dividerThickness: 0.7,
-                         
                           columns: [
                             DataColumn(
                               label: MouseRegion(
@@ -554,10 +399,11 @@ class ProjectHomeState extends State<ProjectHome> {
                                 child: Text(
                                   "AP",
                                   key: key7,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -599,8 +445,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key6,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -635,10 +482,11 @@ class ProjectHomeState extends State<ProjectHome> {
                                 child: Text(
                                   "Current phase",
                                   key: key5,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -667,8 +515,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key4,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -697,8 +546,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key3,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -725,10 +575,11 @@ class ProjectHomeState extends State<ProjectHome> {
                                 child: Text(
                                   "Potential roadblock",
                                   key: key8,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -757,8 +608,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key9,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -787,8 +639,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -818,8 +671,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key2,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -846,10 +700,11 @@ class ProjectHomeState extends State<ProjectHome> {
                                 child: Text(
                                   "Deadline",
                                   key: key1,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -878,8 +733,9 @@ class ProjectHomeState extends State<ProjectHome> {
                                   key: key10,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: ScreenUtil().setSp(14.sp),
+                                      fontFamily: 'Inter-Medium',
+                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 // onHover: (value) {
@@ -927,13 +783,13 @@ class ProjectHomeState extends State<ProjectHome> {
               ? MediaQuery.of(context).size.width * 2
               : MediaQuery.of(context).size.width - 160,
           height: 969,
-          margin: const EdgeInsets.only(
-              left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+          margin: EdgeInsets.only(
+              left: 40.sp, right: 30.sp, bottom: 10.sp, top: 40.sp),
           decoration: BoxDecoration(
             color: const Color(0xff1E293B),
             border: Border.all(color: const Color(0xff1E293B)),
             borderRadius: BorderRadius.circular(
-              12.0,
+              12.r,
             ),
           ),
           child: Column(
@@ -948,13 +804,15 @@ class ProjectHomeState extends State<ProjectHome> {
                     : data.projectDetailsResponse == null ||
                             data.projectDetailsResponse!.data!.isEmpty
                         ? Expanded(
-                            child: const Center(
+                            child: Center(
                                 child: Text(
                               "No Records Found!",
                               style: TextStyle(
                                   color: Color(0xffFFFFFF),
-                                  fontSize: 22.0,
-                                  fontFamily: 'Inter',
+                                  fontSize: 22.sp,
+                                  fontFamily: 'Inter-Medium',
+                                  letterSpacing: 0.1,
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500),
                             )),
                           )
@@ -964,7 +822,7 @@ class ProjectHomeState extends State<ProjectHome> {
                             thumbColor: const Color(0xff4b5563),
                             crossAxisMargin: 2,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(20.r),
                             ),
                             thickness: 8,
                             child: ScrollConfiguration(
@@ -973,9 +831,7 @@ class ProjectHomeState extends State<ProjectHome> {
                               child: ListView(
                                 controller: _scrollController,
                                 shrinkWrap: true,
-                                children: [
-                                   makeProjectList(data)
-                                  ],
+                                children: [makeProjectList(data)],
                               ),
                             ),
                           ));
@@ -985,35 +841,6 @@ class ProjectHomeState extends State<ProjectHome> {
         ),
       ),
     );
-  }
-
-  Future<void> api() async {
-    try {
-      var response = await http.post(
-        Uri.parse(
-            'https://staging-api.vanwijk.app/api/scan/deregister/cancel/complete'),
-        body: jsonEncode({
-          "code": 20221090915620,
-          "reason": 'test',
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvc3RhZ2luZy1hcGkudmFud2lqay5hcHBcL2FwaVwvbG9naW4iLCJpYXQiOjE2NjI5OTk3MzIsImV4cCI6MTY2MzAwMzMzMiwibmJmIjoxNjYyOTk5NzMyLCJqdGkiOiJ3T05yaDBLZHVvenFhbDBSIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.h20MqyqGtvq8mHw0X7IXJkjV_gH2wxgaANQY8IKGl3Q'
-        },
-      );
-      print(response.body);
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes Creaete");
-        print(response.body);
-      } else {
-        print("failuree");
-      }
-    } catch (e) {}
   }
 
   Future<String?> getSelectStatus() async {
