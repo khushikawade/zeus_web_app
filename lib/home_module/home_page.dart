@@ -3236,8 +3236,20 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     )
                                   : InkWell(
-                                      child: SvgPicture.asset(
-                                        "images/notification_icon.svg",
+                                      child: Tooltip(
+                                        // verticalOffset: 40,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          border: Border.all(
+                                              color: const Color(0xff334155)),
+                                          borderRadius: BorderRadius.circular(
+                                            18.0,
+                                          ),
+                                        ),
+                                        message: 'Projects',
+                                        child: SvgPicture.asset(
+                                          "images/notification_icon.svg",
+                                        ),
                                       ),
                                       onTap: () {
                                         setState(() {
@@ -3320,8 +3332,19 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     )
                                   : InkWell(
-                                      child: SvgPicture.asset(
-                                        "images/people.svg",
+                                      child: Tooltip(
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          border: Border.all(
+                                              color: const Color(0xff334155)),
+                                          borderRadius: BorderRadius.circular(
+                                            18.0,
+                                          ),
+                                        ),
+                                        message: 'People',
+                                        child: SvgPicture.asset(
+                                          "images/people.svg",
+                                        ),
                                       ),
                                       onTap: () {
                                         bellTapIcon = false;
