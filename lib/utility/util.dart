@@ -27,9 +27,13 @@ class AppUtil {
   }
 
   static String formattedDate(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    DateFormat dateFormat = DateFormat('d MMM');
-    return dateFormat.format(dateTime).toString();
+    try {
+      DateTime dateTime = DateTime.parse(date);
+      DateFormat dateFormat = DateFormat('d MMM');
+      return dateFormat.format(dateTime).toString();
+    } catch (e) {
+      return date;
+    }
   }
 
   static String formattedDateYear(String date) {
