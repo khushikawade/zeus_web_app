@@ -2143,82 +2143,94 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   }
 
   Future<String?> getDepartment() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/departments"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _department = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
-      } else {
-        print('department error===========>>>>>>>>');
-        print("failed to much");
+    if (storage.read("token") != null &&
+        storage.read("token").toString().isNotEmpty) {
+      String? value;
+      var token = 'Bearer ' + storage.read("token");
+      if (value == null) {
+        var response = await http.get(
+          Uri.parse("${AppUrl.baseUrl}/departments"),
+          headers: {
+            "Accept": "application/json",
+            "Authorization": token,
+          },
+        );
+        if (response.statusCode == 200) {
+          Map<String, dynamic> map = jsonDecode(response.body.toString());
+          List<dynamic> mdata = map["data"];
+          setState(() {
+            _department = mdata;
+          });
+        } else if (response.statusCode == 401) {
+          AppUtil.showErrorDialog(
+              context, 'Your Session has been expired, Please try again!');
+        } else {
+          print('department error===========>>>>>>>>');
+          print("failed to much");
+        }
+        return value;
       }
-      return value;
+      return null;
     }
-    return null;
   }
 
   Future<String?> getTimeline() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _timeline = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
-      } else {
-        print("failed to much");
+    if (storage.read("token") != null &&
+        storage.read("token").toString().isNotEmpty) {
+      String? value;
+      var token = 'Bearer ' + storage.read("token");
+      if (value == null) {
+        var response = await http.get(
+          Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
+          headers: {
+            "Accept": "application/json",
+            "Authorization": token,
+          },
+        );
+        if (response.statusCode == 200) {
+          Map<String, dynamic> map = jsonDecode(response.body.toString());
+          List<dynamic> mdata = map["data"];
+          setState(() {
+            _timeline = mdata;
+          });
+        } else if (response.statusCode == 401) {
+          AppUtil.showErrorDialog(
+              context, 'Your Session has been expired, Please try again!');
+        } else {
+          print("failed to much");
+        }
+        return value;
       }
-      return value;
+      return null;
     }
-    return null;
   }
 
   void getUsers() async {
-    var token = 'Bearer ' + storage.read("token");
+    if (storage.read("token") != null &&
+        storage.read("token").toString().isNotEmpty) {
+      var token = 'Bearer ' + storage.read("token");
 
-    var response = await http.get(
-      Uri.parse(AppUrl.tags_search),
-      headers: {"Accept": "application/json", "Authorization": token},
-    );
+      var response = await http.get(
+        Uri.parse(AppUrl.tags_search),
+        headers: {"Accept": "application/json", "Authorization": token},
+      );
 
-    if (response.statusCode == 200) {
-      print("sucess");
+      if (response.statusCode == 200) {
+        print("sucess");
 
-      var user = userFromJson(response.body);
+        var user = userFromJson(response.body);
 
-      users = user.data!;
+        users = user.data!;
 
-      setState(() {
-        loading = false;
-      });
-    } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
-    } else {
-      print("Error getting users.");
+        setState(() {
+          loading = false;
+        });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
+      } else {
+        print("Error getting users.");
+      }
     }
   }
 
@@ -2284,7 +2296,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       }
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       SmartDialog.dismiss();
 
@@ -2311,7 +2324,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       widget.returnValue!();
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
@@ -2323,30 +2337,34 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   }
 
   Future<String?> getCurrency() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/currencies"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _currencyName = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
-      } else {
-        print("failed to much");
+    if (storage.read("token") != null &&
+        storage.read("token").toString().isNotEmpty) {
+      String? value;
+      var token = 'Bearer ' + storage.read("token");
+      if (value == null) {
+        var response = await http.get(
+          Uri.parse("${AppUrl.baseUrl}/currencies"),
+          headers: {
+            "Accept": "application/json",
+            "Authorization": token,
+          },
+        );
+        if (response.statusCode == 200) {
+          Map<String, dynamic> map = jsonDecode(response.body.toString());
+          List<dynamic> mdata = map["data"];
+          setState(() {
+            _currencyName = mdata;
+          });
+        } else if (response.statusCode == 401) {
+          AppUtil.showErrorDialog(
+              context, 'Your Session has been expired, Please try again!');
+        } else {
+          print("failed to much");
+        }
+        return value;
       }
-      return value;
+      return null;
     }
-    return null;
   }
 
   errorWidget() {

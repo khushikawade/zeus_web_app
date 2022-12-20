@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:velocity_x/velocity_x.dart';
+import 'package:vrouter/vrouter.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/colors.dart';
@@ -18,11 +18,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../helper_widget/search_view.dart';
 
 class LogOut extends StatefulWidget {
-  final Function? returnValue;
   final Offset offset;
 
-  LogOut({this.returnValue, this.offset = const Offset(180, 40), Key? key})
-      : super(key: key);
+  LogOut({this.offset = const Offset(180, 40), Key? key}) : super(key: key);
 
   @override
   State<LogOut> createState() => _LogOutState();
@@ -122,7 +120,6 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
 
       SmartDialog.dismiss();
 
-      widget.returnValue!();
       storage.erase();
       sharedPreferences.clear();
 
@@ -132,7 +129,8 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       //               onSubmit: (String value) {},
       //             )),
       //     (Route<dynamic> route) => route is LoginScreen);
-      context.vxNav.popToRoot();
+      //context.vxNav.popToRoot();
+      context.vRouter.to(MyRoutes.loginRoute, isReplacement: true);
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(

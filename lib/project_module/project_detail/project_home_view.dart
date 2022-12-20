@@ -286,6 +286,7 @@ class ProjectHomeState extends State<ProjectHome> {
           var customerImage = '';
           var nextMileStone = '';
           var apName = '';
+          var resources = '';
 
           if (_projectData.title != null && _projectData.title!.isNotEmpty) {
             projectName = _projectData.title!;
@@ -336,19 +337,13 @@ class ProjectHomeState extends State<ProjectHome> {
           } else {
             //print("96939633");
           }
-          //nextMileStone = AppUtil.formattedDate(_projectData.phase?[index].milestone?[index].mDate ?? "N/A");
 
-          // if (_projectData.currentPhase != null &&
-          //     _projectData.currentPhase!.milestone != null &&
-          //     _projectData.currentPhase!.currentMilestone!.mDate != null) {
-
-          // }
-          // // else if (_projectData.currentPhase!.currentMilestone == null) {
-          // //   nextMileStone = 'N/A';
-          // // }
-          // else {
-          //   nextMileStone = 'N/A';
-          // }
+          if (_projectData.projectResource != null &&
+              _projectData.projectResource!.isNotEmpty) {
+            resources = _projectData.projectResource.toString();
+          } else {
+            resources = "N/A";
+          }
 
           String firstName = "";
           String lastName = "";
@@ -482,7 +477,7 @@ class ProjectHomeState extends State<ProjectHome> {
                   Text(
                     _projectData.phase != null &&
                             _projectData.phase!.isNotEmpty &&
-                            _projectData.phase?[0]?.milestone != null &&
+                            _projectData.phase?[0].milestone != null &&
                             _projectData.phase![0].milestone!.isNotEmpty
                         ? AppUtil.formattedDateYear1(AppUtil.getFormatedDate(
                             _projectData.phase?[0].milestone?[0].mDate ??
@@ -515,9 +510,9 @@ class ProjectHomeState extends State<ProjectHome> {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
-                    "TBD",
+                    "$resources",
                     style: TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,
@@ -537,385 +532,158 @@ class ProjectHomeState extends State<ProjectHome> {
       children: [
         Expanded(
           child: FittedBox(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: RawScrollbar(
-                controller: horizontalScroll,
-                thumbColor: const Color(0xff4b5563),
-                radius: Radius.circular(20),
-                thickness: 10,
-                child: SingleChildScrollView(
-                  controller: horizontalScroll,
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: Theme(
-                      data: Theme.of(context)
-                          .copyWith(dividerColor: Color(0xff525f72)),
-                      child: DataTable(
-                          horizontalMargin: 0,
-                          showCheckboxColumn: false,
-                          dataRowHeight: 60,
-                          dividerThickness: 0.7,
-                          columns: [
-                            DataColumn(
-                              label: MouseRegion(
-                                onEnter: (event) {},
-                                child: Text(
-                                  "AP",
-                                  key: key7,
-                                  style: const TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   setState(() {
-                                //     amIHovering = true;
-                                //   });
-                                //   if (amIHovering == true) {
-                                //     popup = ShowMoreTextPopups(context,
-                                //         text: "AP",
-                                //         height: 25,
-                                //         width: 90,
-                                //         textStyle: const TextStyle(
-                                //           color: Colors.white,
-                                //         ),
-                                //         backgroundColor: Color(0xFF475569),
-                                //         padding: EdgeInsets.all(6.0),
-                                //         borderRadius:
-                                //             BorderRadius.circular(10.0));
-
-                                //     popup!.show(
-                                //       widgetKey: key7,
-                                //     );
-                                //   }
-                                // },
-                                // onExit: (event) {
-                                //   setState(() {
-                                //     amIHovering = false;
-                                //     popup!.dismiss();
-                                //     print(amIHovering);
-                                //     print(amIHovering);
-                                //   });
-                                // },
-                              ),
-                            ),
-                            DataColumn(
-                              label: MouseRegion(
-                                child: Text(
-                                  "Project name",
-                                  key: key6,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   setState(() {
-                                //     amIHovering1 = true;
-                                //   });
-                                //   if (amIHovering1 == true) {
-                                //     popup = ShowMoreTextPopups(context,
-                                //         text: "Project name",
-                                //         textStyle: const TextStyle(
-                                //           color: Colors.white,
-                                //         ),
-                                //         backgroundColor: Color(0xFF475569),
-                                //         padding: EdgeInsets.all(6.0),
-                                //         borderRadius:
-                                //             BorderRadius.circular(28.0));
-
-                                //     popup!.show(
-                                //       widgetKey: key6,
-                                //     );
-                                //   }
-                                // },
-                                // onExit: ((event) {
-                                //   setState(() {
-                                //     amIHovering1 = false;
-                                //   });
-                                // }),
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Current phase",
-                                  key: key5,
-                                  style: const TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Current phase",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key5,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Status",
-                                  key: key4,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Status",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key4,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "SPI",
-                                  key: key3,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "SPI",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key3,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Potential roadblocks",
-                                  key: key8,
-                                  style: const TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Potential roadblock",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key8,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Last\nupdate",
-                                  key: key9,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Last update",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key9,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Next\nmilestone",
-                                  key: key,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popups =
-                                //       ShowMoreTextPopups(context,
-                                //           text: "Next milestone",
-                                //           onDismiss: () {},
-                                //           textStyle: const TextStyle(
-                                //             color: Colors.white,
-                                //           ),
-                                //           backgroundColor: Color(0xFF475569),
-                                //           padding: EdgeInsets.all(6.0),
-                                //           borderRadius:
-                                //               BorderRadius.circular(28.0));
-
-                                //   popups.show(
-                                //     widgetKey: key,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Delivery\ndate",
-                                  key: key2,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Delivery date",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key2,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Deadline",
-                                  key: key1,
-                                  style: const TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Deadline",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key1,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                            DataColumn(
-                              label: InkWell(
-                                child: Text(
-                                  "Resources",
-                                  key: key10,
-                                  style: TextStyle(
-                                      color: ColorSelect.text_color,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                // onHover: (value) {
-                                //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                                //       context,
-                                //       text: "Resources",
-                                //       textStyle: const TextStyle(
-                                //         color: Colors.white,
-                                //       ),
-                                //       backgroundColor: Color(0xFF475569),
-                                //       padding: EdgeInsets.all(6.0),
-                                //       borderRadius:
-                                //           BorderRadius.circular(28.0));
-
-                                //   popup.show(
-                                //     widgetKey: key10,
-                                //   );
-                                // },
-                                // onTap: () {},
-                              ),
-                            ),
-                          ],
-                          rows: rows),
-                    ),
-                  ),
-                ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Theme(
+                data:
+                    Theme.of(context).copyWith(dividerColor: Color(0xff525f72)),
+                child: DataTable(
+                  // fixedHeader: true,
+                    horizontalMargin: 0,
+                    showCheckboxColumn: false,
+                    dataRowHeight: 60,
+                    dividerThickness: 0.7,
+                    columns: [
+                      DataColumn(
+                          label: Text(
+                        "AP",
+                        key: key7,
+                        style: const TextStyle(
+                            color: ColorSelect.text_color,
+                            fontSize: 14.0,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500),
+                      )),
+                      DataColumn(
+                        label: Text(
+                          "Project name",
+                          key: key6,
+                          style: TextStyle(
+                              color: ColorSelect.text_color,
+                              fontSize: 14.0,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Current phase",
+                            key: key5,
+                            style: const TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Status",
+                            key: key4,
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "SPI",
+                            key: key3,
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Potential roadblocks",
+                            key: key8,
+                            style: const TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Last\nupdate",
+                            key: key9,
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Next\nmilestone",
+                            key: key,
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Delivery\ndate",
+                            key: key2,
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Deadline",
+                            key: key1,
+                            style: const TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: InkWell(
+                          child: Text(
+                            "Resources",
+                            key: key10,
+                            style: TextStyle(
+                                color: ColorSelect.text_color,
+                                fontSize: 14.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ],
+                    rows: rows),
               ),
             ),
           ),

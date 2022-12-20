@@ -18,7 +18,7 @@ class ResourceNeededModel {
 
   });
 
-  int?   statusCode;
+  int? statusCode;
   bool? status;
   String? error;
   String? message;

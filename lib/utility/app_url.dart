@@ -6,7 +6,8 @@ class AppUrl {
   static const String baseUrl = ApiClient.BASE_URL;
   // 'http://zeusapitst.crebos.online/api/v1';
 
-  static const String clickUpsUrl = "https://app.clickup.com/api?client_id=$clientId&redirect_uri=$redirectUrl";
+  static const String clickUpsUrl =
+      "https://app.clickup.com/api?client_id=$clientId&redirect_uri=$redirectUrl";
 
   //static const String clickUpsUrl = "https://flutter.dev";
 
@@ -37,5 +38,4 @@ class AppUrl {
   static const String getPhase = "/phase/";
   static const String updatePhase = "/phase/";
   static const String clickUpAuth = "$baseUrl/clickup/auth";
-
 }

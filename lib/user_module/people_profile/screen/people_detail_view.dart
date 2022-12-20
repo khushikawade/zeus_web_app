@@ -71,7 +71,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
         loading = false;
       });
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
     }
@@ -134,7 +135,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
       print("yes");
       print("===============================???UPdated Successfully");
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       print(responseString);
       print("failed");
@@ -938,7 +940,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
           _timeline = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -965,7 +968,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
           _currencyName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -992,7 +996,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
           _department = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

@@ -368,6 +368,7 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   List<DepartementData> getSuggestionsForPhaseType(String query) {
+    
     List<DepartementData> matches = List.empty(growable: true);
     matches.addAll(_department);
     matches.retainWhere(

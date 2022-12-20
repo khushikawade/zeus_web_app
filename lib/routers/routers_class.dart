@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vrouter/vrouter.dart';
+import 'package:zeus/home_module/home_module_1.dart';
 import 'package:zeus/people_module/people_home/people_home.dart';
+import 'package:zeus/project_module/project_detail/project_home_view.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import '../home_module/home_page.dart';
 
@@ -28,4 +31,50 @@ class MyRoutes {
   static String peopleDetailsRoute = "/people_detail";
   static const String peopleRoute = "/people";
   static const String clickUpWebView = "/webview";
+}
+
+class ConnectedRoutes extends VRouteElementBuilder {
+  static final String project = 'project';
+
+  static void toProject(BuildContext context, String username) =>
+      context.vRouter.to('/$username/$project');
+
+  static final String people = 'people';
+
+  static void toPeople(BuildContext context, String username) =>
+      context.vRouter.to('$username/$people', isReplacement: false);
+
+  @override
+  List<VRouteElement> buildRoutes() {
+    return [
+      VNester.builder(
+        path: '/:username',
+        widgetBuilder: (_, state, child) => MyHomePage1(
+          child,
+          currentIndex: state.names.contains(project) ? 0 : 2,
+        ),
+        nestedRoutes: [
+          VWidget(
+              path: project,
+              name: project,
+              widget: ProjectHome(),
+              transitionDuration: Duration(seconds: 1)),
+          VWidget(
+              path: people,
+              name: people,
+              widget: PeopleHomeView(),
+              transitionDuration: Duration(seconds: 1)
+
+              // // Custom transition
+              // buildTransition: (animation, ___, child) {
+              //   return ScaleTransition(
+              //     scale: animation,
+              //     child: child,
+              //   );
+              // },
+              ),
+        ],
+      ),
+    ];
+  }
 }
