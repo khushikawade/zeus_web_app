@@ -1,3 +1,5 @@
+import 'package:zeus/services/response_model/project_idel_response.dart';
+
 class ProjectDetailResponse {
   bool? status;
   String? message;
@@ -45,6 +47,7 @@ class ProjectDetailData {
   String? createdAt;
   String? updatedAt;
   List<Tags>? tags;
+  List<Roadblock>? roadblocks;
   AccountableCustomer? accountablePerson;
   AccountableCustomer? customer;
   List<Phase>? phase;
@@ -70,6 +73,7 @@ class ProjectDetailData {
     this.createdAt,
     this.updatedAt,
     this.tags,
+    this.roadblocks,
     this.accountablePerson,
     this.customer,
     this.phase,
@@ -99,6 +103,13 @@ class ProjectDetailData {
       tags = <Tags>[];
       json['tags'].forEach((v) {
         tags!.add(new Tags.fromJson(v));
+      });
+    }
+    // roadblocks: List<Roadblock>.from(json["roadblocks"].map((x) => Roadblock.fromJson(x))),
+    if (json['roadblocks'] != null) {
+      roadblocks = <Roadblock>[];
+      json['roadblocks'].forEach((v) {
+        roadblocks!.add(new Roadblock.fromJson(v));
       });
     }
     /*if (json['project_resource'] != null) {
@@ -142,6 +153,10 @@ class ProjectDetailData {
     data['updated_at'] = this.updatedAt;
     if (this.tags != null) {
       data['tags'] = this.tags!.map((v) => v.toJson()).toList();
+    }
+
+    if (this.roadblocks != null) {
+      data['roadblocks'] = this.roadblocks!.map((v) => v.toJson()).toList();
     }
     /* if (this.projectResource != null) {
       data['project_resource'] = this.projectResource.map((v) => v.toJson()).toList();
@@ -559,6 +574,96 @@ class SubTasks {
     }*/
     return data;
   }
+}
+
+class Roadblock {
+  Roadblock({
+    this.id,
+    this.projectId,
+    this.phaseId,
+    this.potentialRoadblockId,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    this.rodblockDetails,
+    this.responsiblePerson,
+  });
+
+  int? id;
+  int? projectId;
+  int? phaseId;
+  int? potentialRoadblockId;
+  int? userId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic? deletedAt;
+  RodblockDetails? rodblockDetails;
+  AccountablePerson? responsiblePerson;
+
+  factory Roadblock.fromJson(Map<String, dynamic> json) => Roadblock(
+        id: json["id"],
+        projectId: json["project_id"],
+        phaseId: json["phase_id"] == null ? null : json["phase_id"],
+        potentialRoadblockId: json["potential_roadblock_id"],
+        userId: json["user_id"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        deletedAt: json["deleted_at"],
+        rodblockDetails: RodblockDetails.fromJson(json["rodblock_details"]),
+        responsiblePerson:
+            AccountablePerson.fromJson(json["responsible_person"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "project_id": projectId,
+        "phase_id": phaseId == null ? null : phaseId,
+        "potential_roadblock_id": potentialRoadblockId,
+        "user_id": userId,
+        "created_at": createdAt!.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
+        "deleted_at": deletedAt!,
+        "rodblock_details": rodblockDetails!.toJson(),
+        "responsible_person": responsiblePerson!.toJson(),
+      };
+}
+
+class RodblockDetails {
+  RodblockDetails({
+    this.id,
+    this.description,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  int? id;
+  String? description;
+  int? userId;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic deletedAt;
+
+  factory RodblockDetails.fromJson(Map<String, dynamic> json) =>
+      RodblockDetails(
+        id: json["id"],
+        description: json["description"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        deletedAt: json["deleted_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "description": description,
+        "user_id": userId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "deleted_at": deletedAt,
+      };
 }
 
 class AssignResource {
