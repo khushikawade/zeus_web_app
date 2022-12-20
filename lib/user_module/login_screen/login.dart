@@ -14,6 +14,7 @@ import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:html' as html;
 
 class LoginScreen extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -44,6 +45,66 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       widget.onSubmit(_name);
     }
+  }
+
+  Future<void> callSaveCodeAPI(String authenticationCode) async {
+    var responseJson;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = await sharedPreferences.getString("login");
+    if (token != null && token.isNotEmpty) {
+      var response = await http.post(
+        Uri.parse(AppUrl.clickUpAuth),
+        body: jsonEncode({"code": authenticationCode}),
+        headers: {
+          "Authorization": "Bearer ${token}",
+          "Content-Type": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        responseJson =
+            jsonDecode(response.body.toString()) as Map<String, dynamic>;
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setBool('isLogin', true);
+        storage.write(isLogin, true);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                      onSubmit: (String value) {},
+                      adOnSubmit: (String value) {},
+                    )),
+            (Route<dynamic> route) => route is MyHomePage);
+      } else {
+        print(
+            'Error while saving code ${response.statusCode} ${response.body}');
+        Fluttertoast.showToast(
+          msg:
+              'Error while saving code ${response.statusCode} ${response.body}',
+          backgroundColor: Colors.grey,
+        );
+        print("failedd");
+      }
+    }
+  }
+
+  launchClickUpsUrl() async {
+    final html.WindowBase windowBase =
+        html.window.open(AppUrl.clickUpsUrl, "_self");
+  }
+
+  @override
+  void initState() {
+    if (html.window.location.toString().contains("?code=")) {
+      String url = html.window.location.href;
+      Uri stringUri = Uri.parse(url);
+      String authenticationCode = stringUri.queryParameters["code"]!;
+      print("Contains code --------------------------------------- ");
+      print("Code value --------------------- ${authenticationCode}");
+      callSaveCodeAPI(authenticationCode);
+    } else {
+      print("Not contained --------------------------------------");
+    }
+    super.initState();
   }
 
   @override
@@ -552,6 +613,7 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) =>
             const DemoClass()));*/
 
+        //launchClickUpsUrl();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
