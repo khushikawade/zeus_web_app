@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -46,7 +47,7 @@ class MyHomePage extends StatefulWidget {
 
 class _NavigationRailState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  AutoCompleteTextField? searchTextField;
+  // AutoCompleteTextField? searchTextField;
   final fieldText = TextEditingController();
   final searchController = TextEditingController();
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
@@ -65,6 +66,8 @@ class _NavigationRailState extends State<MyHomePage>
   bool bellTapIcon = false;
   bool settingIcon = false;
   bool createButtonClick = false;
+  TypeAheadFormField? searchTextField;
+  final TextEditingController _typeAheadController = TextEditingController();
 
   var items = [
     'Item 1',
@@ -119,6 +122,14 @@ class _NavigationRailState extends State<MyHomePage>
   void didChangeDependencies() {
     getList = getListData();
     super.didChangeDependencies();
+  }
+
+  List<Datum> getSuggestions(String query) {
+    List<Datum> matches = List.empty(growable: true);
+    matches.addAll(users);
+    matches.retainWhere(
+        (s) => s.title!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
   }
 
   Image? image;
@@ -1778,82 +1789,89 @@ class _NavigationRailState extends State<MyHomePage>
                                         ),
                                         child: Column(
                                           children: [
-                                            loading
-                                                ? CircularProgressIndicator()
-                                                : searchTextField =
-                                                    AutoCompleteTextField<
-                                                        Datum>(
-                                                    clearOnSubmit: false,
-                                                    key: key,
-                                                    cursorColor: Colors.white,
-                                                    decoration: InputDecoration(
-                                                      contentPadding:
-                                                          EdgeInsets.only(
-                                                              top: 15.0),
-                                                      prefixIcon: Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 4.0,
-                                                                  right: 21,
-                                                                  left: 27),
-                                                          child: Icon(
-                                                            Icons.search,
-                                                            color: Color(
-                                                                0xff64748B),
-                                                          )),
-                                                      hintText: 'Search',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14.0.sp,
-                                                          color:
-                                                              Color(0xff64748B),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                      border: InputBorder.none,
-                                                    ),
-                                                    suggestions: users,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14.0),
-                                                    itemFilter: (item, query) {
-                                                      return item.title!
-                                                          .toLowerCase()
-                                                          .startsWith(query
-                                                              .toLowerCase());
-                                                    },
-                                                    itemSorter: (a, b) {
-                                                      return a.title!
-                                                          .compareTo(b.title!);
-                                                    },
-                                                    itemSubmitted: (item) {
-                                                      setStateView(() {
-                                                        searchTextField!
-                                                            .textField!
-                                                            .controller!
-                                                            .text = '';
+                                            searchTextField =
+                                                TypeAheadFormField(
+                                              keepSuggestionsOnLoading: false,
+                                              suggestionsBoxVerticalOffset: 0.0,
+                                              suggestionsBoxDecoration:
+                                                  SuggestionsBoxDecoration(
+                                                      color: Color(0xff0F172A)),
+                                              hideOnLoading: true,
+                                              suggestionsCallback: (pattern) {
+                                                return getSuggestions(pattern);
+                                              },
+                                              textFieldConfiguration:
+                                                  TextFieldConfiguration(
+                                                controller:
+                                                    _typeAheadController,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14.0),
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                cursorColor: Colors.white,
+                                                autofocus: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  // border: InputBorder.none,
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          top: 15.0, left: 10),
+                                                  prefixIcon: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 4.0),
+                                                      child: Icon(
+                                                        Icons.search,
+                                                        color:
+                                                            Color(0xff64748B),
+                                                      )),
+                                                  hintText: 'Search',
+                                                  hintStyle: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: Colors.white,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  border: InputBorder.none,
+                                                ),
+                                              ),
+                                              itemBuilder: (context, item) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    item.title.toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white),
+                                                  ),
+                                                );
+                                                // Text("khushi");
+                                                // rowResourceName(item);
+                                              },
+                                              transitionBuilder: (context,
+                                                  suggestionsBox, controller) {
+                                                return suggestionsBox;
+                                              },
+                                              onSuggestionSelected: (item) {
+                                                setStateView(() {
+                                                  searchTextField!
+                                                      .textFieldConfiguration
+                                                      .controller!
+                                                      .text = '';
 
-                                                        if (abc.isNotEmpty) {
-                                                          if (abc.contains(
-                                                              item.title!)) {
-                                                          } else {
-                                                            abc.add(item.title!
-                                                                .toString());
-                                                            selectSkill = true;
-                                                          }
-                                                        } else {
-                                                          abc.add(item.title!
-                                                              .toString());
-                                                          selectSkill = true;
-                                                        }
-                                                      });
-                                                    },
-                                                    itemBuilder:
-                                                        (context, item) {
-                                                      return row(item);
-                                                    },
-                                                  )
+                                                  if (abc.isNotEmpty) {
+                                                    if (abc
+                                                        .contains(item.title)) {
+                                                    } else {
+                                                      abc.add(item.title!);
+                                                    }
+                                                  } else {
+                                                    abc.add(item.title!);
+                                                  }
+                                                });
+                                              },
+                                            ),
                                           ],
                                         ),
                                       ),
