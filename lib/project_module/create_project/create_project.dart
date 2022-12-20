@@ -233,8 +233,6 @@ class _EditPageState extends State<CreateProjectPage> {
             padding: EdgeInsets.all(20),
             shrinkWrap: true,
             children: [
-
-
               
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
