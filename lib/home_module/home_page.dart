@@ -83,7 +83,6 @@ class _NavigationRailState extends State<MyHomePage>
 
   var startTime1;
   var endTime2;
-
   bool selectDepartment = false;
   bool selectSalary = false;
   bool selectDays = false;
@@ -226,7 +225,7 @@ class _NavigationRailState extends State<MyHomePage>
       Navigator.pop(
         context,
       );
-      setState(() {
+      setStateView(() {
         _selectedIndex = 2;
         clearContoller();
         selectDays = false;
@@ -271,6 +270,9 @@ class _NavigationRailState extends State<MyHomePage>
   String name = '';
 
   List _department = [];
+  List<DropdownModel>? departmentlist;
+
+  List<DropdownModel>? itemsDays;
   var items1 = [
     'Monday',
     'Tuesday',
@@ -285,6 +287,7 @@ class _NavigationRailState extends State<MyHomePage>
   List _accountableId = [];
   List _customerName = [];
   List _currencyName = [];
+  List<DropdownModel>? currencyList = [];
   List _statusList = [];
   List _timeline = [];
   List addTag = [];
@@ -305,7 +308,7 @@ class _NavigationRailState extends State<MyHomePage>
     getUsers();
     change();
     _isSelected = false;
-    //-----------sayyam
+
     getAddpeople();
 
     getTagpeople();
@@ -416,6 +419,8 @@ class _NavigationRailState extends State<MyHomePage>
           abc.clear();
           //---------------sayyam
           imageavail = false;
+
+          createButtonClick = false;
 
           _day = '';
 
@@ -554,7 +559,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       top: 10.0, right: 30.0, bottom: 10.0),
                                   child: InkWell(
                                     onTap: () {
-                                      setState(() {
+                                      setStateView(() {
                                         createProjectValidate = true;
                                         createButtonClick = true;
                                       });
@@ -567,6 +572,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             if (selectImage == true &&
                                                 selectDepartment == true &&
                                                 selectDays == true &&
+                                                selectSalary == true &&
                                                 selectSkill == true &&
                                                 selectTime == true &&
                                                 selectTimeZone == true) {
@@ -1174,170 +1180,29 @@ class _NavigationRailState extends State<MyHomePage>
                                         SizedBox(
                                           width: 8,
                                         ),
+
                                         Expanded(
-                                          flex: 1,
-                                          child: Stack(
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 30),
-                                                    height: 56.0,
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff334155),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        8.0,
-                                                      ),
-                                                      boxShadow: const [
-                                                        BoxShadow(
-                                                          color:
-                                                              Color(0xff475569),
-                                                          offset: Offset(
-                                                            0.0,
-                                                            2.0,
-                                                          ),
-                                                          blurRadius: 0.0,
-                                                          spreadRadius: 0.0,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      top: 4.0,
-                                                                      left:
-                                                                          16.0),
-                                                              child: const Text(
-                                                                "Department",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13.0,
-                                                                    color: Color(
-                                                                        0xff64748B),
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              )),
-                                                          StatefulBuilder(builder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  StateSettersetState) {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 15,
-                                                                      right: 4,
-                                                                      top: 2),
-                                                              child:
-                                                                  DropdownButtonHideUnderline(
-                                                                      child:
-                                                                          CustomDropdownButton(
-                                                                isDense: true,
-                                                                dropdownColor:
-                                                                    Color(
-                                                                        0xff0F172A),
-                                                                value: _depat,
-                                                                underline:
-                                                                    Container(),
-                                                                hint:
-                                                                    const Text(
-                                                                  "Select",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          15.0,
-                                                                      color: Color(
-                                                                          0xffFFFFFF),
-                                                                      fontFamily:
-                                                                          'Inter',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w300),
-                                                                ),
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .arrow_drop_down,
-                                                                  color: Color(
-                                                                      0xff64748B),
-                                                                ),
-                                                                elevation: 12,
-                                                                items: _department
-                                                                    .map(
-                                                                        (items) {
-                                                                  return DropdownMenuItem(
-                                                                    value: items[
-                                                                            'id']
-                                                                        .toString(),
-                                                                    child: Text(
-                                                                      items[
-                                                                          'name'],
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15.0,
-                                                                          color: Color(
-                                                                              0xffFFFFFF),
-                                                                          fontFamily:
-                                                                              'Inter',
-                                                                          fontWeight:
-                                                                              FontWeight.w500),
-                                                                    ),
-                                                                  );
-                                                                }).toList(),
-                                                                onChanged: (String?
-                                                                    newValue) {
-                                                                  setStateView(
-                                                                      () {
-                                                                    print(
-                                                                        "---------newValue--------------${newValue}");
-                                                                    _depat =
-                                                                        newValue!;
-                                                                    selectDepartment =
-                                                                        true;
-                                                                  });
-                                                                },
-                                                              )),
-                                                            );
-                                                          }),
-                                                        ]),
-                                                  ),
-                                                  saveButtonClick
-                                                      ? selectDepartment
-                                                          ? const Text(
-                                                              " ",
-                                                            )
-                                                          : Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                top: 8,
-                                                                left: 15,
-                                                              ),
-                                                              child:
-                                                                  errorWidget())
-                                                      : Text(''),
-                                                ],
-                                              ),
-                                            ],
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 30.sp),
+                                            child: CustomSearchDropdown(
+                                              hint: 'Select',
+                                              label: "Department",
+                                              errorText: createButtonClick ==
+                                                          true &&
+                                                      (_depat == null ||
+                                                          _depat!.isEmpty)
+                                                  ? 'Please Select this field'
+                                                  : '',
+                                              items: departmentlist!,
+                                              onChange: ((value) {
+                                                // _curren = value.id;
+                                                _depat = value.id;
+                                                setStateView(() {
+                                                  selectDepartment = true;
+                                                });
+                                              }),
+                                            ),
                                           ),
                                         )
                                       ],
@@ -1372,85 +1237,6 @@ class _NavigationRailState extends State<MyHomePage>
                                           setState(() => name_ = text),
                                     ),
                                   ),
-                                  // Stack(
-                                  //   children: [
-                                  //     Container(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.99,
-                                  //       margin: const EdgeInsets.only(
-                                  //           left: 30.0, top: 10.0, right: 26.0),
-                                  //       height: 56.0,
-                                  //       decoration: BoxDecoration(
-                                  //         color: const Color(0xff334155),
-                                  //         borderRadius: BorderRadius.circular(
-                                  //           8.0,
-                                  //         ),
-                                  //         boxShadow: const [
-                                  //           BoxShadow(
-                                  //             color: Color(0xff475569),
-                                  //             offset: Offset(
-                                  //               0.0,
-                                  //               2.0,
-                                  //             ),
-                                  //             blurRadius: 0.0,
-                                  //             spreadRadius: 0.0,
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 22.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "Associated with",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       controller: _association,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       maxLength: 30,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 16.0,
-                                  //             top: 52.0,
-                                  //             right: 10,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter team name',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
-
                                   Container(
                                     margin: const EdgeInsets.only(
                                         left: 30.0, top: 0.0),
@@ -1465,102 +1251,38 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Row(
                                     children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.10,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0,
-                                                top: 8.0,
-                                                bottom: 16.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                            ),
-                                            child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 13.0, right: 18.0),
-                                                child: StatefulBuilder(
-                                                  builder:
-                                                      (BuildContext context,
-                                                          StateSettersetState) {
-                                                    return DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                        dropdownColor:
-                                                            ColorSelect
-                                                                .class_color,
-                                                        value: _curren,
-                                                        underline: Container(),
-                                                        hint: const Text(
-                                                          "Select",
-                                                          style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        isExpanded: true,
-                                                        icon: Icon(
-                                                          Icons.arrow_drop_down,
-                                                          color:
-                                                              Color(0xff64748B),
-                                                        ),
-                                                        items: _currencyName
-                                                            .map((items) {
-                                                          return DropdownMenuItem(
-                                                            value: items['id']
-                                                                .toString(),
-                                                            child: Text(
-                                                              items['currency']
-                                                                  ['symbol'],
-                                                              style: const TextStyle(
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontFamily:
-                                                                      'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          );
-                                                        }).toList(),
-                                                        onChanged:
-                                                            (String? newValue) {
-                                                          setStateView(() {
-                                                            _curren = newValue;
-                                                            selectSalary = true;
-                                                          });
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 8.0,
-                                      ),
                                       Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 14,
-                                              right: 25,
-                                              left: 30.0,
+                                          padding: EdgeInsets.only(
+                                              top: 14.sp,
+                                              left: 26.0.sp,
                                               bottom: 0),
+                                          child: CustomSearchDropdown(
+                                            hint: 'Select',
+                                            label: "A",
+                                            errorText: createButtonClick &&
+                                                    (_curren == null ||
+                                                        _curren!.isEmpty)
+                                                ? 'Please Select this field'
+                                                : '',
+                                            items: currencyList!,
+                                            onChange: ((value) {
+                                              _curren = value.id;
+                                              setStateView(() {
+                                                selectSalary = true;
+                                              });
+                                            }),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 8.w,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 14, right: 50, bottom: 0),
                                           child: CustomFormField(
                                             controller: _salary,
                                             maxLength: 15,
@@ -1596,100 +1318,14 @@ class _NavigationRailState extends State<MyHomePage>
                                           ),
                                         ),
                                       ),
-                                      // Expanded(
-                                      //   child: Stack(
-                                      //     children: [
-                                      //       Container(
-                                      //         width: MediaQuery.of(context)
-                                      //                 .size
-                                      //                 .width *
-                                      //             0.12,
-                                      //         margin: const EdgeInsets.only(
-                                      //             top: 8.0, bottom: 16.0),
-                                      //         height: 56.0,
-                                      //         decoration: BoxDecoration(
-                                      //           color: const Color(0xff334155),
-                                      //           borderRadius:
-                                      //               BorderRadius.circular(
-                                      //             8.0,
-                                      //           ),
-                                      //           boxShadow: const [
-                                      //             BoxShadow(
-                                      //               color: Color(0xff475569),
-                                      //               offset: Offset(
-                                      //                 0.0,
-                                      //                 2.0,
-                                      //               ),
-                                      //               blurRadius: 0.0,
-                                      //               spreadRadius: 0.0,
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //       ),
-                                      //       Container(
-                                      //           margin: const EdgeInsets.only(
-                                      //               top: 23.0, left: 15.0),
-                                      //           child: const Text(
-                                      //             "Monthly Salary",
-                                      //             style: TextStyle(
-                                      //                 fontSize: 11.0,
-                                      //                 color: Color(0xff64748B),
-                                      //                 fontFamily: 'Inter',
-                                      //                 fontWeight:
-                                      //                     FontWeight.w500),
-                                      //           )),
-                                      //       TextFormField(
-                                      //         maxLength: 15,
-                                      //         controller: _salary,
-                                      //         cursorColor:
-                                      //             const Color(0xffFFFFFF),
-                                      //         style: const TextStyle(
-                                      //             color: Color(0xffFFFFFF)),
-                                      //         textAlignVertical:
-                                      //             TextAlignVertical.bottom,
-                                      //         keyboardType: TextInputType.text,
-                                      //         decoration: const InputDecoration(
-                                      //             counterText: "",
-                                      //             errorStyle: TextStyle(
-                                      //                 fontSize: 14,
-                                      //                 height: 0.20),
-                                      //             contentPadding:
-                                      //                 EdgeInsets.only(
-                                      //               bottom: 16.0,
-                                      //               top: 52.0,
-                                      //               right: 10,
-                                      //               left: 15.0,
-                                      //             ),
-                                      //             border: InputBorder.none,
-                                      //             hintText: '0.00',
-                                      //             hintStyle: TextStyle(
-                                      //                 fontSize: 14.0,
-                                      //                 color: Color(0xffFFFFFF),
-                                      //                 fontFamily: 'Inter',
-                                      //                 fontWeight:
-                                      //                     FontWeight.w500)),
-                                      //         autovalidateMode: _addSubmitted
-                                      //             ? AutovalidateMode
-                                      //                 .onUserInteraction
-                                      //             : AutovalidateMode.disabled,
-                                      //         validator: (value) {
-                                      //           RegExp regex = RegExp(
-                                      //               r'^\D+|(?<=\d),(?=\d)');
-
-                                      //           if (value!.isEmpty) {
-                                      //             return 'Please enter';
-                                      //           } else if (regex
-                                      //               .hasMatch(value)) {
-                                      //             return 'Please enter valid salary';
-                                      //           }
-                                      //           return null;
-                                      //         },
-                                      //         onChanged: (text) => setStateView(
-                                      //             () => name1 = text),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
+                                      SizedBox(
+                                        width: 11.w,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 56,
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ],
@@ -1847,6 +1483,44 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                     ],
                                   ),
+                                  // Expanded(
+                                  //   child: Padding(
+                                  //     padding: EdgeInsets.only(
+                                  //         right: 29.6.sp,
+                                  //         left: 30.0.sp,
+                                  //         bottom: 0),
+                                  //     child: CustomSearchDropdown(
+                                  //       hint: 'Select days',
+                                  //       label: "A",
+                                  //       errorText: createButtonClick &&
+                                  //               (_curren == null ||
+                                  //                   _curren!.isEmpty)
+                                  //           ? 'Please Select this field'
+                                  //           : '',
+                                  //       items: items11,
+                                  //       onChange: ((value) {
+                                  //         setStateView(() {
+                                  //           _day = value.item;
+                                  //           _shortday = _day!.substring(0, 3);
+                                  //           if (selectedDaysList.isNotEmpty) {
+                                  //             if (selectedDaysList
+                                  //                 .contains(_shortday)) {
+                                  //             } else {
+                                  //               selectedDaysList
+                                  //                   .add(_shortday!.toString());
+                                  //               selectDays = true;
+                                  //             }
+                                  //           } else {
+                                  //             selectedDaysList
+                                  //                 .add(_shortday!.toString());
+                                  //             selectDays = true;
+                                  //           }
+                                  //         });
+                                  //       }),
+                                  //     ),
+                                  //   ),
+                                  // ),
+
                                   selectedDaysList.isNotEmpty
                                       ? SizedBox(
                                           height: 30,
@@ -3617,6 +3291,17 @@ class _NavigationRailState extends State<MyHomePage>
         List<dynamic> mdata = map["data"];
         setState(() {
           _currencyName = mdata;
+          try {
+            currencyList!.clear();
+            _currencyName.forEach((element) {
+              if (!currencyList!.contains(element['currency']['symbol'])) {
+                currencyList!.add(DropdownModel(
+                    element['id'].toString(), element['currency']['symbol']));
+              }
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -3834,8 +3519,27 @@ class _NavigationRailState extends State<MyHomePage>
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _department.clear();
           _department = mdata;
+          print(_department);
+          print(_department);
+          try {
+            departmentlist = []; //!.clear();
+            _department.forEach((element) {
+              print(element);
+              departmentlist!.add(
+                  DropdownModel(element['id'].toString(), element['name']));
+            });
+            // _department.forEach((element) {
+            //   print(element);
+            //   print(element);
+            //   if (!departmentlist!.contains(element["id"])) {
+            //     departmentlist!
+            //         .add(DropdownModel(element["id"], element["id"]));
+            //   }
+            // });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
