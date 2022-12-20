@@ -573,7 +573,7 @@ class ProjectHomeState extends State<ProjectHome> {
                             DataColumn(
                               label: InkWell(
                                 child: Text(
-                                  "Potential roadblock",
+                                  "Potential roadblocks",
                                   key: key8,
                                   style: TextStyle(
                                       color: ColorSelect.text_color,

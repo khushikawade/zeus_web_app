@@ -14,6 +14,7 @@ class CustomFormField extends StatefulWidget {
   EdgeInsets? contentpadding;
   int? maxline;
   double? fontSizeForLabel;
+  int? maxLength;
   bool? obsecqureText;
 
   CustomFormField(
@@ -27,6 +28,7 @@ class CustomFormField extends StatefulWidget {
       this.contentpadding,
       this.maxline,
       this.fontSizeForLabel,
+      this.maxLength,
       this.obsecqureText});
 
   @override
@@ -75,6 +77,7 @@ class CustomFormFieldState extends State<CustomFormField> {
               padding: EdgeInsets.only(bottom: 3.sp),
               child: TextFormField(
                 maxLines: widget.maxline ?? 1,
+                maxLength: widget.maxLength ?? null,
                 obscureText: widget.obsecqureText ?? false,
                 cursorColor: const Color(0xffFFFFFF),
                 style: const TextStyle(color: Color(0xffFFFFFF)),

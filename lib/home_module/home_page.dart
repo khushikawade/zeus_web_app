@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/helper_widget/test_view.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
@@ -63,6 +64,15 @@ class _NavigationRailState extends State<MyHomePage>
   bool circleTapIcon = false;
   bool bellTapIcon = false;
   bool settingIcon = false;
+  bool createButtonClick = false;
+
+  var items = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
   bool ishover = false;
   var startTime;
   var endTime;
@@ -539,57 +549,62 @@ class _NavigationRailState extends State<MyHomePage>
                                 const SizedBox(
                                   width: 16,
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      createProjectValidate = true;
-                                    });
-
-                                    if (_formKey.currentState!.validate()) {
-                                      Future.delayed(
-                                          const Duration(microseconds: 500),
-                                          () {
-                                        if (createProjectValidate) {
-                                          if (selectImage == true &&
-                                              selectDepartment == true &&
-                                              selectDays == true &&
-                                              selectSkill == true &&
-                                              selectTime == true &&
-                                              selectTimeZone == true) {
-                                            SmartDialog.showLoading(
-                                              msg:
-                                                  "Your request is in progress please wait for a while...",
-                                            );
-
-                                            createPeople(context, setStateView);
-                                          }
-                                        }
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10.0, right: 30.0, bottom: 10.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        createProjectValidate = true;
+                                        createButtonClick = true;
                                       });
-                                    }
-                                    setStateView(() {
-                                      saveButtonClick = true;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 97,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, right: 30.0, bottom: 10.0),
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff7DD3FC),
-                                      borderRadius: BorderRadius.circular(
-                                        40.0,
+
+                                      if (_formKey.currentState!.validate()) {
+                                        Future.delayed(
+                                            const Duration(microseconds: 500),
+                                            () {
+                                          if (createProjectValidate) {
+                                            if (selectImage == true &&
+                                                selectDepartment == true &&
+                                                selectDays == true &&
+                                                selectSkill == true &&
+                                                selectTime == true &&
+                                                selectTimeZone == true) {
+                                              SmartDialog.showLoading(
+                                                msg:
+                                                    "Your request is in progress please wait for a while...",
+                                              );
+
+                                              createPeople(
+                                                  context, setStateView);
+                                            }
+                                          }
+                                        });
+                                      }
+                                      setStateView(() {
+                                        saveButtonClick = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 97,
+                                      margin: const EdgeInsets.only(),
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff7DD3FC),
+                                        borderRadius: BorderRadius.circular(
+                                          40.0,
+                                        ),
                                       ),
-                                    ),
-                                    child: const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Save",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xff000000),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700),
+                                      child: const Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Save",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: Color(0xff000000),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -636,85 +651,92 @@ class _NavigationRailState extends State<MyHomePage>
                                                       width: 36.0,
                                                     )),
                                           )),
-                                      InkWell(
-                                        onTap: () async {
-                                          final image = await ImagePickerWeb
-                                              .getImageAsBytes();
-                                          setStateView(() {
-                                            webImage = image!;
-                                            imageavail = true;
-                                            selectImage = true;
-                                          });
-                                        },
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 35.0,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.11,
-                                              margin: const EdgeInsets.only(
-                                                  left: 48.0, top: 57.0),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  40.0,
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 48.0, top: 57.0),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                final image =
+                                                    await ImagePickerWeb
+                                                        .getImageAsBytes();
+                                                setStateView(() {
+                                                  webImage = image!;
+                                                  imageavail = true;
+                                                  selectImage = true;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 35.0,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.11,
+                                                // margin: const EdgeInsets.only(
+                                                //     left: 48.0, top: 57.0),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  //color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    40.0,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 16.0),
+                                                      child: const Icon(
+                                                          Icons.camera_alt,
+                                                          size: 18,
+                                                          color: Color(
+                                                              0xffFFFFFF)),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 11.0),
+                                                      child: const Text(
+                                                        "Upload new",
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontSize: 14.0,
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0),
-                                                    child: const Icon(
-                                                        Icons.camera_alt,
-                                                        size: 18,
-                                                        color:
-                                                            Color(0xffFFFFFF)),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 11.0),
-                                                    child: const Text(
-                                                      "Upload new",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontSize: 14.0,
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
                                             ),
-                                            Row(
-                                              children: [
-                                                SizedBox(width: 10),
-                                                saveButtonClick
-                                                    ? selectImage
-                                                        ? const Text(
-                                                            " ",
-                                                          )
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              top: 8,
-                                                              left: 0,
-                                                            ),
-                                                            child:
-                                                                errorWidget())
-                                                    : Text(''),
-                                              ],
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              saveButtonClick
+                                                  ? selectImage
+                                                      ? const Text(
+                                                          " ",
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 8,
+                                                            left: 0,
+                                                          ),
+                                                          child: errorWidget())
+                                                  : Text(''),
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -1023,8 +1045,7 @@ class _NavigationRailState extends State<MyHomePage>
                                             ),
                                             child: CustomFormField(
                                               controller: _designation,
-
-                                              //maxLength: 20,
+                                              maxLength: 20,
                                               fontSizeForLabel: 14,
                                               hint: 'Enter ',
                                               label: 'Designation',
@@ -1327,7 +1348,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         right: 25, left: 30.0, bottom: 0),
                                     child: CustomFormField(
                                       controller: _association,
-                                      // maxLength: 30,
+                                      maxLength: 30,
                                       hint: 'Enter team name',
                                       label: "Associated with",
                                       fontSizeForLabel: 14,
@@ -1542,7 +1563,7 @@ class _NavigationRailState extends State<MyHomePage>
                                               bottom: 0),
                                           child: CustomFormField(
                                             controller: _salary,
-                                            // maxLength: 15,
+                                            maxLength: 15,
                                             hint: '0.00',
                                             label: "Monthly Salary",
                                             fontSizeForLabel: 14,
@@ -1716,7 +1737,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     .width *
                                                 0.26,
                                             margin: const EdgeInsets.only(
-                                                left: 30.0),
+                                                left: 30.0, right: 29.6),
                                             height: 56.0,
                                             decoration: BoxDecoration(
                                               color: const Color(0xff334155),
@@ -1754,78 +1775,75 @@ class _NavigationRailState extends State<MyHomePage>
                                       Container(
                                         margin: const EdgeInsets.only(
                                             left: 30.0,
-                                            right: 30.0,
+                                            right: 55,
                                             top: 26,
                                             bottom: 10),
                                         height: 20.0,
-                                        child: Container(child: StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSettersetState) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16, right: 70),
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                child: DropdownButton(
-                                                  dropdownColor:
-                                                      ColorSelect.class_color,
-                                                  underline: Container(),
-                                                  hint: const Text(
-                                                    "Select",
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  isExpanded: true,
-                                                  icon: const Icon(
-                                                    Icons.arrow_drop_down,
-                                                    color: Color(0xff64748B),
-                                                  ),
-                                                  items: items1
-                                                      .map((String items1) {
-                                                    return DropdownMenuItem(
-                                                      value: items1,
-                                                      child: Text(items1,
-                                                          style:
-                                                              (const TextStyle(
-                                                                  color: Colors
-                                                                      .white))),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    setStateView(() {
-                                                      _day = newValue;
-                                                      _shortday =
-                                                          _day!.substring(0, 3);
-                                                      if (selectedDaysList
-                                                          .isNotEmpty) {
+                                        child: Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 16.0, right: 20.0),
+                                            child: StatefulBuilder(
+                                              builder: (BuildContext context,
+                                                  StateSettersetState) {
+                                                return DropdownButtonHideUnderline(
+                                                  child: CustomDropdownButton(
+                                                    dropdownColor:
+                                                        ColorSelect.class_color,
+                                                    underline: Container(),
+                                                    hint: const Text(
+                                                      "Select",
+                                                      style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color:
+                                                              Color(0xffFFFFFF),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    // isExpanded: true,
+                                                    icon: const Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Color(0xff64748B),
+                                                    ),
+                                                    items: items1
+                                                        .map((String items1) {
+                                                      return DropdownMenuItem(
+                                                        value: items1,
+                                                        child: Text(items1,
+                                                            style: (const TextStyle(
+                                                                color: Colors
+                                                                    .white))),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged:
+                                                        (String? newValue) {
+                                                      setStateView(() {
+                                                        _day = newValue;
+                                                        _shortday = _day!
+                                                            .substring(0, 3);
                                                         if (selectedDaysList
-                                                            .contains(
-                                                                _shortday)) {
+                                                            .isNotEmpty) {
+                                                          if (selectedDaysList
+                                                              .contains(
+                                                                  _shortday)) {
+                                                          } else {
+                                                            selectedDaysList
+                                                                .add(_shortday!
+                                                                    .toString());
+                                                            selectDays = true;
+                                                          }
                                                         } else {
                                                           selectedDaysList.add(
                                                               _shortday!
                                                                   .toString());
                                                           selectDays = true;
                                                         }
-                                                      } else {
-                                                        selectedDaysList.add(
-                                                            _shortday!
-                                                                .toString());
-                                                        selectDays = true;
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        )),
+                                                      });
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            )),
                                       ),
                                     ],
                                   ),
@@ -1933,7 +1951,9 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
+                                            top: 11.0,
+                                            left: 45.0,
+                                          ),
                                           child: const Text(
                                             "Select time",
                                             style: TextStyle(
@@ -1945,7 +1965,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       Container(
                                           margin: const EdgeInsets.only(
                                             bottom: 16.0,
-                                            top: 50.0,
+                                            top: 28.0,
                                             right: 10,
                                             left: 45.0,
                                           ),
@@ -2243,532 +2263,176 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 8.0,
                                   ),
-
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 70, left: 30.0, bottom: 0),
-                                    child: CustomFormField(
-                                      //   maxLength: 20,
-                                      controller: _country,
-                                      hint: 'Enter country',
-                                      label: "Country",
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        RegExp regex = RegExp(r'^[a-z A-Z]+$');
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
+                                    padding: EdgeInsets.only(
+                                      left: 30,
+                                      right: 30,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        CustomFormField(
+                                          maxLength: 20,
+                                          controller: _country,
+                                          hint: 'Enter country',
+                                          label: "Country",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            RegExp regex =
+                                                RegExp(r'^[a-z A-Z]+$');
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
 
-                                          return 'Please enter';
-                                        } else if (!regex.hasMatch(value)) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
+                                              return 'Please enter';
+                                            } else if (!regex.hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
 
-                                          return 'Please enter valid  country name';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
+                                              return 'Please enter valid  country name';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                        CustomFormField(
+                                          maxLength: 20,
+                                          controller: _enterCity,
+                                          hint: 'Enter city',
+                                          label: "City",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            RegExp regex =
+                                                RegExp(r'^[a-z A-Z]+$');
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter';
+                                            } else if (!regex.hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter valid  city name';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                        CustomFormField(
+                                          maxLength: 10,
+                                          controller: _phoneNumber,
+                                          hint: 'Enter number',
+                                          label: "Phone number",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            String pattern =
+                                                r'(^(?:[+0]9)?[0-9]{10}$)';
+                                            RegExp regExp = new RegExp(pattern);
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter';
+                                            } else if (!regExp
+                                                .hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter valid mobile number';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                        CustomFormField(
+                                          maxLength: 20,
+                                          controller: _emailAddress,
+                                          hint: 'Enter email address',
+                                          label: "Email address",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            RegExp regex = RegExp(
+                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter email';
+                                            } else if (!regex.hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Enter valid Email';
+                                            }
+                                            if (regex.hasMatch(values)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+                                              return 'please enter valid email';
+                                            }
+                                            if (value.length > 50) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+                                              return 'No more length 50';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  // Stack(
-                                  //   children: [
-                                  //     Column(
-                                  //       crossAxisAlignment:
-                                  //           CrossAxisAlignment.start,
-                                  //       children: [
-                                  //         Container(
-                                  //           width: MediaQuery.of(context)
-                                  //                   .size
-                                  //                   .width *
-                                  //               0.26,
-                                  //           margin: const EdgeInsets.only(
-                                  //               left: 30.0),
-                                  //           height: 56.0,
-                                  //           decoration: BoxDecoration(
-                                  //             color: const Color(0xff334155),
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(
-                                  //               8.0,
-                                  //             ),
-                                  //             boxShadow: const [
-                                  //               BoxShadow(
-                                  //                 color: Color(0xff475569),
-                                  //                 offset: Offset(
-                                  //                   0.0,
-                                  //                   2.0,
-                                  //                 ),
-                                  //                 blurRadius: 0.0,
-                                  //                 spreadRadius: 0.0,
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //         errorWidget2(validateCountry)
-                                  //       ],
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 6.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "Country",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       maxLength: 20,
-                                  //       controller: _country,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 16.0,
-                                  //             top: 35.0,
-                                  //             right: 10,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter country',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         RegExp regex =
-                                  //             RegExp(r'^[a-z A-Z]+$');
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter';
-                                  //         } else if (!regex.hasMatch(value)) {
-                                  //           return 'Please enter valid  country name';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 70, left: 30.0, bottom: 0),
-                                    child: CustomFormField(
-                                      //   maxLength: 20,
-                                      controller: _enterCity,
-                                      hint: 'Enter city',
-                                      label: "City",
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        RegExp regex = RegExp(r'^[a-z A-Z]+$');
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter';
-                                        } else if (!regex.hasMatch(value)) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter valid  city name';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  // Stack(
-                                  //   children: [
-                                  //     Column(
-                                  //       crossAxisAlignment:
-                                  //           CrossAxisAlignment.start,
-                                  //       children: [
-                                  //         Container(
-                                  //           width: MediaQuery.of(context)
-                                  //                   .size
-                                  //                   .width *
-                                  //               0.26,
-                                  //           margin: const EdgeInsets.only(
-                                  //               left: 30.0, top: 7.0),
-                                  //           height: 56.0,
-                                  //           decoration: BoxDecoration(
-                                  //             color: const Color(0xff334155),
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(
-                                  //               8.0,
-                                  //             ),
-                                  //             boxShadow: const [
-                                  //               BoxShadow(
-                                  //                 color: Color(0xff475569),
-                                  //                 offset: Offset(
-                                  //                   0.0,
-                                  //                   2.0,
-                                  //                 ),
-                                  //                 blurRadius: 0.0,
-                                  //                 spreadRadius: 0.0,
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //         errorWidget2(validateCity)
-                                  //       ],
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 12.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "City",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       maxLength: 20,
-                                  //       controller: _enterCity,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 16.0,
-                                  //             top: 40.0,
-                                  //             right: 10,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter city',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         RegExp regex =
-                                  //             RegExp(r'^[a-z A-Z]+$');
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter';
-                                  //         } else if (!regex.hasMatch(value)) {
-                                  //           return 'Please enter valid  city name';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 70, left: 30.0, bottom: 0),
-                                    child: CustomFormField(
-                                      //   maxLength: 10,
-                                      controller: _phoneNumber,
-                                      hint: 'Enter number',
-                                      label: "Phone number",
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        String pattern =
-                                            r'(^(?:[+0]9)?[0-9]{10}$)';
-                                        RegExp regExp = new RegExp(pattern);
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter';
-                                        } else if (!regExp.hasMatch(value)) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter valid mobile number';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  // Stack(
-                                  //   children: [
-                                  //     Container(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.26,
-                                  //       margin: const EdgeInsets.only(
-                                  //           left: 30.0, top: 7.0),
-                                  //       height: 56.0,
-                                  //       decoration: BoxDecoration(
-                                  //         color: const Color(0xff334155),
-                                  //         borderRadius: BorderRadius.circular(
-                                  //           8.0,
-                                  //         ),
-                                  //         boxShadow: const [
-                                  //           BoxShadow(
-                                  //             color: Color(0xff475569),
-                                  //             offset: Offset(
-                                  //               0.0,
-                                  //               2.0,
-                                  //             ),
-                                  //             blurRadius: 0.0,
-                                  //             spreadRadius: 0.0,
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 12.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "Phone number",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       maxLength: 10,
-                                  //       controller: _phoneNumber,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 16.0,
-                                  //             top: 40.0,
-                                  //             right: 10,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter number',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         String pattern =
-                                  //             r'(^(?:[+0]9)?[0-9]{10}$)';
-                                  //         RegExp regExp = new RegExp(pattern);
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter';
-                                  //         } else if (!regExp.hasMatch(value)) {
-                                  //           return 'Please enter valid mobile number';
-                                  //         }
-
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 70, left: 30.0, bottom: 0),
-                                    child: CustomFormField(
-                                      //   maxLength: 20,
-                                      controller: _emailAddress,
-                                      hint: 'Enter email address',
-                                      label: "Email address",
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        RegExp regex = RegExp(
-                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter email';
-                                        } else if (!regex.hasMatch(value)) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Enter valid Email';
-                                        }
-                                        if (regex.hasMatch(values)) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-                                          return 'please enter valid email';
-                                        }
-                                        if (value.length > 50) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-                                          return 'No more length 50';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  // Stack(
-                                  //   children: [
-                                  //     Container(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.26,
-                                  //       margin: const EdgeInsets.only(
-                                  //           left: 30.0, top: 20.0),
-                                  //       height: 56.0,
-                                  //       decoration: BoxDecoration(
-                                  //         color: const Color(0xff334155),
-                                  //         borderRadius: BorderRadius.circular(
-                                  //           8.0,
-                                  //         ),
-                                  //         boxShadow: const [
-                                  //           BoxShadow(
-                                  //             color: Color(0xff475569),
-                                  //             offset: Offset(
-                                  //               0.0,
-                                  //               2.0,
-                                  //             ),
-                                  //             blurRadius: 0.0,
-                                  //             spreadRadius: 0.0,
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 25.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "Email address",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       maxLength: 20,
-                                  //       controller: _emailAddress,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 16.0,
-                                  //             top: 50.0,
-                                  //             right: 10,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter email address',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         RegExp regex = RegExp(
-                                  //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter email';
-                                  //         }
-                                  //         if (!regex.hasMatch(value)) {
-                                  //           return 'Enter valid Email';
-                                  //         }
-                                  //         if (regex.hasMatch(values)) {
-                                  //           return 'please enter valid email';
-                                  //         }
-                                  //         if (value.length > 50) {
-                                  //           return 'No more length 50';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
+                                        // width:
+                                        //     MediaQuery.of(context).size.width *
+                                        //         0.26,
                                         margin: const EdgeInsets.only(
-                                            top: 0.0, left: 30.0),
+                                          top: 0.0,
+                                          left: 30.0,
+                                          right: 30,
+                                        ),
                                         height: 56.0,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
@@ -2874,7 +2538,7 @@ class _NavigationRailState extends State<MyHomePage>
               Padding(
                 padding: EdgeInsets.only(right: 16.sp),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -2923,9 +2587,9 @@ class _NavigationRailState extends State<MyHomePage>
                                 color: Color(0xff64748B),
                               )),
                           hintText: projectListTapIcon
-                              ? 'Search Project'
+                              ? 'Search project'
                               : peopleListTapIcon
-                                  ? 'Search People'
+                                  ? 'Search people'
                                   : 'Search',
                           hintStyle: TextStyle(
                               fontSize: 14.sp,

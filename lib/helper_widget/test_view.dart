@@ -9,6 +9,8 @@ class CustomSearchDropdown extends StatefulWidget {
   String? label;
   String? hint;
   String? errorText;
+  EdgeInsets? paddingForLabeltext;
+  double? fontsizeForLabel;
 
   Function(DropdownModel value)? onChange;
   CustomSearchDropdown(
@@ -17,7 +19,9 @@ class CustomSearchDropdown extends StatefulWidget {
       this.label,
       this.hint,
       this.onChange,
-      this.errorText});
+      this.errorText,
+      this.paddingForLabeltext,
+      this.fontsizeForLabel});
 
   @override
   State<CustomSearchDropdown> createState() => _MyHomePageState();

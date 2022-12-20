@@ -339,7 +339,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Inter-Medium',
+                      fontFamily: 'Inter',
                       fontStyle: FontStyle.normal,
                       letterSpacing: 0.1,
                       color: ColorSelect.white_color),
@@ -376,7 +376,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                   style: TextStyle(
                                       fontSize: 24.sp,
                                       fontWeight: FontWeight.w700,
-                                      fontFamily: 'Inter-Medium',
+                                      fontFamily: 'Inter',
                                       fontStyle: FontStyle.normal,
                                       letterSpacing: 0.1,
                                       color: ColorSelect.white_color),
@@ -389,7 +389,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
-                                      fontFamily: 'Inter-Regular',
+                                      fontFamily: 'Inter',
                                       fontStyle: FontStyle.normal,
                                       letterSpacing: 0.1,
                                       color: ColorSelect.delete),
@@ -412,7 +412,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                             style: TextStyle(
                                                 fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
-                                                fontFamily: 'Inter-Medium',
+                                                fontFamily: 'Inter',
                                                 fontStyle: FontStyle.normal,
                                                 letterSpacing: 0.1,
                                                 color: ColorSelect.delete_text),
@@ -441,7 +441,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                             style: TextStyle(
                                                 fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
-                                                fontFamily: 'Inter-Medium',
+                                                fontFamily: 'Inter',
                                                 fontStyle: FontStyle.normal,
                                                 letterSpacing: 0.1,
                                                 color: ColorSelect.red_color),
@@ -469,7 +469,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                   style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Inter-Medium',
+                      fontFamily: 'Inter',
                       fontStyle: FontStyle.normal,
                       letterSpacing: 0.1,
                       color: ColorSelect.white_color),
