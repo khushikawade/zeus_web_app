@@ -271,8 +271,8 @@ class _NavigationRailState extends State<MyHomePage>
 
   List _department = [];
   List<DropdownModel>? departmentlist;
-
-  List<DropdownModel>? itemsDays;
+  List<DropdownModel>? selecTimeZoneList = [];
+  List<DropdownModel>? selectDaysList;
   var items1 = [
     'Monday',
     'Tuesday',
@@ -418,6 +418,10 @@ class _NavigationRailState extends State<MyHomePage>
         builder: (context) {
           abc.clear();
           //---------------sayyam
+          selectDaysList = [];
+          items1.forEach((element) {
+            selectDaysList!.add(DropdownModel('', element));
+          });
           imageavail = false;
 
           createButtonClick = false;
@@ -629,19 +633,18 @@ class _NavigationRailState extends State<MyHomePage>
                                   Row(
                                     children: [
                                       Container(
-                                          width: 134.0,
-                                          height: 134.0,
-                                          margin: const EdgeInsets.only(
-                                              left: 27.0, top: 28.0),
+                                          width: 120.0.sp,
+                                          height: 120.0.sp,
+                                          margin: EdgeInsets.only(
+                                              left: 27.0, top: 28),
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
-                                            borderRadius: BorderRadius.circular(
-                                              110.0,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(200.0.r),
                                           ),
                                           child: ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(110.0),
+                                                BorderRadius.circular(200.0.r),
                                             child: imageavail
                                                 ? Image.memory(
                                                     webImage!,
@@ -649,19 +652,18 @@ class _NavigationRailState extends State<MyHomePage>
                                                   )
                                                 : Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            46.0),
+                                                        EdgeInsets.all(46.0),
                                                     child: SvgPicture.asset(
                                                       'images/photo.svg',
-                                                      height: 36.0,
-                                                      width: 36.0,
+                                                      height: 36.0.h,
+                                                      width: 36.0.w,
                                                     )),
                                           )),
                                       Column(
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 48.0, top: 57.0),
+                                            padding: EdgeInsets.only(
+                                                left: 48.0.sp, top: 57.0.sp),
                                             child: InkWell(
                                               onTap: () async {
                                                 final image =
@@ -674,11 +676,11 @@ class _NavigationRailState extends State<MyHomePage>
                                                 });
                                               },
                                               child: Container(
-                                                height: 35.0,
+                                                height: 35.0.h,
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.11,
+                                                    0.11.w,
                                                 // margin: const EdgeInsets.only(
                                                 //     left: 48.0, top: 57.0),
                                                 decoration: BoxDecoration(
@@ -687,7 +689,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                   //color: Colors.red,
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                    40.0,
+                                                    40.0.r,
                                                   ),
                                                 ),
                                                 child: Row(
@@ -703,19 +705,23 @@ class _NavigationRailState extends State<MyHomePage>
                                                               0xffFFFFFF)),
                                                     ),
                                                     Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              left: 11.0),
-                                                      child: const Text(
-                                                        "Upload new",
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            fontSize: 14.0,
-                                                            fontFamily: 'Inter',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
+                                                      margin: EdgeInsets.only(
+                                                          left: 11.0.sp),
+                                                      child: Flexible(
+                                                        child: Text(
+                                                          "Upload new",
+                                                          overflow:
+                                                              TextOverflow.fade,
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xffFFFFFF),
+                                                              fontSize: 14.0.sp,
+                                                              fontFamily:
+                                                                  'Inter',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -1361,166 +1367,168 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, right: 29.6),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                )
-                                              ],
-                                            ),
+                                      // Column(
+                                      //   crossAxisAlignment:
+                                      //       CrossAxisAlignment.start,
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.start,
+                                      //   children: [
+                                      //     Container(
+                                      //       width: MediaQuery.of(context)
+                                      //               .size
+                                      //               .width *
+                                      //           0.26,
+                                      //       margin: const EdgeInsets.only(
+                                      //           left: 30.0, right: 29.6),
+                                      //       height: 56.0,
+                                      //       decoration: BoxDecoration(
+                                      //         color: const Color(0xff334155),
+                                      //         borderRadius:
+                                      //             BorderRadius.circular(
+                                      //           8.0,
+                                      //         ),
+                                      //         boxShadow: const [
+                                      //           BoxShadow(
+                                      //             color: Color(0xff475569),
+                                      //             offset: Offset(
+                                      //               0.0,
+                                      //               2.0,
+                                      //             ),
+                                      //             blurRadius: 0.0,
+                                      //             spreadRadius: 0.0,
+                                      //           )
+                                      //         ],
+                                      //       ),
+                                      //     ),
+                                      //     handleAllerrorWidget(selectDays)
+                                      //   ],
+                                      // ),
+                                      // Container(
+                                      //     margin: const EdgeInsets.only(
+                                      //         top: 6.0, left: 45.0),
+                                      //     child: const Text(
+                                      //       "Select days",
+                                      //       style: TextStyle(
+                                      //           fontSize: 11.0,
+                                      //           color: Color(0xff64748B),
+                                      //           fontFamily: 'Inter',
+                                      //           fontWeight: FontWeight.w500),
+                                      //     )),
+                                      // Container(
+                                      //   margin: const EdgeInsets.only(
+                                      //       left: 30.0,
+                                      //       right: 55,
+                                      //       top: 26,
+                                      //       bottom: 10),
+                                      //   height: 20.0,
+                                      //   child: Container(
+                                      //       margin: const EdgeInsets.only(
+                                      //           left: 16.0, right: 20.0),
+                                      //       child: StatefulBuilder(
+                                      //         builder: (BuildContext context,
+                                      //             StateSettersetState) {
+                                      //           return DropdownButtonHideUnderline(
+                                      //             child: CustomDropdownButton(
+                                      //               dropdownColor:
+                                      //                   ColorSelect.class_color,
+                                      //               underline: Container(),
+                                      //               hint: const Text(
+                                      //                 "Select",
+                                      //                 style: TextStyle(
+                                      //                     fontSize: 14.0,
+                                      //                     color:
+                                      //                         Color(0xffFFFFFF),
+                                      //                     fontFamily: 'Inter',
+                                      //                     fontWeight:
+                                      //                         FontWeight.w500),
+                                      //               ),
+                                      //               // isExpanded: true,
+                                      //               icon: const Icon(
+                                      //                 Icons.arrow_drop_down,
+                                      //                 color: Color(0xff64748B),
+                                      //               ),
+                                      //               items: items1
+                                      //                   .map((String items1) {
+                                      //                 return DropdownMenuItem(
+                                      //                   value: items1,
+                                      //                   child: Text(items1,
+                                      //                       style: (const TextStyle(
+                                      //                           color: Colors
+                                      //                               .white))),
+                                      //                 );
+                                      //               }).toList(),
+                                      //               onChanged:
+                                      //                   (String? newValue) {
+                                      //                 setStateView(() {
+                                      //                   _day = newValue;
+                                      //                   _shortday = _day!
+                                      //                       .substring(0, 3);
+                                      //                   if (selectedDaysList
+                                      //                       .isNotEmpty) {
+                                      //                     if (selectedDaysList
+                                      //                         .contains(
+                                      //                             _shortday)) {
+                                      //                     } else {
+                                      //                       selectedDaysList
+                                      //                           .add(_shortday!
+                                      //                               .toString());
+                                      //                       selectDays = true;
+                                      //                     }
+                                      //                   } else {
+                                      //                     selectedDaysList.add(
+                                      //                         _shortday!
+                                      //                             .toString());
+                                      //                     selectDays = true;
+                                      //                   }
+                                      //                 });
+                                      //               },
+                                      //             ),
+                                      //           );
+                                      //         },
+                                      //       )),
+                                      // ),
+
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 29.6.sp,
+                                              left: 25.0.sp,
+                                              bottom: 0),
+                                          child: CustomSearchDropdown(
+                                            hint: 'Select days',
+                                            label: "Select",
+                                            errorText: createButtonClick &&
+                                                    (_day == null ||
+                                                        _day!.isEmpty)
+                                                ? 'Please Select this field'
+                                                : '',
+                                            items: selectDaysList!,
+                                            onChange: ((value) {
+                                              setStateView(() {
+                                                _day = value.item;
+                                                _shortday =
+                                                    _day!.substring(0, 3);
+                                                if (selectedDaysList
+                                                    .isNotEmpty) {
+                                                  if (selectedDaysList
+                                                      .contains(_shortday)) {
+                                                  } else {
+                                                    selectedDaysList.add(
+                                                        _shortday!.toString());
+                                                    selectDays = true;
+                                                  }
+                                                } else {
+                                                  selectedDaysList.add(
+                                                      _shortday!.toString());
+                                                  selectDays = true;
+                                                }
+                                              });
+                                            }),
                                           ),
-                                          handleAllerrorWidget(selectDays)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 6.0, left: 45.0),
-                                          child: const Text(
-                                            "Select days",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0,
-                                            right: 55,
-                                            top: 26,
-                                            bottom: 10),
-                                        height: 20.0,
-                                        child: Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 16.0, right: 20.0),
-                                            child: StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  StateSettersetState) {
-                                                return DropdownButtonHideUnderline(
-                                                  child: CustomDropdownButton(
-                                                    dropdownColor:
-                                                        ColorSelect.class_color,
-                                                    underline: Container(),
-                                                    hint: const Text(
-                                                      "Select",
-                                                      style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    // isExpanded: true,
-                                                    icon: const Icon(
-                                                      Icons.arrow_drop_down,
-                                                      color: Color(0xff64748B),
-                                                    ),
-                                                    items: items1
-                                                        .map((String items1) {
-                                                      return DropdownMenuItem(
-                                                        value: items1,
-                                                        child: Text(items1,
-                                                            style: (const TextStyle(
-                                                                color: Colors
-                                                                    .white))),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      setStateView(() {
-                                                        _day = newValue;
-                                                        _shortday = _day!
-                                                            .substring(0, 3);
-                                                        if (selectedDaysList
-                                                            .isNotEmpty) {
-                                                          if (selectedDaysList
-                                                              .contains(
-                                                                  _shortday)) {
-                                                          } else {
-                                                            selectedDaysList
-                                                                .add(_shortday!
-                                                                    .toString());
-                                                            selectDays = true;
-                                                          }
-                                                        } else {
-                                                          selectedDaysList.add(
-                                                              _shortday!
-                                                                  .toString());
-                                                          selectDays = true;
-                                                        }
-                                                      });
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            )),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  // Expanded(
-                                  //   child: Padding(
-                                  //     padding: EdgeInsets.only(
-                                  //         right: 29.6.sp,
-                                  //         left: 30.0.sp,
-                                  //         bottom: 0),
-                                  //     child: CustomSearchDropdown(
-                                  //       hint: 'Select days',
-                                  //       label: "A",
-                                  //       errorText: createButtonClick &&
-                                  //               (_curren == null ||
-                                  //                   _curren!.isEmpty)
-                                  //           ? 'Please Select this field'
-                                  //           : '',
-                                  //       items: items11,
-                                  //       onChange: ((value) {
-                                  //         setStateView(() {
-                                  //           _day = value.item;
-                                  //           _shortday = _day!.substring(0, 3);
-                                  //           if (selectedDaysList.isNotEmpty) {
-                                  //             if (selectedDaysList
-                                  //                 .contains(_shortday)) {
-                                  //             } else {
-                                  //               selectedDaysList
-                                  //                   .add(_shortday!.toString());
-                                  //               selectDays = true;
-                                  //             }
-                                  //           } else {
-                                  //             selectedDaysList
-                                  //                 .add(_shortday!.toString());
-                                  //             selectDays = true;
-                                  //           }
-                                  //         });
-                                  //       }),
-                                  //     ),
-                                  //   ),
-                                  // ),
-
                                   selectedDaysList.isNotEmpty
                                       ? SizedBox(
                                           height: 30,
@@ -1593,31 +1601,31 @@ class _NavigationRailState extends State<MyHomePage>
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, top: 0.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 29.6.sp,
+                                                left: 25.0.sp,
+                                                bottom: 0),
+                                            child: Container(
+                                              height: 57.h,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff334155),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  8.0,
                                                 ),
-                                              ],
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                    color: Color(0xff475569),
+                                                    offset: Offset(
+                                                      0.0,
+                                                      2.0,
+                                                    ),
+                                                    blurRadius: 0.0,
+                                                    spreadRadius: 0.0,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           handleAllerrorWidget(selectTime)
@@ -1628,10 +1636,10 @@ class _NavigationRailState extends State<MyHomePage>
                                             top: 11.0,
                                             left: 45.0,
                                           ),
-                                          child: const Text(
+                                          child: Text(
                                             "Select time",
                                             style: TextStyle(
-                                                fontSize: 11.0,
+                                                fontSize: 11.sp,
                                                 color: Color(0xff64748B),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500),
@@ -1651,7 +1659,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 ? "$startTime1 - $endTime2"
                                                 : '',
                                             style: TextStyle(
-                                                fontSize: 11.0,
+                                                fontSize: 14.sp,
                                                 color: Colors.white,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500),
@@ -1753,18 +1761,19 @@ class _NavigationRailState extends State<MyHomePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Container(
-                                        padding:
-                                            EdgeInsets.only(left: 5, right: 5),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
-                                        height: 55.0,
+                                        padding: EdgeInsets.only(
+                                          left: 5,
+                                          right: 5,
+                                        ),
+                                        margin: EdgeInsets.only(
+                                            right: 30.5.sp,
+                                            left: 25.0.sp,
+                                            top: 20.sp),
+                                        height: 49.0.h,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           borderRadius: BorderRadius.circular(
-                                            48.0,
+                                            48.0.r,
                                           ),
                                         ),
                                         child: Column(
@@ -1777,8 +1786,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                     clearOnSubmit: false,
                                                     key: key,
                                                     cursorColor: Colors.white,
-                                                    decoration:
-                                                        const InputDecoration(
+                                                    decoration: InputDecoration(
                                                       contentPadding:
                                                           EdgeInsets.only(
                                                               top: 15.0),
@@ -1795,7 +1803,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                           )),
                                                       hintText: 'Search',
                                                       hintStyle: TextStyle(
-                                                          fontSize: 14.0,
+                                                          fontSize: 14.0.sp,
                                                           color:
                                                               Color(0xff64748B),
                                                           fontFamily: 'Inter',
@@ -2093,90 +2101,33 @@ class _NavigationRailState extends State<MyHomePage>
                                       ],
                                     ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                  Stack(
                                     children: [
-                                      Container(
-                                        // width:
-                                        //     MediaQuery.of(context).size.width *
-                                        //         0.26,
-                                        margin: const EdgeInsets.only(
-                                          top: 0.0,
-                                          left: 30.0,
-                                          right: 30,
-                                        ),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 29.6.sp,
+                                              left: 25.0.sp,
+                                              bottom: 0),
+                                          child: CustomSearchDropdown(
+                                            hint: "Select timezone",
+                                            label: "Select",
+                                            errorText: createButtonClick &&
+                                                    (_time == null ||
+                                                        _time!.isEmpty)
+                                                ? 'Please Select this field'
+                                                : '',
+                                            items: selecTimeZoneList!,
+                                            onChange: ((value) {
+                                              setStateView(() {
+                                                _time = value.item;
+                                                print("account:$_time");
+                                                selectTimeZone = true;
+                                              });
+                                            }),
                                           ),
                                         ),
-                                        child: Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 16.0, right: 20.0),
-                                            child: StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  StateSettersetState) {
-                                                return DropdownButtonHideUnderline(
-                                                  child: DropdownButton(
-                                                    dropdownColor:
-                                                        ColorSelect.class_color,
-                                                    value: _time,
-                                                    underline: Container(),
-                                                    hint: const Text(
-                                                      "Select timezone",
-                                                      style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    isExpanded: true,
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_down,
-                                                      color: Color(0xff64748B),
-                                                    ),
-                                                    items:
-                                                        _timeline.map((items) {
-                                                      return DropdownMenuItem(
-                                                        value: items['id']
-                                                            .toString(),
-                                                        child: Text(
-                                                          items['name'] +
-                                                              ', ' +
-                                                              items[
-                                                                  'diff_from_gtm'],
-                                                          style: const TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      setStateView(() {
-                                                        _time = newValue;
-                                                        print("account:$_time");
-                                                        selectTimeZone = true;
-                                                      });
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            )),
                                       ),
-                                      handleAllerrorWidget(selectTimeZone)
                                     ],
                                   ),
                                 ],
@@ -3356,6 +3307,17 @@ class _NavigationRailState extends State<MyHomePage>
         List<dynamic> mdata = map["data"];
         setState(() {
           _timeline = mdata;
+
+          try {
+            selecTimeZoneList = [];
+            _timeline.forEach((element) {
+              print(element);
+              selecTimeZoneList!.add(DropdownModel(element['id'].toString(),
+                  '${element['name'] + ', ' + element['diff_from_gtm']}'));
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
