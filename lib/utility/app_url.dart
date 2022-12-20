@@ -36,5 +36,6 @@ class AppUrl {
   static const String createPhase = "/phase";
   static const String getPhase = "/phase/";
   static const String updatePhase = "/phase/";
+  static const String clickUpAuth = "$baseUrl/clickup/auth";
 
 }

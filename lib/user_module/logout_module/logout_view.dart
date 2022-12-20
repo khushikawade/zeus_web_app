@@ -69,6 +69,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           child: InkWell(
             hoverColor: Color(0xff1e293b),
             onTap: () {
+              Navigator.pop(context);
               SmartDialog.showLoading(
                 msg: "Your request is in progress please wait for a while...",
               );
@@ -131,7 +132,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       //               onSubmit: (String value) {},
       //             )),
       //     (Route<dynamic> route) => route is LoginScreen);
-      context.vxNav.clearAndPush(Uri.parse(MyRoutes.loginRoute));
+      context.vxNav.popToRoot();
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(

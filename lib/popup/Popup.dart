@@ -323,7 +323,9 @@ showDailog(
         response.data!.tags != null &&
         response.data!.tags!.isNotEmpty) {
       response.data!.tags!.forEach((element) {
-        abc.add(element.name!);
+        if (!abc.contains(element.name)) {
+          abc.add(element.name!);
+        }
       });
     }
     // _status = response.data != null &&
@@ -964,83 +966,92 @@ showDailog(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Wrap(
-                                                spacing: 8,
-                                                children: List.generate(
-                                                  abc.length,
-                                                  (index) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 2,
-                                                              bottom: 2,
-                                                              left: 5),
-                                                      child: InputChip(
-                                                        labelPadding:
-                                                            EdgeInsets.only(
-                                                                left: 10,
-                                                                top: 7,
-                                                                bottom: 7),
-                                                        shape:
-                                                            const RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .all(
-                                                          Radius.circular(
-                                                            13,
+                                              Container(
+                                                // width: 256,
+                                                // margin:
+                                                //     EdgeInsets.only(right: 40),
+                                                // color: Colors.red,
+                                                child: Wrap(
+                                                  spacing: 8,
+                                                  children: List.generate(
+                                                    abc.length,
+                                                    (index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 2,
+                                                                bottom: 2,
+                                                                left: 5),
+                                                        child: InputChip(
+                                                          labelPadding:
+                                                              EdgeInsets.only(
+                                                                  left: 10,
+                                                                  top: 7,
+                                                                  bottom: 7),
+                                                          shape:
+                                                              const RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .all(
+                                                            Radius.circular(
+                                                              13,
+                                                            ),
+                                                          )),
+                                                          side: BorderSide(
+                                                              color: Color(
+                                                                  0xff334155)),
+                                                          deleteIcon:
+                                                              const Icon(
+                                                            Icons.close,
+                                                            color: Colors.white,
+                                                            size: 20,
                                                           ),
-                                                        )),
-                                                        side: BorderSide(
-                                                            color: Color(
-                                                                0xff334155)),
-                                                        deleteIcon: const Icon(
-                                                          Icons.close,
-                                                          color: Colors.white,
-                                                          size: 20,
-                                                        ),
-                                                        backgroundColor:
-                                                            Color(0xff334155),
-                                                        visualDensity:
-                                                            VisualDensity
-                                                                .compact,
-                                                        materialTapTargetSize:
-                                                            MaterialTapTargetSize
-                                                                .shrinkWrap,
-                                                        label: Text(
-                                                          abc[index],
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        onSelected:
-                                                            (bool selected) {
-                                                          setState(() {
-                                                            _isSelected =
-                                                                selected;
-                                                          });
-                                                        },
-                                                        onDeleted: () {
-                                                          response.data!.tags!
-                                                              .forEach(
-                                                            (element) {
-                                                              if (element
-                                                                      .name ==
-                                                                  abc[index]) {
-                                                                removeTagAPI(element
-                                                                    .id
-                                                                    .toString());
-                                                              }
-                                                            },
-                                                          );
+                                                          backgroundColor:
+                                                              Color(0xff334155),
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .compact,
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                          label: Text(
+                                                            abc[index],
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          onSelected:
+                                                              (bool selected) {
+                                                            setState(() {
+                                                              _isSelected =
+                                                                  selected;
+                                                            });
+                                                          },
+                                                          onDeleted: () {
+                                                            response.data!.tags!
+                                                                .forEach(
+                                                              (element) {
+                                                                if (element
+                                                                        .name ==
+                                                                    abc[index]) {
+                                                                  removeTagAPI(
+                                                                      element.id
+                                                                          .toString());
+                                                                }
+                                                              },
+                                                            );
 
-                                                          setState(() {
-                                                            abc.removeAt(index);
-                                                          });
-                                                        },
-                                                        showCheckmark: false,
-                                                      ),
-                                                    );
-                                                  },
+                                                            setState(() {
+                                                              abc.removeAt(
+                                                                  index);
+                                                            });
+                                                          },
+                                                          showCheckmark: false,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                               PopupMenuButton<int>(

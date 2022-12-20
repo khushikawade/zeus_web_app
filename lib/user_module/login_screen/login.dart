@@ -54,36 +54,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    html.window.addEventListener('hashchange', listen, true);
+    if (html.window.location.toString().contains("?code=")) {
+      String url = html.window.location.href;
+      Uri stringUri = Uri.parse(url);
+      String authenticationCode = stringUri.queryParameters["code"]!;
+      print("Contains code --------------------------------------- ");
+      print("Code value --------------------- ${authenticationCode}");
+
+      callSaveCodeAPI(authenticationCode);
+    } else {
+      print("Not contained --------------------------------------");
+    }
 
     super.initState();
-  }
-
-  void listen(html.Event event) {
-    var data = (event as html.MessageEvent).data;
-    print("Path ----------------------------- ${event.path}");
-    print(
-        "------------------------------------------------------------ ${event.data}");
-    print(
-        '--------------------------------------------------------------------------- ${event.currentTarget}');
-    print(
-        "fdfdfdkf ------------------------------------------------ ${event.target}");
-
-    print(
-        "Location ----------------------------------- ${html.window.location}");
-    print("------------------------------------- ${html.window.locationbar}");
-
-    setState(() {
-      //...
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant LoginScreen oldWidget) {
-    print(
-        "Location ----------------------------------- ${html.window.location}");
-    print("------------------------------------- ${html.window.locationbar}");
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -541,6 +524,44 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // call Clickup code save API
+  Future<void> callSaveCodeAPI(String authenticationCode) async {
+    var responseJson;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = await sharedPreferences.getString("login");
+
+    if (token != null && token.isNotEmpty) {
+      var response = await http.post(
+        Uri.parse(AppUrl.clickUpAuth),
+        body: jsonEncode({"code": authenticationCode}),
+        headers: {
+          "Authorization": "Bearer ${token}",
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        responseJson =
+            jsonDecode(response.body.toString()) as Map<String, dynamic>;
+
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        sharedPreferences.setBool('isLogin', true);
+        storage.write(isLogin, true);
+
+        context.vxNav.clearAndPushAll([Uri.parse(MyRoutes.homeRoute)]);
+      } else {
+        print('Error while saving code ${response.statusCode} ${response.body}');
+        Fluttertoast.showToast(
+          msg: 'Error while saving code ${response.statusCode} ${response.body}',
+          backgroundColor: Colors.grey,
+        );
+        print("failedd");
+      }
+    }
+  }
+
   Future<void> login() async {
     var responseJson;
     String username = emailController.text.toString();
@@ -571,13 +592,15 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        sharedPreferences.setBool('isLogin', true);
+        //sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        storage.write(isLogin, true);
+        //storage.write(isLogin, true);
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
+
+        //Commented --------------------------------------------
 
         // await sharedPreferences.setString('user',responseJson['name']);
         //  ==========edited sayyamyadav
@@ -601,9 +624,9 @@ class _LoginScreenState extends State<LoginScreen> {
         //             )),
         //     (Route<dynamic> route) => route is MyHomePage);
 
-        context.vxNav.clearAndPush(Uri.parse(MyRoutes.homeRoute));
+        //context.vxNav.clearAndPush(Uri.parse(MyRoutes.homeRoute));
         //testLaunch();
-        //launchClickUpsUrl();
+        launchClickUpsUrl();
         //html.window.open(AppUrl.clickUpsUrl, '_self');
         //context.vxNav.clearAndPush(Uri.parse(MyRoutes.clickUpWebView));
       } else {
@@ -620,48 +643,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  testLaunch() {
-    Uri url = Uri.parse(AppUrl.clickUpsUrl);
-    WindowBase base = window.open(url.toString(), '_self');
-    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<object>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    print("${context.vxNav.routes.values}");
-    print(base);
-
-    context.vxNav.clearAndPush(Uri.parse(MyRoutes.clickUpWebView));
-    base.addEventListener('click', (event) {
-      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<object>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      print(event.path);
-      print(event.target);
-      print(event.currentTarget);
-    });
-  }
-
   // launch click ups url
   launchClickUpsUrl() async {
-    Uri url = Uri.parse(AppUrl.clickUpsUrl);
-
-    if (await canLaunchUrl(url)) {
-      launchUrl(url).then((value) => {print(value)});
-      await launchUrl(
-        url,
-        webOnlyWindowName: '_self',
-        mode: LaunchMode.inAppWebView,
-        webViewConfiguration: WebViewConfiguration(
-          enableJavaScript: true,
-          enableDomStorage: true,
-        ),
-      );
-
-      //listenEvent();
-    } else {
-      AppUtil.showErrorDialog(context, "Could not launch $url");
-      throw "Could not launch $url";
-    }
-  }
-
-  // listen Event
-  listenEvent() {
-    var url = window.location.href;
-    print("URL -------------------------- $url");
+    final html.WindowBase windowBase =
+        html.window.open(AppUrl.clickUpsUrl, "_self");
   }
 }
