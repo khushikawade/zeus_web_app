@@ -8,6 +8,7 @@ import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:http/http.dart' as http;
@@ -16,9 +17,10 @@ import 'package:zeus/utility/util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateProjectPage extends StatefulWidget {
+  ProjectDetailResponse? response;
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
 
-  CreateProjectPage({Key? key, this.formKey}) : super(key: key);
+  CreateProjectPage({Key? key, this.formKey, this.response}) : super(key: key);
 
   @override
   State<CreateProjectPage> createState() => _EditPageState();
@@ -28,13 +30,7 @@ class _EditPageState extends State<CreateProjectPage> {
   String dropdownvalue = 'Item 1';
   String? _depat, _account, _custome, _curren, _status, _time, _tag;
   DateTime? selectedDate;
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+
   String name_ = '';
 
   bool selectAccountablePerson = false;
@@ -44,6 +40,7 @@ class _EditPageState extends State<CreateProjectPage> {
   bool createButtonClick = false;
   bool selectDeliveryDate = false;
   bool createProjectValidate = true;
+  bool dataLoading = true;
 
   TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -181,8 +178,10 @@ class _EditPageState extends State<CreateProjectPage> {
             consumerList!.clear();
 
             _customerName.forEach((element) {
-              consumerList!.add(
-                  DropdownModel(element['id'].toString(), element['name']));
+              if (!currencyList!.contains(element)) {
+                consumerList!.add(
+                    DropdownModel(element['id'].toString(), element['name']));
+              }
             });
           } catch (e) {
             print(e);
@@ -198,14 +197,85 @@ class _EditPageState extends State<CreateProjectPage> {
     return null;
   }
 
+  // update Controller Value
+  updateControllerValue() {
+    _projecttitle.text = widget.response!.data != null &&
+            widget.response!.data!.title != null &&
+            widget.response!.data!.title!.isNotEmpty
+        ? widget.response!.data!.title!
+        : '';
+
+    _crmtask.text = widget.response!.data != null &&
+            widget.response!.data!.crmTaskId != null &&
+            widget.response!.data!.crmTaskId!.isNotEmpty
+        ? widget.response!.data!.crmTaskId!
+        : '';
+
+    _warkfolderId.text = widget.response!.data != null &&
+            widget.response!.data!.workFolderId != null &&
+            widget.response!.data!.workFolderId!.isNotEmpty
+        ? widget.response!.data!.workFolderId!
+        : '';
+
+    _budget.text =
+        widget.response!.data != null && widget.response!.data!.budget != null
+            ? widget.response!.data!.budget!.toString()
+            : '';
+
+    _estimatehours.text = widget.response!.data != null &&
+            widget.response!.data!.estimationHours != null &&
+            widget.response!.data!.estimationHours!.isNotEmpty
+        ? widget.response!.data!.estimationHours!.toString()
+        : '';
+
+    _custome = widget.response!.data != null &&
+            widget.response!.data!.customerId != null
+        ? widget.response!.data!.customerId.toString()
+        : '';
+
+    _account = widget.response!.data != null &&
+            widget.response!.data!.accountablePersonId != null
+        ? widget.response!.data!.accountablePersonId.toString()
+        : '';
+
+    _status =
+        widget.response!.data != null && widget.response!.data!.status != null
+            ? widget.response!.data!.status.toString()
+            : '';
+
+    _curren =
+        widget.response!.data != null && widget.response!.data!.currency != null
+            ? widget.response!.data!.currency.toString()
+            : '';
+    if (widget.response!.data != null &&
+        widget.response!.data!.deliveryDate != null &&
+        widget.response!.data!.deliveryDate!.isNotEmpty) {
+      selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
+    }
+  }
+
   @override
   void initState() {
-    getSelectStatus();
-    getAccountable();
-    getCustomer();
-    getCurrency();
+    callAllApi();
 
     super.initState();
+  }
+
+  callAllApi() async {
+    setState(() {
+      dataLoading = true;
+    });
+
+    await getSelectStatus();
+    await getAccountable();
+    await getCustomer();
+    await getCurrency();
+    if (widget.response != null) {
+      await updateControllerValue();
+    }
+    setState(() {
+      dataLoading = false;
+    });
   }
 
   @override
@@ -218,355 +288,395 @@ class _EditPageState extends State<CreateProjectPage> {
   Widget createProjectView() {
     return Container(
       width: 523.w,
-      child: RawScrollbar(
-        controller: verticalScroll,
-        thumbColor: const Color(0xff4b5563),
-        crossAxisMargin: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        thickness: 8,
-        child: ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-          child: ListView(
-            controller: verticalScroll,
-            padding: EdgeInsets.all(20),
-            shrinkWrap: true,
-            children: [
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      child: Text(
-                    'Create Project',
-                    style: TextStyle(
-                        color: Color(0xffFFFFFF),
-                        fontSize: 18.sp,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700),
-                  )),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
+      child: dataLoading
+          ? Center(
+              child: Text("Loading..."),
+            )
+          : RawScrollbar(
+              controller: verticalScroll,
+              thumbColor: const Color(0xff4b5563),
+              crossAxisMargin: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              thickness: 8,
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ListView(
+                  controller: verticalScroll,
+                  padding: EdgeInsets.all(20),
+                  shrinkWrap: true,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            child: Text(
+                          widget.response != null
+                              ? 'Edit Project'
+                              : 'Create Project',
+                          style: TextStyle(
+                              color: Color(0xffFFFFFF),
+                              fontSize: 18.sp,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
+                        )),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              width: 30.sp,
+                              height: 30.sp,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: const Color(0xff1E293B),
+                                border: Border.all(
+                                    color: Color(0xff334155), width: 0.6),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'images/cross.svg',
+                                  height: 13.8.sp,
+                                  width: 13.18.sp,
+                                ),
+                              ),
+                            ))
+                      ],
+                    ),
+                    SizedBox(height: 32.w),
+                    CustomFormField(
+                      controller: _projecttitle,
+                      hint: '',
+                      label: "Project title",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+
+                          return 'Please enter';
+                        }
+                        return null;
                       },
-                      child: Container(
-                        width: 30.sp,
-                        height: 30.sp,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0xff1E293B),
-                          border:
-                              Border.all(color: Color(0xff334155), width: 0.6),
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: CustomSearchDropdown(
+                          label: 'AP',
+                          hint: 'Select Accountable Person',
+                          initialValue: getAllInitialValue(
+                              accountablePersonList, _account),
+                          errorText: createButtonClick &&
+                                  (_account == null || _account!.isEmpty)
+                              ? 'Please Select this field'
+                              : '',
+                          items: accountablePersonList!,
+                          onChange: ((DropdownModel value) {
+                            setState(() {
+                              _account = value.id;
+                              print("account:${_account}");
+                              selectAccountablePerson = true;
+                            });
+                          }),
+                        )),
+                        SizedBox(
+                          width: 16.w,
                         ),
-                        child: Center(
-                          child: SvgPicture.asset(
-                            'images/cross.svg',
-                            height: 13.8.sp,
-                            width: 13.18.sp,
+                        Expanded(
+                            child: CustomSearchDropdown(
+                          label: 'Customer',
+                          hint: 'Select Customer',
+                          initialValue:
+                              getAllInitialValue(consumerList, _custome) ??
+                                  null,
+                          errorText: createButtonClick &&
+                                  (_custome == null || _custome!.isEmpty)
+                              ? 'Please Select this field'
+                              : '',
+                          items: consumerList!,
+                          onChange: ((value) {
+                            setState(() {
+                              _custome = value.id;
+                              print("account:$_custome");
+                              selectCustomer = true;
+                            });
+                          }),
+                        ))
+                      ],
+                    ),
+                    CustomFormField(
+                      controller: _crmtask,
+                      hint: '',
+                      label: "CRM task ID",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                    CustomFormField(
+                      controller: _warkfolderId,
+                      hint: '',
+                      label: "Work Folder ID:",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 9,
+                          child: CustomFormField(
+                            controller: _budget,
+                            hint: '',
+                            label: "Budget",
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Please enter';
+                              }
+                              return null;
+                            },
+                            onChange: (text) => setState(() => name_ = text),
                           ),
                         ),
-                      ))
-                ],
-              ),
-              SizedBox(height: 32.w),
-              CustomFormField(
-                controller: _projecttitle,
-                hint: '',
-                label: "Project title",
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      createProjectValidate = false;
-                    });
-
-                    return 'Please enter';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: CustomSearchDropdown(
-                    label: 'AP',
-                    hint: 'Select Accountable Person',
-                    errorText: createButtonClick &&
-                            (_account == null || _account!.isEmpty)
-                        ? 'Please Select this field'
-                        : '',
-                    items: accountablePersonList!,
-                    onChange: ((DropdownModel value) {
-                      setState(() {
-                        _account = value.id;
-                        print("account:${_account}");
-                        selectAccountablePerson = true;
-                      });
-                    }),
-                  )),
-                  SizedBox(
-                    width: 16.w,
-                  ),
-                  Expanded(
-                      child: CustomSearchDropdown(
-                    label: 'Customer',
-                    hint: 'Select Customer',
-                    errorText: createButtonClick &&
-                            (_custome == null || _custome!.isEmpty)
-                        ? 'Please Select this field'
-                        : '',
-                    items: consumerList!,
-                    onChange: ((value) {
-                      setState(() {
-                        _custome = value.id;
-                        print("account:$_custome");
-                        selectCustomer = true;
-                      });
-                    }),
-                  )),
-                ],
-              ),
-              CustomFormField(
-                controller: _crmtask,
-                hint: '',
-                label: "CRM task ID",
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      createProjectValidate = false;
-                    });
-                    return 'Please enter';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
-              ),
-              CustomFormField(
-                controller: _warkfolderId,
-                hint: '',
-                label: "Work Folder ID:",
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      createProjectValidate = false;
-                    });
-                    return 'Please enter';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    flex: 9,
-                    child: CustomFormField(
-                      controller: _budget,
-                      hint: '',
-                      label: "Budget",
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          setState(() {
-                            createProjectValidate = false;
-                          });
-                          return 'Please enter';
-                        }
-                        return null;
-                      },
-                      onChange: (text) => setState(() => name_ = text),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Expanded(
-                      flex: 8,
-                      child: CustomSearchDropdown(
-                        hint: 'Select',
-                        label: "AB",
-                        errorText: createButtonClick &&
-                                (_curren == null || _curren!.isEmpty)
-                            ? 'Please Select this field'
-                            : '',
-                        items: currencyList!,
-                        onChange: ((value) {
-                          _curren = value.id;
-                          setState(() {
-                            selectCurrency = true;
-                          });
-                        }),
-                      )),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Expanded(
-                    flex: 18,
-                    child: CustomFormField(
-                      controller: _estimatehours,
-                      hint: '',
-                      label: "Estimated hours",
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          setState(() {
-                            createProjectValidate = false;
-                          });
-                          return 'Please enter';
-                        }
-                        return null;
-                      },
-                      onChange: (text) => setState(() => name_ = text),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                      child: CustomSearchDropdown(
-                    hint: 'Select Status',
-                    label: "",
-                    errorText: createButtonClick &&
-                            (_status == null || _status!.isEmpty)
-                        ? 'Please Select this field'
-                        : '',
-                    items: projectStatusList!,
-                    onChange: ((value) {
-                      setState(() {
-                        _status = value.id;
-                        print('value of status' + _status!);
-                        selectStatus = true;
-                      });
-                    }),
-                  )),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: CustomDatePicker(
-                      hint: 'Select Date',
-                      label: 'Delivery Date',
-                      onChange: (date) {
-                        setState(() {
-                          selectedDate = date;
-                        });
-                      },
-                      onCancel: () {
-                        setState(() {
-                          selectedDate = null;
-                        });
-                      },
-                      errorText: (createButtonClick && selectedDate == null)
-                          ? 'Please select this field'
-                          : "",
-                      validator: (value) {},
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      width: 97,
-                      margin: const EdgeInsets.only(
-                        top: 16.0,
-                      ),
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff334155),
-                        borderRadius: BorderRadius.circular(
-                          40.0,
+                        SizedBox(
+                          width: 10.w,
                         ),
-                      ),
-                      child: const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              color: ColorSelect.white_color,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700),
+                        Expanded(
+                            flex: 8,
+                            child: CustomSearchDropdown(
+                              hint: 'Select',
+                              label: "AB",
+                              initialValue:
+                                  getAllInitialValue(currencyList, _curren),
+                              errorText: createButtonClick &&
+                                      (_curren == null || _curren!.isEmpty)
+                                  ? 'Please Select this field'
+                                  : '',
+                              items: currencyList!,
+                              onChange: ((value) {
+                                _curren = value.id;
+                                setState(() {
+                                  selectCurrency = true;
+                                });
+                              }),
+                            )),
+                        SizedBox(
+                          width: 10.w,
                         ),
-                      ),
+                        Expanded(
+                          flex: 18,
+                          child: CustomFormField(
+                            controller: _estimatehours,
+                            hint: '',
+                            label: "Estimated hours",
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Please enter';
+                              }
+                              return null;
+                            },
+                            onChange: (text) => setState(() => name_ = text),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      setState(() {
-                        createProjectValidate = true;
-                        createButtonClick = true;
-                      });
-                      if (await widget.formKey!.currentState!.validate()) {
-                        Future.delayed(const Duration(microseconds: 500), () {
-                          if (createProjectValidate) {
-                            if (selectAccountablePerson == true &&
-                                selectCustomer == true &&
-                                selectCurrency == true &&
-                                selectStatus == true &&
-                                selectedDate != null) {
-                              SmartDialog.showLoading(
-                                msg:
-                                    "Your request is in progress please wait for a while...",
-                              );
-                              createProject(context);
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                            child: CustomSearchDropdown(
+                          hint: 'Select Status',
+                          label: "",
+                          initialValue:
+                              getAllInitialValue(projectStatusList, _status),
+                          errorText: createButtonClick &&
+                                  (_status == null || _status!.isEmpty)
+                              ? 'Please Select this field'
+                              : '',
+                          items: projectStatusList!,
+                          onChange: ((value) {
+                            setState(() {
+                              _status = value.id;
+                              print('value of status' + _status!);
+                              selectStatus = true;
+                            });
+                          }),
+                        )),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: CustomDatePicker(
+                            hint: 'Select Date',
+                            label: 'Delivery Date',
+                            initialDate: selectedDate,
+                            onChange: (date) {
+                              setState(() {
+                                selectedDate = date;
+                              });
+                            },
+                            onCancel: () {
+                              setState(() {
+                                selectedDate = null;
+                              });
+                            },
+                            errorText:
+                                (createButtonClick && selectedDate == null)
+                                    ? 'Please select this field'
+                                    : "",
+                            validator: (value) {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            width: 97,
+                            margin: const EdgeInsets.only(
+                              top: 16.0,
+                            ),
+                            height: 40.0,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff334155),
+                              borderRadius: BorderRadius.circular(
+                                40.0,
+                              ),
+                            ),
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: ColorSelect.white_color,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            setState(() {
+                              createProjectValidate = true;
+                              createButtonClick = true;
+                            });
+                            if (await widget.formKey!.currentState!
+                                .validate()) {
+                              Future.delayed(const Duration(microseconds: 500),
+                                  () {
+                                if (_account != null &&
+                                    _account!.isNotEmpty &&
+                                    _custome != null &&
+                                    _custome!.isNotEmpty &&
+                                    _curren != null &&
+                                    _curren!.isNotEmpty &&
+                                    _status != null &&
+                                    _status!.isNotEmpty &&
+                                    selectedDate != null) {
+                                  SmartDialog.showLoading(
+                                    msg:
+                                        "Your request is in progress please wait for a while...",
+                                  );
+                                  createProject(context);
+                                }
+                              });
                             }
-                          }
-                        });
-                      }
-                    },
-                    child: Container(
-                      width: 97.0,
-                      margin: const EdgeInsets.only(
-                        top: 16.0,
-                        right: 10.0,
-                      ),
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff7DD3FC),
-                        borderRadius: BorderRadius.circular(
-                          40.0,
+                          },
+                          child: Container(
+                            width: 97.0,
+                            margin: const EdgeInsets.only(
+                              top: 16.0,
+                              right: 10.0,
+                            ),
+                            height: 40.0,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff7DD3FC),
+                              borderRadius: BorderRadius.circular(
+                                40.0,
+                              ),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Create",
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: ColorSelect.black_color,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Create",
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              color: ColorSelect.black_color,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
+  }
+
+  getAllInitialValue(List<DropdownModel>? list, String? id) {
+    if (widget.response != null && list!.isNotEmpty) {
+      try {
+        DropdownModel? result = list.firstWhere(
+            (o) => o.id == id || o.item == id,
+            orElse: () => DropdownModel("", ""));
+        if (result.id.isEmpty) {
+          return null;
+        } else {
+          return result;
+        }
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
   //Create project_detail Api
@@ -575,7 +685,10 @@ class _EditPageState extends State<CreateProjectPage> {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.post(
-        Uri.parse(AppUrl.create_project),
+        widget.response != null
+            ? Uri.parse(
+                '${AppUrl.baseUrl}/project/${widget.response?.data?.id ?? 0}/update')
+            : Uri.parse(AppUrl.create_project),
         body: jsonEncode({
           "title": _projecttitle.text.toString(),
           "accountable_person_id": _account,
@@ -622,7 +735,7 @@ class _EditPageState extends State<CreateProjectPage> {
         );
       }
     } catch (e) {
-      // print('error caught: $e');
+      print('error caught: $e');
     }
   }
 

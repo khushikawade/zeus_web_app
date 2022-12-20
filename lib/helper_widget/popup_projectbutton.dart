@@ -7,6 +7,7 @@ import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -671,8 +672,12 @@ class _ProjectEditState extends State<ProjectEdit>
                             borderRadius: BorderRadius.circular(16),
                           ),
                           backgroundColor: const Color(0xff1E293B),
-                          content:
-                              Form(key: _formKey, child: newResponsiveDialog()),
+                          content: Form(
+                              key: _formKey,
+                              child: CreateProjectPage(
+                                formKey: _formKey,
+                                response: widget.response,
+                              )),
                         ),
                       );
                     });
@@ -890,6 +895,7 @@ class _ProjectEditState extends State<ProjectEdit>
 
       try {
         var response = await http.post(
+          
           Uri.parse('${AppUrl.baseUrl}/project/${widget.id}/update'),
           body: map,
           headers: {
