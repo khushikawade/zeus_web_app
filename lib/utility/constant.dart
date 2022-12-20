@@ -35,3 +35,18 @@ const String onHold = "On hold";
 const noInternet = "No internet connection found.";
 const somethingWentWorng = "Something went wrong.";
 const success = "Success";
+
+// Click Ups details
+
+const String clientId = "VVNV2YGS2DRFKMYIO4S09ZIDFDX8ID8Z";
+
+//"OQN1HAG1PV3X3SEYRU48H9KBMXEFT77I";
+
+const String secretKey =
+    "C49T3G6WF1G01MBSSQI1UD062J5GHHYZEBZ4XF1YPJYYX4HFC71ND2ZWFRI56CCT";
+
+// const String code = "60KM7W4679VITC6TGH0PWGSQM5JBYUUJ";
+
+const String redirectUrl = "localhost:50478";
+
+//  "https://zeus-api.zehntech.net/api/v1/clickup/auth";
