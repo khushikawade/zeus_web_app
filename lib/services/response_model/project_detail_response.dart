@@ -223,8 +223,9 @@ class AccountableCustomer {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    project =
-        json['project_detail'] != null ? new Project.fromJson(json['project_detail']) : null;
+    project = json['project_detail'] != null
+        ? new Project.fromJson(json['project_detail'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -299,6 +300,7 @@ class Phase {
       milestone = new List<Milestone>();
       json['milestone'].forEach((v) { milestone.add(new Milestone.fromJson(v)); });
     }*/
+
     currentMilestone = json["current_milestone"] == null
         ? null
         : Milestone.fromJson(json["current_milestone"]);
@@ -414,8 +416,9 @@ class Resource {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    project =
-        json['project_detail'] != null ? new Project.fromJson(json['project_detail']) : null;
+    project = json['project_detail'] != null
+        ? new Project.fromJson(json['project_detail'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -468,16 +471,18 @@ class Milestone {
   String? mDate;
   String? createdAt;
   String? updatedAt;
+
   List<SubTasks>? subTasks;
 
-  Milestone(
-      {this.id,
-      this.projectPhaseId,
-      this.title,
-      this.mDate,
-      this.createdAt,
-      this.updatedAt,
-      this.subTasks});
+  Milestone({
+    this.id,
+    this.projectPhaseId,
+    this.title,
+    this.mDate,
+    this.createdAt,
+    this.updatedAt,
+    this.subTasks,
+  });
 
   Milestone.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -486,6 +491,7 @@ class Milestone {
     mDate = json['m_date'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+
     /* if (json['sub_tasks'] != null) {
       subTasks = new List<SubTasks>();
       json['sub_tasks'].forEach((v) { subTasks.add(new SubTasks.fromJson(v)); });
@@ -500,6 +506,8 @@ class Milestone {
     data['m_date'] = this.mDate;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    ;
+
     /* if (this.subTasks != null) {
       data['sub_tasks'] = this.subTasks.map((v) => v.toJson()).toList();
     }*/
