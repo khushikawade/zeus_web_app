@@ -521,58 +521,9 @@ class _NewPhaseState extends State<NewPhase> {
                         phaseDetails.end_date = null;
                       });
                     },
-                    errorText: (createButtonClick &&
-                            phaseDetails.end_date == null)
-                        ? 'Please enter end date'
-                        : phaseDetails.start_date != null &&
-                                phaseDetails.end_date != null
-                            ? (AppUtil.stringToDate(phaseDetails.end_date!) ==
-                                    AppUtil.stringToDate(
-                                        phaseDetails.start_date!)
-                                ? ((AppUtil.stringToDate(phaseDetails.end_date!)
-                                        .isBefore((AppUtil.stringToDate(
-                                            phaseDetails.start_date!)))))
-                                    ? "End date must be greater then the start date"
-                                    : ((AppUtil.stringToDate(
-                                                phaseDetails.end_date!)
-                                            .isAtSameMomentAs(
-                                                (AppUtil.stringToDate(
-                                                    phaseDetails
-                                                        .start_date!)))))
-                                        ? 'End date should not be same as start date'
-                                        : ''
-                                : '')
-                            : ''
-
-                    // ((AppUtil.stringToDate(phaseDetails.end_date!)
-                    //         .isAtSameMomentAs((AppUtil.stringToDate(
-                    //             phaseDetails.start_date!)))))
-                    //     ? 'End date should not be same as start date'
-                    //     :
-
-                    ,
-                    validator: (value) {
-                      // {
-                      //   if (value.isEmpty ||
-                      //       value == null ||
-                      //       phaseDetails.end_date == null ||
-                      //       phaseDetails.end_date!.isEmpty) {
-                      //     // checkFormStatus();
-                      //     return 'Please enter end date';
-                      //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                      //       .isBefore((AppUtil.stringToDate(
-                      //           phaseDetails.start_date!))))) {
-                      //     return 'End date must be greater then the start date';
-                      //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                      //       .isAtSameMomentAs((AppUtil.stringToDate(
-                      //           phaseDetails.start_date!))))) {
-                      //     return 'End date should not be same as start date';
-                      //   } else {
-                      //     return null;
-                      //   }
-                      //   setState(() {});
-                      // }
-                    },
+                    errorText: errorTexts(createButtonClick,
+                        phaseDetails.end_date, phaseDetails.start_date),
+                    validator: (value) {},
                   ),
                 ],
               ),
@@ -901,20 +852,12 @@ class _NewPhaseState extends State<NewPhase> {
                 ? loading == true
                     ? Center(child: const CircularProgressIndicator())
                     : Container(
-                        height: 50.0,
-                        width: MediaQuery.of(context).size.width * 0.22,
-                        margin: const EdgeInsets.only(top: 16, left: 20),
+                        height: 48.h,
+                        width: MediaQuery.of(context).size.width * 0.15.w,
+                        margin: EdgeInsets.only(
+                            top: 16, left: 30.sp, right: 62.5.sp),
                         decoration: BoxDecoration(
                           color: const Color(0xff1E293B),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: const Color(0xff1E293B),
-                          //     offset: Offset(0, 1),
-                          //     spreadRadius: 1, //spread radius
-                          //     blurRadius: 1, // blur radius
-                          //   ),
-                          //   //you can set more BoxShadow() here
-                          // ],
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                                 color: Colors.black38,
@@ -922,7 +865,7 @@ class _NewPhaseState extends State<NewPhase> {
                                 offset: Offset(0.0, 0.75))
                           ],
                           borderRadius: BorderRadius.circular(
-                            6.0,
+                            6.0.r,
                           ),
                         ),
                         child: Column(
@@ -939,24 +882,24 @@ class _NewPhaseState extends State<NewPhase> {
                               },
                               textFieldConfiguration: TextFieldConfiguration(
                                 controller: _typeAheadController,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 14.0),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14.0.sp),
                                 keyboardType: TextInputType.text,
                                 cursorColor: Colors.white,
                                 autofocus: true,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   // border: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 15.0, left: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 15.0.sp, left: 10.sp),
                                   prefixIcon: Padding(
-                                      padding: EdgeInsets.only(top: 4.0),
+                                      padding: EdgeInsets.only(top: 9.0.sp),
                                       child: Icon(
                                         Icons.search,
                                         color: Color(0xff64748B),
                                       )),
                                   hintText: 'Search',
                                   hintStyle: TextStyle(
-                                      fontSize: 14.0,
+                                      fontSize: 14.0.sp,
                                       color: Colors.white,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w400),
@@ -1016,9 +959,9 @@ class _NewPhaseState extends State<NewPhase> {
                 : Container(),
             selectedSource.isNotEmpty
                 ? SizedBox(
-                    height: 55,
+                    height: 30.h,
                     child: Padding(
-                        padding: EdgeInsets.only(left: 28.0),
+                        padding: EdgeInsets.only(left: 28.0.sp),
                         child:
                             //  ListView.builder(
                             //   scrollDirection: Axis.horizontal,
@@ -1030,23 +973,25 @@ class _NewPhaseState extends State<NewPhase> {
                                 children: List.generate(selectedSource.length,
                                     (index) {
                                   return Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 16, bottom: 2, left: 5),
+                                      padding: EdgeInsets.only(
+                                          top: 16.sp, bottom: 2.sp, left: 5.sp),
                                       child: InputChip(
                                         labelPadding: EdgeInsets.only(
-                                            left: 10, top: 7, bottom: 7),
-                                        shape: const RoundedRectangleBorder(
+                                            left: 10.sp,
+                                            top: 7.sp,
+                                            bottom: 7.sp),
+                                        shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                           Radius.circular(
-                                            13,
+                                            13.r,
                                           ),
                                         )),
                                         side: BorderSide(
                                             color: Color(0xff334155)),
-                                        deleteIcon: const Icon(
+                                        deleteIcon: Icon(
                                           Icons.close,
                                           color: Colors.white,
-                                          size: 20,
+                                          size: 20.sp,
                                         ),
                                         backgroundColor: Color(0xff334155),
                                         visualDensity: VisualDensity.compact,
@@ -2392,6 +2337,29 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   void editPhaseApi() {}
+
+  String errorTexts(
+      bool createButtonClick, String? end_date, String? start_date) {
+    if (createButtonClick && end_date == null) {
+      return 'Please enter end date';
+    } else if (createButtonClick &&
+        phaseDetails.start_date != null &&
+        phaseDetails.end_date != null) {
+      print('jhhhhhhhhhhhhhhhhhh');
+      DateTime start = AppUtil.stringToDateValidate(phaseDetails.start_date!);
+      DateTime end = AppUtil.stringToDateValidate(phaseDetails.end_date!);
+
+      if (end.isBefore(start)) {
+        return 'End date must be greater then the start date';
+      } else if (AppUtil.stringToDateValidate(phaseDetails.end_date!)
+          .isAtSameMomentAs(
+              (AppUtil.stringToDateValidate(phaseDetails.start_date!)))) {
+        return 'End date should not be same as start date';
+      }
+    }
+
+    return '';
+  }
 }
 
 class PhasesSortedResources {
