@@ -16,9 +16,11 @@ class CustomDatePicker extends StatefulWidget {
   int? maxline;
   double? fontSizeForLabel;
   bool? obsecqureText;
+  DateTime? initialDate;
 
   CustomDatePicker(
-      {this.controller,
+      {this.initialDate,
+      this.controller,
       this.label,
       this.hint,
       this.validator,
@@ -47,6 +49,14 @@ class CustomDatePickerState extends State<CustomDatePicker> {
         errorText = widget.validator!(val);
       });
     });
+  }
+
+  @override
+  void initState() {
+    if (widget.initialDate != null) {
+      selectedDate = widget.initialDate;
+    }
+    super.initState();
   }
 
   @override
@@ -179,12 +189,12 @@ class CustomDatePickerState extends State<CustomDatePicker> {
   }
 
   Future<void> _selectDate() async {
-    selectedDate = DateTime.now();
+    selectedDate = widget.initialDate ?? DateTime.now();
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate!,
         lastDate: DateTime(5000),
-        firstDate: DateTime.now());
+        firstDate: selectedDate ?? DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
