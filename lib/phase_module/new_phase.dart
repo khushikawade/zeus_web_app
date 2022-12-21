@@ -6,6 +6,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
+import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/helper_widget/milstoneList.dart';
 import 'package:zeus/helper_widget/select_datefield.dart';
@@ -25,6 +26,7 @@ import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NewPhase extends StatefulWidget {
   String id;
@@ -59,9 +61,11 @@ class _NewPhaseState extends State<NewPhase> {
   bool clickAddSubTask = false;
   bool saveButtonClick = false;
   bool saveButtonClickForSubtask = false;
+  bool createButtonClick = false;
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
-  List<ResourceData> selectedSubTaskSource = [];
+  // List<ResourceData> selectedSubTaskSource = [];
+   List<ResourceData> selectedSubTaskSource = [];
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   GlobalKey<FormState> _mileStoneFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> _subtaskFormKey = GlobalKey<FormState>();
@@ -190,17 +194,17 @@ class _NewPhaseState extends State<NewPhase> {
   Widget build(BuildContext context) {
     return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         contentPadding: EdgeInsets.zero,
         backgroundColor: const Color(0xff1E293B),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.99,
+          width: MediaQuery.of(context).size.width * 0.99.w,
           height: double.infinity,
           child: RawScrollbar(
             thumbColor: const Color(0xff4b5563),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
             ),
             thickness: 8,
             child: SingleChildScrollView(
@@ -208,14 +212,14 @@ class _NewPhaseState extends State<NewPhase> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                      padding: EdgeInsets.only(top: 15, bottom: 15),
+                      padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
                       // height: MediaQuery.of(context).size.height * 0.11,
                       width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Color(0xff283345),
                         borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16.0),
-                          topLeft: Radius.circular(16.0),
+                          topRight: Radius.circular(16.0.r),
+                          topLeft: Radius.circular(16.0.r),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -234,8 +238,8 @@ class _NewPhaseState extends State<NewPhase> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: titleHeadlineWidget("New Phase", 22.0),
+                            padding: EdgeInsets.only(left: 12.sp),
+                            child: titleHeadlineWidget("New Phase", 22.0.sp),
                           ),
                           Expanded(
                             child: Row(
@@ -246,22 +250,22 @@ class _NewPhaseState extends State<NewPhase> {
                                     Navigator.pop(context);
                                   },
                                   child: Container(
-                                    width: 97.0,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, bottom: 10.0),
-                                    height: 40.0,
+                                    width: 97.0.w,
+                                    margin: EdgeInsets.only(
+                                        top: 10.0.sp, bottom: 10.0.sp),
+                                    height: 40.h,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff334155),
                                       borderRadius: BorderRadius.circular(
-                                        40.0,
+                                        40.0.r,
                                       ),
                                     ),
-                                    child: const Align(
+                                    child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
                                         "Cancel",
                                         style: TextStyle(
-                                            fontSize: 14.0,
+                                            fontSize: 14.0.sp,
                                             color: Color(0xffFFFFFF),
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w700),
@@ -274,22 +278,24 @@ class _NewPhaseState extends State<NewPhase> {
                                 ),
                                 InkWell(
                                   child: Container(
-                                    width: 97,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, right: 20.0, bottom: 10.0),
-                                    height: 40.0,
+                                    width: 97.w,
+                                    margin: EdgeInsets.only(
+                                        top: 10.0.sp,
+                                        right: 20.0.sp,
+                                        bottom: 10.0.sp),
+                                    height: 40.0.h,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff7DD3FC),
                                       borderRadius: BorderRadius.circular(
-                                        40.0,
+                                        40.0.r,
                                       ),
                                     ),
-                                    child: const Align(
+                                    child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        "Save1",
+                                        "Save11",
                                         style: TextStyle(
-                                            fontSize: 14.0,
+                                            fontSize: 14.0.sp,
                                             color: Color(0xff000000),
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w700),
@@ -299,6 +305,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   onTap: () {
                                     setState(() {
                                       savePhaseClick = true;
+                                      createButtonClick = true;
                                       // savePhaseValidate = true;
                                     });
                                     Future.delayed(
@@ -394,21 +401,18 @@ class _NewPhaseState extends State<NewPhase> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 8.0,
-            ),
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 30.sp, top: 18.5.sp),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  titleHeadlineWidget("Phase details", 18.0),
+                  titleHeadlineWidget("Phase details", 18.0.sp),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+              height: 8.0.h,
             ),
             // formField(
             //     controller: controller_next_phase,
@@ -431,32 +435,113 @@ class _NewPhaseState extends State<NewPhase> {
             //       return null;
             //     }),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 80),
-              child: CustomFormField(
-                controller: controller_next_phase,
-                maxline: 1,
-                fontSizeForLabel: 14,
-                label: 'Phase Title',
-                // contentpadding:
-                //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
-                // hintTextHeight: 1.7,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      //savePhaseValidate = false;
-                    });
+              padding: EdgeInsets.only(left: 30.sp, right: 62.5.sp, top: 24.sp),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomFormField(
+                    controller: controller_next_phase,
+                    maxline: 1,
+                    fontSizeForLabel: 14,
+                    label: 'Phase Title',
+                    // contentpadding:
+                    //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                    // hintTextHeight: 1.7,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          //savePhaseValidate = false;
+                        });
 
-                    return 'Please enter phase title';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
+                        return 'Please enter phase title';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
+                  ),
+                  CustomFormField(
+                    controller: controller_phase_type,
+                    maxline: 1,
+                    fontSizeForLabel: 14,
+                    label: 'Phase Title',
+                    // contentpadding:
+                    //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                    // hintTextHeight: 1.7,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          //savePhaseValidate = false;
+                        });
+
+                        return 'Please enter phase type';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
+                  ),
+                  CustomDatePicker(
+                    hint: 'dd/mm/yyyy',
+                    label: "Start date",
+                    initialDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(
+                            phaseDetails.start_date.toString()),
+                    onChange: (date) {
+                      setState(() {
+                        phaseDetails.start_date = date.toString();
+                      });
+                      setState(() {});
+                    },
+                    onCancel: () {
+                      setState(() {
+                        phaseDetails.start_date = null;
+                      });
+                    },
+                    errorText:
+                        (createButtonClick && phaseDetails.start_date == null)
+                            ? 'Please enter start date'
+                            : "",
+                    validator: (value) {},
+                  ),
+                  CustomDatePicker(
+                    hint: 'dd/mm/yyyy',
+                    label: "End date",
+                    initialDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(
+                            phaseDetails.end_date.toString()),
+                    onChange: (date) {
+                      setState(() {
+                        phaseDetails.end_date = date.toString();
+                      });
+                      setState(() {});
+                    },
+                    onCancel: () {
+                      setState(() {
+                        phaseDetails.end_date = null;
+                      });
+                    },
+                    errorText: (createButtonClick &&
+                            phaseDetails.end_date == null)
+                        ? 'Please enter end date'
+                        : phaseDetails.start_date != null
+                            ? (((createButtonClick &&
+                                    AppUtil.stringToDate(phaseDetails.end_date!)
+                                        .isBefore((AppUtil.stringToDate(
+                                            phaseDetails.start_date!)))))
+                                ? "End date must be greater then the start date"
+                                : ((AppUtil.stringToDate(phaseDetails.end_date!)
+                                        .isAtSameMomentAs((AppUtil.stringToDate(
+                                            phaseDetails.start_date!)))))
+                                    ? 'End date should not be same as start date'
+                                    : '')
+                            : '',
+                    validator: (value) {},
+                  )
+                ],
               ),
             ),
 
-            const SizedBox(
-              height: 10.0,
-            ),
             // formField(
             //     controller: controller_phase_type,
             //     labelText: "Phase Type",
@@ -478,92 +563,66 @@ class _NewPhaseState extends State<NewPhase> {
             //       return null;
             //     }),
 
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 80),
-              child: CustomFormField(
-                controller: controller_phase_type,
-                maxline: 1,
-                fontSizeForLabel: 14,
-                label: 'Phase Title',
-                // contentpadding:
-                //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
-                // hintTextHeight: 1.7,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      //savePhaseValidate = false;
-                    });
+            // DatePicker(
+            //   subtitle: 'Start date',
+            //   title: "Start date",
+            //   callback: (value) {
+            //     setState(() {
+            //       phaseDetails.start_date = value.trim();
+            //     });
+            //     setState(() {});
+            //   },
+            //   startDate: widget.type == 0
+            //       ? null
+            //       : AppUtil.stringToDate(phaseDetails.start_date.toString()),
+            //   validationCallBack: (String values) {
+            //     // setState(() {
+            //     //   // checkFormStatus();
+            //     // });
+            //     if (values.isEmpty ||
+            //         phaseDetails.start_date == null ||
+            //         phaseDetails.start_date!.isEmpty) {
+            //       return 'Please enter start date';
+            //     } else {
+            //       return null;
+            //     }
+            //   },
+            // ),
+            // const SizedBox(
+            //   height: 10.0,
+            // ),
+            // DatePicker(
+            //   subtitle: 'end date',
+            //   title: "End date",
+            //   callback: (value) {
+            //     setState(() {
+            //       phaseDetails.end_date = value.trim();
+            //     });
+            //   },
+            //   startDate: widget.type == 0
+            //       ? null
+            //       : AppUtil.stringToDate(phaseDetails.end_date.toString()),
+            // validationCallBack: (String values) {
+            //   if (values.isEmpty ||
+            //       values == null ||
+            //       phaseDetails.end_date == null ||
+            //       phaseDetails.end_date!.isEmpty) {
+            //     // checkFormStatus();
+            //     return 'Please enter end date';
+            //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+            //       .isBefore(
+            //           (AppUtil.stringToDate(phaseDetails.start_date!))))) {
+            //     return 'End date must be greater then the start date';
+            //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+            //       .isAtSameMomentAs(
+            //           (AppUtil.stringToDate(phaseDetails.start_date!))))) {
+            //     return 'End date should not be same as start date';
+            //   } else {
+            //     return null;
+            //   }
+            // },
+            // ),
 
-                    return 'Please enter phase type';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
-              ),
-            ),
-
-            const SizedBox(
-              height: 10.0,
-            ),
-            DatePicker(
-              subtitle: 'Start date',
-              title: "Start date",
-              callback: (value) {
-                setState(() {
-                  phaseDetails.start_date = value.trim();
-                });
-                setState(() {});
-              },
-              startDate: widget.type == 0
-                  ? null
-                  : AppUtil.stringToDate(phaseDetails.start_date.toString()),
-              validationCallBack: (String values) {
-                // setState(() {
-                //   // checkFormStatus();
-                // });
-                if (values.isEmpty ||
-                    phaseDetails.start_date == null ||
-                    phaseDetails.start_date!.isEmpty) {
-                  return 'Please enter start date';
-                } else {
-                  return null;
-                }
-              },
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            DatePicker(
-              subtitle: 'end date',
-              title: "End date",
-              callback: (value) {
-                setState(() {
-                  phaseDetails.end_date = value.trim();
-                });
-              },
-              startDate: widget.type == 0
-                  ? null
-                  : AppUtil.stringToDate(phaseDetails.end_date.toString()),
-              validationCallBack: (String values) {
-                if (values.isEmpty ||
-                    values == null ||
-                    phaseDetails.end_date == null ||
-                    phaseDetails.end_date!.isEmpty) {
-                  // checkFormStatus();
-                  return 'Please enter end date';
-                } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                    .isBefore(
-                        (AppUtil.stringToDate(phaseDetails.start_date!))))) {
-                  return 'End date must be greater then the start date';
-                } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                    .isAtSameMomentAs(
-                        (AppUtil.stringToDate(phaseDetails.start_date!))))) {
-                  return 'End date should not be same as start date';
-                } else {
-                  return null;
-                }
-              },
-            ),
             Padding(
               padding: EdgeInsets.only(left: 10, bottom: 10),
               child: titleHeadlineWidget("Resources needed", 16.0),
@@ -1064,41 +1123,39 @@ class _NewPhaseState extends State<NewPhase> {
       flex: 1,
       child: Form(
         key: _mileStoneFormKey,
-        // child: Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [Text("Data1"), Text("Data1")],
-        // )
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 4),
+              padding: EdgeInsets.only(left: 29.5.sp, top: 18.5.sp),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   clickedAddMileStone == false
-                      ? titleHeadlineWidget("Milestones", 18.0)
-                      : titleHeadlineWidget("Add Milestones", 18.0),
+                      ? titleHeadlineWidget("Milestones", 18.0.sp)
+                      : titleHeadlineWidget("Add Milestones", 18.0.sp),
                   InkWell(
                     child: clickedAddMileStone == false
-                        ? Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 20,
-                                  color: Color(0xff93C5FD),
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                size: 15.sp,
+                                color: Color(0xff93C5FD),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: 11.75.sp,
+                                  right: 26.sp,
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                titleSubHeadlineWidget("Add Milestone", 14.0),
-                              ],
-                            ),
+                                child: titleSubHeadlineWidget(
+                                    "Add Milestone", 14.0.sp),
+                              )
+                            ],
                           )
                         : clickAddMileStone(),
                     onTap: () {
@@ -1146,7 +1203,8 @@ class _NewPhaseState extends State<NewPhase> {
 
                 // )
                 Padding(
-                    padding: const EdgeInsets.only(left: 29.5, right: 30.5),
+                    padding: EdgeInsets.only(
+                        left: 29.5.sp, right: 30.5.sp, top: 26.sp),
                     child: CustomFormField(
                       controller: controllerMilestoneTitle,
                       maxline: 1,
@@ -1186,13 +1244,12 @@ class _NewPhaseState extends State<NewPhase> {
                         },
                       )
                     : Container(),
-            const SizedBox(
-              height: 8.0,
-            ),
+
             clickedAddMileStone == false
                 ? Container()
                 : Padding(
-                    padding: const EdgeInsets.only(left: 29.5, right: 30.5),
+                    padding: EdgeInsets.only(
+                        left: 29.5.sp, right: 30.5.sp, top: 20.sp),
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
                       label: 'Milestone Date',
@@ -1294,14 +1351,14 @@ class _NewPhaseState extends State<NewPhase> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 9, bottom: 0, left: 4),
+              padding: EdgeInsets.only(top: 18.5.sp, left: 29.5.sp),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   clickAddSubTask == false
-                      ? titleHeadlineWidget("Subtasks", 18.0)
-                      : titleHeadlineWidget("Add Subtasks", 18.0),
+                      ? titleHeadlineWidget("Subtasks", 18.0.sp)
+                      : titleHeadlineWidget("Add Subtasks", 18.0.sp),
                   InkWell(
                     child: Container(
                         child: clickAddSubTask == false
@@ -1315,12 +1372,12 @@ class _NewPhaseState extends State<NewPhase> {
                                     color: Color(0xff93C5FD),
                                   ),
                                   SizedBox(
-                                    width: 10,
+                                    width: 10.w,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(right: 10),
+                                    padding: EdgeInsets.only(right: 28.5.sp),
                                     child: titleSubHeadlineWidget(
-                                        "Add Subtasks", 14.0),
+                                        "Add Subtasks", 14.0.sp),
                                   )
                                 ],
                               )
@@ -1346,80 +1403,151 @@ class _NewPhaseState extends State<NewPhase> {
             const SizedBox(
               height: 8.0,
             ),
+
             clickAddSubTask
                 ? Padding(
-                    padding: const EdgeInsets.only(right: 8.0, top: 15),
-                    child: DatePicker(
-                        subtitle: 'subTask',
-                        title: "Start date",
-                        callback: (value) {
-                          subTaskStartDate = value.trim();
-                        },
-                        startDate: widget.type == 0
-                            ? null
-                            : AppUtil.stringToDate(subTaskStartDate),
-                        validationCallBack: (String values) {
-                          if (values.isEmpty ||
-                              subTaskStartDate == null ||
-                              subTaskStartDate.isEmpty) {
-                            return 'Please enter start date';
-                          } else if ((AppUtil.stringToDate(
-                                  phaseDetails.end_date!)
-                              .isBefore(
-                                  (AppUtil.stringToDate(subTaskStartDate))))) {
-                            return 'Subtask start date must be less then the phase end date';
-                          } else {
-                            return null;
-                          }
-                          ;
-                        }),
+                    padding: EdgeInsets.only(
+                        left: 30.5.sp, right: 30.sp, top: 39.5.sp),
+                    child: Column(
+                      children: [
+                        CustomDatePicker(
+                          hint: 'dd/mm/yyyy',
+                          label: "Start date",
+                          initialDate: widget.type == 0
+                              ? null
+                              : AppUtil.stringToDate(
+                                  phaseDetails.start_date.toString()),
+                          onChange: (date) {
+                            setState(() {
+                              phaseDetails.start_date = date.toString();
+                            });
+                            setState(() {});
+                          },
+                          onCancel: () {
+                            setState(() {
+                              phaseDetails.start_date = null;
+                            });
+                          },
+                          errorText: (createButtonClick &&
+                                  phaseDetails.start_date == null)
+                              ? 'Please enter start date'
+                              : "",
+                          validator: (value) {},
+                        ),
+                        CustomDatePicker(
+                          hint: 'dd/mm/yyyy',
+                          label: "End date",
+                          initialDate: widget.type == 0
+                              ? null
+                              : AppUtil.stringToDate(
+                                  phaseDetails.end_date.toString()),
+                          onChange: (date) {
+                            setState(() {
+                              phaseDetails.end_date = date.toString();
+                            });
+                            setState(() {});
+                          },
+                          onCancel: () {
+                            setState(() {
+                              phaseDetails.end_date = null;
+                            });
+                          },
+                          errorText: (createButtonClick &&
+                                  phaseDetails.end_date == null)
+                              ? 'Please enter end date'
+                              : phaseDetails.start_date != null
+                                  ? (((createButtonClick &&
+                                          AppUtil.stringToDate(
+                                                  phaseDetails.end_date!)
+                                              .isBefore((AppUtil.stringToDate(
+                                                  phaseDetails.start_date!)))))
+                                      ? "End date must be greater then the start date"
+                                      : ((AppUtil.stringToDate(
+                                                  phaseDetails.end_date!)
+                                              .isAtSameMomentAs(
+                                                  (AppUtil.stringToDate(
+                                                      phaseDetails
+                                                          .start_date!)))))
+                                          ? 'End date should not be same as start date'
+                                          : '')
+                                  : '',
+                          validator: (value) {},
+                        )
+                      ],
+                    ),
                   )
                 : Container(),
+
+            // child: DatePicker(
+            //     subtitle: 'subTask',
+            //     title: "Start date",
+            //     callback: (value) {
+            //       subTaskStartDate = value.trim();
+            //     },
+            //     startDate: widget.type == 0
+            //         ? null
+            //         : AppUtil.stringToDate(subTaskStartDate),
+            //     validationCallBack: (String values) {
+            //       if (values.isEmpty ||
+            //           subTaskStartDate == null ||
+            //           subTaskStartDate.isEmpty) {
+            //         return 'Please enter start date';
+            //       } else if ((AppUtil.stringToDate(
+            //               phaseDetails.end_date!)
+            //           .isBefore(
+            //               (AppUtil.stringToDate(subTaskStartDate))))) {
+            //         return 'Subtask start date must be less then the phase end date';
+            //       } else {
+            //         return null;
+            //       }
+            //       ;
+            //     }),
+
             const SizedBox(
               height: 8.0,
             ),
             clickAddSubTask
                 ? Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: DatePicker(
-                      subtitle: 'subTask',
-                      title: "End date",
-                      callback: (value) {
-                        subTaskEndDate = value.trim();
-                      },
-                      startDate: widget.type == 0
-                          ? null
-                          : AppUtil.stringToDate(subTaskEndDate),
-                      validationCallBack: (String values) {
-                        if (values.isEmpty ||
-                            subTaskEndDate == null ||
-                            subTaskEndDate.isEmpty) {
-                          checkFormStatus();
-                          return 'Please enter end date';
-                        } else if ((AppUtil.stringToDate(subTaskEndDate)
-                            .isBefore(
-                                (AppUtil.stringToDate(subTaskStartDate))))) {
-                          return 'End date must be greater then the start date';
-                        } else if ((AppUtil.stringToDate(subTaskEndDate)
-                            .isAtSameMomentAs(
-                                (AppUtil.stringToDate(subTaskStartDate))))) {
-                          return 'End date should not be same as start date';
-                        } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                            .isBefore(
-                                (AppUtil.stringToDate(subTaskEndDate))))) {
-                          return 'Subtask End date must be less then the phase end date';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
+                    // child: DatePicker(
+                    //   subtitle: 'subTask',
+                    //   title: "End date",
+                    //   callback: (value) {
+                    //     subTaskEndDate = value.trim();
+                    //   },
+                    //   startDate: widget.type == 0
+                    //       ? null
+                    //       : AppUtil.stringToDate(subTaskEndDate),
+                    //   validationCallBack: (String values) {
+                    //     if (values.isEmpty ||
+                    //         subTaskEndDate == null ||
+                    //         subTaskEndDate.isEmpty) {
+                    //       checkFormStatus();
+                    //       return 'Please enter end date';
+                    //     } else if ((AppUtil.stringToDate(subTaskEndDate)
+                    //         .isBefore(
+                    //             (AppUtil.stringToDate(subTaskStartDate))))) {
+                    //       return 'End date must be greater then the start date';
+                    //     } else if ((AppUtil.stringToDate(subTaskEndDate)
+                    //         .isAtSameMomentAs(
+                    //             (AppUtil.stringToDate(subTaskStartDate))))) {
+                    //       return 'End date should not be same as start date';
+                    //     } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                    //         .isBefore(
+                    //             (AppUtil.stringToDate(subTaskEndDate))))) {
+                    //       return 'Subtask End date must be less then the phase end date';
+                    //     } else {
+                    //       return null;
+                    //     }
+                    //   },
+                    // ),
                   )
                 : Container(),
             clickAddSubTask
                 ? Padding(
-                    padding: EdgeInsets.only(left: 5, bottom: 10),
+                    padding: EdgeInsets.only(left: 30.5.sp),
                     child: titleHeadlineWidget(
-                        "Resources needed for the subtasks", 16),
+                        "Resources needed for the subtasks", 16.sp),
                   )
                 : Container(),
             clickAddSubTask && saveSubtaskClick && selectedSubTaskSource.isEmpty
@@ -1523,7 +1651,7 @@ class _NewPhaseState extends State<NewPhase> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.only(left: 15, right: 18),
+          padding: EdgeInsets.only(left: 30.5.sp, right: 16.sp, top: 24.sp),
           width: MediaQuery.of(context).size.width * 3,
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -1642,153 +1770,169 @@ class _NewPhaseState extends State<NewPhase> {
                         padding: const EdgeInsets.only(
                           left: 30.0,
                         ),
-                        child: PopupMenuButton<int>(
-                          tooltip: '',
+                        // child: CustomSearchDropdown(
+                        //   hint: 'Select',
+                        //   label: "Type",
+                        //   errorText: createButtonClick == true &&
+                        //           (_depat == null || _depat!.isEmpty)
+                        //       ? 'Please Select this field'
+                        //       : '',
+                        //   items: selectedSubTaskSource!,
+                        //   onChange: ((value) {
+                        //     // _curren = value.id;
+                        //     _depat = value.id;
+                        //     setState(() {
+                        //       // selectDepartment = true;
+                        //     });
+                        //   }),
+                        // ),
+                        // child: PopupMenuButton<int>(
+                        //   tooltip: '',
 
-                          offset: const Offset(0, 10),
-                          position: PopupMenuPosition.under,
-                          color: Color(0xFF0F172A),
-                          child: Container(
-                              height: 56.0,
-                              width: MediaQuery.of(context).size.width *
-                                  0.25 //460,
-                              ,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Text(
-                                      subtaskDepat == null
-                                          ? "Type"
-                                          : subtaskDepat.toString(),
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xffFFFFFF),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Color(0xff64748B),
-                                    ),
-                                  )
-                                ],
-                              )),
-                          // padding:
-                          //     const EdgeInsets.only(left: 30.0, right: 18),
-                          constraints: BoxConstraints.tightForFinite(
-                              width: MediaQuery.of(context).size.width *
-                                  0.25 //460,
-                              ),
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              padding: const EdgeInsets.all(0),
-                              value: 1,
-                              child: Container(
-                                // margin: const EdgeInsets.only(
-                                //     left: 30.0, right: 18),
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                color: const Color(0xff334155),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    searchTextFieldForLanguage =
-                                        TypeAheadFormField(
-                                      keepSuggestionsOnLoading: false,
-                                      hideOnLoading: true,
-                                      suggestionsBoxVerticalOffset: 0.0,
-                                      suggestionsBoxDecoration:
-                                          SuggestionsBoxDecoration(
-                                              color: Color(0xff334155)),
-                                      suggestionsCallback: (pattern) {
-                                        return getSuggestionsForType(pattern);
-                                      },
-                                      textFieldConfiguration:
-                                          TextFieldConfiguration(
-                                        controller: _subTaskLangugaeController,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.0),
-                                        keyboardType: TextInputType.text,
-                                        cursorColor: Colors.white,
-                                        autofocus: true,
-                                        decoration: const InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                            top: 15.0,
-                                          ),
-                                          prefixIcon: Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 4.0),
-                                              child: Icon(
-                                                Icons.search,
-                                                color: Color(0xff64748B),
-                                              )),
-                                          hintText: 'Search',
-                                          hintStyle: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w400),
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                      itemBuilder: (context, item) {
-                                        return rowPhases(item);
-                                      },
-                                      transitionBuilder: (context,
-                                          suggestionsBox, controller) {
-                                        return suggestionsBox;
-                                      },
-                                      onSuggestionSelected: (item) {
-                                        resourceSuggestions.clear();
-                                        _subTaskLangugaeController.text = '';
-                                        setState(() {
-                                          selectedSubTaskSource.clear();
-                                        });
-                                        setState(() {
-                                          resourceSuggestions.clear();
-                                          for (var element in listResource) {
-                                            if (element.department!
-                                                    .toLowerCase() ==
-                                                item.details.departmentName
-                                                    .toString()
-                                                    .toLowerCase()) {
-                                              resourceSuggestions
-                                                  .add(element.details!);
-                                            }
-                                          }
+                        //   offset: const Offset(0, 10),
+                        //   position: PopupMenuPosition.under,
+                        //   color: Color(0xFF0F172A),
+                        //   child: Container(
+                        //       height: 56.0,
+                        //       width: MediaQuery.of(context).size.width *
+                        //           0.25 //460,
+                        //       ,
+                        //       decoration: BoxDecoration(
+                        //         color: const Color(0xff334155),
+                        //         borderRadius: BorderRadius.circular(
+                        //           8.0,
+                        //         ),
+                        //       ),
+                        //       child: Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.only(left: 16.0),
+                        //             child: Text(
+                        //               subtaskDepat == null
+                        //                   ? "Type"
+                        //                   : subtaskDepat.toString(),
+                        //               style: TextStyle(
+                        //                   fontSize: 14.0,
+                        //                   color: Color(0xffFFFFFF),
+                        //                   fontFamily: 'Inter',
+                        //                   fontWeight: FontWeight.w500),
+                        //             ),
+                        //           ),
+                        //           Padding(
+                        //             padding: const EdgeInsets.only(right: 8.0),
+                        //             child: Icon(
+                        //               Icons.arrow_drop_down,
+                        //               color: Color(0xff64748B),
+                        //             ),
+                        //           )
+                        //         ],
+                        //       )),
+                        //   // padding:
+                        //   //     const EdgeInsets.only(left: 30.0, right: 18),
+                        //   constraints: BoxConstraints.tightForFinite(
+                        //       width: MediaQuery.of(context).size.width *
+                        //           0.25 //460,
+                        //       ),
+                        //   itemBuilder: (context) => [
+                        //     PopupMenuItem(
+                        //       padding: const EdgeInsets.all(0),
+                        //       value: 1,
+                        //       child: Container(
+                        //         // margin: const EdgeInsets.only(
+                        //         //     left: 30.0, right: 18),
+                        //         width: MediaQuery.of(context).size.width * 0.25,
+                        //         color: const Color(0xff334155),
+                        //         child: Column(
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             searchTextFieldForLanguage =
+                        //                 TypeAheadFormField(
+                        //               keepSuggestionsOnLoading: false,
+                        //               hideOnLoading: true,
+                        //               suggestionsBoxVerticalOffset: 0.0,
+                        //               suggestionsBoxDecoration:
+                        //                   SuggestionsBoxDecoration(
+                        //                       color: Color(0xff334155)),
+                        //               suggestionsCallback: (pattern) {
+                        //                 return getSuggestionsForType(pattern);
+                        //               },
+                        //               textFieldConfiguration:
+                        //                   TextFieldConfiguration(
+                        //                 controller: _subTaskLangugaeController,
+                        //                 style: const TextStyle(
+                        //                     color: Colors.white,
+                        //                     fontSize: 14.0),
+                        //                 keyboardType: TextInputType.text,
+                        //                 cursorColor: Colors.white,
+                        //                 autofocus: true,
+                        //                 decoration: const InputDecoration(
+                        //                   contentPadding: EdgeInsets.only(
+                        //                     top: 15.0,
+                        //                   ),
+                        //                   prefixIcon: Padding(
+                        //                       padding:
+                        //                           EdgeInsets.only(top: 4.0),
+                        //                       child: Icon(
+                        //                         Icons.search,
+                        //                         color: Color(0xff64748B),
+                        //                       )),
+                        //                   hintText: 'Search',
+                        //                   hintStyle: TextStyle(
+                        //                       fontSize: 14.0,
+                        //                       color: Color(0xff64748B),
+                        //                       fontFamily: 'Inter',
+                        //                       fontWeight: FontWeight.w400),
+                        //                   border: InputBorder.none,
+                        //                 ),
+                        //               ),
+                        //               itemBuilder: (context, item) {
+                        //                 return rowPhases(item);
+                        //               },
+                        //               transitionBuilder: (context,
+                        //                   suggestionsBox, controller) {
+                        //                 return suggestionsBox;
+                        //               },
+                        //               onSuggestionSelected: (item) {
+                        //                 resourceSuggestions.clear();
+                        //                 _subTaskLangugaeController.text = '';
+                        //                 setState(() {
+                        //                   selectedSubTaskSource.clear();
+                        //                 });
+                        //                 setState(() {
+                        //                   resourceSuggestions.clear();
+                        //                   for (var element in listResource) {
+                        //                     if (element.department!
+                        //                             .toLowerCase() ==
+                        //                         item.details.departmentName
+                        //                             .toString()
+                        //                             .toLowerCase()) {
+                        //                       resourceSuggestions
+                        //                           .add(element.details!);
+                        //                     }
+                        //                   }
 
-                                          subtaskDepat =
-                                              item.department.toString();
-                                          print(subtaskDepat);
-                                          print(subtaskDepat);
-                                          setState(() {
-                                            Navigator.of(context).pop();
-                                          });
+                        //                   subtaskDepat =
+                        //                       item.department.toString();
+                        //                   print(subtaskDepat);
+                        //                   print(subtaskDepat);
+                        //                   setState(() {
+                        //                     Navigator.of(context).pop();
+                        //                   });
 
-                                          if (item != null) {}
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                          elevation: 0.0,
-                        ),
+                        //                   if (item != null) {}
+                        //                 });
+                        //               },
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        //   elevation: 0.0,
+                        // ),
                       ),
                     ),
                   ],
@@ -1930,16 +2074,16 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddMileStone() {
     return Padding(
-      padding:  EdgeInsets.only(top: 12, right: 10),
+      padding: EdgeInsets.only(top: 2.5.sp),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
         children: [
           InkWell(
-            child: const Text(
+            child: Text(
               "Cancel",
               style: TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 14.0.sp,
                   color: Color(0xffFFFFFF),
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w300),
@@ -1954,17 +2098,17 @@ class _NewPhaseState extends State<NewPhase> {
               });
             },
           ),
-          const SizedBox(
-            width: 16,
-          ),
           InkWell(
-            child: const Text(
-              "Save",
-              style: TextStyle(
-                  fontSize: 14.0,
-                  color: Color(0xff93C5FD),
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500),
+            child: Padding(
+              padding: EdgeInsets.only(right: 36.5.sp, left: 26.sp),
+              child: Text(
+                "Save",
+                style: TextStyle(
+                    fontSize: 14.0.sp,
+                    color: Color(0xff93C5FD),
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500),
+              ),
             ),
             onTap: () {
               if (_mileStoneFormKey.currentState!.validate()) {
@@ -2007,7 +2151,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddSubtask() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 20),
+      padding: EdgeInsets.only(top: 2.5.sp),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -2016,7 +2160,7 @@ class _NewPhaseState extends State<NewPhase> {
             child: Text(
               "Cancel",
               style: TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 14.sp,
                   color: Color(0xffFFFFFF),
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w300),
@@ -2031,17 +2175,17 @@ class _NewPhaseState extends State<NewPhase> {
               });
             },
           ),
-          const SizedBox(
-            width: 16,
-          ),
           InkWell(
-            child: const Text(
-              "Save",
-              style: TextStyle(
-                  fontSize: 14.0,
-                  color: Color(0xff93C5FD),
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500),
+            child: Padding(
+              padding: EdgeInsets.only(right: 37.sp, left: 26.sp),
+              child: Text(
+                "Save",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Color(0xff93C5FD),
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500),
+              ),
             ),
             onTap: () {
               setState(() {
@@ -2090,10 +2234,6 @@ class _NewPhaseState extends State<NewPhase> {
 
   titleHeadlineWidget(String title, double i) {
     return Container(
-      margin: title == "Resources needed" ||
-              title == "Resources needed for the subtasks"
-          ? const EdgeInsets.only(left: 10.0, top: 0.0, bottom: 10.0)
-          : const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
       child: Text(
         title,
         style: TextStyle(

@@ -706,7 +706,6 @@ showDailog(
                                                 ),
                                               ],
                                             ),
-
                                             ProjectEdit(
                                                 accountableId: accountableId,
                                                 currencyList: currencyName,
