@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/search_view.dart';
@@ -72,7 +73,8 @@ class _NewPhaseState extends State<NewPhase> {
   int subTaskEditIndex = 0;
 
   String mileStoneTitle = "";
-  String mileStoneDate = AppUtil.dateToString(DateTime.now());
+  // String mileStoneDate = AppUtil.dateToString(DateTime.now());
+  DateTime? mileStoneDate;
 
   String subTaskStartDate = AppUtil.dateToString(DateTime.now());
   String subTaskEndDate = AppUtil.dateToString(DateTime.now());
@@ -368,7 +370,6 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   List<DepartementData> getSuggestionsForPhaseType(String query) {
-    
     List<DepartementData> matches = List.empty(growable: true);
     matches.addAll(_department);
     matches.retainWhere(
@@ -1145,7 +1146,7 @@ class _NewPhaseState extends State<NewPhase> {
 
                 // )
                 Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    padding: const EdgeInsets.only(left: 29.5, right: 30.5),
                     child: CustomFormField(
                       controller: controllerMilestoneTitle,
                       maxline: 1,
@@ -1190,31 +1191,52 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             clickedAddMileStone == false
                 ? Container()
-                : DatePicker(
-                    subtitle: 'Milestone',
-                    title: "Milestone Date",
-                    callback: (value) {
-                      setState(() {
-                        mileStoneDate = value.trim();
-                        print(mileStoneDate);
-                      });
-                    },
-                    startDate: widget.type == 0
-                        ? null
-                        : AppUtil.stringToDate(mileStoneDate),
-                    validationCallBack: (String values) {
-                      if (values.isEmpty ||
-                          mileStoneDate.isEmpty ||
-                          mileStoneDate == null) {
-                        return 'Please enter milestone date';
-                      } else if ((AppUtil.stringToDate(mileStoneDate).isBefore(
-                          (AppUtil.stringToDate(phaseDetails.end_date!))))) {
-                        return 'Milestone date must be less then the phase end date';
-                      } else {
-                        return null;
-                      }
-                    },
+                : Padding(
+                    padding: const EdgeInsets.only(left: 29.5, right: 30.5),
+                    child: CustomDatePicker(
+                      hint: 'dd/mm/yyyy',
+                      label: 'Milestone Date',
+                      onChange: (date) {
+                        setState(() {
+                          mileStoneDate = date;
+                        });
+                      },
+                      onCancel: () {
+                        setState(() {
+                          mileStoneDate = null;
+                        });
+                      },
+                      errorText: (saveButtonClick && mileStoneDate == null)
+                          ? 'Please select this field'
+                          : "",
+                      validator: (value) {},
+                    ),
                   ),
+            // DatePicker(
+            //     subtitle: 'Milestone',
+            //     title: "Milestone Date",
+            //     callback: (value) {
+            //       setState(() {
+            //         mileStoneDate = value.trim();
+            //         print(mileStoneDate);
+            //       });
+            //     },
+            //     startDate: widget.type == 0
+            //         ? null
+            //         : AppUtil.stringToDate(mileStoneDate),
+            //     validationCallBack: (String values) {
+            //       if (values.isEmpty ||
+            //           mileStoneDate.isEmpty ||
+            //           mileStoneDate == null) {
+            //         return 'Please enter milestone date';
+            //       } else if ((AppUtil.stringToDate(mileStoneDate).isBefore(
+            //           (AppUtil.stringToDate(phaseDetails.end_date!))))) {
+            //         return 'Milestone date must be less then the phase end date';
+            //       } else {
+            //         return null;
+            //       }
+            //     },
+            //   ),
             savePhaseClick && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
@@ -1908,7 +1930,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   clickAddMileStone() {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, right: 10),
+      padding:  EdgeInsets.only(top: 12, right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.min,
@@ -1946,17 +1968,18 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               if (_mileStoneFormKey.currentState!.validate()) {
-                if (mileStoneTitle.isNotEmpty && mileStoneDate.isNotEmpty) {
+                if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
                         phaseDetails.milestone!.add(Milestones(
-                            title: mileStoneTitle, m_date: mileStoneDate));
+                            title: mileStoneTitle,
+                            m_date: mileStoneDate.toString()));
                       } else {
                         phaseDetails.milestone![mileStoneEditIndex].title =
                             mileStoneTitle;
                         phaseDetails.milestone![mileStoneEditIndex].m_date =
-                            mileStoneDate;
+                            mileStoneDate.toString();
                       }
 
                       mileStoneEditIndex = 0;
@@ -2215,7 +2238,7 @@ class _NewPhaseState extends State<NewPhase> {
   beforeScreenLoad() {
     phaseDetails.start_date = null;
     phaseDetails.end_date = null;
-    mileStoneDate = "";
+    mileStoneDate = null;
     subTaskStartDate = "";
     subTaskEndDate = "";
   }
