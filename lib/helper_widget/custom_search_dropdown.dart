@@ -10,6 +10,7 @@ class CustomSearchDropdown extends StatefulWidget {
   String? hint;
   String? errorText;
   EdgeInsets? paddingForLabeltext;
+  EdgeInsets? margin;
   double? fontsizeForLabel;
   DropdownModel? initialValue;
 
@@ -19,6 +20,7 @@ class CustomSearchDropdown extends StatefulWidget {
       required this.items,
       this.label,
       this.hint,
+      this.margin,
       this.onChange,
       this.errorText,
       this.paddingForLabeltext,
@@ -51,7 +53,7 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 18.h),
+      margin: widget.margin ?? EdgeInsets.only(bottom: 18.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
