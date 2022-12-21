@@ -707,21 +707,25 @@ class _NavigationRailState extends State<MyHomePage>
                                                     Container(
                                                       margin: EdgeInsets.only(
                                                           left: 11.0.sp),
-                                                      child: Flexible(
-                                                        child: Text(
-                                                          "Upload new",
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontSize: 14.0.sp,
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
+                                                      child: Wrap(
+                                                        children: [
+                                                          Text(
+                                                            "Upload new",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffFFFFFF),
+                                                                fontSize:
+                                                                    14.0.sp,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],
