@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +12,8 @@ import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -23,9 +23,7 @@ import 'package:zeus/utility/util.dart';
 import 'package:provider/provider.dart';
 import '../home_module/home_page.dart';
 import 'package:zeus/utility/debouncer.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-showProjectDetailsDailog(
+showDailog(
     BuildContext context,
     ProjectDetailResponse response,
     List statusList,
@@ -48,7 +46,6 @@ showProjectDetailsDailog(
       fullName;
   List<String> abc = [];
   List<String> roadblock = [];
-
   final ValueChanged<String> onSubmit;
   var _id = id;
   var _formKey = GlobalKey<FormState>();
@@ -72,10 +69,8 @@ showProjectDetailsDailog(
   ScrollController _horizontalScrollController = ScrollController();
   ScrollController _verticalScrollController = ScrollController();
   var myFormat = DateFormat('yyyy-MM-dd');
-
   final TextEditingController _typeAheadController = TextEditingController();
   Debouncer _debouncer = Debouncer();
-
   //Edit project_detail api
   Future<void> editProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -119,11 +114,9 @@ showProjectDetailsDailog(
       }
     } catch (e) {}
   }
-
   //Edit project_detail api
   Future<void> removeTagAPI(String tagId) async {
     var token = 'Bearer ' + storage.read("token");
-
     try {
       var response = await http.delete(
         Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
@@ -132,27 +125,21 @@ showProjectDetailsDailog(
           "Authorization": token,
         },
       );
-
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
-
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
-
         print(response.body);
       }
     } catch (e) {}
   }
-
   //Edit project_detail api
-
   Future<void> saveTagApi(String projectId, String tagName) async {
     var token = 'Bearer ' + storage.read("token");
-
     try {
       var response = await http.post(
         Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
@@ -165,26 +152,20 @@ showProjectDetailsDailog(
           "Authorization": token,
         },
       );
-
       // ignore: unrelated_type_equality_checks
-
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
-
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
-
         print(response.body);
       }
     } catch (e) {}
   }
-
   //Add
-
   //Add description and time api
   Future<void> addDescriptionProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -192,7 +173,6 @@ showProjectDetailsDailog(
       var apiResponse = await http.post(
         ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is
         Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
-
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days":
@@ -216,7 +196,6 @@ showProjectDetailsDailog(
           "Authorization": token,
         },
       );
-
       // ignore: unrelated_type_equality_checks
       if (apiResponse.statusCode == 200) {
         var responseJson =
@@ -236,14 +215,12 @@ showProjectDetailsDailog(
           msg: responseJson['message'],
           backgroundColor: Colors.grey,
         );
-
         print("failuree");
       }
     } catch (e) {
       // print('error caught: $e');
     }
   }
-
   // update Controller Value
   updateControllerValue() {
     _projecttitle.text = response.data != null &&
@@ -251,72 +228,57 @@ showProjectDetailsDailog(
             response.data!.title!.isNotEmpty
         ? response.data!.title!
         : '';
-
     _crmtask.text = response.data != null &&
             response.data!.crmTaskId != null &&
             response.data!.crmTaskId!.isNotEmpty
         ? response.data!.crmTaskId!
         : '';
-
     _warkfolderId.text = response.data != null &&
             response.data!.workFolderId != null &&
             response.data!.workFolderId!.isNotEmpty
         ? response.data!.workFolderId!
         : '';
-
     _budget.text = response.data != null && response.data!.budget != null
         ? response.data!.budget!.toString()
         : '';
-
     _estimatehours.text = response.data != null &&
             response.data!.estimationHours != null &&
             response.data!.estimationHours!.isNotEmpty
         ? response.data!.estimationHours!.toString()
         : '';
-
     _custome = response.data != null && response.data!.customerId != null
         ? response.data!.customerId.toString()
         : '';
-
     _account =
         response.data != null && response.data!.accountablePersonId != null
             ? response.data!.accountablePersonId.toString()
             : '';
-
     if (response.data != null &&
         response.data!.reminderDate != null &&
         response.data!.reminderDate!.isNotEmpty &&
         response.data!.reminderDate != "0000-00-00 00:00:00") {
       selectedDateReminder =
           DateTime.parse(response.data!.reminderDate!.toString());
-
       print("date time now ${DateTime.now()}");
       print('--------------------------------------');
-
       //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
     }
-
     if (response.data != null &&
         response.data!.deadlineDate != null &&
         response.data!.deadlineDate!.isNotEmpty &&
         response.data!.deadlineDate != "0000-00-00 00:00:00") {
       selectedDateDeadline =
           DateTime.parse(response.data!.deadlineDate!.toString());
-
       //selectedDateDeadline = DateTime.parse("2022-11-27 00:00:00");
-
     }
-
     if (response.data != null &&
         response.data!.deliveryDate != null &&
         response.data!.deliveryDate!.isNotEmpty &&
         response.data!.deliveryDate != "0000-00-00 00:00:00") {
       selectedDateDevlivery =
           DateTime.parse(response.data!.deliveryDate!.toString());
-
       //selectedDateDevlivery = DateTime.parse("2022-11-29 00:00:00");
     }
-
     if (response.data != null &&
         response.data!.startDate != null &&
         response.data!.startDate!.isNotEmpty &&
@@ -324,12 +286,10 @@ showProjectDetailsDailog(
       // selectedDate = DateTime.parse("2022-11-29 00:00:00");
       selectedDate = DateTime.parse(response.data!.startDate!.toString());
     }
-
     _description.text =
         response.data != null && response.data!.description != null
             ? response.data!.description.toString()
             : '';
-
     if (response.data != null &&
         response.data!.tags != null &&
         response.data!.tags!.isNotEmpty) {
@@ -339,7 +299,6 @@ showProjectDetailsDailog(
         }
       });
     }
-
     if (response.data != null &&
         response.data!.roadblocks != null &&
         response.data!.roadblocks!.isNotEmpty) {
@@ -349,14 +308,12 @@ showProjectDetailsDailog(
         }
       });
     }
-
     if (response.data != null &&
         response.data!.roadblocks != null &&
         response.data!.roadblocks!.isNotEmpty) {
       response.data!.roadblocks!.forEach((element) {
         if (element.createdAt != null) {
           roadblockCreateDate = element.createdAt.toString();
-
           var newStr = roadblockCreateDate!.substring(0, 10) +
               ' ' +
               roadblockCreateDate!.substring(11, 23);
@@ -370,11 +327,9 @@ showProjectDetailsDailog(
     } else {
       roadblockCreateDate1 = 'N/A';
     }
-
     String firstName = "";
     String lastName = "";
     // String fullName = '';
-
     if (response.data != null && response.data!.roadblocks != null)
       response.data!.roadblocks!.forEach((element) {
         if (element.responsiblePerson != null &&
@@ -383,10 +338,8 @@ showProjectDetailsDailog(
           if (rcName!.contains(" ")) {
             List<String> splitedList =
                 element.responsiblePerson!.name!.split(" ");
-
             firstName = splitedList[0];
             lastName = splitedList[1];
-
             fullName = firstName.substring(0, 1).toUpperCase() +
                 lastName.substring(0, 1).toUpperCase();
           } else {
@@ -403,7 +356,7 @@ showProjectDetailsDailog(
     //     ? response.data!.status.toString()
     //     : '';
   }
-
+ 
   DateTime getInitialDate(int calendarTapValue) {
     if (calendarTapValue == 1) {
       return selectedDate!;
@@ -415,7 +368,6 @@ showProjectDetailsDailog(
       return selectedDateDeadline!;
     }
   }
-
   DateTime getFirstDate(int calendarTapValue) {
     if (calendarTapValue == 1) {
       if (selectedDate!.compareTo(DateTime.now()) < 0) {
@@ -436,7 +388,6 @@ showProjectDetailsDailog(
     }
     return DateTime.now();
   }
-
   List<SkillsData> getSuggestions(String query) {
     List<SkillsData> matches = List.empty(growable: true);
     matches.addAll(users);
@@ -444,18 +395,17 @@ showProjectDetailsDailog(
         (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
     return matches;
   }
-
   Future<void> _selectDate(setState, int calendarTapValue) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         builder: (BuildContext context, Widget? child) {
           return Theme(
             data: ThemeData.light().copyWith(
-                primaryColor: Color(0xff0F172A),
+                primaryColor: const Color(0xff0F172A),
                 buttonTheme:
                     ButtonThemeData(textTheme: ButtonTextTheme.primary),
-                colorScheme: ColorScheme.light(primary: Color(0xff0F172A))
-                    .copyWith(secondary: Color(0xff0F172A))),
+                colorScheme: ColorScheme.light(primary: const Color(0xff0F172A))
+                    .copyWith(secondary: const Color(0xff0F172A))),
             child: child!,
           );
         },
@@ -491,7 +441,6 @@ showProjectDetailsDailog(
                         : DateTime.now(),
         //firstDate: DateTime.now(),
         lastDate: DateTime(5000));
-
     if (picked != null && picked != selectedDate) {
       setState(() {
         if (calendarTapValue == 1) {
@@ -509,7 +458,6 @@ showProjectDetailsDailog(
       addDescriptionProject();
     }
   }
-
   //   print(projectDetail.projectDetailResponse!.data!.title);
   showDialog(
       context: context,
@@ -521,10 +469,10 @@ showProjectDetailsDailog(
               borderRadius: BorderRadius.circular(16),
             ),
             contentPadding: EdgeInsets.zero,
-            backgroundColor: Color(0xff1E293B),
+            backgroundColor: const Color(0xff1E293B),
             content: Form(
               child: RawScrollbar(
-                thumbColor: Color(0xff4b5563),
+                thumbColor: const Color(0xff4b5563),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -543,7 +491,7 @@ showProjectDetailsDailog(
                         child: Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: 0, bottom: 0),
+                              padding: const EdgeInsets.only(top: 0, bottom: 0),
                               child: Stack(
                                 children: [
                                   Row(
@@ -562,16 +510,16 @@ showProjectDetailsDailog(
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                    left: 30.0.sp,
+                                                  margin: const EdgeInsets.only(
+                                                    left: 30.0,
                                                     top: 0.0,
                                                   ),
                                                   child: Text(
                                                     response.data?.title ?? '',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color:
                                                             Color(0xffFFFFFF),
-                                                        fontSize: 22.0.sp,
+                                                        fontSize: 22.0,
                                                         fontFamily: 'Inter',
                                                         fontWeight:
                                                             FontWeight.w700),
@@ -582,14 +530,16 @@ showProjectDetailsDailog(
                                                       CrossAxisAlignment.center,
                                                   children: [
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 30.0,
-                                                          top: 12.0),
-                                                      padding: EdgeInsets.only(
-                                                          left: 16,
-                                                          right: 16,
-                                                          top: 10,
-                                                          bottom: 10),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 30.0,
+                                                              top: 12.0),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 16,
+                                                              right: 16,
+                                                              top: 10,
+                                                              bottom: 10),
                                                       decoration: BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
@@ -599,10 +549,10 @@ showProjectDetailsDailog(
                                                                   status!)),
                                                       child: Text(
                                                         status,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: ColorSelect
                                                                 .white_color,
-                                                            fontSize: 14.0.sp,
+                                                            fontSize: 14.0,
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
@@ -610,9 +560,10 @@ showProjectDetailsDailog(
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 16.0,
-                                                          top: 12.0),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 16.0,
+                                                              top: 12.0),
                                                       width: 110,
                                                       height: 32,
                                                       child: Stack(
@@ -720,7 +671,7 @@ showProjectDetailsDailog(
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             left: 16.0, right: 0),
                                         child: Container(
                                             height: 120,
@@ -729,14 +680,15 @@ showProjectDetailsDailog(
                                       ),
                                       Expanded(
                                         child: Container(
-                                          padding: EdgeInsets.only(top: 20),
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
                                           height: 120,
                                           width: 600,
                                           child: RawScrollbar(
                                             thumbVisibility: true,
                                             controller:
                                                 _horizontalScrollController,
-                                            thumbColor: Color(0xff4b5563),
+                                            thumbColor: const Color(0xff4b5563),
                                             radius: Radius.circular(10),
                                             thickness: 8,
                                             child: ListView(
@@ -748,7 +700,7 @@ showProjectDetailsDailog(
                                                   _horizontalScrollController,
                                               scrollDirection: Axis.horizontal,
                                               // physics:
-                                              //      BouncingScrollPhysics(),
+                                              //     const BouncingScrollPhysics(),
                                               physics: ClampingScrollPhysics(),
                                               children: [
                                                 Column(
@@ -759,12 +711,12 @@ showProjectDetailsDailog(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
-                                                    Text(
+                                                    const Text(
                                                       "Start date",
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff94A3B8),
-                                                          fontSize: 11.0.sp,
+                                                          fontSize: 11.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -782,10 +734,10 @@ showProjectDetailsDailog(
                                                         AppUtil.formattedDateYear(
                                                             selectedDate
                                                                 .toString()), // "$startDate",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
-                                                            fontSize: 14.0.sp,
+                                                            fontSize: 14.0,
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
@@ -801,12 +753,12 @@ showProjectDetailsDailog(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
+                                                    const Text(
                                                       "Reminder date",
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff94A3B8),
-                                                          fontSize: 11.0.sp,
+                                                          fontSize: 11.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -823,10 +775,10 @@ showProjectDetailsDailog(
                                                         AppUtil.formattedDateYear(
                                                             selectedDateReminder
                                                                 .toString()),
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
-                                                            fontSize: 14.0.sp,
+                                                            fontSize: 14.0,
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
@@ -842,12 +794,12 @@ showProjectDetailsDailog(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
+                                                    const Text(
                                                       "Delivery date",
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff94A3B8),
-                                                          fontSize: 11.0.sp,
+                                                          fontSize: 11.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -864,10 +816,10 @@ showProjectDetailsDailog(
                                                         AppUtil.formattedDateYear(
                                                             selectedDateDevlivery
                                                                 .toString()),
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
-                                                            fontSize: 14.0.sp,
+                                                            fontSize: 14.0,
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
@@ -883,12 +835,12 @@ showProjectDetailsDailog(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
+                                                    const Text(
                                                       "Deadline",
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff94A3B8),
-                                                          fontSize: 11.0.sp,
+                                                          fontSize: 11.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -905,10 +857,10 @@ showProjectDetailsDailog(
                                                         AppUtil.formattedDateYear(
                                                             selectedDateDeadline
                                                                 .toString()),
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
-                                                            fontSize: 14.0.sp,
+                                                            fontSize: 14.0,
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
@@ -924,12 +876,12 @@ showProjectDetailsDailog(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
+                                                    const Text(
                                                       "Working days",
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xff94A3B8),
-                                                          fontSize: 11.0.sp,
+                                                          fontSize: 11.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -946,10 +898,10 @@ showProjectDetailsDailog(
                                                           ? response.data!
                                                               .workingDays!
                                                           : 'N/A',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color:
                                                               Color(0xffFFFFFF),
-                                                          fontSize: 14.0.sp,
+                                                          fontSize: 14.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -971,7 +923,7 @@ showProjectDetailsDailog(
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             top: 35.0, right: 30.0, bottom: 0),
                                         height: 40.0,
                                         width: 40.0,
@@ -991,9 +943,8 @@ showProjectDetailsDailog(
                                 ],
                               ),
                             ),
-
                             //---------------------SAYYAM YADAV
-                            Divider(
+                            const Divider(
                               color: Color(0xff424D5F),
                               thickness: 0.7,
                               height: 10,
@@ -1001,10 +952,9 @@ showProjectDetailsDailog(
                           ],
                         ),
                       ),
-
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1022,7 +972,8 @@ showProjectDetailsDailog(
                                           CrossAxisAlignment.center,
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.only(left: 20),
+                                          padding:
+                                              const EdgeInsets.only(left: 20),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
@@ -1042,7 +993,8 @@ showProjectDetailsDailog(
                                                     (index) {
                                                       return Padding(
                                                         padding:
-                                                            EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                    .only(
                                                                 top: 2,
                                                                 bottom: 2,
                                                                 left: 5),
@@ -1053,7 +1005,7 @@ showProjectDetailsDailog(
                                                                   top: 7,
                                                                   bottom: 7),
                                                           shape:
-                                                              RoundedRectangleBorder(
+                                                              const RoundedRectangleBorder(
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .all(
@@ -1064,7 +1016,8 @@ showProjectDetailsDailog(
                                                           side: BorderSide(
                                                               color: Color(
                                                                   0xff334155)),
-                                                          deleteIcon: Icon(
+                                                          deleteIcon:
+                                                              const Icon(
                                                             Icons.close,
                                                             color: Colors.white,
                                                             size: 20,
@@ -1103,7 +1056,6 @@ showProjectDetailsDailog(
                                                                 }
                                                               },
                                                             );
-
                                                             setState(() {
                                                               abc.removeAt(
                                                                   index);
@@ -1118,28 +1070,31 @@ showProjectDetailsDailog(
                                               ),
                                               PopupMenuButton<int>(
                                                 tooltip: '',
-                                                offset: Offset(35, 48),
+                                                offset: const Offset(35, 48),
                                                 color: Color(0xFF0F172A),
                                                 child: Container(
                                                     width: 45.0,
                                                     height: 45.0,
-                                                    margin: EdgeInsets.only(
-                                                        left: 15.0, top: 0),
-                                                    decoration: BoxDecoration(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 15.0, top: 0),
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       color: Color(0xff334155),
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: Container(
                                                       child: Padding(
                                                           padding:
-                                                              EdgeInsets.all(
-                                                                  10.0),
+                                                              const EdgeInsets
+                                                                  .all(10.0),
                                                           child: SvgPicture.asset(
                                                               'images/tag_new.svg')),
                                                     )),
                                                 itemBuilder: (context) => [
                                                   PopupMenuItem(
-                                                    padding: EdgeInsets.all(0),
+                                                    padding:
+                                                        const EdgeInsets.all(0),
                                                     value: 1,
                                                     child: GestureDetector(
                                                       onTap: () {
@@ -1147,8 +1102,8 @@ showProjectDetailsDailog(
                                                       },
                                                       child: Container(
                                                         width: 400,
-                                                        color:
-                                                            Color(0xff1E293B),
+                                                        color: const Color(
+                                                            0xff1E293B),
                                                         child: Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
@@ -1175,11 +1130,11 @@ showProjectDetailsDailog(
                                                                   TextFieldConfiguration(
                                                                 controller:
                                                                     _typeAheadController,
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        14.0.sp),
+                                                                        14.0),
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -1188,7 +1143,7 @@ showProjectDetailsDailog(
                                                                         .white,
                                                                 autofocus: true,
                                                                 decoration:
-                                                                    InputDecoration(
+                                                                    const InputDecoration(
                                                                   contentPadding:
                                                                       EdgeInsets
                                                                           .only(
@@ -1209,7 +1164,7 @@ showProjectDetailsDailog(
                                                                       'Search',
                                                                   hintStyle: TextStyle(
                                                                       fontSize:
-                                                                          14.sp,
+                                                                          14.0,
                                                                       color: Colors
                                                                           .white,
                                                                       fontFamily:
@@ -1242,7 +1197,6 @@ showProjectDetailsDailog(
                                                                     item.name)) {
                                                                   abc.add(item
                                                                       .name!);
-
                                                                   saveTagApi(
                                                                       response
                                                                           .data!
@@ -1270,42 +1224,44 @@ showProjectDetailsDailog(
                                         ),
                                         Spacer(),
                                         Padding(
-                                          padding: EdgeInsets.only(top: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Container(
-                                            child: Text(
+                                            child: const Text(
                                               'Work folder',
                                               style: TextStyle(
                                                   color:
                                                       ColorSelect.cermany_color,
-                                                  fontSize: 14.0.sp,
+                                                  fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w400),
                                             ),
                                           ),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(
+                                          margin: const EdgeInsets.only(
                                               left: 10.0, right: 35.0, top: 8),
                                           child: SvgPicture.asset(
                                             'images/cermony.svg',
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(top: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Container(
-                                            child: Text(
+                                            child: const Text(
                                               'CRM',
                                               style: TextStyle(
                                                   color:
                                                       ColorSelect.cermany_color,
-                                                  fontSize: 14.0.sp,
+                                                  fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w400),
                                             ),
                                           ),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(
+                                          margin: const EdgeInsets.only(
                                               left: 10.0, right: 16.0, top: 8),
                                           child: SvgPicture.asset(
                                             'images/cermony.svg',
@@ -1316,15 +1272,15 @@ showProjectDetailsDailog(
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.99,
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           left: 15.0, top: 16.0),
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.14,
                                       decoration: BoxDecoration(
-                                        color: Color(0xff1E293B),
+                                        color: const Color(0xff1E293B),
                                         border: Border.all(
-                                            color: Color(0xff424D5F),
+                                            color: const Color(0xff424D5F),
                                             width: 0.5),
                                         borderRadius: BorderRadius.circular(
                                           8.0,
@@ -1333,13 +1289,13 @@ showProjectDetailsDailog(
                                       child: TextFormField(
                                         keyboardType: TextInputType.text,
                                         controller: _description,
-                                        cursorColor: Color(0xffFFFFFF),
-                                        style:
-                                            TextStyle(color: Color(0xffFFFFFF)),
+                                        cursorColor: const Color(0xffFFFFFF),
+                                        style: const TextStyle(
+                                            color: Color(0xffFFFFFF)),
                                         textAlignVertical:
                                             TextAlignVertical.bottom,
                                         maxLines: 10,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                             contentPadding: EdgeInsets.only(
                                               bottom: 20.0,
                                               top: 14.0,
@@ -1349,7 +1305,7 @@ showProjectDetailsDailog(
                                             border: InputBorder.none,
                                             hintText: '',
                                             hintStyle: TextStyle(
-                                                fontSize: 14.0.sp,
+                                                fontSize: 14.0,
                                                 color: Color(0xffFFFFFF),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500)),
@@ -1360,7 +1316,6 @@ showProjectDetailsDailog(
                                             });
                                           } catch (e) {
                                             print(e);
-
                                             print(value);
                                           }
                                         },
@@ -1368,13 +1323,13 @@ showProjectDetailsDailog(
                                     ),
                                     Expanded(
                                       child: Container(
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             left: 30.0, top: 20.0),
-                                        child: Text(
+                                        child: const Text(
                                           "Potential roadblocks",
                                           style: TextStyle(
                                               color: Color(0xffFFFFFF),
-                                              fontSize: 16.0.sp,
+                                              fontSize: 16.0,
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.w500),
                                         ),
@@ -1383,11 +1338,11 @@ showProjectDetailsDailog(
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.99,
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           left: 30.0, top: 12.0),
                                       height: 40.0,
                                       decoration: BoxDecoration(
-                                        color: Color(0xff334155),
+                                        color: const Color(0xff334155),
                                         borderRadius: BorderRadius.circular(
                                           12.0,
                                         ),
@@ -1395,38 +1350,38 @@ showProjectDetailsDailog(
                                       child: Row(
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 left: 15.0, top: 0.0),
-                                            child: Text(
+                                            child: const Text(
                                               "Occurrence",
                                               style: TextStyle(
                                                   color: Color(0xff94A3B8),
-                                                  fontSize: 14.0.sp,
+                                                  fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
                                             ),
                                           ),
-                                          Spacer(),
+                                          const Spacer(),
                                           Container(
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 right: 40.0, top: 0.0),
-                                            child: Text(
+                                            child: const Text(
                                               "Responsible",
                                               style: TextStyle(
                                                   color: Color(0xff94A3B8),
-                                                  fontSize: 14.0.sp,
+                                                  fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 left: 15.0, right: 30.0),
-                                            child: Text(
+                                            child: const Text(
                                               "Date created",
                                               style: TextStyle(
                                                   color: Color(0xff94A3B8),
-                                                  fontSize: 14.0.sp,
+                                                  fontSize: 14.0,
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w500),
                                             ),
@@ -1437,7 +1392,8 @@ showProjectDetailsDailog(
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: EdgeInsets.only(top: 3.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 3.0),
                                         child: RawScrollbar(
                                           controller: _ScrollController,
                                           thumbColor: Color(0xff4b5563),
@@ -1453,11 +1409,13 @@ showProjectDetailsDailog(
                                               return Row(
                                                 children: [
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 45.0, top: 8.0),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 45.0,
+                                                            top: 8.0),
                                                     height: 12.0,
                                                     width: 12.0,
-                                                    decoration: BoxDecoration(
+                                                    decoration: const BoxDecoration(
                                                         color:
                                                             Color(0xffEF4444),
                                                         borderRadius:
@@ -1466,30 +1424,35 @@ showProjectDetailsDailog(
                                                                     20))),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 16.0, top: 8.0),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 16.0,
+                                                            top: 8.0),
                                                     child: Text(
                                                       roadblock[index],
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xffE2E8F0),
-                                                          fontSize: 14.0.sp,
+                                                          fontSize: 14.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w500),
                                                     ),
                                                   ),
-                                                  Spacer(),
+                                                  const Spacer(),
                                                   Container(
                                                     height: 28.0,
                                                     width: 28.0,
-                                                    margin: EdgeInsets.only(
-                                                        right: 98.0, top: 8.0),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            right: 98.0,
+                                                            top: 8.0),
                                                     decoration: BoxDecoration(
-                                                      color: Color(0xff334155),
+                                                      color: const Color(
+                                                          0xff334155),
                                                       border: Border.all(
-                                                          color:
-                                                              Color(0xff0F172A),
+                                                          color: const Color(
+                                                              0xff0F172A),
                                                           width: 3.0),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -1504,7 +1467,7 @@ showProjectDetailsDailog(
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
-                                                            fontSize: 10.0.sp,
+                                                            fontSize: 10.0,
                                                             fontFamily: 'Inter',
                                                             fontWeight:
                                                                 FontWeight
@@ -1513,15 +1476,17 @@ showProjectDetailsDailog(
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 8.0, right: 50.0),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 8.0,
+                                                            right: 50.0),
                                                     child: Text(
                                                       "$roadblockCreateDate1",
                                                       // roadblockCreateDate[0],
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xffffffff),
-                                                          fontSize: 14.0.sp,
+                                                          fontSize: 14.0,
                                                           fontFamily: 'Inter',
                                                           fontWeight:
                                                               FontWeight.w500),
@@ -1537,7 +1502,7 @@ showProjectDetailsDailog(
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -1561,7 +1526,7 @@ showProjectDetailsDailog(
                                                   .size
                                                   .width *
                                               0.99,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color:
                                                 // Colors.red,
                                                 Color(0xff263143),
@@ -1587,45 +1552,45 @@ showProjectDetailsDailog(
                               SizedBox(
                                   height: 60.0,
                                   width: MediaQuery.of(context).size.width,
-                                  child: Divider(
+                                  child: const Divider(
                                     color: Color(0xff424D5F),
                                     thickness: 0.7,
                                   )),
                               Row(
                                 children: [
                                   Container(
-                                    margin:
-                                        EdgeInsets.only(left: 50.0, top: 0.0),
-                                    child: Text(
+                                    margin: const EdgeInsets.only(
+                                        left: 50.0, top: 0.0),
+                                    child: const Text(
                                       "Timeline",
                                       style: TextStyle(
                                           color: Color(0xffFFFFFF),
-                                          fontSize: 16.0.sp,
+                                          fontSize: 16.0,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Row(
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             right: 8.0, top: 0.0),
                                         child: SvgPicture.asset(
                                           'images/plus.svg',
-                                          color: Color(0xff93C5FD),
+                                          color: const Color(0xff93C5FD),
                                           width: 10.0,
                                           height: 10.0,
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             right: 45.0, top: 0.0),
-                                        child: Text(
+                                        child: const Text(
                                           "Request resources",
                                           style: TextStyle(
                                               color: Color(0xff93C5FD),
-                                              fontSize: 12.0.sp,
+                                              fontSize: 12.0,
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.w700),
                                         ),
@@ -1636,23 +1601,23 @@ showProjectDetailsDailog(
                                     child: Row(
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(
+                                          margin: const EdgeInsets.only(
                                               right: 8.0, top: 0.0),
                                           child: SvgPicture.asset(
                                             'images/plus.svg',
-                                            color: Color(0xff93C5FD),
+                                            color: const Color(0xff93C5FD),
                                             width: 10.0,
                                             height: 10.0,
                                           ),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(
+                                          margin: const EdgeInsets.only(
                                               right: 80.0, top: 0.0),
-                                          child: Text(
+                                          child: const Text(
                                             "New phase",
                                             style: TextStyle(
                                                 color: Color(0xff93C5FD),
-                                                fontSize: 12.0.sp,
+                                                fontSize: 12.0,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w700),
                                           ),
@@ -1666,7 +1631,6 @@ showProjectDetailsDailog(
                                           builder: (context) {
                                             return NewPhase(id!, 0);
                                           });
-
                                       if (result != null && result) {
                                         response = await Provider.of<
                                                     ProjectHomeViewModel>(
@@ -1674,7 +1638,6 @@ showProjectDetailsDailog(
                                                 listen: false)
                                             .getProjectDetail(
                                                 response.data!.id!.toString());
-
                                         setState(() {});
                                       }
                                     },
@@ -1686,11 +1649,11 @@ showProjectDetailsDailog(
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.99,
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     left: 15.0, top: 12.0, right: 15.0),
                                 height: 50,
                                 decoration: BoxDecoration(
-                                  color: Color(0xff334155),
+                                  color: const Color(0xff334155),
                                   borderRadius: BorderRadius.circular(
                                     12.0,
                                   ),
@@ -1698,50 +1661,50 @@ showProjectDetailsDailog(
                                 child: Row(
                                   children: [
                                     Container(
-                                      margin:
-                                          EdgeInsets.only(left: 15.0, top: 0.0),
-                                      child: Text(
+                                      margin: const EdgeInsets.only(
+                                          left: 15.0, top: 0.0),
+                                      child: const Text(
                                         "Phase",
                                         style: TextStyle(
                                             color: Color(0xff94A3B8),
-                                            fontSize: 14.0.sp,
+                                            fontSize: 14.0,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Container(
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           right: 40.0, top: 0.0),
-                                      child: Text(
+                                      child: const Text(
                                         "From",
                                         style: TextStyle(
                                             color: Color(0xff94A3B8),
-                                            fontSize: 14.0.sp,
+                                            fontSize: 14.0,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           left: 16.0, right: 50.0),
-                                      child: Text(
+                                      child: const Text(
                                         "Till",
                                         style: TextStyle(
                                             color: Color(0xff94A3B8),
-                                            fontSize: 14.0.sp,
+                                            fontSize: 14.0,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           left: 15.0, right: 50.0),
-                                      child: Text(
+                                      child: const Text(
                                         "Action",
                                         style: TextStyle(
                                             color: Color(0xff94A3B8),
-                                            fontSize: 14.0.sp,
+                                            fontSize: 14.0,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500),
                                       ),
@@ -1765,20 +1728,15 @@ showProjectDetailsDailog(
                                         title!.substring(0, 2).toUpperCase();
                                     var date = phase.startDate;
                                     var endDate = phase.endDate;
-
                                     var _date = date.toString();
-
                                     var date1 = AppUtil.getFormatedDate(_date);
                                     var fromDate =
                                         AppUtil.formattedDateYear1(date1);
-
                                     var _endDate = endDate.toString();
-
                                     var date2 =
                                         AppUtil.getFormatedDate(_endDate);
                                     var tillDate =
                                         AppUtil.formattedDateYear1(date2);
-
                                     return Column(
                                       mainAxisSize: MainAxisSize.max,
                                       crossAxisAlignment:
@@ -1793,10 +1751,10 @@ showProjectDetailsDailog(
                                             Container(
                                               height: 38.0,
                                               width: 38.0,
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   left: 45.0, top: 12.0),
                                               decoration: BoxDecoration(
-                                                color: Color(0xff334155),
+                                                color: const Color(0xff334155),
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                   30.0,
@@ -1807,9 +1765,9 @@ showProjectDetailsDailog(
                                                 child: Text(
                                                   "$name",
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Color(0xffFFFFFF),
-                                                      fontSize: 12.0.sp,
+                                                      fontSize: 12.0,
                                                       fontFamily: 'Inter',
                                                       fontWeight:
                                                           FontWeight.w500),
@@ -1817,47 +1775,47 @@ showProjectDetailsDailog(
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   left: 16.0, top: 20.0),
                                               child: Text(
                                                 "$phaseType",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Color(0xffE2E8F0),
-                                                    fontSize: 14.0.sp,
+                                                    fontSize: 14.0,
                                                     fontFamily: 'Inter',
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Container(
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   top: 22.0, right: 42.0),
                                               child: Text(
                                                 "$fromDate",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Color(0xffffffff),
-                                                    fontSize: 14.0.sp,
+                                                    fontSize: 14.0,
                                                     fontFamily: 'Inter',
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   top: 22.0, right: 36.0),
                                               child: Text(
                                                 "$tillDate",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Color(0xffffffff),
-                                                    fontSize: 14.0.sp,
+                                                    fontSize: 14.0,
                                                     fontFamily: 'Inter',
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(
+                                              padding: const EdgeInsets.only(
                                                   right: 62.0, bottom: 8),
                                               child: Stack(children: [
                                                 MenuPhase(
@@ -1883,7 +1841,6 @@ showProjectDetailsDailog(
                                                                       .toString(),
                                                                   1);
                                                             });
-
                                                     if (result != null &&
                                                         result) {
                                                       response = await Provider
@@ -1893,7 +1850,6 @@ showProjectDetailsDailog(
                                                           .getProjectDetail(
                                                               response.data!.id!
                                                                   .toString());
-
                                                       setState(() {});
                                                     }
                                                   },
@@ -1914,7 +1870,7 @@ showProjectDetailsDailog(
                                           ],
                                         ),
                                         Container(
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 left: 30.0,
                                                 right: 30.0,
                                                 bottom: 0.0),
@@ -1922,7 +1878,7 @@ showProjectDetailsDailog(
                                                     .size
                                                     .width *
                                                 100.0,
-                                            child: Divider(
+                                            child: const Divider(
                                               color: Color(0xff94A3B8),
                                               thickness: 0.1,
                                             )),

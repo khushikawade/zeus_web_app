@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/daysList.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';

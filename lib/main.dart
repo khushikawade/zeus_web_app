@@ -5,7 +5,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
 import 'package:zeus/user_module/login_screen/login.dart';

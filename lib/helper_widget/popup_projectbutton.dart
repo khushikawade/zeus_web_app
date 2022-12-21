@@ -61,210 +61,204 @@ class _ProjectEditState extends State<ProjectEdit>
   }
 
   PopupMenuButtonView() {
-    return Center(
-      child: PopupMenuButton<int>(
-        tooltip: "",
-        // offset: widget.offset,
-        // color: const Color(0xFF0F172A),
-        // position: PopupMenuPosition.under,
-        constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
-        // padding: EdgeInsets.only(left: 50, right: 50),
-        offset: Offset(-35.w, -30.h),
-        position: PopupMenuPosition.under,
-        color: const Color(0xFF0F172A),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+    return PopupMenuButton<int>(
+      tooltip: "",
+      // offset: widget.offset,
+      // color: const Color(0xFF0F172A),
+      // position: PopupMenuPosition.under,
+      constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
+      // padding: EdgeInsets.only(left: 50, right: 50),
+      offset: Offset(-35.w, -30.h),
+      position: PopupMenuPosition.under,
+      color: const Color(0xFF0F172A),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
-        child: Container(
-          margin:
-              EdgeInsets.only(right: 0.0, top: 0.0, bottom: 38.h, left: 80.w),
-          height: 38.h,
-          width: 38.w,
-          decoration: BoxDecoration(
-              color: const Color(0xff334155),
-              border: Border.all(
-                color: ColorSelect.box_decoration,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(100.r))),
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.all(8.0.r),
-              child: SvgPicture.asset(
-                "images/edit.svg",
-                // height: 30,
-                // width: 30,
-              ),
+      child: Container(
+        height: 38.w,
+        width: 38.w,
+        decoration: BoxDecoration(
+            color: const Color(0xff334155),
+            border: Border.all(
+              color: ColorSelect.box_decoration,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(100.r))),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(8.0.r),
+            child: SvgPicture.asset(
+              "images/edit.svg",
+              // height: 30,
+              // width: 30,
             ),
           ),
         ),
+      ),
 
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            padding: EdgeInsets.zero,
-            value: 1,
-            child: InkWell(
-              hoverColor: Color(0xff1e293b),
-              onTap: () {
-                Navigator.pop(context);
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(
-                        builder: (context, setState) => AlertDialog(
-                          // scrollable: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          backgroundColor: const Color(0xff1E293B),
-                          content: Form(
-                              key: _formKey,
-                              child: CreateProjectPage(
-                                formKey: _formKey,
-                                response: widget.response,
-                              )),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          padding: EdgeInsets.zero,
+          value: 1,
+          child: InkWell(
+            hoverColor: Color(0xff1e293b),
+            onTap: () {
+              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return StatefulBuilder(
+                      builder: (context, setState) => AlertDialog(
+                        // scrollable: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                      );
-                    });
-              },
-              child: Container(
-                height: 50.h,
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
-                  child: Text(
-                    "Edit",
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
-                        color: ColorSelect.white_color),
-                  ),
+                        backgroundColor: const Color(0xff1E293B),
+                        content: Form(
+                            key: _formKey,
+                            child: CreateProjectPage(
+                              formKey: _formKey,
+                              response: widget.response,
+                            )),
+                      ),
+                    );
+                  });
+            },
+            child: Container(
+              height: 50.h,
+              width: double.infinity,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
+                child: Text(
+                  "Edit",
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
                 ),
               ),
             ),
           ),
-          PopupMenuItem(
-            padding: EdgeInsets.zero,
-            value: 2,
-            child: InkWell(
-              hoverColor: Color(0xff1e293b),
-              onTap: () {
-                Navigator.pop(context);
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(
-                        builder: (context, setState) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(28.0.r),
-                          ),
-                          backgroundColor:
-                              ColorSelect.peoplelistbackgroundcolor,
-                          content: Container(
-                            height: 110.0.h,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 20.0.r),
-                                  child: Text(
-                                    "Do you want to delete this project_detail?",
-                                    style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: 'Inter',
-                                        color: ColorSelect.white_color),
-                                  ),
+        ),
+        PopupMenuItem(
+          padding: EdgeInsets.zero,
+          value: 2,
+          child: InkWell(
+            hoverColor: Color(0xff1e293b),
+            onTap: () {
+              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return StatefulBuilder(
+                      builder: (context, setState) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28.0.r),
+                        ),
+                        backgroundColor: ColorSelect.peoplelistbackgroundcolor,
+                        content: Container(
+                          height: 110.0.h,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 20.0.r),
+                                child: Text(
+                                  "Do you want to delete this project_detail?",
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Inter',
+                                      color: ColorSelect.white_color),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 15.0.h),
-                                  child: Text(
-                                    "Once deleted, you will not find this project_detail in the list ",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'Inter',
-                                        color: ColorSelect.delete),
-                                  ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 15.0.h),
+                                child: Text(
+                                  "Once deleted, you will not find this project_detail in the list ",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Inter',
+                                      color: ColorSelect.delete),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 30.0.h),
-                                    child: Row(
-                                      children: [
-                                        Spacer(),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            margin:
-                                                EdgeInsets.only(right: 35.0.w),
-                                            child: const Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: 'Inter',
-                                                  color:
-                                                      ColorSelect.delete_text),
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            SmartDialog.showLoading(
-                                              msg:
-                                                  "Your request is in progress please wait for a while...",
-                                            );
-
-                                            Future.delayed(
-                                                const Duration(seconds: 2), () {
-                                              deleteProject(widget.id,
-                                                  widget.buildContext);
-                                            });
-                                          },
-                                          child: Text(
-                                            "Delete",
+                              ),
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 30.0.h),
+                                  child: Row(
+                                    children: [
+                                      Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.only(right: 35.0.w),
+                                          child: const Text(
+                                            "Cancel",
                                             style: TextStyle(
-                                                fontSize: 14.sp,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
                                                 color: ColorSelect.delete_text),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          SmartDialog.showLoading(
+                                            msg:
+                                                "Your request is in progress please wait for a while...",
+                                          );
+
+                                          Future.delayed(
+                                              const Duration(seconds: 2), () {
+                                            deleteProject(
+                                                widget.id, widget.buildContext);
+                                          });
+                                        },
+                                        child: Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: 'Inter',
+                                              color: ColorSelect.delete_text),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                            //MediaQueryx.of(context).size.height * 0.85,
+                                ),
+                              )
+                            ],
                           ),
+                          //MediaQueryx.of(context).size.height * 0.85,
                         ),
-                      );
-                    });
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50.h,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
-                  child: Text(
-                    "Delete",
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
-                        color: ColorSelect.white_color),
-                  ),
+                      ),
+                    );
+                  });
+            },
+            child: Container(
+              width: double.infinity,
+              height: 50.h,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      color: ColorSelect.white_color),
                 ),
               ),
             ),
-          )
-        ],
-        // child: Text(widget.title),
-      ),
+          ),
+        )
+      ],
+      // child: Text(widget.title),
     );
   }
 
