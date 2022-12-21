@@ -11,6 +11,7 @@ import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -24,7 +25,7 @@ import 'package:intl/intl.dart';
 import 'package:http_parser/http_parser.dart';
 
 class CreatePeoplePage extends StatefulWidget {
-  ProjectDetailResponse? response;
+  PeopleData? response;
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
 
   CreatePeoplePage({Key? key, this.formKey, this.response}) : super(key: key);
@@ -97,6 +98,8 @@ class _EditPageState extends State<CreatePeoplePage> {
     'Sunday',
   ];
 
+  var finalTime;
+
   bool? _isSelected = false;
 
   bool selectDepartment = false;
@@ -106,7 +109,6 @@ class _EditPageState extends State<CreatePeoplePage> {
   bool selectTime = false;
   bool selectTimeZone = false;
   bool selectImage = false;
-  bool saveButtonClick = false;
   List<int>? _selectedFile;
   List _timeline = [];
 
@@ -342,11 +344,140 @@ class _EditPageState extends State<CreatePeoplePage> {
     await getCurrency();
     await getTimeline();
     if (widget.response != null) {
-      //await updateControllerValue();
+      await updateControllerValue();
     }
     setState(() {
       dataLoading = false;
     });
+  }
+
+  // update controller value
+  updateControllerValue() {
+    _name.text =
+        widget.response!.name != null && widget.response!.name!.isNotEmpty
+            ? widget.response!.name!
+            : '';
+    _nickName.text = widget.response!.resource != null
+        ? widget.response!.resource!.nickname != null &&
+                widget.response!.resource!.nickname!.isNotEmpty
+            ? widget.response!.resource!.nickname!
+            : ''
+        : '';
+
+    _bio.text = widget.response!.resource != null
+        ? widget.response!.resource!.bio != null &&
+                widget.response!.resource!.bio!.isNotEmpty
+            ? widget.response!.resource!.bio!
+            : ''
+        : '';
+
+    _designation.text = widget.response!.resource != null
+        ? widget.response!.resource!.designation != null &&
+                widget.response!.resource!.designation!.isNotEmpty
+            ? widget.response!.resource!.designation!
+            : ''
+        : '';
+
+    _association.text = widget.response!.resource != null
+        ? widget.response!.resource!.associate != null &&
+                widget.response!.resource!.associate!.isNotEmpty
+            ? widget.response!.resource!.associate!
+            : ''
+        : '';
+
+    _salary.text = widget.response!.resource != null
+        ? widget.response!.resource!.salary != null
+            ? widget.response!.resource!.salary!.toString()
+            : ''
+        : '';
+
+    _availableDay.text = widget.response!.resource != null
+        ? widget.response!.resource!.availibiltyDay != null &&
+                widget.response!.resource!.availibiltyDay!.isNotEmpty
+            ? widget.response!.resource!.availibiltyDay!
+            : ''
+        : '';
+
+    final splitNames = _availableDay.text.split(", ");
+
+    for (int i = 0; i < splitNames.length; i++) {
+      selectedDaysList.add(splitNames[i]);
+    }
+
+    // _availableTime.text = widget.response!.resource != null
+    //     ? widget.response!.resource!.availibiltyTime != null &&
+    //             widget.response!.resource!.availibiltyTime!.isNotEmpty
+    //         ? widget.response!.resource!.availibiltyTime!
+    //         : ''
+    //     : '';
+
+    widget.response!.resource!.availibiltyTime != null
+        ? finalTime = widget.response!.resource!.availibiltyTime!
+        : " ";
+
+    finalTime.toString().trim();
+    if (finalTime.contains("-")) {
+      print("here");
+      List<String> splitedList = finalTime!.split("-");
+      startTime1 = splitedList[0].trim();
+      endTime2 = splitedList[1].trim();
+    } else {}
+
+    if (widget.response!.resource != null) {
+      _country.text = widget.response!.resource!.country != null &&
+              widget.response!.resource!.country!.isNotEmpty
+          ? widget.response!.resource!.country!
+          : '';
+    }
+
+    if (widget.response!.resource != null) {
+      _enterCity.text = widget.response!.resource!.city != null &&
+              widget.response!.resource!.city!.isNotEmpty
+          ? widget.response!.resource!.city!
+          : '';
+    }
+
+    _phoneNumber.text = widget.response!.phoneNumber != null &&
+            widget.response!.phoneNumber!.isNotEmpty
+        ? widget.response!.phoneNumber!
+        : '';
+
+    _emailAddress.text =
+        widget.response!.email != null && widget.response!.email!.isNotEmpty
+            ? widget.response!.email!
+            : '';
+
+    if (widget.response!.resource != null) {
+      _depat = widget.response!.resource!.department!.name!.isNotEmpty
+          ? widget.response!.resource!.departmentId.toString()
+          : '';
+    }
+
+    _time = widget.response!.resource != null &&
+            widget.response!.resource!.timeZone!.name!.isNotEmpty
+        ? widget.response!.resource!.timeZone!.id.toString()
+        : '';
+    if (widget.response!.resource != null) {
+      _salaryCurrency.text =
+          widget.response!.resource!.salaryCurrency != null &&
+                  widget.response!.resource!.salaryCurrency!.isNotEmpty
+              ? widget.response!.resource!.salaryCurrency!
+              : '';
+
+      if (widget.response!.resource!.skills!.isNotEmpty) {
+        widget.response!.resource!.skills!.forEach((element) {
+          if (abc.isNotEmpty) {
+            if (abc.contains(element.title!)) {
+            } else {
+              abc.add(element.title!.toString());
+            }
+          } else {
+            abc.add(element.title!.toString());
+          }
+          // abc.add(element.title!);
+        });
+      }
+    }
   }
 
   Future<String?> getTimeline() async {
@@ -577,9 +708,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       selectTimeZone == false ||
                                       selectImage == false ||
                                       selectDays == false ||
-                                      selectTime == false) {
-                                    saveButtonClick = false;
-                                  }
+                                      selectTime == false) {}
                                   Navigator.of(context).pop();
                                 },
                                 child: Align(
@@ -605,13 +734,32 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   top: 10.sp, right: 30.sp, bottom: 10.sp),
                               child: InkWell(
                                 onTap: () {
+                                  String availabilityTime = "";
+                                  if (startTime1 != null && endTime2 != null) {
+                                    availabilityTime =
+                                        '${startTime1}-${endTime2}';
+                                  } else {
+                                    availabilityTime = '';
+                                  }
+
                                   setState(() {
                                     createPeopleValidate = true;
                                     createButtonClick = true;
+
+                                    if (abc == null || abc.isEmpty) {
+                                      selectSkill = true;
+                                    }
+
+                                    if (availabilityTime == null ||
+                                        availabilityTime.isEmpty) {
+                                      selectTime = true;
+                                    }
                                   });
 
                                   if (widget.formKey!.currentState!
-                                      .validate()) {
+                                          .validate() &&
+                                      !selectSkill &&
+                                      !selectTime) {
                                     Future.delayed(
                                         const Duration(microseconds: 500), () {
                                       if (createPeopleValidate) {
@@ -638,9 +786,6 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       }
                                     });
                                   }
-                                  setState(() {
-                                    saveButtonClick = true;
-                                  });
                                 },
                                 child: Container(
                                   width: 97.w,
@@ -914,6 +1059,9 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       child: CustomSearchDropdown(
                                         hint: 'Select',
                                         label: "Department",
+                                        initialValue: getAllInitialValue(
+                                                departmentlist, _depat) ??
+                                            null,
                                         errorText: createButtonClick == true &&
                                                 (_depat == null ||
                                                     _depat!.isEmpty)
@@ -976,6 +1124,9 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       child: CustomSearchDropdown(
                                         hint: 'Select',
                                         label: "A",
+                                        initialValue: getAllInitialValue(
+                                                currencyList, _curren) ??
+                                            null,
                                         errorText: createButtonClick &&
                                                 (_curren == null ||
                                                     _curren!.isEmpty)
@@ -1214,6 +1365,12 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     ],
                                   ),
                                 ),
+                                selectTime
+                                    ? handleAllerrorWidget(selectTime)
+                                    : Container(
+                                        height: 0,
+                                        width: 0,
+                                      ),
                                 // Text(
                                 //   startTime1 != null &&
                                 //           startTime1.isNotEmpty &&
@@ -1274,7 +1431,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                         startTime1 =
                                             getformattedTime(startTime);
                                         endTime2 = getformattedTime(endTime);
-                                        selectTime = true;
+                                        selectTime = false;
                                       });
                                     }),
                                 SizedBox(
@@ -1402,12 +1559,19 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                 } else {
                                                   abc.add(item.title!);
                                                 }
+                                                selectSkill = false;
                                               });
                                             },
                                           ),
                                         ],
                                       ),
                                     ),
+                                    selectSkill
+                                        ? handleAllerrorWidget(selectSkill)
+                                        : Container(
+                                            height: 0,
+                                            width: 0,
+                                          ),
                                     SizedBox(
                                       height: 8.h,
                                     ),
@@ -1596,7 +1760,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           setState(() => name_ = text),
                                     ),
                                     CustomFormField(
-                                      maxLength: 20,
+                                      //maxLength: 20,
                                       controller: _emailAddress,
                                       hint: 'Enter email address',
                                       label: "Email address",
@@ -1647,6 +1811,9 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     CustomSearchDropdown(
                                       hint: "Select timezone",
                                       label: "Select",
+                                      initialValue: getAllInitialValue(
+                                              selecTimeZoneList, _time) ??
+                                          null,
                                       errorText: createButtonClick &&
                                               (_time == null || _time!.isEmpty)
                                           ? 'Please Select this field'
@@ -1673,6 +1840,26 @@ class _EditPageState extends State<CreatePeoplePage> {
               ),
             ),
     );
+  }
+
+  handleAllerrorWidget(bool selectTesting) {
+    return createButtonClick
+        ? !selectTesting
+            ? const Text(
+                " ",
+              )
+            : Padding(
+                padding: EdgeInsets.only(
+                  top: 4.sp,
+                  left: 12.sp,
+                ),
+                child: errorWidget())
+        : Text('');
+  }
+
+  errorWidget() {
+    return Text('Please Select this field',
+        style: TextStyle(color: Colors.red, fontSize: 12.sp));
   }
 
   DropdownModel? getAllInitialValue(List<DropdownModel>? list, String? id) {
@@ -1754,9 +1941,7 @@ class _EditPageState extends State<CreatePeoplePage> {
     print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
       SmartDialog.dismiss();
-      Navigator.pop(
-        context,
-      );
+
       //setState(() {
 
       //clearContoller();
@@ -1773,6 +1958,8 @@ class _EditPageState extends State<CreatePeoplePage> {
       _selectedFile = [];
       request.files.clear();
       // });
+
+      Navigator.pop(context, true);
 
       print("add people created");
     } else if (response.statusCode == 401) {

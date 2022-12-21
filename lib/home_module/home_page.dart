@@ -337,8 +337,8 @@ class _NavigationRailState extends State<MyHomePage>
   }
 
   //Create project_detail popup
-  void showAlertDialogPeople(BuildContext context) {
-    showDialog(
+  void showAlertDialogPeople(BuildContext context) async {
+    bool result = await showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(
@@ -357,6 +357,13 @@ class _NavigationRailState extends State<MyHomePage>
             ),
           );
         });
+
+    if (result != null && result) {
+      Provider.of<PeopleHomeViewModel>(context, listen: false)
+          .getPeopleDataList(searchText: '');
+
+      setState(() {});
+    }
   }
 
   //Add people popup
@@ -2093,7 +2100,7 @@ class _NavigationRailState extends State<MyHomePage>
   //                     ],
   //                   ),
   //                 ),
-                
+
   //               ),
   //             ),
   //           ),
