@@ -1280,6 +1280,7 @@ class _NewPhaseState extends State<NewPhase> {
                     onTap: () {
                       setState(() {
                         savePhaseClick = true;
+                        createButtonClick = true;
                         Future.delayed(const Duration(microseconds: 500), () {
                           if (_formKey.currentState!.validate()) {
                             if (allValidate && selectedSource.isNotEmpty) {
