@@ -42,6 +42,7 @@ showDailog(
       _curren,
       _status,
       roadblockCreateDate,
+      roadblockCreateDate1,
       rcName,
       fullName;
   List<String> abc = [];
@@ -352,16 +353,21 @@ showDailog(
         response.data!.roadblocks != null &&
         response.data!.roadblocks!.isNotEmpty) {
       response.data!.roadblocks!.forEach((element) {
-        if (element.rodblockDetails!.createdAt != null) {
-          roadblockCreateDate = element.rodblockDetails!.createdAt;
+        if (element.createdAt != null) {
+          roadblockCreateDate = element.createdAt.toString();
+
+          var newStr = roadblockCreateDate!.substring(0, 10) +
+              ' ' +
+              roadblockCreateDate!.substring(11, 23);
+          print(newStr);
+          DateTime dt = DateTime.parse(newStr);
+          roadblockCreateDate1 = DateFormat("d MMM").format(dt);
         } else {
-          roadblockCreateDate = 'N/A';
+          roadblockCreateDate1 = 'N/A';
         }
       });
-
-      ;
     } else {
-      'N/A';
+      roadblockCreateDate1 = 'N/A';
     }
 
     String firstName = "";
@@ -1532,7 +1538,7 @@ showDailog(
                                                             top: 8.0,
                                                             right: 50.0),
                                                     child: Text(
-                                                      "$roadblockCreateDate",
+                                                      "$roadblockCreateDate1",
                                                       // roadblockCreateDate[0],
                                                       style: TextStyle(
                                                           color:
