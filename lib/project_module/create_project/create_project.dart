@@ -27,20 +27,13 @@ class CreateProjectPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<CreateProjectPage> {
-  String dropdownvalue = 'Item 1';
-  String? _depat, _account, _custome, _curren, _status, _time, _tag;
+  String? _account, _custome, _curren, _status;
   DateTime? selectedDate;
-
   String name_ = '';
 
-  bool selectAccountablePerson = false;
-  bool selectCurrency = false;
-  bool selectStatus = false;
-  bool selectCustomer = false;
   bool createButtonClick = false;
-  bool selectDeliveryDate = false;
   bool createProjectValidate = true;
-  bool dataLoading = true;
+  bool dataLoading = false;
 
   TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -53,24 +46,11 @@ class _EditPageState extends State<CreateProjectPage> {
 
   final ScrollController verticalScroll = ScrollController();
 
-  bool _addSubmitted = false;
-  List _accountableId = [];
-  List _customerName = [];
-  List _currencyName = [];
-  List _statusList = [];
-  List _timeline = [];
-  List addTag = [];
-
   List<DropdownModel>? accountablePersonList = [];
   List<DropdownModel>? consumerList = [];
   List<DropdownModel>? projectStatusList = [];
 
   List<DropdownModel>? currencyList = [];
-  List<String>? addTag1 = [];
-  List<int> add1 = [1];
-  bool imageavail = false;
-  var isIndex = 0;
-  var isLoading = false;
 
   Future<String?> getSelectStatus() async {
     String? value;
@@ -87,11 +67,10 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _statusList = mdata;
           try {
             projectStatusList!.clear();
 
-            _statusList.forEach((element) {
+            mdata.forEach((element) {
               projectStatusList!.add(
                   DropdownModel(element['id'].toString(), element['title']));
             });
@@ -130,11 +109,10 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _accountableId = mdata;
           try {
             accountablePersonList!.clear();
 
-            _accountableId.forEach((element) {
+            mdata.forEach((element) {
               accountablePersonList!.add(
                   DropdownModel(element['id'].toString(), element['name']));
             });
@@ -173,11 +151,10 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _customerName = mdata;
           try {
             consumerList!.clear();
 
-            _customerName.forEach((element) {
+            mdata.forEach((element) {
               if (!currencyList!.contains(element)) {
                 consumerList!.add(
                     DropdownModel(element['id'].toString(), element['name']));
@@ -263,7 +240,9 @@ class _EditPageState extends State<CreateProjectPage> {
 
   callAllApi() async {
     setState(() {
-      dataLoading = true;
+      if (widget.response != null) {
+        dataLoading = true;
+      }
     });
 
     await getSelectStatus();
@@ -322,7 +301,7 @@ class _EditPageState extends State<CreateProjectPage> {
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700),
                         )),
-                        GestureDetector(
+                        InkWell(
                             onTap: () {
                               Navigator.of(context).pop();
                             },
@@ -380,7 +359,6 @@ class _EditPageState extends State<CreateProjectPage> {
                             setState(() {
                               _account = value.id;
                               print("account:${_account}");
-                              selectAccountablePerson = true;
                             });
                           }),
                         )),
@@ -403,7 +381,6 @@ class _EditPageState extends State<CreateProjectPage> {
                             setState(() {
                               _custome = value.id;
                               print("account:$_custome");
-                              selectCustomer = true;
                             });
                           }),
                         ))
@@ -479,9 +456,7 @@ class _EditPageState extends State<CreateProjectPage> {
                               items: currencyList!,
                               onChange: ((value) {
                                 _curren = value.id;
-                                setState(() {
-                                  selectCurrency = true;
-                                });
+                                setState(() {});
                               }),
                             )),
                         SizedBox(
@@ -527,7 +502,6 @@ class _EditPageState extends State<CreateProjectPage> {
                             setState(() {
                               _status = value.id;
                               print('value of status' + _status!);
-                              selectStatus = true;
                             });
                           }),
                         )),
@@ -570,23 +544,23 @@ class _EditPageState extends State<CreateProjectPage> {
                             Navigator.of(context).pop();
                           },
                           child: Container(
-                            width: 97,
-                            margin: const EdgeInsets.only(
-                              top: 16.0,
+                            width: 97.w,
+                            margin: EdgeInsets.only(
+                              top: 16.0.h,
                             ),
-                            height: 40.0,
+                            height: 40.0.h,
                             decoration: BoxDecoration(
                               color: const Color(0xff334155),
                               borderRadius: BorderRadius.circular(
-                                40.0,
+                                40.0.r,
                               ),
                             ),
-                            child: const Align(
+                            child: Align(
                               alignment: Alignment.center,
                               child: Text(
                                 "Cancel",
                                 style: TextStyle(
-                                    fontSize: 15.0,
+                                    fontSize: 15.0.sp,
                                     color: ColorSelect.white_color,
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.w700),
@@ -595,7 +569,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           ),
                         ),
                         SizedBox(
-                          width: 16,
+                          width: 16.w,
                         ),
                         InkWell(
                           onTap: () async {
@@ -626,24 +600,24 @@ class _EditPageState extends State<CreateProjectPage> {
                             }
                           },
                           child: Container(
-                            width: 97.0,
-                            margin: const EdgeInsets.only(
-                              top: 16.0,
-                              right: 10.0,
+                            width: 97.0.w,
+                            margin: EdgeInsets.only(
+                              top: 16.0.h,
+                              right: 10.0.w,
                             ),
-                            height: 40.0,
+                            height: 40.0.h,
                             decoration: BoxDecoration(
                               color: const Color(0xff7DD3FC),
                               borderRadius: BorderRadius.circular(
-                                40.0,
+                                40.0.r,
                               ),
                             ),
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                "Create",
+                                widget.response != null ? "Save" : "Create",
                                 style: TextStyle(
-                                    fontSize: 15.0,
+                                    fontSize: 15.0.sp,
                                     color: ColorSelect.black_color,
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.w700),
@@ -754,10 +728,9 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _currencyName = mdata;
           try {
             currencyList!.clear();
-            _currencyName.forEach((element) {
+            mdata.forEach((element) {
               if (!currencyList!.contains(element['currency']['symbol'])) {
                 currencyList!.add(DropdownModel(
                     element['id'].toString(), element['currency']['symbol']));
@@ -774,64 +747,5 @@ class _EditPageState extends State<CreateProjectPage> {
       }
       return value;
     }
-  }
-
-  Future<String?> getTagpeople() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/skills"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-
-        print("yes to much");
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAddpeople() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/tags"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          addTag = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  errorWidget() {
-    return Text('Please Select this field',
-        style:
-            TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
   }
 }
