@@ -46,23 +46,19 @@ class ProjectHomeState extends State<ProjectHome> {
   bool? amIHovering;
   bool? amIHovering1;
 
-  
   Offset exitFrom = const Offset(0, 0);
   bool hovered = false;
- 
+
   final ScrollController horizontalScroll = ScrollController();
   final double width = 18;
 
   final ScrollController verticalScrollcontroller = ScrollController();
-
 
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
   double? _scrollPosition = 0;
   double? _opacity = 0;
 
-
-  
   Future? getListData() async {
     var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
@@ -183,7 +179,6 @@ class ProjectHomeState extends State<ProjectHome> {
           } else {
             //print("96939633");
           }
-        
 
           String firstName = "";
           String lastName = "";
@@ -216,7 +211,8 @@ class ProjectHomeState extends State<ProjectHome> {
                     .then((val) {
                   showProjectDetailsDailog(
                     context,
-                    Provider.of<ProjectHomeViewModel>(context, listen: false).productData(),
+                    Provider.of<ProjectHomeViewModel>(context, listen: false)
+                        .productData(),
                     _statusList,
                     _currencyName,
                     _accountableId,
@@ -645,7 +641,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                   
                     ),
                   ),
                   DataColumn(

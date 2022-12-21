@@ -25,7 +25,7 @@ import '../home_module/home_page.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-showDailog(
+showProjectDetailsDailog(
     BuildContext context,
     ProjectDetailResponse response,
     List statusList,
