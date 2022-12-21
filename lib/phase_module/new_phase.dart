@@ -1075,6 +1075,7 @@ class _NewPhaseState extends State<NewPhase> {
                     onTap: () {
                       setState(() {
                         addMilestoneBtnClick = true;
+                        createButtonClick = true;
                       });
                       Future.delayed(const Duration(microseconds: 500), () {
                         if (_formKey.currentState!.validate()) {
@@ -1126,11 +1127,12 @@ class _NewPhaseState extends State<NewPhase> {
                       // contentpadding:
                       //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
                       // hintTextHeight: 1.7,
+
                       validator: (value) {
                         if (value.isEmpty) {
                           setState(() {
                             mileStoneTitle = value;
-                            //savePhaseValidate = false;
+                            //savePhaseValidate = false;git
                           });
 
                           return 'Please enter milestone title';
