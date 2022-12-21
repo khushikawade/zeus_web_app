@@ -224,6 +224,16 @@ class _EditPageState extends State<CreateProjectPage> {
         widget.response!.data != null && widget.response!.data!.currency != null
             ? widget.response!.data!.currency.toString()
             : '';
+
+    try {
+      DropdownModel? result = getAllInitialValue(projectStatusList, _status);
+      if (result != null) {
+        _status = result.id;
+      } else {
+        _status = null;
+      }
+    } catch (e) {}
+
     if (widget.response!.data != null &&
         widget.response!.data!.deliveryDate != null &&
         widget.response!.data!.deliveryDate!.isNotEmpty) {
@@ -269,7 +279,7 @@ class _EditPageState extends State<CreateProjectPage> {
       width: 523.w,
       child: dataLoading
           ? Center(
-              child: Text("Loading..."),
+              child: CircularProgressIndicator(),
             )
           : RawScrollbar(
               controller: verticalScroll,
@@ -634,7 +644,7 @@ class _EditPageState extends State<CreateProjectPage> {
     );
   }
 
-  getAllInitialValue(List<DropdownModel>? list, String? id) {
+  DropdownModel? getAllInitialValue(List<DropdownModel>? list, String? id) {
     if (widget.response != null && list!.isNotEmpty) {
       try {
         DropdownModel? result = list.firstWhere(
