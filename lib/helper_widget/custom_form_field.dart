@@ -51,7 +51,7 @@ class CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 9.sp),
+      margin: EdgeInsets.only(bottom: 18.h),
       child: Column(
         children: [
           SizedBox(
@@ -80,7 +80,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                 maxLength: widget.maxLength ?? null,
                 obscureText: widget.obsecqureText ?? false,
                 cursorColor: const Color(0xffFFFFFF),
-                style: const TextStyle(color: Color(0xffFFFFFF)),
+                style: TextStyle(color: Color(0xffFFFFFF), fontSize: 14.sp),
                 controller: widget.controller ?? TextEditingController(),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
@@ -99,9 +99,10 @@ class CustomFormFieldState extends State<CustomFormField> {
                   border: InputBorder.none,
                   labelText: widget.label ?? '',
                   labelStyle: TextStyle(
-                    fontSize: widget.fontSizeForLabel ?? 11.sp,
+                    fontSize: 13.sp,
+                    overflow: TextOverflow.fade,
                     color: Color(0xff64748B),
-                    fontFamily: 'Inter-Medium',
+                    fontFamily: 'Inter',
                     fontWeight: FontWeight.w500,
                   ),
                   hintText: widget.hint ?? '',
@@ -114,9 +115,10 @@ class CustomFormFieldState extends State<CustomFormField> {
                       fontWeight: FontWeight.w400),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   floatingLabelStyle: TextStyle(
-                      fontSize: 11.sp,
+                      fontSize: 13.sp,
+                      overflow: TextOverflow.fade,
                       color: Color(0xff64748B),
-                      fontFamily: 'Inter-Medium',
+                      fontFamily: 'Inter',
                       fontWeight: FontWeight.w500),
                   contentPadding:
                       widget.contentpadding ?? EdgeInsets.all(10.sp),
@@ -125,18 +127,20 @@ class CustomFormFieldState extends State<CustomFormField> {
               ),
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.sp, top: 4.sp),
-                child: Text(errorText ?? '',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        //height: 0.20.h,
-                        color: Colors.red)),
-              ),
-            ],
-          )
+          errorText != null && errorText!.isNotEmpty
+              ? Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.sp, top: 4.sp),
+                      child: Text(errorText ?? '',
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              //height: 0.20.h,
+                              color: Colors.red)),
+                    ),
+                  ],
+                )
+              : SizedBox.shrink()
         ],
       ),
     );
