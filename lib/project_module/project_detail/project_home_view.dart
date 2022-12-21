@@ -46,176 +46,23 @@ class ProjectHomeState extends State<ProjectHome> {
   bool? amIHovering;
   bool? amIHovering1;
 
-  Future? _getProjectDetail;
+  
   Offset exitFrom = const Offset(0, 0);
   bool hovered = false;
-  bool _isDownArrow = true;
+ 
   final ScrollController horizontalScroll = ScrollController();
   final double width = 18;
 
   final ScrollController verticalScrollcontroller = ScrollController();
 
-  final _verticalScrollController = ScrollController();
-  final _horizontalScrollController = ScrollController();
 
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
   double? _scrollPosition = 0;
   double? _opacity = 0;
 
-  _scrollListener() {
-    setState(() {
-      _scrollPosition;
-    });
-  }
 
-  showMenus(BuildContext context, int index) async {
-    await showMenu(
-      color: Color(0xff334155),
-      context: context,
-      position: RelativeRect.fromLTRB(450, 240, 120, 0),
-      items: [
-        PopupMenuItem(
-          child: Column(
-            children: [
-              Container(
-                width: 219.0,
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 219.0,
-                margin: EdgeInsets.only(top: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 219.0,
-                margin: EdgeInsets.only(top: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 219.0,
-                margin: EdgeInsets.only(top: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                        width: 32.0,
-                        height: 32.0,
-                        margin: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 8.0,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/id/237/200/300'),
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: const Text(
-                        'Ruben Culhane',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          /* const PopupMenuItem(
-          child: Text("Edit"),),
-        const PopupMenuItem(
-
-          child: Text("Delete"),),*/
-        ),
-      ],
-    );
-  }
-
-  // ScrollController _controller = ScrollController();
-
+  
   Future? getListData() async {
     var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
@@ -336,19 +183,7 @@ class ProjectHomeState extends State<ProjectHome> {
           } else {
             //print("96939633");
           }
-          //nextMileStone = AppUtil.formattedDate(_projectData.phase?[index].milestone?[index].mDate ?? "N/A");
-
-          // if (_projectData.currentPhase != null &&
-          //     _projectData.currentPhase!.milestone != null &&
-          //     _projectData.currentPhase!.currentMilestone!.mDate != null) {
-
-          // }
-          // // else if (_projectData.currentPhase!.currentMilestone == null) {
-          // //   nextMileStone = 'N/A';
-          // // }
-          // else {
-          //   nextMileStone = 'N/A';
-          // }
+        
 
           String firstName = "";
           String lastName = "";
@@ -379,10 +214,9 @@ class ProjectHomeState extends State<ProjectHome> {
                 Provider.of<ProjectHomeViewModel>(context, listen: false)
                     .getProjectDetail(_projectData.id!.toString())
                     .then((val) {
-                  showDailog(
+                  showProjectDetailsDailog(
                     context,
-                    Provider.of<ProjectHomeViewModel>(context, listen: false)
-                        .productData(),
+                    Provider.of<ProjectHomeViewModel>(context, listen: false).productData(),
                     _statusList,
                     _currencyName,
                     _accountableId,
@@ -772,31 +606,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   setState(() {
-                      //     amIHovering1 = true;
-                      //   });
-                      //   if (amIHovering1 == true) {
-                      //     popup = ShowMoreTextPopups(context,
-                      //         text: "Project name",
-                      //         textStyle: const TextStyle(
-                      //           color: Colors.white,
-                      //         ),
-                      //         backgroundColor: Color(0xFF475569),
-                      //         padding: EdgeInsets.all(6.0),
-                      //         borderRadius:
-                      //             BorderRadius.circular(28.0));
-
-                      //     popup!.show(
-                      //       widgetKey: key6,
-                      //     );
-                      //   }
-                      // },
-                      // onExit: ((event) {
-                      //   setState(() {
-                      //     amIHovering1 = false;
-                      //   });
-                      // }),
                     ),
                   ),
                   DataColumn(
@@ -810,23 +619,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Current phase",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key5,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -840,23 +632,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Status",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key4,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -870,23 +645,7 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "SPI",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key3,
-                      //   );
-                      // },
-                      // onTap: () {},
+                   
                     ),
                   ),
                   DataColumn(
@@ -900,23 +659,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Potential roadblock",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key8,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -930,23 +672,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Last update",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key9,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -960,24 +685,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popups =
-                      //       ShowMoreTextPopups(context,
-                      //           text: "Next milestone",
-                      //           onDismiss: () {},
-                      //           textStyle: const TextStyle(
-                      //             color: Colors.white,
-                      //           ),
-                      //           backgroundColor: Color(0xFF475569),
-                      //           padding: EdgeInsets.all(6.0),
-                      //           borderRadius:
-                      //               BorderRadius.circular(28.0));
-
-                      //   popups.show(
-                      //     widgetKey: key,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -991,23 +698,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Delivery date",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key2,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -1021,23 +711,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Deadline",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key1,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                   DataColumn(
@@ -1051,23 +724,6 @@ class ProjectHomeState extends State<ProjectHome> {
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500),
                       ),
-                      // onHover: (value) {
-                      //   ShowMoreTextPopups popup = ShowMoreTextPopups(
-                      //       context,
-                      //       text: "Resources",
-                      //       textStyle: const TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //       backgroundColor: Color(0xFF475569),
-                      //       padding: EdgeInsets.all(6.0),
-                      //       borderRadius:
-                      //           BorderRadius.circular(28.0));
-
-                      //   popup.show(
-                      //     widgetKey: key10,
-                      //   );
-                      // },
-                      // onTap: () {},
                     ),
                   ),
                 ],
@@ -1567,14 +1223,6 @@ class ProjectHomeState extends State<ProjectHome> {
               DataCell(
                 Text(
                   "N/A",
-                  // _projectData.phase != null &&
-                  //         _projectData.phase!.isNotEmpty &&
-                  //         _projectData.phase?[0]?.milestone != null &&
-                  //         _projectData.phase![0].milestone!.isNotEmpty
-                  //     ? AppUtil.formattedDateYear1(AppUtil.getFormatedDate(
-                  //         _projectData.phase?[0].milestone?[0].mDate ??
-                  //             "N/A"))
-                  //     : 'N/A',
                   style: const TextStyle(
                       color: ColorSelect.white_color,
                       fontSize: 14.0,
@@ -1614,20 +1262,6 @@ class ProjectHomeState extends State<ProjectHome> {
               ),
             ],
           ),
-          // DataRow(
-          //   cells: <DataCell>[
-          //     DataCell(Text('Janine')),
-          //     DataCell(Text('43')),
-          //     DataCell(Text('Professor')),
-          //   ],
-          // ),
-          // DataRow(
-          //   cells: <DataCell>[
-          //     DataCell(Text('William')),
-          //     DataCell(Text('27')),
-          //     DataCell(Text('Associate Professor')),
-          //   ],
-          // ),
         ],
       ),
     );
