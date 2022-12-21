@@ -34,12 +34,18 @@ class CreatePeoplePage extends StatefulWidget {
 }
 
 class _EditPageState extends State<CreatePeoplePage> {
-  String? _account, _custome, _curren, _status, _time, _day, _shortday;
+  String? _account,
+      _custome,
+      _curren,
+      _status,
+      _time = "",
+      _day = "",
+      _shortday = "";
   DateTime? selectedDate;
   String name_ = '';
 
   bool createButtonClick = false;
-  bool createProjectValidate = true;
+  bool createPeopleValidate = true;
   bool dataLoading = false;
   bool loading = true;
 
@@ -77,11 +83,21 @@ class _EditPageState extends State<CreatePeoplePage> {
 
   List<DropdownModel>? currencyList = [];
 
-  List<DropdownModel>? selectDaysList;
+  List<DropdownModel>? selectDaysList = [];
 
   bool imageavail = false;
 
-  bool? _isSelected;
+  var items1 = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+
+  bool? _isSelected = false;
 
   bool selectDepartment = false;
   bool selectSalary = false;
@@ -92,6 +108,7 @@ class _EditPageState extends State<CreatePeoplePage> {
   bool selectImage = false;
   bool saveButtonClick = false;
   List<int>? _selectedFile;
+  List _timeline = [];
 
   String? _depat;
 
@@ -303,6 +320,9 @@ class _EditPageState extends State<CreatePeoplePage> {
 
   @override
   void initState() {
+    items1.forEach((element) {
+      selectDaysList!.add(DropdownModel('', element));
+    });
     callAllApi();
 
     super.initState();
@@ -320,12 +340,51 @@ class _EditPageState extends State<CreatePeoplePage> {
     await getDepartment();
     await getCustomer();
     await getCurrency();
+    await getTimeline();
     if (widget.response != null) {
       //await updateControllerValue();
     }
     setState(() {
       dataLoading = false;
     });
+  }
+
+  Future<String?> getTimeline() async {
+    String? value;
+    if (value == null) {
+      var token = 'Bearer ' + storage.read("token");
+      var response = await http.get(
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        setState(() {
+          _timeline = mdata;
+
+          try {
+            selecTimeZoneList = [];
+            _timeline.forEach((element) {
+              print(element);
+              selecTimeZoneList!.add(DropdownModel(element['id'].toString(),
+                  '${element['name'] + ', ' + element['diff_from_gtm']}'));
+            });
+          } catch (e) {
+            print(e);
+          }
+        });
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context);
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+    return null;
   }
 
   Future<String?> getDepartment() async {
@@ -422,7 +481,7 @@ class _EditPageState extends State<CreatePeoplePage> {
               thumbColor: const Color(0xff4b5563),
               crossAxisMargin: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
               ),
               thickness: 8,
               child: ScrollConfiguration(
@@ -547,7 +606,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                               child: InkWell(
                                 onTap: () {
                                   setState(() {
-                                    createProjectValidate = true;
+                                    createPeopleValidate = true;
                                     createButtonClick = true;
                                   });
 
@@ -555,21 +614,27 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       .validate()) {
                                     Future.delayed(
                                         const Duration(microseconds: 500), () {
-                                      if (createProjectValidate) {
-                                        if (selectImage == true &&
-                                            selectDepartment == true &&
-                                            selectDays == true &&
-                                            selectSalary == true &&
-                                            selectSkill == true &&
-                                            selectTime == true &&
-                                            selectTimeZone == true) {
-                                          SmartDialog.showLoading(
-                                            msg:
-                                                "Your request is in progress please wait for a while...",
-                                          );
+                                      if (createPeopleValidate) {
+                                        SmartDialog.showLoading(
+                                          msg:
+                                              "Your request is in progress please wait for a while...",
+                                        );
 
-                                          createPeople(context);
-                                        }
+                                        createPeople(context);
+                                        // if (selectImage == true &&
+                                        //     selectDepartment == true &&
+                                        //     selectDays == true &&
+                                        //     selectSalary == true &&
+                                        //     selectSkill == true &&
+                                        //     selectTime == true &&
+                                        //     selectTimeZone == true) {
+                                        //   SmartDialog.showLoading(
+                                        //     msg:
+                                        //         "Your request is in progress please wait for a while...",
+                                        //   );
+
+                                        //   createPeople(context);
+                                        // }
                                       }
                                     });
                                   }
@@ -611,147 +676,148 @@ class _EditPageState extends State<CreatePeoplePage> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                      width: 120.0.sp,
-                                      height: 120.0.sp,
-                                      margin:
-                                          EdgeInsets.only(left: 27.0, top: 28),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        borderRadius:
-                                            BorderRadius.circular(200.0.r),
-                                      ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 27.sp,
+                                right: 27.sp,
+                                top: 27.sp,
+                                bottom: 27.sp),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.topLeft,
                                       child: ClipRRect(
                                         borderRadius:
-                                            BorderRadius.circular(200.0.r),
-                                        child: imageavail
-                                            ? Image.memory(
-                                                webImage!,
-                                                fit: BoxFit.fill,
-                                              )
-                                            : Padding(
-                                                padding: EdgeInsets.all(46.0),
-                                                child: SvgPicture.asset(
-                                                  'images/photo.svg',
-                                                  height: 36.0.h,
-                                                  width: 36.0.w,
-                                                )),
-                                      )),
-                                  Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 48.0.sp, top: 57.0.sp),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            final image = await ImagePickerWeb
-                                                .getImageAsBytes();
-                                            setState(() {
-                                              webImage = image!;
-                                              imageavail = true;
-                                              selectImage = true;
-                                            });
-                                          },
-                                          child: Container(
-                                            height: 35.0.h,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.11.w,
-                                            // margin: const EdgeInsets.only(
-                                            //     left: 48.0, top: 57.0),
+                                            BorderRadius.circular(100.sp),
+                                        child: Container(
+                                            width: 134.w,
+                                            height: 134.w,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              //color: Colors.red,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                40.0.r,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 16.0),
-                                                  child: const Icon(
-                                                      Icons.camera_alt,
-                                                      size: 18,
-                                                      color: Color(0xffFFFFFF)),
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: 11.0.sp),
-                                                  child: Flexible(
-                                                    child: Text(
-                                                      "Upload new",
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontSize: 14.0.sp,
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                                color: const Color(0xff334155),
+                                                shape: BoxShape.circle),
+                                            child: ClipRect(
+                                              child: imageavail
+                                                  ? Image.memory(
+                                                      webImage!,
+                                                      fit: BoxFit.fill,
+                                                      height: 134.h,
+                                                      width: 134.w,
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          EdgeInsets.all(49.sp),
+                                                      child: SvgPicture.asset(
+                                                        'images/photo.svg',
+                                                        height: 36.0.h,
+                                                        width: 36.0.w,
+                                                      )),
+                                            )),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30.w,
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        final image = await ImagePickerWeb
+                                            .getImageAsBytes();
+                                        setState(() {
+                                          webImage = image!;
+                                          imageavail = true;
+                                          selectImage = true;
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 35.h,
+                                        width: 148.w,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          //color: Colors.red,
+                                          borderRadius: BorderRadius.circular(
+                                            40.r,
                                           ),
                                         ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.camera_alt,
+                                                size: 18.sp,
+                                                color: Color(0xffFFFFFF)),
+                                            SizedBox(
+                                              width: 9.w,
+                                            ),
+                                            Text(
+                                              "Upload new",
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                  color: Color(0xffFFFFFF),
+                                                  fontSize: 14.sp,
+                                                  fontStyle: FontStyle.normal,
+                                                  letterSpacing: 0.1,
+                                                  fontFamily: 'Inter-Bold',
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    left: 30.0, top: 30.0),
-                                child: const Text(
-                                  "About you",
-                                  style: TextStyle(
-                                      color: Color(0xffFFFFFF),
-                                      fontSize: 18.0,
-                                      fontStyle: FontStyle.normal,
-                                      fontFamily: 'Inter-Bold',
-                                      fontWeight: FontWeight.w700),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 16.0,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 25,
-                                  left: 30.0,
-                                  bottom: 0,
+                                Row(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(top: 23.sp),
+                                      child: Text(
+                                        "About you",
+                                        style: TextStyle(
+                                            color: Color(0xffFFFFFF),
+                                            fontSize: 18.sp,
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'Inter-Bold',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                child: CustomFormField(
+                                SizedBox(
+                                  height: 8.h,
+                                ),
+                                CustomFormField(
                                   controller: _name,
                                   hint: 'Enter name',
                                   label: 'Name',
-                                  fontSizeForLabel: 14,
+                                  fontSizeForLabel: 14.sp,
                                   contentpadding: EdgeInsets.only(
-                                      left: 16, bottom: 10, right: 10, top: 10),
-                                  hintTextHeight: 1.7,
+                                      left: 16.sp,
+                                      bottom: 10.sp,
+                                      right: 10.sp,
+                                      top: 10.sp),
+                                  hintTextHeight: 1.7.sp,
                                   validator: (value) {
                                     RegExp regex = RegExp(r'^[a-z A-Z]+$',
                                         caseSensitive: false);
                                     if (value.isEmpty) {
                                       setState(() {
-                                        createProjectValidate = false;
+                                        createPeopleValidate = false;
                                       });
 
                                       return 'Please enter';
                                     } else if (!regex.hasMatch(value)) {
                                       setState(() {
-                                        createProjectValidate = false;
+                                        createPeopleValidate = false;
                                       });
                                       return 'Please enter valid name';
                                     }
@@ -760,22 +826,21 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   onChange: (text) =>
                                       setState(() => name_ = text),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 25, left: 30.0, bottom: 0),
-                                child: CustomFormField(
+                                CustomFormField(
                                   controller: _nickName,
                                   hint: 'Enter nickname',
                                   label: 'Nickname',
-                                  fontSizeForLabel: 14,
+                                  fontSizeForLabel: 14.sp,
                                   contentpadding: EdgeInsets.only(
-                                      left: 16, bottom: 10, right: 10, top: 10),
-                                  hintTextHeight: 1.7,
+                                      left: 16.sp,
+                                      bottom: 10.sp,
+                                      right: 10.sp,
+                                      top: 10.sp),
+                                  hintTextHeight: 1.7.h,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       setState(() {
-                                        createProjectValidate = false;
+                                        createPeopleValidate = false;
                                       });
 
                                       return 'Please enter';
@@ -785,25 +850,22 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   onChange: (text) =>
                                       setState(() => name_ = text),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 25,
-                                  left: 30.0,
-                                ),
-                                child: CustomFormField(
+                                CustomFormField(
                                   controller: _bio,
                                   maxline: 4,
-                                  fontSizeForLabel: 14,
+                                  fontSizeForLabel: 14.sp,
                                   hint: 'Enter your bio',
                                   label: 'Your bio',
                                   contentpadding: EdgeInsets.only(
-                                      left: 16, bottom: 10, right: 10, top: 10),
-                                  hintTextHeight: 1.7,
+                                      left: 16.sp,
+                                      bottom: 10.sp,
+                                      right: 10.sp,
+                                      top: 10.sp),
+                                  hintTextHeight: 1.7.h,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       setState(() {
-                                        createProjectValidate = false;
+                                        createPeopleValidate = false;
                                       });
 
                                       return 'Please enter';
@@ -813,92 +875,78 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   onChange: (text) =>
                                       setState(() => name_ = text),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 3.0),
-                                child: Row(
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          right: 16.0,
-                                          left: 30.0,
-                                        ),
-                                        child: CustomFormField(
-                                          controller: _designation,
-                                          maxLength: 20,
-                                          fontSizeForLabel: 14,
-                                          hint: 'Enter ',
-                                          label: 'Designation',
-                                          contentpadding: EdgeInsets.only(
-                                              left: 16,
-                                              bottom: 10,
-                                              right: 10,
-                                              top: 10),
-                                          hintTextHeight: 1.7,
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
+                                      child: CustomFormField(
+                                        controller: _designation,
+                                        maxLength: 20,
+                                        fontSizeForLabel: 14.sp,
+                                        hint: 'Enter ',
+                                        label: 'Designation',
+                                        contentpadding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            bottom: 10.sp,
+                                            right: 10.sp,
+                                            top: 10.sp),
+                                        hintTextHeight: 1.7.h,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            setState(() {
+                                              createPeopleValidate = false;
+                                            });
 
-                                              return 'Please enter';
-                                            }
-                                            return null;
-                                          },
-                                          onChange: (text) =>
-                                              setState(() => name_ = text),
-                                        ),
+                                            return 'Please enter';
+                                          }
+                                          return null;
+                                        },
+                                        onChange: (text) =>
+                                            setState(() => name_ = text),
                                       ),
                                     ),
                                     SizedBox(
                                       width: 8,
                                     ),
                                     Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 30.sp),
-                                        child: CustomSearchDropdown(
-                                          hint: 'Select',
-                                          label: "Department",
-                                          errorText:
-                                              createButtonClick == true &&
-                                                      (_depat == null ||
-                                                          _depat!.isEmpty)
-                                                  ? 'Please Select this field'
-                                                  : '',
-                                          items: departmentlist!,
-                                          onChange: ((value) {
-                                            // _curren = value.id;
-                                            _depat = value.id;
-                                            setState(() {
-                                              selectDepartment = true;
-                                            });
-                                          }),
-                                        ),
+                                      child: CustomSearchDropdown(
+                                        hint: 'Select',
+                                        label: "Department",
+                                        errorText: createButtonClick == true &&
+                                                (_depat == null ||
+                                                    _depat!.isEmpty)
+                                            ? 'Please Select this field'
+                                            : '',
+                                        items: departmentlist!,
+                                        onChange: ((value) {
+                                          // _curren = value.id;
+                                          _depat = value.id;
+                                          setState(() {
+                                            selectDepartment = true;
+                                          });
+                                        }),
                                       ),
                                     )
                                   ],
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 25, left: 30.0, bottom: 0),
-                                child: CustomFormField(
+                                CustomFormField(
                                   controller: _association,
                                   maxLength: 30,
                                   hint: 'Enter team name',
                                   label: "Associated with",
-                                  fontSizeForLabel: 14,
+                                  fontSizeForLabel: 14.sp,
                                   contentpadding: EdgeInsets.only(
-                                      left: 16, bottom: 10, right: 10, top: 10),
-                                  hintTextHeight: 1.7,
+                                      left: 16.sp,
+                                      bottom: 10.sp,
+                                      right: 10.sp,
+                                      top: 10.sp),
+                                  hintTextHeight: 1.7.h,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       setState(() {
-                                        createProjectValidate = false;
+                                        createPeopleValidate = false;
                                       });
 
                                       return 'Please enter';
@@ -908,25 +956,23 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   onChange: (text) =>
                                       setState(() => name_ = text),
                                 ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 30.0, top: 0.0),
-                                child: const Text(
+                                Text(
                                   "Salary",
                                   style: TextStyle(
                                       color: Color(0xffFFFFFF),
-                                      fontSize: 18.0,
-                                      fontFamily: 'Inter',
+                                      fontSize: 18.sp,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing: 0.1,
+                                      fontFamily: 'Inter-Bold',
                                       fontWeight: FontWeight.w700),
                                 ),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 14.sp, left: 26.0.sp, bottom: 0),
+                                SizedBox(height: 8.h),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
                                       child: CustomSearchDropdown(
                                         hint: 'Select',
                                         label: "A",
@@ -944,39 +990,35 @@ class _EditPageState extends State<CreatePeoplePage> {
                                         }),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 8.w,
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 14, right: 50, bottom: 0),
+                                    SizedBox(
+                                      width: 8.w,
+                                    ),
+                                    Expanded(
+                                      flex: 2,
                                       child: CustomFormField(
                                         controller: _salary,
                                         maxLength: 15,
                                         hint: '0.00',
                                         label: "Monthly Salary",
-                                        fontSizeForLabel: 14,
+                                        fontSizeForLabel: 14.sp,
                                         contentpadding: EdgeInsets.only(
-                                            left: 16,
-                                            bottom: 10,
-                                            right: 10,
-                                            top: 10),
-                                        hintTextHeight: 1.7,
+                                            left: 16.sp,
+                                            bottom: 10.sp,
+                                            right: 10.sp,
+                                            top: 10.sp),
+                                        hintTextHeight: 1.7.h,
                                         validator: (value) {
                                           RegExp regex =
                                               RegExp(r'^\D+|(?<=\d),(?=\d)');
                                           if (value.isEmpty) {
                                             setState(() {
-                                              createProjectValidate = false;
+                                              createPeopleValidate = false;
                                             });
 
                                             return 'Please enter';
                                           } else if (regex.hasMatch(value)) {
                                             setState(() {
-                                              createProjectValidate = false;
+                                              createPeopleValidate = false;
                                             });
                                             return 'Please enter valid salary';
                                           }
@@ -986,783 +1028,644 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             setState(() => name_ = text),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 11.w,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      height: 56,
+                                    SizedBox(
+                                      width: 8.w,
                                     ),
-                                  )
-                                ],
-                              ),
-                            ],
+                                    Expanded(
+                                      child: Container(
+                                        height: 56,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        // Container(
-                        //     height: MediaQuery.of(context).size.height * 1.2,
-                        //     child: const VerticalDivider(
-                        //       color: Color(0xff94A3B8),
-                        //       thickness: 0.2,
-                        //     )),
-                        // Expanded(
-                        //   flex: 1,
-                        //   child: Column(
-                        //     mainAxisAlignment: MainAxisAlignment.start,
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Container(
-                        //         margin:
-                        //             const EdgeInsets.only(left: 30.0, top: 27.0),
-                        //         child: const Text(
-                        //           "Availabilty",
-                        //           style: TextStyle(
-                        //               color: Color(0xffFFFFFF),
-                        //               fontSize: 18.0,
-                        //               fontFamily: 'Inter',
-                        //               fontWeight: FontWeight.w700),
-                        //         ),
-                        //       ),
-                        //       const SizedBox(
-                        //         height: 8.0,
-                        //       ),
-                        //       Stack(
-                        //         children: [
-                        //           // Column(
-                        //           //   crossAxisAlignment:
-                        //           //       CrossAxisAlignment.start,
-                        //           //   mainAxisAlignment:
-                        //           //       MainAxisAlignment.start,
-                        //           //   children: [
-                        //           //     Container(
-                        //           //       width: MediaQuery.of(context)
-                        //           //               .size
-                        //           //               .width *
-                        //           //           0.26,
-                        //           //       margin: const EdgeInsets.only(
-                        //           //           left: 30.0, right: 29.6),
-                        //           //       height: 56.0,
-                        //           //       decoration: BoxDecoration(
-                        //           //         color: const Color(0xff334155),
-                        //           //         borderRadius:
-                        //           //             BorderRadius.circular(
-                        //           //           8.0,
-                        //           //         ),
-                        //           //         boxShadow: const [
-                        //           //           BoxShadow(
-                        //           //             color: Color(0xff475569),
-                        //           //             offset: Offset(
-                        //           //               0.0,
-                        //           //               2.0,
-                        //           //             ),
-                        //           //             blurRadius: 0.0,
-                        //           //             spreadRadius: 0.0,
-                        //           //           )
-                        //           //         ],
-                        //           //       ),
-                        //           //     ),
-                        //           //     handleAllerrorWidget(selectDays)
-                        //           //   ],
-                        //           // ),
-                        //           // Container(
-                        //           //     margin: const EdgeInsets.only(
-                        //           //         top: 6.0, left: 45.0),
-                        //           //     child: const Text(
-                        //           //       "Select days",
-                        //           //       style: TextStyle(
-                        //           //           fontSize: 11.0,
-                        //           //           color: Color(0xff64748B),
-                        //           //           fontFamily: 'Inter',
-                        //           //           fontWeight: FontWeight.w500),
-                        //           //     )),
-                        //           // Container(
-                        //           //   margin: const EdgeInsets.only(
-                        //           //       left: 30.0,
-                        //           //       right: 55,
-                        //           //       top: 26,
-                        //           //       bottom: 10),
-                        //           //   height: 20.0,
-                        //           //   child: Container(
-                        //           //       margin: const EdgeInsets.only(
-                        //           //           left: 16.0, right: 20.0),
-                        //           //       child: StatefulBuilder(
-                        //           //         builder: (BuildContext context,
-                        //           //             StateSettersetState) {
-                        //           //           return DropdownButtonHideUnderline(
-                        //           //             child: CustomDropdownButton(
-                        //           //               dropdownColor:
-                        //           //                   ColorSelect.class_color,
-                        //           //               underline: Container(),
-                        //           //               hint: const Text(
-                        //           //                 "Select",
-                        //           //                 style: TextStyle(
-                        //           //                     fontSize: 14.0,
-                        //           //                     color:
-                        //           //                         Color(0xffFFFFFF),
-                        //           //                     fontFamily: 'Inter',
-                        //           //                     fontWeight:
-                        //           //                         FontWeight.w500),
-                        //           //               ),
-                        //           //               // isExpanded: true,
-                        //           //               icon: const Icon(
-                        //           //                 Icons.arrow_drop_down,
-                        //           //                 color: Color(0xff64748B),
-                        //           //               ),
-                        //           //               items: items1
-                        //           //                   .map((String items1) {
-                        //           //                 return DropdownMenuItem(
-                        //           //                   value: items1,
-                        //           //                   child: Text(items1,
-                        //           //                       style: (const TextStyle(
-                        //           //                           color: Colors
-                        //           //                               .white))),
-                        //           //                 );
-                        //           //               }).toList(),
-                        //           //               onChanged:
-                        //           //                   (String? newValue) {
-                        //           //                 setState(() {
-                        //           //                   _day = newValue;
-                        //           //                   _shortday = _day!
-                        //           //                       .substring(0, 3);
-                        //           //                   if (selectedDaysList
-                        //           //                       .isNotEmpty) {
-                        //           //                     if (selectedDaysList
-                        //           //                         .contains(
-                        //           //                             _shortday)) {
-                        //           //                     } else {
-                        //           //                       selectedDaysList
-                        //           //                           .add(_shortday!
-                        //           //                               .toString());
-                        //           //                       selectDays = true;
-                        //           //                     }
-                        //           //                   } else {
-                        //           //                     selectedDaysList.add(
-                        //           //                         _shortday!
-                        //           //                             .toString());
-                        //           //                     selectDays = true;
-                        //           //                   }
-                        //           //                 });
-                        //           //               },
-                        //           //             ),
-                        //           //           );
-                        //           //         },
-                        //           //       )),
-                        //           // ),
+                        Container(
+                            height: MediaQuery.of(context).size.height * 1.1,
+                            child: const VerticalDivider(
+                              color: Color(0xff94A3B8),
+                              thickness: 0.2,
+                            )),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 29.sp,
+                                right: 29.sp,
+                                top: 18.sp,
+                                bottom: 18.sp),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Availabilty",
+                                  style: TextStyle(
+                                      color: Color(0xffFFFFFF),
+                                      fontSize: 18.sp,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing: 0.1,
+                                      fontFamily: 'Inter-Bold',
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const SizedBox(
+                                  height: 8.0,
+                                ),
+                                Stack(
+                                  children: [
+                                    CustomSearchDropdown(
+                                      hint: 'Select days',
+                                      label: "Select",
+                                      errorText: createButtonClick &&
+                                              (_day == null || _day!.isEmpty)
+                                          ? 'Please Select this field'
+                                          : '',
+                                      items: selectDaysList!,
+                                      onChange: ((value) {
+                                        setState(() {
+                                          _day = value.item;
+                                          _shortday = _day!.substring(0, 3);
+                                          if (selectedDaysList.isNotEmpty) {
+                                            if (selectedDaysList
+                                                .contains(_shortday)) {
+                                            } else {
+                                              selectedDaysList
+                                                  .add(_shortday!.toString());
+                                              selectDays = true;
+                                            }
+                                          } else {
+                                            selectedDaysList
+                                                .add(_shortday!.toString());
+                                            selectDays = true;
+                                          }
+                                        });
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                                selectedDaysList != null &&
+                                        selectedDaysList.isNotEmpty
+                                    ? SizedBox(
+                                        height: 30.h,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: selectedDaysList.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8),
+                                              child: InputChip(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8.r))),
+                                                deleteIcon: Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                  size: 20.sp,
+                                                ),
+                                                backgroundColor:
+                                                    Color(0xff334155),
+                                                visualDensity:
+                                                    VisualDensity.compact,
+                                                materialTapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                                label: Text(
+                                                  selectedDaysList[index],
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                selected: _isSelected!,
+                                                onSelected: (bool selected) {
+                                                  setState(() {
+                                                    _isSelected = selected;
+                                                    print(
+                                                        "_isSelected--------------------------${_isSelected}");
+                                                  });
+                                                },
+                                                onDeleted: () {
+                                                  setState(() {
+                                                    selectedDaysList
+                                                        .removeAt(index);
+                                                  });
+                                                },
+                                                showCheckmark: false,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    : Container(),
+                                selectedDaysList.isNotEmpty
+                                    ? SizedBox(
+                                        height: 15.h,
+                                      )
+                                    : Container(),
+                                Container(
+                                  height: 57.h,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff334155),
+                                    borderRadius: BorderRadius.circular(
+                                      8.r,
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0xff475569),
+                                        offset: Offset(
+                                          0.0,
+                                          2.0,
+                                        ),
+                                        blurRadius: 0.0,
+                                        spreadRadius: 0.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 9.sp),
+                                          child: Text(
+                                            startTime1 != null &&
+                                                    startTime1.isNotEmpty &&
+                                                    endTime2 != null &&
+                                                    endTime2.isNotEmpty
+                                                ? "$startTime1 - $endTime2"
+                                                : "Select time",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: 'Inter',
+                                                color: Colors.white,
+                                                fontStyle: FontStyle.normal),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Text(
+                                //   startTime1 != null &&
+                                //           startTime1.isNotEmpty &&
+                                //           endTime2 != null &&
+                                //           endTime2.isNotEmpty
+                                //       ? "$startTime1 - $endTime2"
+                                //       : '',
+                                //   style: TextStyle(
+                                //       fontSize: 14.sp,
+                                //       color: Colors.white,
+                                //       fontFamily: 'Inter-Bold',
+                                //       letterSpacing: 0.1,
+                                //       fontStyle: FontStyle.normal,
+                                //       fontWeight: FontWeight.w500),
+                                // ),
+                                SizedBox(
+                                  height: 16.h,
+                                ),
+                                TimeRange(
+                                    fromTitle: Text(
+                                      'From',
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'Inter-Medium',
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.1,
+                                          fontSize: 14.sp,
+                                          color: Colors.white),
+                                    ),
+                                    toTitle: Text(
+                                      'To',
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'Inter-Medium',
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.1,
+                                          fontSize: 14.sp,
+                                          color: Colors.white),
+                                    ),
+                                    titlePadding: 16.sp,
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.white),
+                                    activeTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                    borderColor: Colors.white,
+                                    backgroundColor: Colors.transparent,
+                                    activeBackgroundColor: Colors.green,
+                                    firstTime: TimeOfDay(hour: 8, minute: 30),
+                                    lastTime: TimeOfDay(hour: 20, minute: 00),
+                                    timeStep: 10,
+                                    timeBlock: 30,
+                                    onRangeCompleted: (range) {
+                                      setState(() {
+                                        startTime = range!.start;
+                                        endTime = range.end;
+                                        startTime1 =
+                                            getformattedTime(startTime);
+                                        endTime2 = getformattedTime(endTime);
+                                        selectTime = true;
+                                      });
+                                    }),
+                                SizedBox(
+                                  height: 16.sp,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Skills",
+                                      style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontSize: 18.sp,
+                                          fontFamily: 'Inter-Bold',
+                                          fontStyle: FontStyle.normal,
+                                          letterSpacing: 0.1,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Container(
+                                        width: 40.w,
+                                        height: 40.h,
+                                        decoration: const BoxDecoration(
+                                          color: Color(0xff334155),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Container(
+                                          child: Padding(
+                                              padding: EdgeInsets.all(10.sp),
+                                              child: SvgPicture.asset(
+                                                  'images/tag_new.svg')),
+                                        )),
+                                  ],
+                                ),
 
-                        //           Expanded(
-                        //             child: Padding(
-                        //               padding: EdgeInsets.only(
-                        //                   right: 29.6.sp,
-                        //                   left: 25.0.sp,
-                        //                   bottom: 0),
-                        //               child: CustomSearchDropdown(
-                        //                 hint: 'Select days',
-                        //                 label: "Select",
-                        //                 errorText: createButtonClick &&
-                        //                         (_day == null || _day!.isEmpty)
-                        //                     ? 'Please Select this field'
-                        //                     : '',
-                        //                 items: selectDaysList!,
-                        //                 onChange: ((value) {
-                        //                   setState(() {
-                        //                     _day = value.item;
-                        //                     _shortday = _day!.substring(0, 3);
-                        //                     if (selectedDaysList.isNotEmpty) {
-                        //                       if (selectedDaysList
-                        //                           .contains(_shortday)) {
-                        //                       } else {
-                        //                         selectedDaysList
-                        //                             .add(_shortday!.toString());
-                        //                         selectDays = true;
-                        //                       }
-                        //                     } else {
-                        //                       selectedDaysList
-                        //                           .add(_shortday!.toString());
-                        //                       selectDays = true;
-                        //                     }
-                        //                   });
-                        //                 }),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //       selectedDaysList.isNotEmpty
-                        //           ? SizedBox(
-                        //               height: 30,
-                        //               child: Padding(
-                        //                 padding: EdgeInsets.only(left: 26),
-                        //                 child: ListView.builder(
-                        //                   scrollDirection: Axis.horizontal,
-                        //                   itemCount: selectedDaysList.length,
-                        //                   itemBuilder: (context, index) {
-                        //                     return Container(
-                        //                       margin: const EdgeInsets.only(
-                        //                           left: 12.0),
-                        //                       child: InputChip(
-                        //                         shape: RoundedRectangleBorder(
-                        //                             borderRadius:
-                        //                                 BorderRadius.all(
-                        //                                     Radius.circular(8))),
-                        //                         deleteIcon: Icon(
-                        //                           Icons.close,
-                        //                           color: Colors.white,
-                        //                           size: 20,
-                        //                         ),
-                        //                         backgroundColor:
-                        //                             Color(0xff334155),
-                        //                         visualDensity:
-                        //                             VisualDensity.compact,
-                        //                         materialTapTargetSize:
-                        //                             MaterialTapTargetSize
-                        //                                 .shrinkWrap,
-                        //                         label: Text(
-                        //                           selectedDaysList[index],
-                        //                           style: TextStyle(
-                        //                               color: Colors.white),
-                        //                         ),
-                        //                         selected: _isSelected!,
-                        //                         onSelected: (bool selected) {
-                        //                           setState(() {
-                        //                             _isSelected = selected;
-                        //                             print(
-                        //                                 "_isSelected--------------------------${_isSelected}");
-                        //                           });
-                        //                         },
-                        //                         onDeleted: () {
-                        //                           setState(() {
-                        //                             selectedDaysList
-                        //                                 .removeAt(index);
-                        //                           });
-                        //                         },
-                        //                         showCheckmark: false,
-                        //                       ),
-                        //                     );
-                        //                   },
-                        //                 ),
-                        //               ),
-                        //             )
-                        //           : Container(),
-                        //       selectedDaysList.isNotEmpty
-                        //           ? const SizedBox(
-                        //               height: 15,
-                        //             )
-                        //           : Container(),
-                        //       Stack(
-                        //         children: [
-                        //           Column(
-                        //             crossAxisAlignment: CrossAxisAlignment.start,
-                        //             mainAxisAlignment: MainAxisAlignment.start,
-                        //             children: [
-                        //               Padding(
-                        //                 padding: EdgeInsets.only(
-                        //                     right: 29.6.sp,
-                        //                     left: 25.0.sp,
-                        //                     bottom: 0),
-                        //                 child: Container(
-                        //                   height: 57.h,
-                        //                   decoration: BoxDecoration(
-                        //                     color: const Color(0xff334155),
-                        //                     borderRadius: BorderRadius.circular(
-                        //                       8.0,
-                        //                     ),
-                        //                     boxShadow: const [
-                        //                       BoxShadow(
-                        //                         color: Color(0xff475569),
-                        //                         offset: Offset(
-                        //                           0.0,
-                        //                           2.0,
-                        //                         ),
-                        //                         blurRadius: 0.0,
-                        //                         spreadRadius: 0.0,
-                        //                       ),
-                        //                     ],
-                        //                   ),
-                        //                 ),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //           Container(
-                        //               margin: const EdgeInsets.only(
-                        //                 top: 11.0,
-                        //                 left: 45.0,
-                        //               ),
-                        //               child: Text(
-                        //                 "Select time",
-                        //                 style: TextStyle(
-                        //                     fontSize: 11.sp,
-                        //                     color: Color(0xff64748B),
-                        //                     fontFamily: 'Inter',
-                        //                     fontWeight: FontWeight.w500),
-                        //               )),
-                        //           Container(
-                        //               margin: const EdgeInsets.only(
-                        //                 bottom: 16.0,
-                        //                 top: 28.0,
-                        //                 right: 10,
-                        //                 left: 45.0,
-                        //               ),
-                        //               child: Text(
-                        //                 startTime1 != null &&
-                        //                         startTime1.isNotEmpty &&
-                        //                         endTime2 != null &&
-                        //                         endTime2.isNotEmpty
-                        //                     ? "$startTime1 - $endTime2"
-                        //                     : '',
-                        //                 style: TextStyle(
-                        //                     fontSize: 14.sp,
-                        //                     color: Colors.white,
-                        //                     fontFamily: 'Inter',
-                        //                     fontWeight: FontWeight.w500),
-                        //               )),
-                        //         ],
-                        //       ),
-                        //       const SizedBox(
-                        //         height: 20,
-                        //       ),
-                        //       Padding(
-                        //         padding:
-                        //             const EdgeInsets.only(left: 16, right: 16),
-                        //         child: TimeRange(
-                        //             fromTitle: const Text(
-                        //               'From',
-                        //               style: TextStyle(
-                        //                   fontSize: 14, color: Colors.white),
-                        //             ),
-                        //             toTitle: const Text(
-                        //               'To',
-                        //               style: TextStyle(
-                        //                   fontSize: 14, color: Colors.white),
-                        //             ),
-                        //             titlePadding: 16,
-                        //             textStyle: const TextStyle(
-                        //                 fontWeight: FontWeight.normal,
-                        //                 color: Colors.white),
-                        //             activeTextStyle: const TextStyle(
-                        //                 fontWeight: FontWeight.bold,
-                        //                 color: Colors.white),
-                        //             borderColor: Colors.white,
-                        //             backgroundColor: Colors.transparent,
-                        //             activeBackgroundColor: Colors.green,
-                        //             firstTime: TimeOfDay(hour: 8, minute: 30),
-                        //             lastTime: TimeOfDay(hour: 20, minute: 00),
-                        //             timeStep: 10,
-                        //             timeBlock: 30,
-                        //             onRangeCompleted: (range) {
-                        //               setState(() {
-                        //                 startTime = range!.start;
-                        //                 endTime = range.end;
-                        //                 startTime1 = getformattedTime(startTime);
-                        //                 endTime2 = getformattedTime(endTime);
-                        //                 selectTime = true;
-                        //               });
-                        //             }),
-                        //       ),
-                        //       const SizedBox(
-                        //         height: 20.0,
-                        //       ),
-                        //       Row(
-                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           Container(
-                        //             margin: const EdgeInsets.only(
-                        //                 left: 30.0, bottom: 12),
-                        //             child: const Text(
-                        //               "Skills",
-                        //               style: TextStyle(
-                        //                   color: Color(0xffFFFFFF),
-                        //                   fontSize: 18.0,
-                        //                   fontFamily: 'Inter',
-                        //                   fontWeight: FontWeight.w700),
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //               width: 40.0,
-                        //               height: 40.0,
-                        //               margin: const EdgeInsets.only(
-                        //                 right: 60,
-                        //               ),
-                        //               decoration: const BoxDecoration(
-                        //                 color: Color(0xff334155),
-                        //                 shape: BoxShape.circle,
-                        //               ),
-                        //               child: Container(
-                        //                 child: Padding(
-                        //                     padding: const EdgeInsets.all(10.0),
-                        //                     child: SvgPicture.asset(
-                        //                         'images/tag_new.svg')),
-                        //               )),
-                        //         ],
-                        //       ),
-                        //       const SizedBox(
-                        //         height: 2,
-                        //       ),
-                        //       Column(
-                        //         mainAxisAlignment: MainAxisAlignment.start,
-                        //         crossAxisAlignment: CrossAxisAlignment.start,
-                        //         mainAxisSize: MainAxisSize.min,
-                        //         children: [
-                        //           Container(
-                        //             padding: EdgeInsets.only(
-                        //               left: 5,
-                        //               right: 5,
-                        //             ),
-                        //             margin: EdgeInsets.only(
-                        //                 right: 30.5.sp,
-                        //                 left: 25.0.sp,
-                        //                 top: 20.sp),
-                        //             height: 49.0.h,
-                        //             decoration: BoxDecoration(
-                        //               color: const Color(0xff334155),
-                        //               borderRadius: BorderRadius.circular(
-                        //                 48.0.r,
-                        //               ),
-                        //             ),
-                        //             child: Column(
-                        //               children: [
-                        //                 searchTextField = TypeAheadFormField(
-                        //                   keepSuggestionsOnLoading: false,
-                        //                   suggestionsBoxVerticalOffset: 0.0,
-                        //                   suggestionsBoxDecoration:
-                        //                       SuggestionsBoxDecoration(
-                        //                           color: Color(0xff0F172A)),
-                        //                   hideOnLoading: true,
-                        //                   suggestionsCallback: (pattern) {
-                        //                     return getSuggestions(pattern);
-                        //                   },
-                        //                   textFieldConfiguration:
-                        //                       TextFieldConfiguration(
-                        //                     controller: _typeAheadController,
-                        //                     style: const TextStyle(
-                        //                         color: Colors.white,
-                        //                         fontSize: 14.0),
-                        //                     keyboardType: TextInputType.text,
-                        //                     cursorColor: Colors.white,
-                        //                     autofocus: true,
-                        //                     decoration: const InputDecoration(
-                        //                       // border: InputBorder.none,
-                        //                       contentPadding: EdgeInsets.only(
-                        //                           top: 15.0, left: 10),
-                        //                       prefixIcon: Padding(
-                        //                           padding:
-                        //                               EdgeInsets.only(top: 4.0),
-                        //                           child: Icon(
-                        //                             Icons.search,
-                        //                             color: Color(0xff64748B),
-                        //                           )),
-                        //                       hintText: 'Search',
-                        //                       hintStyle: TextStyle(
-                        //                           fontSize: 14.0,
-                        //                           color: Colors.white,
-                        //                           fontFamily: 'Inter',
-                        //                           fontWeight: FontWeight.w400),
-                        //                       border: InputBorder.none,
-                        //                     ),
-                        //                   ),
-                        //                   itemBuilder: (context, item) {
-                        //                     return Padding(
-                        //                       padding: const EdgeInsets.all(8.0),
-                        //                       child: Text(
-                        //                         item.title.toString(),
-                        //                         style: const TextStyle(
-                        //                             fontSize: 16.0,
-                        //                             color: Colors.white),
-                        //                       ),
-                        //                     );
-                        //                     // Text("khushi");
-                        //                     // rowResourceName(item);
-                        //                   },
-                        //                   transitionBuilder: (context,
-                        //                       suggestionsBox, controller) {
-                        //                     return suggestionsBox;
-                        //                   },
-                        //                   onSuggestionSelected: (item) {
-                        //                     setState(() {
-                        //                       searchTextField!
-                        //                           .textFieldConfiguration
-                        //                           .controller!
-                        //                           .text = '';
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        left: 5,
+                                        right: 5,
+                                      ),
+                                      margin: EdgeInsets.only(top: 16.sp),
+                                      height: 49.h,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        borderRadius: BorderRadius.circular(
+                                          48.r,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          searchTextField = TypeAheadFormField(
+                                            keepSuggestionsOnLoading: false,
+                                            suggestionsBoxVerticalOffset: 0.0,
+                                            suggestionsBoxDecoration:
+                                                SuggestionsBoxDecoration(
+                                                    color: Color(0xff0F172A)),
+                                            hideOnLoading: true,
+                                            suggestionsCallback: (pattern) {
+                                              return getSuggestions(pattern);
+                                            },
+                                            textFieldConfiguration:
+                                                TextFieldConfiguration(
+                                              controller: _typeAheadController,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp),
+                                              keyboardType: TextInputType.text,
+                                              cursorColor: Colors.white,
+                                              autofocus: true,
+                                              decoration: InputDecoration(
+                                                // border: InputBorder.none,
+                                                contentPadding: EdgeInsets.only(
+                                                    top: 15.sp, left: 10.sp),
+                                                prefixIcon: Icon(
+                                                  Icons.search,
+                                                  color: Color(0xff64748B),
+                                                ),
+                                                hintText: 'Search',
+                                                hintStyle: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Inter-Medium',
+                                                    letterSpacing: 0.1,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                                border: InputBorder.none,
+                                              ),
+                                            ),
+                                            itemBuilder: (context, item) {
+                                              return Padding(
+                                                padding: EdgeInsets.all(8.sp),
+                                                child: Text(
+                                                  item.title.toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      color: Colors.white),
+                                                ),
+                                              );
+                                              // Text("khushi");
+                                              // rowResourceName(item);
+                                            },
+                                            transitionBuilder: (context,
+                                                suggestionsBox, controller) {
+                                              return suggestionsBox;
+                                            },
+                                            onSuggestionSelected: (item) {
+                                              setState(() {
+                                                searchTextField!
+                                                    .textFieldConfiguration
+                                                    .controller!
+                                                    .text = '';
 
-                        //                       if (abc.isNotEmpty) {
-                        //                         if (abc.contains(item.title)) {
-                        //                         } else {
-                        //                           abc.add(item.title!);
-                        //                         }
-                        //                       } else {
-                        //                         abc.add(item.title!);
-                        //                       }
-                        //                     });
-                        //                   },
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //           Padding(
-                        //             padding: EdgeInsets.only(left: 30),
-                        //             child: Wrap(
-                        //               spacing: 5,
-                        //               runSpacing: 5,
-                        //               children: List.generate(
-                        //                 abc.length,
-                        //                 (index) {
-                        //                   return Container(
-                        //                     height: 32,
-                        //                     margin: const EdgeInsets.only(
-                        //                         left: 5.0, right: 5.0),
-                        //                     child: InputChip(
-                        //                       shape: const RoundedRectangleBorder(
-                        //                           borderRadius: BorderRadius.all(
-                        //                               Radius.circular(8))),
-                        //                       deleteIcon: const Icon(
-                        //                         Icons.close,
-                        //                         color: Colors.white,
-                        //                         size: 20,
-                        //                       ),
-                        //                       backgroundColor: Color(0xff334155),
-                        //                       visualDensity:
-                        //                           VisualDensity.compact,
-                        //                       materialTapTargetSize:
-                        //                           MaterialTapTargetSize
-                        //                               .shrinkWrap,
-                        //                       label: Text(
-                        //                         abc[index],
-                        //                         style: TextStyle(
-                        //                             color: Colors.white),
-                        //                       ),
-                        //                       onSelected: (bool selected) {
-                        //                         setState(() {
-                        //                           _isSelected = selected;
-                        //                         });
-                        //                       },
-                        //                       onDeleted: () {
-                        //                         setState(() {
-                        //                           abc.removeAt(index);
-                        //                         });
-                        //                       },
-                        //                       showCheckmark: false,
-                        //                     ),
-                        //                   );
-                        //                 },
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //     height: MediaQuery.of(context).size.height * 1.2,
-                        //     child: const VerticalDivider(
-                        //       color: Color(0xff94A3B8),
-                        //       thickness: 0.2,
-                        //     )),
-                        // Expanded(
-                        //   flex: 1,
-                        //   child: Column(
-                        //     mainAxisAlignment: MainAxisAlignment.start,
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Container(
-                        //         margin:
-                        //             const EdgeInsets.only(left: 30.0, top: 27.0),
-                        //         child: const Text(
-                        //           "Contact info",
-                        //           style: TextStyle(
-                        //               color: Color(0xffFFFFFF),
-                        //               fontSize: 18.0,
-                        //               fontFamily: 'Inter',
-                        //               fontWeight: FontWeight.w700),
-                        //         ),
-                        //       ),
-                        //       const SizedBox(
-                        //         height: 8.0,
-                        //       ),
-                        //       Padding(
-                        //         padding: EdgeInsets.only(
-                        //           left: 30,
-                        //           right: 30,
-                        //         ),
-                        //         child: Column(
-                        //           children: [
-                        //             CustomFormField(
-                        //               maxLength: 20,
-                        //               controller: _country,
-                        //               hint: 'Enter country',
-                        //               label: "Country",
-                        //               fontSizeForLabel: 14,
-                        //               contentpadding: EdgeInsets.only(
-                        //                   left: 16,
-                        //                   bottom: 10,
-                        //                   right: 10,
-                        //                   top: 10),
-                        //               hintTextHeight: 1.7,
-                        //               validator: (value) {
-                        //                 RegExp regex = RegExp(r'^[a-z A-Z]+$');
-                        //                 if (value.isEmpty) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                                if (abc.isNotEmpty) {
+                                                  if (abc
+                                                      .contains(item.title)) {
+                                                  } else {
+                                                    abc.add(item.title!);
+                                                  }
+                                                } else {
+                                                  abc.add(item.title!);
+                                                }
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 8.h,
+                                    ),
+                                    Wrap(
+                                      spacing: 5.sp,
+                                      runSpacing: 5.sp,
+                                      children: List.generate(
+                                        abc.length,
+                                        (index) {
+                                          return Container(
+                                            height: 32.h,
+                                            child: InputChip(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              8.r))),
+                                              deleteIcon: Icon(
+                                                Icons.close,
+                                                color: Colors.white,
+                                                size: 20.sp,
+                                              ),
+                                              backgroundColor:
+                                                  Color(0xff334155),
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              label: Text(
+                                                abc[index],
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              onSelected: (bool selected) {
+                                                setState(() {
+                                                  _isSelected = selected;
+                                                });
+                                              },
+                                              onDeleted: () {
+                                                setState(() {
+                                                  abc.removeAt(index);
+                                                });
+                                              },
+                                              showCheckmark: false,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                            height: MediaQuery.of(context).size.height * 1.1,
+                            child: const VerticalDivider(
+                              color: Color(0xff94A3B8),
+                              thickness: 0.2,
+                            )),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 29.sp,
+                                right: 29.sp,
+                                top: 18.sp,
+                                bottom: 18.sp),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Contact info",
+                                  style: TextStyle(
+                                      color: Color(0xffFFFFFF),
+                                      fontSize: 18.sp,
+                                      fontFamily: 'Inter-Bold',
+                                      letterSpacing: 0.1,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                SizedBox(
+                                  height: 8.h,
+                                ),
+                                Column(
+                                  children: [
+                                    CustomFormField(
+                                      maxLength: 20,
+                                      controller: _country,
+                                      hint: 'Enter country',
+                                      label: "Country",
+                                      fontSizeForLabel: 14.sp,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16.sp,
+                                          bottom: 10.sp,
+                                          right: 10.sp,
+                                          top: 10.sp),
+                                      hintTextHeight: 1.7.h,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$');
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter';
-                        //                 } else if (!regex.hasMatch(value)) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter valid  country name';
-                        //                 }
-                        //                 return null;
-                        //               },
-                        //               onChange: (text) =>
-                        //                   setState(() => name_ = text),
-                        //             ),
-                        //             CustomFormField(
-                        //               maxLength: 20,
-                        //               controller: _enterCity,
-                        //               hint: 'Enter city',
-                        //               label: "City",
-                        //               fontSizeForLabel: 14,
-                        //               contentpadding: EdgeInsets.only(
-                        //                   left: 16,
-                        //                   bottom: 10,
-                        //                   right: 10,
-                        //                   top: 10),
-                        //               hintTextHeight: 1.7,
-                        //               validator: (value) {
-                        //                 RegExp regex = RegExp(r'^[a-z A-Z]+$');
-                        //                 if (value.isEmpty) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter valid  country name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
+                                    CustomFormField(
+                                      maxLength: 20,
+                                      controller: _enterCity,
+                                      hint: 'Enter city',
+                                      label: "City",
+                                      fontSizeForLabel: 14.sp,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16.sp,
+                                          bottom: 10.sp,
+                                          right: 10.sp,
+                                          top: 10.sp),
+                                      hintTextHeight: 1.7.h,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$');
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter';
-                        //                 } else if (!regex.hasMatch(value)) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter valid  city name';
-                        //                 }
-                        //                 return null;
-                        //               },
-                        //               onChange: (text) =>
-                        //                   setState(() => name_ = text),
-                        //             ),
-                        //             CustomFormField(
-                        //               maxLength: 10,
-                        //               controller: _phoneNumber,
-                        //               hint: 'Enter number',
-                        //               label: "Phone number",
-                        //               fontSizeForLabel: 14,
-                        //               contentpadding: EdgeInsets.only(
-                        //                   left: 16,
-                        //                   bottom: 10,
-                        //                   right: 10,
-                        //                   top: 10),
-                        //               hintTextHeight: 1.7,
-                        //               validator: (value) {
-                        //                 String pattern =
-                        //                     r'(^(?:[+0]9)?[0-9]{10}$)';
-                        //                 RegExp regExp = new RegExp(pattern);
-                        //                 if (value.isEmpty) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter valid  city name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
+                                    CustomFormField(
+                                      maxLength: 10,
+                                      controller: _phoneNumber,
+                                      hint: 'Enter number',
+                                      label: "Phone number",
+                                      fontSizeForLabel: 14.sp,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16.sp,
+                                          bottom: 10.sp,
+                                          right: 10.sp,
+                                          top: 10.sp),
+                                      hintTextHeight: 1.7.h,
+                                      validator: (value) {
+                                        String pattern =
+                                            r'(^(?:[+0]9)?[0-9]{10}$)';
+                                        RegExp regExp = new RegExp(pattern);
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter';
-                        //                 } else if (!regExp.hasMatch(value)) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter';
+                                        } else if (!regExp.hasMatch(value)) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter valid mobile number';
-                        //                 }
-                        //                 return null;
-                        //               },
-                        //               onChange: (text) =>
-                        //                   setState(() => name_ = text),
-                        //             ),
-                        //             CustomFormField(
-                        //               maxLength: 20,
-                        //               controller: _emailAddress,
-                        //               hint: 'Enter email address',
-                        //               label: "Email address",
-                        //               fontSizeForLabel: 14,
-                        //               contentpadding: EdgeInsets.only(
-                        //                   left: 16,
-                        //                   bottom: 10,
-                        //                   right: 10,
-                        //                   top: 10),
-                        //               hintTextHeight: 1.7,
-                        //               validator: (value) {
-                        //                 RegExp regex = RegExp(
-                        //                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                        //                 if (value.isEmpty) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter valid mobile number';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
+                                    CustomFormField(
+                                      maxLength: 20,
+                                      controller: _emailAddress,
+                                      hint: 'Enter email address',
+                                      label: "Email address",
+                                      fontSizeForLabel: 14.sp,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16.sp,
+                                          bottom: 10.sp,
+                                          right: 10.sp,
+                                          top: 10.sp),
+                                      hintTextHeight: 1.7.h,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Please enter email';
-                        //                 } else if (!regex.hasMatch(value)) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
+                                          return 'Please enter email';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
 
-                        //                   return 'Enter valid Email';
-                        //                 }
-                        //                 if (regex.hasMatch(values)) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
-                        //                   return 'please enter valid email';
-                        //                 }
-                        //                 if (value.length > 50) {
-                        //                   setState(() {
-                        //                     createProjectValidate = false;
-                        //                   });
-                        //                   return 'No more length 50';
-                        //                 }
-                        //                 return null;
-                        //               },
-                        //               onChange: (text) =>
-                        //                   setState(() => name_ = text),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //       Stack(
-                        //         children: [
-                        //           Expanded(
-                        //             child: Padding(
-                        //               padding: EdgeInsets.only(
-                        //                   right: 29.6.sp,
-                        //                   left: 25.0.sp,
-                        //                   bottom: 0),
-                        //               child: CustomSearchDropdown(
-                        //                 hint: "Select timezone",
-                        //                 label: "Select",
-                        //                 errorText: createButtonClick &&
-                        //                         (_time == null || _time!.isEmpty)
-                        //                     ? 'Please Select this field'
-                        //                     : '',
-                        //                 items: selecTimeZoneList!,
-                        //                 onChange: ((value) {
-                        //                   setState(() {
-                        //                     _time = value.item;
-                        //                     print("account:$_time");
-                        //                     selectTimeZone = true;
-                        //                   });
-                        //                 }),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
+                                          return 'Enter valid Email';
+                                        }
+                                        if (regex.hasMatch(values)) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
+                                          return 'please enter valid email';
+                                        }
+                                        if (value.length > 50) {
+                                          setState(() {
+                                            createPeopleValidate = false;
+                                          });
+                                          return 'No more length 50';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
+                                  ],
+                                ),
+                                Stack(
+                                  children: [
+                                    CustomSearchDropdown(
+                                      hint: "Select timezone",
+                                      label: "Select",
+                                      errorText: createButtonClick &&
+                                              (_time == null || _time!.isEmpty)
+                                          ? 'Please Select this field'
+                                          : '',
+                                      items: selecTimeZoneList!,
+                                      onChange: ((value) {
+                                        setState(() {
+                                          _time = value.item;
+                                          print("account:$_time");
+                                          selectTimeZone = true;
+                                        });
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
