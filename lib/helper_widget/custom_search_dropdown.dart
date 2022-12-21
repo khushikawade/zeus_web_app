@@ -11,6 +11,7 @@ class CustomSearchDropdown extends StatefulWidget {
   String? errorText;
   EdgeInsets? paddingForLabeltext;
   double? fontsizeForLabel;
+  DropdownModel? initialValue;
 
   Function(DropdownModel value)? onChange;
   CustomSearchDropdown(
@@ -21,7 +22,8 @@ class CustomSearchDropdown extends StatefulWidget {
       this.onChange,
       this.errorText,
       this.paddingForLabeltext,
-      this.fontsizeForLabel});
+      this.fontsizeForLabel,
+      this.initialValue});
 
   @override
   State<CustomSearchDropdown> createState() => _MyHomePageState();
@@ -30,6 +32,15 @@ class CustomSearchDropdown extends StatefulWidget {
 class _MyHomePageState extends State<CustomSearchDropdown> {
   DropdownModel? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (widget.initialValue != null) {
+      selectedValue = widget.initialValue;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {

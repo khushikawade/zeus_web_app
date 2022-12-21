@@ -12,6 +12,7 @@ import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
+import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
@@ -36,8 +37,17 @@ showDailog(
   DateTime? selectedDateReminder;
   DateTime? selectedDateDevlivery;
   DateTime? selectedDateDeadline;
-  String? _account, _custome, _curren, _status;
+  String? _account,
+      _custome,
+      _curren,
+      _status,
+      roadblockCreateDate,
+      roadblockCreateDate1,
+      rcName,
+      fullName;
   List<String> abc = [];
+  List<String> roadblock = [];
+
   final ValueChanged<String> onSubmit;
   var _id = id;
   var _formKey = GlobalKey<FormState>();
@@ -328,6 +338,64 @@ showDailog(
         }
       });
     }
+
+    if (response.data != null &&
+        response.data!.roadblocks != null &&
+        response.data!.roadblocks!.isNotEmpty) {
+      response.data!.roadblocks!.forEach((element) {
+        if (!roadblock.contains(element.rodblockDetails!.description)) {
+          roadblock.add(element.rodblockDetails!.description!);
+        }
+      });
+    }
+
+    if (response.data != null &&
+        response.data!.roadblocks != null &&
+        response.data!.roadblocks!.isNotEmpty) {
+      response.data!.roadblocks!.forEach((element) {
+        if (element.createdAt != null) {
+          roadblockCreateDate = element.createdAt.toString();
+
+          var newStr = roadblockCreateDate!.substring(0, 10) +
+              ' ' +
+              roadblockCreateDate!.substring(11, 23);
+          print(newStr);
+          DateTime dt = DateTime.parse(newStr);
+          roadblockCreateDate1 = DateFormat("d MMM").format(dt);
+        } else {
+          roadblockCreateDate1 = 'N/A';
+        }
+      });
+    } else {
+      roadblockCreateDate1 = 'N/A';
+    }
+
+    String firstName = "";
+    String lastName = "";
+    // String fullName = '';
+
+    if (response.data != null && response.data!.roadblocks != null)
+      response.data!.roadblocks!.forEach((element) {
+        if (element.responsiblePerson != null &&
+            element.responsiblePerson!.name != null) {
+          rcName = element.responsiblePerson!.name;
+          if (rcName!.contains(" ")) {
+            List<String> splitedList =
+                element.responsiblePerson!.name!.split(" ");
+
+            firstName = splitedList[0];
+            lastName = splitedList[1];
+
+            fullName = firstName.substring(0, 1).toUpperCase() +
+                lastName.substring(0, 1).toUpperCase();
+          } else {
+            fullName =
+                element.responsiblePerson!.name!.substring(0, 1).toUpperCase();
+          }
+        } else {
+          fullName = ' ';
+        }
+      });
     // _status = response.data != null &&
     //         response.data!.status != null &&
     //         response.data!.status!.isNotEmpty
@@ -638,6 +706,7 @@ showDailog(
                                                 ),
                                               ],
                                             ),
+
                                             ProjectEdit(
                                                 accountableId: accountableId,
                                                 currencyList: currencyName,
@@ -1391,7 +1460,7 @@ showDailog(
                                             controller: _ScrollController,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
-                                            itemCount: 13,
+                                            itemCount: roadblock.length,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               return Row(
@@ -1416,8 +1485,8 @@ showDailog(
                                                         const EdgeInsets.only(
                                                             left: 16.0,
                                                             top: 8.0),
-                                                    child: const Text(
-                                                      "Technology not define yet",
+                                                    child: Text(
+                                                      roadblock[index],
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xffE2E8F0),
@@ -1447,11 +1516,11 @@ showDailog(
                                                         30.0,
                                                       ),
                                                     ),
-                                                    child: const Align(
+                                                    child: Align(
                                                       alignment:
                                                           Alignment.center,
                                                       child: Text(
-                                                        "RC",
+                                                        "$fullName",
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xffFFFFFF),
@@ -1468,8 +1537,9 @@ showDailog(
                                                         const EdgeInsets.only(
                                                             top: 8.0,
                                                             right: 50.0),
-                                                    child: const Text(
-                                                      "13 Jul",
+                                                    child: Text(
+                                                      "$roadblockCreateDate1",
+                                                      // roadblockCreateDate[0],
                                                       style: TextStyle(
                                                           color:
                                                               Color(0xffffffff),
