@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zeus/services/model/phase_details.dart';
 import 'package:zeus/services/model/subtask_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget subTaskList(context, PhaseDetails phaseDetails,
         {required Null Function(SubTasksModel values, int index, String action)
@@ -15,26 +16,26 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
             itemCount: phaseDetails.sub_tasks?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.only(
-                    left: 15.0, bottom: 15, top: 0, right: 15),
+                padding: EdgeInsets.only(
+                    left: 29.5.sp, bottom: 16.sp, top: 16.sp, right: 31.sp),
                 child: Container(
                     width: MediaQuery.of(context).size.width * 0.30,
-                    height: 115.0,
+                    height: 114.h,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
 
                       //border: Border.all(color:  const Color(0xff1E293B)),
 
                       borderRadius: BorderRadius.circular(
-                        8.0,
+                        8.0.r,
                       ),
 
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
                           color: Color(0xff475569),
                           offset: Offset(
-                            0.0,
-                            2.0,
+                            0.0.sp,
+                            2.0.sp,
                           ),
                           blurRadius: 0.0,
                           spreadRadius: 0.0,
@@ -42,13 +43,12 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                       ],
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, right: 16, top: 5),
+                      padding: EdgeInsets.only(left: 12.sp),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
+                            padding: EdgeInsets.only(top: 12.5.sp),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,13 +56,13 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                 Row(
                                   children: [
                                     Container(
-                                        height: 35,
-                                        width: 80,
+                                        height: 32.h,
+                                        width: 71.w,
                                         // margin: const EdgeInsets.only(left: 12.0),
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           color: Color(0xff475569),
                                           borderRadius: BorderRadius.all(
-                                            Radius.circular(8),
+                                            Radius.circular(8.r),
                                           ),
                                         ),
                                         child: Align(
@@ -74,29 +74,29 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                                       ?.department_name ??
                                                   '',
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   color: Color(0xffFFFFFF),
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.w300),
                                             )))
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 8,
+                                SizedBox(
+                                  height: 8.h,
                                 ),
                                 Row(
                                   children: [
                                     Column(
                                       children: [
                                         Container(
-                                            width: 23.0,
-                                            height: 23.0,
+                                            width: 23.w,
+                                            height: 23.h,
                                             // margin: const EdgeInsets.only(
                                             //   top: 26.0,
                                             //   left: 10.0,
                                             // ),
                                             child: CircleAvatar(
-                                              radius: 13,
+                                              radius: 13.r,
                                               backgroundImage: NetworkImage(
                                                   phaseDetails
                                                           .sub_tasks?[index]
@@ -107,7 +107,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                       ],
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 5.w,
                                     ),
                                     Column(
                                       children: [
@@ -115,21 +115,21 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                             phaseDetails.sub_tasks?[index]
                                                     .resource?.resource_name ??
                                                 '',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 13,
+                                                fontSize: 13.sp,
                                                 fontWeight: FontWeight.w900))
                                       ],
                                     )
                                   ],
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: 5.h),
                                 Row(
                                   children: [
                                     Text(
                                         "${phaseDetails.sub_tasks?[index].start_date ?? ''} - ${phaseDetails.sub_tasks?[index].end_date ?? ''}",
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
+                                        style: TextStyle(
+                                            fontSize: 14.0.sp,
                                             color: Color(0xff8897ac),
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500))
@@ -140,77 +140,78 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                           ),
                           Column(
                             children: [
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          callback(
-                                              phaseDetails.sub_tasks![index],
-                                              index,
-                                              'Edit');
-                                        },
-                                        child: const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 20.0, top: 7),
-                                            child: CircleAvatar(
-                                                backgroundColor:
-                                                    Color(0xff475569),
-                                                radius: 20,
-                                                child: Icon(Icons.edit,
-                                                    color: Colors.white,
-                                                    size: 20)
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(top: 15.sp, right: 16.sp),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            callback(
+                                                phaseDetails.sub_tasks![index],
+                                                index,
+                                                'Edit');
+                                          },
+                                          child: CircleAvatar(
+                                              backgroundColor:
+                                                  Color(0xff475569),
+                                              radius: 20.r,
+                                              child: Icon(Icons.edit,
+                                                  color: Colors.white,
+                                                  size: 18.sp)
 
-                                                // SvgPicture.asset(
+                                              // SvgPicture.asset(
 
-                                                //   'images/photo.svg',
+                                              //   'images/photo.svg',
 
-                                                //   width: 24.0,
+                                              //   width: 24.0,
 
-                                                //   height: 24.0,
+                                              //   height: 24.0,
 
-                                                // ),
+                                              // ),
 
-                                                )),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          callback(
-                                              phaseDetails.sub_tasks![index],
-                                              index,
-                                              'Delete');
-                                        },
-                                        child: const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10.0, top: 7),
-                                            child: CircleAvatar(
-                                                backgroundColor:
-                                                    Color(0xff475569),
-                                                radius: 20,
-                                                child: Icon(Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 20)
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 8.w,
+                                    ),
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            callback(
+                                                phaseDetails.sub_tasks![index],
+                                                index,
+                                                'Delete');
+                                          },
+                                          child: CircleAvatar(
+                                              backgroundColor:
+                                                  Color(0xff475569),
+                                              radius: 20.r,
+                                              child: Icon(Icons.delete,
+                                                  color: Colors.white,
+                                                  size: 18.sp)
 
-                                                // SvgPicture.asset(
+                                              // SvgPicture.asset(
 
-                                                //   'images/photo.svg',
+                                              //   'images/photo.svg',
 
-                                                //   width: 24.0,
+                                              //   width: 24.0,
 
-                                                //   height: 24.0,
+                                              //   height: 24.0,
 
-                                                // ),
+                                              // ),
 
-                                                )),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                              ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           )

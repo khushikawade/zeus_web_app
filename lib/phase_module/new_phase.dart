@@ -65,7 +65,7 @@ class _NewPhaseState extends State<NewPhase> {
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
   // List<ResourceData> selectedSubTaskSource = [];
-   List<ResourceData> selectedSubTaskSource = [];
+  List<ResourceData> selectedSubTaskSource = [];
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   GlobalKey<FormState> _mileStoneFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> _subtaskFormKey = GlobalKey<FormState>();
@@ -93,7 +93,7 @@ class _NewPhaseState extends State<NewPhase> {
 
   bool savePhaseValidate = true;
   String name_ = '';
-
+  List<DropdownModel> departmentlist = [];
   TypeAheadFormField? searchTextField;
   TypeAheadFormField? subTaskResourcesSearchTextField;
   TypeAheadFormField? searchTextFieldForLanguage;
@@ -524,44 +524,65 @@ class _NewPhaseState extends State<NewPhase> {
                     errorText: (createButtonClick &&
                             phaseDetails.end_date == null)
                         ? 'Please enter end date'
-                        : phaseDetails.start_date != null
-                            ? (((createButtonClick &&
-                                    AppUtil.stringToDate(phaseDetails.end_date!)
+                        : phaseDetails.start_date != null &&
+                                phaseDetails.end_date != null
+                            ? (AppUtil.stringToDate(phaseDetails.end_date!) ==
+                                    AppUtil.stringToDate(
+                                        phaseDetails.start_date!)
+                                ? ((AppUtil.stringToDate(phaseDetails.end_date!)
                                         .isBefore((AppUtil.stringToDate(
                                             phaseDetails.start_date!)))))
-                                ? "End date must be greater then the start date"
-                                : ((AppUtil.stringToDate(phaseDetails.end_date!)
-                                        .isAtSameMomentAs((AppUtil.stringToDate(
-                                            phaseDetails.start_date!)))))
-                                    ? 'End date should not be same as start date'
-                                    : '')
-                            : '',
-                    validator: (value) {},
-                  )
+                                    ? "End date must be greater then the start date"
+                                    : ((AppUtil.stringToDate(
+                                                phaseDetails.end_date!)
+                                            .isAtSameMomentAs(
+                                                (AppUtil.stringToDate(
+                                                    phaseDetails
+                                                        .start_date!)))))
+                                        ? 'End date should not be same as start date'
+                                        : ''
+                                : '')
+                            : ''
+
+                    // ((AppUtil.stringToDate(phaseDetails.end_date!)
+                    //         .isAtSameMomentAs((AppUtil.stringToDate(
+                    //             phaseDetails.start_date!)))))
+                    //     ? 'End date should not be same as start date'
+                    //     :
+
+                    ,
+                    validator: (value) {
+                      // {
+                      //   if (value.isEmpty ||
+                      //       value == null ||
+                      //       phaseDetails.end_date == null ||
+                      //       phaseDetails.end_date!.isEmpty) {
+                      //     // checkFormStatus();
+                      //     return 'Please enter end date';
+                      //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                      //       .isBefore((AppUtil.stringToDate(
+                      //           phaseDetails.start_date!))))) {
+                      //     return 'End date must be greater then the start date';
+                      //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                      //       .isAtSameMomentAs((AppUtil.stringToDate(
+                      //           phaseDetails.start_date!))))) {
+                      //     return 'End date should not be same as start date';
+                      //   } else {
+                      //     return null;
+                      //   }
+                      //   setState(() {});
+                      // }
+                    },
+                  ),
                 ],
               ),
             ),
-
-            // formField(
-            //     controller: controller_phase_type,
-            //     labelText: "Phase Type",
-            //     context: context,
-            //     callback: (values) {
-            //       setState(() {
-            //         phaseDetails.phase_type = values;
-            //       });
-            //     },
-            //     validateCallback: (value) {
-            //       if (value.isEmpty ||
-            //           phaseDetails.phase_type!.isEmpty ||
-            //           phaseDetails.phase_type == null) {
-            //         // setState(() {
-            //         //   //savePhaseValidate = false;
-            //         // });
-            //         return 'Please enter phase type';
-            //       }
-            //       return null;
-            //     }),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 22.sp,
+              ),
+              child: titleHeadlineWidget("Resources needed", 16.0.sp),
+            ),
 
             // DatePicker(
             //   subtitle: 'Start date',
@@ -623,286 +644,231 @@ class _NewPhaseState extends State<NewPhase> {
             // },
             // ),
 
-            Padding(
-              padding: EdgeInsets.only(left: 10, bottom: 10),
-              child: titleHeadlineWidget("Resources needed", 16.0),
-            ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.26,
-              margin: const EdgeInsets.only(left: 20.0),
+              // width: MediaQuery.of(context).size.width * 0.26,
+              margin: EdgeInsets.only(left: 16.0.sp, right: 62.5.sp),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: CircleAvatar(
-                            backgroundColor: Color(0xff334155),
-                            radius: 30,
-                            child: Icon(
-                              Icons.person_outline,
-                              size: 30,
-                              color: Color(0xffDADADA),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 10.sp,
+                    ),
+                    child: Container(
+                      height: 60.h,
+                      width: 60.w,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: CircleAvatar(
+                              backgroundColor: Color(0xff334155),
+                              radius: 30.r,
+                              child: Icon(
+                                Icons.person_outline,
+                                size: 30.sp,
+                                color: Color(0xffDADADA),
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                color: Color(0xff10B981),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Center(
-                                  child: Icon(Icons.add,
-                                      color: Colors.white, size: 18)),
-                            ))
-                      ],
+                          Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(3.sp),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff10B981),
+                                  borderRadius: BorderRadius.circular(100.r),
+                                ),
+                                child: Center(
+                                    child: Icon(Icons.add,
+                                        color: Colors.white, size: 18)),
+                              ))
+                        ],
+                      ),
                     ),
                   ),
-                  // Expanded(
-                  //   child: Container(
-                  //     margin: const EdgeInsets.only(left: 20.0),
-                  //     width: (MediaQuery.of(context).size.width * 3),
-                  //     height: 56.0,
-                  //     decoration: BoxDecoration(
-                  //       color: const Color(0xff334155),
-                  //       borderRadius: BorderRadius.circular(
-                  //         8.0,
-                  //       ),
-                  //     ),
-                  //     child: Container(
-                  //       margin: const EdgeInsets.only(
-                  //         left: 9.2,
-                  //       ),
-                  //       height: 21.0,
-                  //       child: Container(
-
-                  //           // padding: const dgeInsets.all(2.0),
-                  //           child: StatefulBuilder(
-                  //         builder: (BuildContext context, StateSettersetState) {
-                  //           return DropdownButtonHideUnderline(
-                  //             child: CustomDropdownButton(
-                  //               dropdownColor: ColorSelect.class_color,
-                  //               value: _depat,
-                  //               underline: Container(),
-                  //               hint: const Text(
-                  //                 "Type",
-                  //                 style: TextStyle(
-                  //                     fontSize: 14.0,
-                  //                     color: Color(0xffFFFFFF),
-                  //                     fontFamily: 'Inter',
-                  //                     fontWeight: FontWeight.w500),
-                  //               ),
-                  //               // isExpanded: true,
-                  //               icon: const Icon(
-                  //                 Icons.arrow_drop_down,
-                  //                 color: Color(0xff64748B),
-                  //               ),
-                  //               items: _department.map((items) {
-                  //                 return DropdownMenuItem(
-                  //                   value: items,
-                  //                   child: Text(
-                  //                     items['name'],
-                  //                     style: const TextStyle(
-                  //                         fontSize: 14.0,
-                  //                         color: Color(0xffFFFFFF),
-                  //                         fontFamily: 'Inter',
-                  //                         fontWeight: FontWeight.w400),
-                  //                   ),
-                  //                 );
-                  //               }).toList(),
-                  //               onChanged: (dynamic newValue) {
-                  //                 setState(() {
-                  //                   print(newValue);
-
-                  //                   print(newValue);
-                  //                   _depat = newValue;
-                  //                   print(newValue);
-
-                  //                   if (newValue != null) {
-                  //                     startloading = true;
-                  //                     getResourcesNeeded(
-                  //                         newValue['id'].toString());
-                  //                   }
-                  //                 });
-                  //               },
-                  //             ),
-                  //           );
-                  //         },
-                  //       )),
-                  //     ),
-                  //   ),
-                  // ),
-
                   Expanded(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 25.0,
+                            padding: EdgeInsets.only(
+                              left: 18.0.sp,
                             ),
-                            child: PopupMenuButton<int>(
-                              tooltip: '',
-                              // offset: const Offset(0, 7),
-                              position: PopupMenuPosition.under,
-                              color: Color(0xFF0F172A),
-                              child: Container(
-                                  // margin: const EdgeInsets.only(left: 20.0),
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.22),
-                                  height: 56.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    borderRadius: BorderRadius.circular(
-                                      8.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16.0),
-                                        child: Text(
-                                          _depat == null
-                                              ? "Type"
-                                              : _depat.toString(),
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Color(0xffFFFFFF),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Icon(
-                                          Icons.arrow_drop_down,
-                                          color: Color(0xff64748B),
-                                        ),
-                                      )
-                                    ],
-                                  )),
-                              padding:
-                                  const EdgeInsets.only(left: 12.0, right: 20),
-                              constraints: BoxConstraints.tightForFinite(
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.22)),
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  padding: const EdgeInsets.all(0),
-                                  value: 1,
-                                  child: Container(
-                                    // margin: const EdgeInsets.only(
-                                    //     left: 30.0, right: 18),
-                                    width: (MediaQuery.of(context).size.width *
-                                        0.22),
-                                    color: const Color(0xff334155),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        searchTextFieldForphaseLanguage =
-                                            TypeAheadFormField(
-                                          keepSuggestionsOnLoading: false,
-                                          hideOnLoading: true,
-                                          suggestionsBoxVerticalOffset: 0.0,
-                                          suggestionsBoxDecoration:
-                                              SuggestionsBoxDecoration(
-                                                  color: Color(0xff334155)),
-                                          suggestionsCallback: (pattern) {
-                                            return getSuggestionsForPhaseType(
-                                                pattern);
-                                          },
-                                          textFieldConfiguration:
-                                              TextFieldConfiguration(
-                                            controller:
-                                                _phaseLangugaeController,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14.0),
-                                            keyboardType: TextInputType.text,
-                                            cursorColor: Colors.white,
-                                            autofocus: true,
-                                            decoration: const InputDecoration(
-                                              contentPadding: EdgeInsets.only(
-                                                top: 15.0,
-                                              ),
-                                              prefixIcon: Padding(
-                                                  padding:
-                                                      EdgeInsets.only(top: 4.0),
-                                                  child: Icon(
-                                                    Icons.search,
-                                                    color: Color(0xff64748B),
-                                                  )),
-                                              hintText: 'Search',
-                                              hintStyle: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xff64748B),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w400),
-                                              border: InputBorder.none,
-                                            ),
-                                          ),
-                                          itemBuilder: (context, item) {
-                                            // return rowPhasesType(item);
-                                            return rowPhasesType(item);
-                                          },
-                                          transitionBuilder: (context,
-                                              suggestionsBox, controller) {
-                                            return suggestionsBox;
-                                          },
-                                          onSuggestionSelected: (item) {
-                                            _phaseLangugaeController.text = '';
-
-                                            setState(() {
-                                              for (var element in _department) {
-                                                if (element.name!
-                                                        .toLowerCase() ==
-                                                    item.name
-                                                        .toString()
-                                                        .toLowerCase()) {
-                                                  _depat = item.name.toString();
-                                                  print(_depat);
-                                                  print(_depat);
-                                                }
-                                              }
-
-                                              if (item != null) {
-                                                setState(() {
-                                                  startloading = true;
-                                                  getResourcesNeeded(
-                                                      item.id.toString());
-                                                  Navigator.of(context).pop();
-                                                });
-                                              }
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              elevation: 0.0,
+                            child: CustomSearchDropdown(
+                              hint: "Type",
+                              label: "",
+                              margin: EdgeInsets.all(0),
+                              showSearchBar: true,
+                              errorText: createButtonClick == true &&
+                                      (_depat == null || _depat!.isEmpty)
+                                  ? 'Please select resources'
+                                  : '',
+                              items: departmentlist,
+                              onChange: ((value) {
+                                // _curren = value.id;
+                                _depat = value.id;
+                                setState(() {
+                                  startloading = true;
+                                  getResourcesNeeded(value.id.toString());
+                                });
+                              }),
                             ),
+                            //  PopupMenuButton<int>(
+                            //   tooltip: '',
+                            //   // offset: const Offset(0, 7),
+                            //   position: PopupMenuPosition.under,
+                            //   color: Color(0xFF0F172A),
+                            //   child: Container(
+                            //       // margin: const EdgeInsets.only(left: 20.0),
+                            //       width: (MediaQuery.of(context).size.width *
+                            //           0.22),
+                            //       height: 56.0,
+                            //       decoration: BoxDecoration(
+                            //         color: const Color(0xff334155),
+                            //         borderRadius: BorderRadius.circular(
+                            //           8.0,
+                            //         ),
+                            //       ),
+                            //       child: Row(
+                            //         mainAxisAlignment:
+                            //             MainAxisAlignment.spaceBetween,
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.center,
+                            //         children: [
+                            //           Padding(
+                            //             padding:
+                            //                 const EdgeInsets.only(left: 16.0),
+                            //             child: Text(
+                            //               _depat == null
+                            //                   ? "Type"
+                            //                   : _depat.toString(),
+                            //               style: TextStyle(
+                            //                   fontSize: 14.0,
+                            //                   color: Color(0xffFFFFFF),
+                            //                   fontFamily: 'Inter',
+                            //                   fontWeight: FontWeight.w500),
+                            //             ),
+                            //           ),
+                            //           Padding(
+                            //             padding:
+                            //                 const EdgeInsets.only(right: 8.0),
+                            //             child: Icon(
+                            //               Icons.arrow_drop_down,
+                            //               color: Color(0xff64748B),
+                            //             ),
+                            //           )
+                            //         ],
+                            //       )),
+                            //   padding:
+                            //       const EdgeInsets.only(left: 12.0, right: 20),
+                            //   constraints: BoxConstraints.tightForFinite(
+                            //       width: (MediaQuery.of(context).size.width *
+                            //           0.22)),
+                            //   itemBuilder: (context) => [
+                            //     PopupMenuItem(
+                            //       padding: const EdgeInsets.all(0),
+                            //       value: 1,
+                            //       child: Container(
+                            //         // margin: const EdgeInsets.only(
+                            //         //     left: 30.0, right: 18),
+                            //         width: (MediaQuery.of(context).size.width *
+                            //             0.22),
+                            //         color: const Color(0xff334155),
+                            //         child: Column(
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.start,
+                            //           children: [
+                            //             searchTextFieldForphaseLanguage =
+                            //                 TypeAheadFormField(
+                            //               keepSuggestionsOnLoading: false,
+                            //               hideOnLoading: true,
+                            //               suggestionsBoxVerticalOffset: 0.0,
+                            //               suggestionsBoxDecoration:
+                            //                   SuggestionsBoxDecoration(
+                            //                       color: Color(0xff334155)),
+                            //               suggestionsCallback: (pattern) {
+                            //                 return getSuggestionsForPhaseType(
+                            //                     pattern);
+                            //               },
+                            //               textFieldConfiguration:
+                            //                   TextFieldConfiguration(
+                            //                 controller:
+                            //                     _phaseLangugaeController,
+                            //                 style: const TextStyle(
+                            //                     color: Colors.white,
+                            //                     fontSize: 14.0),
+                            //                 keyboardType: TextInputType.text,
+                            //                 cursorColor: Colors.white,
+                            //                 autofocus: true,
+                            //                 decoration: const InputDecoration(
+                            //                   contentPadding: EdgeInsets.only(
+                            //                     top: 15.0,
+                            //                   ),
+                            //                   prefixIcon: Padding(
+                            //                       padding:
+                            //                           EdgeInsets.only(top: 4.0),
+                            //                       child: Icon(
+                            //                         Icons.search,
+                            //                         color: Color(0xff64748B),
+                            //                       )),
+                            //                   hintText: 'Search',
+                            //                   hintStyle: TextStyle(
+                            //                       fontSize: 14.0,
+                            //                       color: Color(0xff64748B),
+                            //                       fontFamily: 'Inter',
+                            //                       fontWeight: FontWeight.w400),
+                            //                   border: InputBorder.none,
+                            //                 ),
+                            //               ),
+                            //               itemBuilder: (context, item) {
+                            //                 // return rowPhasesType(item);
+                            //                 return rowPhasesType(item);
+                            //               },
+                            //               transitionBuilder: (context,
+                            //                   suggestionsBox, controller) {
+                            //                 return suggestionsBox;
+                            //               },
+                            //               onSuggestionSelected: (item) {
+                            //                 _phaseLangugaeController.text = '';
+
+                            //                 setState(() {
+                            //                   for (var element in _department) {
+                            //                     if (element.name!
+                            //                             .toLowerCase() ==
+                            //                         item.name
+                            //                             .toString()
+                            //                             .toLowerCase()) {
+                            //                       _depat = item.name.toString();
+                            //                       print(_depat);
+                            //                       print(_depat);
+                            //                     }
+                            //                   }
+
+                            //                   if (item != null) {
+                            //                     setState(() {
+                            //                       startloading = true;
+                            //                       getResourcesNeeded(
+                            //                           item.id.toString());
+                            //                       Navigator.of(context).pop();
+                            //                     });
+                            //                   }
+                            //                 });
+                            //               },
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            //   elevation: 0.0,
+                            // ),
                           ),
                         ),
                       ],
@@ -911,26 +877,26 @@ class _NewPhaseState extends State<NewPhase> {
                 ],
               ),
             ),
-            savePhaseClick && selectedSource.isEmpty
-                ? Container(
-                    width: MediaQuery.of(context).size.width * 0.26,
-                    margin: EdgeInsets.only(left: 30.0, top: 03),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Please select resources',
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.red,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
+            // savePhaseClick && selectedSource.isEmpty
+            //     ? Container(
+            //         width: MediaQuery.of(context).size.width * 0.26,
+            //         margin: EdgeInsets.only(left: 30.0, top: 03),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               'Please select resources',
+            //               style: TextStyle(
+            //                   fontSize: 14.0,
+            //                   color: Colors.red,
+            //                   fontFamily: 'Inter',
+            //                   fontWeight: FontWeight.w400),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     : SizedBox.shrink(),
             startloading == true
                 ? loading == true
                     ? Center(child: const CircularProgressIndicator())
@@ -1215,12 +1181,27 @@ class _NewPhaseState extends State<NewPhase> {
                       // hintTextHeight: 1.7,
                       validator: (value) {
                         if (value.isEmpty) {
-                          setState(() {
-                            mileStoneTitle = value;
-                            //savePhaseValidate = false;
-                          });
+                          // setState(() {
+                          //   print("value---------------------------$value");
+                          //   print(value);
+                          //   mileStoneTitle = value;
+                          //   //savePhaseValidate = false;
+
+                          //   print(
+                          //       "mileStoneTitle---------------------------$mileStoneTitle");
+                          // });
 
                           return 'Please enter milestone title';
+                        } else {
+                          setState(() {
+                            print("value---------------------------$value");
+                            print(value);
+                            mileStoneTitle = value;
+                            //savePhaseValidate = false;
+
+                            print(
+                                "mileStoneTitle---------------------------$mileStoneTitle");
+                          });
                         }
                         return null;
                       },
@@ -1256,6 +1237,9 @@ class _NewPhaseState extends State<NewPhase> {
                       onChange: (date) {
                         setState(() {
                           mileStoneDate = date;
+                          print("Date---------------------");
+
+                          print(mileStoneDate);
                         });
                       },
                       onCancel: () {
@@ -1651,291 +1635,300 @@ class _NewPhaseState extends State<NewPhase> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.only(left: 30.5.sp, right: 16.sp, top: 24.sp),
+          padding: EdgeInsets.only(
+            left: 30.5.sp,
+            right: 16.sp,
+          ),
           width: MediaQuery.of(context).size.width * 3,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      child: CircleAvatar(
-                        backgroundColor: Color(0xff334155),
-                        radius: 30,
-                        child: Icon(Icons.person_outline,
-                            size: 30, color: Color(0xffDADADA)),
-                      ),
-                    ),
-                    Positioned(
-                        bottom: 0,
+              Padding(
+                padding: EdgeInsets.only(top: 24.sp),
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
                         right: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: Color(0xff10B981),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Center(
-                              child: Icon(Icons.add,
-                                  color: Colors.white, size: 18)),
-                        ))
-                  ],
-                ),
-                // Expanded(
-                //   child: Container(
-                //     margin: const EdgeInsets.only(left: 30.0),
-                //     height: 56.0,
-                //     width: (MediaQuery.of(context).size.width * 0.22),
-                //     decoration: BoxDecoration(
-                //       color: const Color(0xff334155),
-                //       borderRadius: BorderRadius.circular(
-                //         8.0,
-                //       ),
-                //     ),
-                //     child: Container(
-                //       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                //       height: 20.0,
-                //       child: Container(child: StatefulBuilder(
-                //         builder: (BuildContext context, StateSettersetState) {
-                //           return DropdownButtonHideUnderline(
-                //             child: CustomDropdownButton(
-                //               dropdownColor: ColorSelect.class_color,
-                //               value: subtaskDepat,
-                //               underline: Container(),
-                //               hint: const Text(
-                //                 "Type",
-                //                 style: TextStyle(
-                //                     fontSize: 14.0,
-                //                     color: Color(0xffFFFFFF),
-                //                     fontFamily: 'Inter',
-                //                     fontWeight: FontWeight.w500),
-                //               ),
-                //               //  isExpanded: true,
-                //               icon: const Icon(
-                //                 Icons.arrow_drop_down,
-                //                 color: Color(0xff64748B),
-                //               ),
-                //               items: removeDuplicate().map((items) {
-                //                 return DropdownMenuItem(
-                //                   value: items.department,
-                //                   child: Text(
-                //                     items.department!,
-                //                     style: const TextStyle(
-                //                         fontSize: 14.0,
-                //                         color: Color(0xffFFFFFF),
-                //                         fontFamily: 'Inter',
-                //                         fontWeight: FontWeight.w400),
-                //                   ),
-                //                 );
-                //               }).toList(),
-                //               onChanged: (newValue) {
-                //                 setState(() {
-                //                   selectedSubTaskSource.clear();
-                //                 });
-                //                 setState(() {
-                //                   resourceSuggestions.clear();
-                //                   for (var element in listResource) {
-                //                     if (element.department!.toLowerCase() ==
-                //                         newValue.toString().toLowerCase()) {
-                //                       resourceSuggestions.add(element.details!);
-                //                     }
-                //                   }
+                        top: 0,
+                        bottom: 0,
+                        child: CircleAvatar(
+                          backgroundColor: Color(0xff334155),
+                          radius: 30,
+                          child: Icon(Icons.person_outline,
+                              size: 30, color: Color(0xffDADADA)),
+                        ),
+                      ),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              color: Color(0xff10B981),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Center(
+                                child: Icon(Icons.add,
+                                    color: Colors.white, size: 18)),
+                          ))
+                    ],
+                  ),
+                  // Expanded(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 30.0),
+                  //     height: 56.0,
+                  //     width: (MediaQuery.of(context).size.width * 0.22),
+                  //     decoration: BoxDecoration(
+                  //       color: const Color(0xff334155),
+                  //       borderRadius: BorderRadius.circular(
+                  //         8.0,
+                  //       ),
+                  //     ),
+                  //     child: Container(
+                  //       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  //       height: 20.0,
+                  //       child: Container(child: StatefulBuilder(
+                  //         builder: (BuildContext context, StateSettersetState) {
+                  //           return DropdownButtonHideUnderline(
+                  //             child: CustomDropdownButton(
+                  //               dropdownColor: ColorSelect.class_color,
+                  //               value: subtaskDepat,
+                  //               underline: Container(),
+                  //               hint: const Text(
+                  //                 "Type",
+                  //                 style: TextStyle(
+                  //                     fontSize: 14.0,
+                  //                     color: Color(0xffFFFFFF),
+                  //                     fontFamily: 'Inter',
+                  //                     fontWeight: FontWeight.w500),
+                  //               ),
+                  //               //  isExpanded: true,
+                  //               icon: const Icon(
+                  //                 Icons.arrow_drop_down,
+                  //                 color: Color(0xff64748B),
+                  //               ),
+                  //               items: removeDuplicate().map((items) {
+                  //                 return DropdownMenuItem(
+                  //                   value: items.department,
+                  //                   child: Text(
+                  //                     items.department!,
+                  //                     style: const TextStyle(
+                  //                         fontSize: 14.0,
+                  //                         color: Color(0xffFFFFFF),
+                  //                         fontFamily: 'Inter',
+                  //                         fontWeight: FontWeight.w400),
+                  //                   ),
+                  //                 );
+                  //               }).toList(),
+                  //               onChanged: (newValue) {
+                  //                 setState(() {
+                  //                   selectedSubTaskSource.clear();
+                  //                 });
+                  //                 setState(() {
+                  //                   resourceSuggestions.clear();
+                  //                   for (var element in listResource) {
+                  //                     if (element.department!.toLowerCase() ==
+                  //                         newValue.toString().toLowerCase()) {
+                  //                       resourceSuggestions.add(element.details!);
+                  //                     }
+                  //                   }
 
-                //                   subtaskDepat = newValue.toString();
-                //                   if (newValue != null) {}
-                //                 });
-                //               },
-                //             ),
-                //           );
-                //         },
-                //       )),
-                //     ),
-                //   ),
-                // ),
+                  //                   subtaskDepat = newValue.toString();
+                  //                   if (newValue != null) {}
+                  //                 });
+                  //               },
+                  //             ),
+                  //           );
+                  //         },
+                  //       )),
+                  //     ),
+                  //   ),
+                  // ),
+                ),
               ),
               Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 30.0,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15.sp, right: 30.sp),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 30.sp,
+                          ),
+                          child: CustomSearchDropdown(
+                            hint: 'Type',
+                            label: "Type",
+                            errorText: createButtonClick == true &&
+                                    (_depat == null || _depat!.isEmpty)
+                                ? 'Please Select this field'
+                                : '',
+                            items: departmentlist,
+                            onChange: ((value) {
+                              // _curren = value.id;
+                              _depat = value.id;
+                              setState(() {
+                                // selectDepartment = true;
+                              });
+                            }),
+                          ),
+                          // child: PopupMenuButton<int>(
+                          //   tooltip: '',
+
+                          //   offset: const Offset(0, 10),
+                          //   position: PopupMenuPosition.under,
+                          //   color: Color(0xFF0F172A),
+                          //   child: Container(
+                          //       height: 56.0,
+                          //       width: MediaQuery.of(context).size.width *
+                          //           0.25 //460,
+                          //       ,
+                          //       decoration: BoxDecoration(
+                          //         color: const Color(0xff334155),
+                          //         borderRadius: BorderRadius.circular(
+                          //           8.0,
+                          //         ),
+                          //       ),
+                          //       child: Row(
+                          //         mainAxisAlignment:
+                          //             MainAxisAlignment.spaceBetween,
+                          //         crossAxisAlignment: CrossAxisAlignment.center,
+                          //         children: [
+                          //           Padding(
+                          //             padding: const EdgeInsets.only(left: 16.0),
+                          //             child: Text(
+                          //               subtaskDepat == null
+                          //                   ? "Type"
+                          //                   : subtaskDepat.toString(),
+                          //               style: TextStyle(
+                          //                   fontSize: 14.0,
+                          //                   color: Color(0xffFFFFFF),
+                          //                   fontFamily: 'Inter',
+                          //                   fontWeight: FontWeight.w500),
+                          //             ),
+                          //           ),
+                          //           Padding(
+                          //             padding: const EdgeInsets.only(right: 8.0),
+                          //             child: Icon(
+                          //               Icons.arrow_drop_down,
+                          //               color: Color(0xff64748B),
+                          //             ),
+                          //           )
+                          //         ],
+                          //       )),
+                          //   // padding:
+                          //   //     const EdgeInsets.only(left: 30.0, right: 18),
+                          //   constraints: BoxConstraints.tightForFinite(
+                          //       width: MediaQuery.of(context).size.width *
+                          //           0.25 //460,
+                          //       ),
+                          //   itemBuilder: (context) => [
+                          //     PopupMenuItem(
+                          //       padding: const EdgeInsets.all(0),
+                          //       value: 1,
+                          //       child: Container(
+                          //         // margin: const EdgeInsets.only(
+                          //         //     left: 30.0, right: 18),
+                          //         width: MediaQuery.of(context).size.width * 0.25,
+                          //         color: const Color(0xff334155),
+                          //         child: Column(
+                          //           crossAxisAlignment: CrossAxisAlignment.start,
+                          //           children: [
+                          //             searchTextFieldForLanguage =
+                          //                 TypeAheadFormField(
+                          //               keepSuggestionsOnLoading: false,
+                          //               hideOnLoading: true,
+                          //               suggestionsBoxVerticalOffset: 0.0,
+                          //               suggestionsBoxDecoration:
+                          //                   SuggestionsBoxDecoration(
+                          //                       color: Color(0xff334155)),
+                          //               suggestionsCallback: (pattern) {
+                          //                 return getSuggestionsForType(pattern);
+                          //               },
+                          //               textFieldConfiguration:
+                          //                   TextFieldConfiguration(
+                          //                 controller: _subTaskLangugaeController,
+                          //                 style: const TextStyle(
+                          //                     color: Colors.white,
+                          //                     fontSize: 14.0),
+                          //                 keyboardType: TextInputType.text,
+                          //                 cursorColor: Colors.white,
+                          //                 autofocus: true,
+                          //                 decoration: const InputDecoration(
+                          //                   contentPadding: EdgeInsets.only(
+                          //                     top: 15.0,
+                          //                   ),
+                          //                   prefixIcon: Padding(
+                          //                       padding:
+                          //                           EdgeInsets.only(top: 4.0),
+                          //                       child: Icon(
+                          //                         Icons.search,
+                          //                         color: Color(0xff64748B),
+                          //                       )),
+                          //                   hintText: 'Search',
+                          //                   hintStyle: TextStyle(
+                          //                       fontSize: 14.0,
+                          //                       color: Color(0xff64748B),
+                          //                       fontFamily: 'Inter',
+                          //                       fontWeight: FontWeight.w400),
+                          //                   border: InputBorder.none,
+                          //                 ),
+                          //               ),
+                          //               itemBuilder: (context, item) {
+                          //                 return rowPhases(item);
+                          //               },
+                          //               transitionBuilder: (context,
+                          //                   suggestionsBox, controller) {
+                          //                 return suggestionsBox;
+                          //               },
+                          //               onSuggestionSelected: (item) {
+                          //                 resourceSuggestions.clear();
+                          //                 _subTaskLangugaeController.text = '';
+                          //                 setState(() {
+                          //                   selectedSubTaskSource.clear();
+                          //                 });
+                          //                 setState(() {
+                          //                   resourceSuggestions.clear();
+                          //                   for (var element in listResource) {
+                          //                     if (element.department!
+                          //                             .toLowerCase() ==
+                          //                         item.details.departmentName
+                          //                             .toString()
+                          //                             .toLowerCase()) {
+                          //                       resourceSuggestions
+                          //                           .add(element.details!);
+                          //                     }
+                          //                   }
+
+                          //                   subtaskDepat =
+                          //                       item.department.toString();
+                          //                   print(subtaskDepat);
+                          //                   print(subtaskDepat);
+                          //                   setState(() {
+                          //                     Navigator.of(context).pop();
+                          //                   });
+
+                          //                   if (item != null) {}
+                          //                 });
+                          //               },
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          //   elevation: 0.0,
+                          // ),
                         ),
-                        // child: CustomSearchDropdown(
-                        //   hint: 'Select',
-                        //   label: "Type",
-                        //   errorText: createButtonClick == true &&
-                        //           (_depat == null || _depat!.isEmpty)
-                        //       ? 'Please Select this field'
-                        //       : '',
-                        //   items: selectedSubTaskSource!,
-                        //   onChange: ((value) {
-                        //     // _curren = value.id;
-                        //     _depat = value.id;
-                        //     setState(() {
-                        //       // selectDepartment = true;
-                        //     });
-                        //   }),
-                        // ),
-                        // child: PopupMenuButton<int>(
-                        //   tooltip: '',
-
-                        //   offset: const Offset(0, 10),
-                        //   position: PopupMenuPosition.under,
-                        //   color: Color(0xFF0F172A),
-                        //   child: Container(
-                        //       height: 56.0,
-                        //       width: MediaQuery.of(context).size.width *
-                        //           0.25 //460,
-                        //       ,
-                        //       decoration: BoxDecoration(
-                        //         color: const Color(0xff334155),
-                        //         borderRadius: BorderRadius.circular(
-                        //           8.0,
-                        //         ),
-                        //       ),
-                        //       child: Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         crossAxisAlignment: CrossAxisAlignment.center,
-                        //         children: [
-                        //           Padding(
-                        //             padding: const EdgeInsets.only(left: 16.0),
-                        //             child: Text(
-                        //               subtaskDepat == null
-                        //                   ? "Type"
-                        //                   : subtaskDepat.toString(),
-                        //               style: TextStyle(
-                        //                   fontSize: 14.0,
-                        //                   color: Color(0xffFFFFFF),
-                        //                   fontFamily: 'Inter',
-                        //                   fontWeight: FontWeight.w500),
-                        //             ),
-                        //           ),
-                        //           Padding(
-                        //             padding: const EdgeInsets.only(right: 8.0),
-                        //             child: Icon(
-                        //               Icons.arrow_drop_down,
-                        //               color: Color(0xff64748B),
-                        //             ),
-                        //           )
-                        //         ],
-                        //       )),
-                        //   // padding:
-                        //   //     const EdgeInsets.only(left: 30.0, right: 18),
-                        //   constraints: BoxConstraints.tightForFinite(
-                        //       width: MediaQuery.of(context).size.width *
-                        //           0.25 //460,
-                        //       ),
-                        //   itemBuilder: (context) => [
-                        //     PopupMenuItem(
-                        //       padding: const EdgeInsets.all(0),
-                        //       value: 1,
-                        //       child: Container(
-                        //         // margin: const EdgeInsets.only(
-                        //         //     left: 30.0, right: 18),
-                        //         width: MediaQuery.of(context).size.width * 0.25,
-                        //         color: const Color(0xff334155),
-                        //         child: Column(
-                        //           crossAxisAlignment: CrossAxisAlignment.start,
-                        //           children: [
-                        //             searchTextFieldForLanguage =
-                        //                 TypeAheadFormField(
-                        //               keepSuggestionsOnLoading: false,
-                        //               hideOnLoading: true,
-                        //               suggestionsBoxVerticalOffset: 0.0,
-                        //               suggestionsBoxDecoration:
-                        //                   SuggestionsBoxDecoration(
-                        //                       color: Color(0xff334155)),
-                        //               suggestionsCallback: (pattern) {
-                        //                 return getSuggestionsForType(pattern);
-                        //               },
-                        //               textFieldConfiguration:
-                        //                   TextFieldConfiguration(
-                        //                 controller: _subTaskLangugaeController,
-                        //                 style: const TextStyle(
-                        //                     color: Colors.white,
-                        //                     fontSize: 14.0),
-                        //                 keyboardType: TextInputType.text,
-                        //                 cursorColor: Colors.white,
-                        //                 autofocus: true,
-                        //                 decoration: const InputDecoration(
-                        //                   contentPadding: EdgeInsets.only(
-                        //                     top: 15.0,
-                        //                   ),
-                        //                   prefixIcon: Padding(
-                        //                       padding:
-                        //                           EdgeInsets.only(top: 4.0),
-                        //                       child: Icon(
-                        //                         Icons.search,
-                        //                         color: Color(0xff64748B),
-                        //                       )),
-                        //                   hintText: 'Search',
-                        //                   hintStyle: TextStyle(
-                        //                       fontSize: 14.0,
-                        //                       color: Color(0xff64748B),
-                        //                       fontFamily: 'Inter',
-                        //                       fontWeight: FontWeight.w400),
-                        //                   border: InputBorder.none,
-                        //                 ),
-                        //               ),
-                        //               itemBuilder: (context, item) {
-                        //                 return rowPhases(item);
-                        //               },
-                        //               transitionBuilder: (context,
-                        //                   suggestionsBox, controller) {
-                        //                 return suggestionsBox;
-                        //               },
-                        //               onSuggestionSelected: (item) {
-                        //                 resourceSuggestions.clear();
-                        //                 _subTaskLangugaeController.text = '';
-                        //                 setState(() {
-                        //                   selectedSubTaskSource.clear();
-                        //                 });
-                        //                 setState(() {
-                        //                   resourceSuggestions.clear();
-                        //                   for (var element in listResource) {
-                        //                     if (element.department!
-                        //                             .toLowerCase() ==
-                        //                         item.details.departmentName
-                        //                             .toString()
-                        //                             .toLowerCase()) {
-                        //                       resourceSuggestions
-                        //                           .add(element.details!);
-                        //                     }
-                        //                   }
-
-                        //                   subtaskDepat =
-                        //                       item.department.toString();
-                        //                   print(subtaskDepat);
-                        //                   print(subtaskDepat);
-                        //                   setState(() {
-                        //                     Navigator.of(context).pop();
-                        //                   });
-
-                        //                   if (item != null) {}
-                        //                 });
-                        //               },
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        //   elevation: 0.0,
-                        // ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -2090,7 +2083,7 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               setState(() {
-                mileStoneDate = AppUtil.dateToString(DateTime.now());
+                mileStoneDate = null;
                 mileStoneTitle = "";
                 controllerMilestoneTitle.text = "";
                 clickedAddMileStone = false;
@@ -2112,7 +2105,12 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               if (_mileStoneFormKey.currentState!.validate()) {
+                print("Ontap--------------");
+                print("Ontap--mileStoneTitle------------$mileStoneTitle");
+                print("Ontap-----mileStoneDate---------$mileStoneDate");
+
                 if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
+                  print("here-------------------");
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
@@ -2125,6 +2123,7 @@ class _NewPhaseState extends State<NewPhase> {
                         phaseDetails.milestone![mileStoneEditIndex].m_date =
                             mileStoneDate.toString();
                       }
+                      print("here11111-------------------");
 
                       mileStoneEditIndex = 0;
                       mileStoneAction = '';
@@ -2134,6 +2133,8 @@ class _NewPhaseState extends State<NewPhase> {
                       controllerMilestoneTitle.text = "";
                       clickedAddMileStone = false;
                       saveButtonClick = true;
+
+                      print("9969666666666666");
                     });
                   } catch (e) {
                     print(e);
@@ -2284,8 +2285,15 @@ class _NewPhaseState extends State<NewPhase> {
     setState(() {
       if (departementModel.data != null) {
         _department = departementModel.data!;
+        print(_department);
+        setState(() {
+          departmentlist = []; //!.clear();
+          _department.forEach((element) {
+            departmentlist.add(
+                DropdownModel(element.id.toString(), element.name.toString()));
+          });
+        });
       }
-      print(_department);
     });
   }
 
