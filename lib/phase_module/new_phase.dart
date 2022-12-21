@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/search_view.dart';
@@ -24,6 +25,7 @@ import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NewPhase extends StatefulWidget {
   String id;
@@ -58,6 +60,7 @@ class _NewPhaseState extends State<NewPhase> {
   bool clickAddSubTask = false;
   bool saveButtonClick = false;
   bool saveButtonClickForSubtask = false;
+  bool createButtonClick = false;
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
   List<ResourceData> selectedSubTaskSource = [];
@@ -188,17 +191,17 @@ class _NewPhaseState extends State<NewPhase> {
   Widget build(BuildContext context) {
     return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         contentPadding: EdgeInsets.zero,
         backgroundColor: const Color(0xff1E293B),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.99,
+          width: MediaQuery.of(context).size.width * 0.99.w,
           height: double.infinity,
           child: RawScrollbar(
             thumbColor: const Color(0xff4b5563),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
             ),
             thickness: 8,
             child: SingleChildScrollView(
@@ -206,14 +209,14 @@ class _NewPhaseState extends State<NewPhase> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                      padding: EdgeInsets.only(top: 15, bottom: 15),
+                      padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
                       // height: MediaQuery.of(context).size.height * 0.11,
                       width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Color(0xff283345),
                         borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16.0),
-                          topLeft: Radius.circular(16.0),
+                          topRight: Radius.circular(16.0.r),
+                          topLeft: Radius.circular(16.0.r),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -232,8 +235,8 @@ class _NewPhaseState extends State<NewPhase> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: titleHeadlineWidget("New Phase", 22.0),
+                            padding: EdgeInsets.only(left: 12.sp),
+                            child: titleHeadlineWidget("New Phase", 22.0.sp),
                           ),
                           Expanded(
                             child: Row(
@@ -244,22 +247,22 @@ class _NewPhaseState extends State<NewPhase> {
                                     Navigator.pop(context);
                                   },
                                   child: Container(
-                                    width: 97.0,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, bottom: 10.0),
-                                    height: 40.0,
+                                    width: 97.0.w,
+                                    margin: EdgeInsets.only(
+                                        top: 10.0.sp, bottom: 10.0.sp),
+                                    height: 40.h,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff334155),
                                       borderRadius: BorderRadius.circular(
-                                        40.0,
+                                        40.0.r,
                                       ),
                                     ),
-                                    child: const Align(
+                                    child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
                                         "Cancel",
                                         style: TextStyle(
-                                            fontSize: 14.0,
+                                            fontSize: 14.0.sp,
                                             color: Color(0xffFFFFFF),
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w700),
@@ -272,22 +275,24 @@ class _NewPhaseState extends State<NewPhase> {
                                 ),
                                 InkWell(
                                   child: Container(
-                                    width: 97,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, right: 20.0, bottom: 10.0),
-                                    height: 40.0,
+                                    width: 97.w,
+                                    margin: EdgeInsets.only(
+                                        top: 10.0.sp,
+                                        right: 20.0.sp,
+                                        bottom: 10.0.sp),
+                                    height: 40.0.h,
                                     decoration: BoxDecoration(
                                       color: const Color(0xff7DD3FC),
                                       borderRadius: BorderRadius.circular(
-                                        40.0,
+                                        40.0.r,
                                       ),
                                     ),
-                                    child: const Align(
+                                    child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        "Save1",
+                                        "Save11",
                                         style: TextStyle(
-                                            fontSize: 14.0,
+                                            fontSize: 14.0.sp,
                                             color: Color(0xff000000),
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w700),
@@ -297,6 +302,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   onTap: () {
                                     setState(() {
                                       savePhaseClick = true;
+                                      createButtonClick = true;
                                       // savePhaseValidate = true;
                                     });
                                     Future.delayed(
@@ -368,7 +374,6 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   List<DepartementData> getSuggestionsForPhaseType(String query) {
-    
     List<DepartementData> matches = List.empty(growable: true);
     matches.addAll(_department);
     matches.retainWhere(
@@ -393,21 +398,21 @@ class _NewPhaseState extends State<NewPhase> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+              height: 8.0.h,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 10.sp),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  titleHeadlineWidget("Phase details", 18.0),
+                  titleHeadlineWidget("Phase details", 18.0.sp),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+              height: 8.0.h,
             ),
             // formField(
             //     controller: controller_next_phase,
@@ -430,32 +435,134 @@ class _NewPhaseState extends State<NewPhase> {
             //       return null;
             //     }),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 80),
-              child: CustomFormField(
-                controller: controller_next_phase,
-                maxline: 1,
-                fontSizeForLabel: 14,
-                label: 'Phase Title',
-                // contentpadding:
-                //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
-                // hintTextHeight: 1.7,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      //savePhaseValidate = false;
-                    });
+              padding: EdgeInsets.only(left: 30.sp, right: 62.5.sp),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomFormField(
+                    controller: controller_next_phase,
+                    maxline: 1,
+                    fontSizeForLabel: 14,
+                    label: 'Phase Title',
+                    // contentpadding:
+                    //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                    // hintTextHeight: 1.7,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          //savePhaseValidate = false;
+                        });
 
-                    return 'Please enter phase title';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
+                        return 'Please enter phase title';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
+                  ),
+                  CustomFormField(
+                    controller: controller_phase_type,
+                    maxline: 1,
+                    fontSizeForLabel: 14,
+                    label: 'Phase Title',
+                    // contentpadding:
+                    //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
+                    // hintTextHeight: 1.7,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          //savePhaseValidate = false;
+                        });
+
+                        return 'Please enter phase type';
+                      }
+                      return null;
+                    },
+                    onChange: (text) => setState(() => name_ = text),
+                  ),
+                  CustomDatePicker(
+                    hint: 'dd/mm/yyyy',
+                    label: "Start date",
+                    initialDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(
+                            phaseDetails.start_date.toString()),
+                    onChange: (date) {
+                      setState(() {
+                        phaseDetails.start_date = date.toString();
+                      });
+                      setState(() {});
+                    },
+                    onCancel: () {
+                      setState(() {
+                        phaseDetails.start_date = null;
+                      });
+                    },
+                    errorText:
+                        (createButtonClick && phaseDetails.start_date == null)
+                            ? 'Please enter start date'
+                            : "",
+                    validator: (value) {},
+                  ),
+                  CustomDatePicker(
+                    hint: 'dd/mm/yyyy',
+                    label: "End date",
+                    initialDate: widget.type == 0
+                        ? null
+                        : AppUtil.stringToDate(
+                            phaseDetails.end_date.toString()),
+                    onChange: (date) {
+                      setState(() {
+                        phaseDetails.end_date = date.toString();
+                      });
+                      setState(() {});
+                    },
+                    onCancel: () {
+                      setState(() {
+                        phaseDetails.end_date = null;
+                      });
+                    },
+                    errorText: (createButtonClick &&
+                            phaseDetails.end_date == null)
+                        ? 'Please enter end date'
+                        : phaseDetails.start_date != null
+                            ? (((createButtonClick &&
+                                    AppUtil.stringToDate(phaseDetails.end_date!)
+                                        .isBefore((AppUtil.stringToDate(
+                                            phaseDetails.start_date!)))))
+                                ? "End date must be greater then the start date"
+                                : ((AppUtil.stringToDate(phaseDetails.end_date!)
+                                        .isAtSameMomentAs((AppUtil.stringToDate(
+                                            phaseDetails.start_date!)))))
+                                    ? 'End date should not be same as start date'
+                                    : '')
+                            : '',
+                    validator: (value) {
+                      // {
+                      //   if (value.isEmpty ||
+                      //       value == null ||
+                      //       phaseDetails.end_date == null ||
+                      //       phaseDetails.end_date!.isEmpty) {
+                      //     // checkFormStatus();
+                      //     return 'Please enter end date';
+                      //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                      //       .isBefore((AppUtil.stringToDate(
+                      //           phaseDetails.start_date!))))) {
+                      //     return 'End date must be greater then the start date';
+                      //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+                      //       .isAtSameMomentAs((AppUtil.stringToDate(
+                      //           phaseDetails.start_date!))))) {
+                      //     return 'End date should not be same as start date';
+                      //   } else {
+                      //     return null;
+                      //   }
+                      //   setState(() {});
+                      // }
+                    },
+                  )
+                ],
               ),
             ),
 
-            const SizedBox(
-              height: 10.0,
-            ),
             // formField(
             //     controller: controller_phase_type,
             //     labelText: "Phase Type",
@@ -477,92 +584,66 @@ class _NewPhaseState extends State<NewPhase> {
             //       return null;
             //     }),
 
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 80),
-              child: CustomFormField(
-                controller: controller_phase_type,
-                maxline: 1,
-                fontSizeForLabel: 14,
-                label: 'Phase Title',
-                // contentpadding:
-                //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
-                // hintTextHeight: 1.7,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    setState(() {
-                      //savePhaseValidate = false;
-                    });
+            // DatePicker(
+            //   subtitle: 'Start date',
+            //   title: "Start date",
+            //   callback: (value) {
+            //     setState(() {
+            //       phaseDetails.start_date = value.trim();
+            //     });
+            //     setState(() {});
+            //   },
+            //   startDate: widget.type == 0
+            //       ? null
+            //       : AppUtil.stringToDate(phaseDetails.start_date.toString()),
+            //   validationCallBack: (String values) {
+            //     // setState(() {
+            //     //   // checkFormStatus();
+            //     // });
+            //     if (values.isEmpty ||
+            //         phaseDetails.start_date == null ||
+            //         phaseDetails.start_date!.isEmpty) {
+            //       return 'Please enter start date';
+            //     } else {
+            //       return null;
+            //     }
+            //   },
+            // ),
+            // const SizedBox(
+            //   height: 10.0,
+            // ),
+            // DatePicker(
+            //   subtitle: 'end date',
+            //   title: "End date",
+            //   callback: (value) {
+            //     setState(() {
+            //       phaseDetails.end_date = value.trim();
+            //     });
+            //   },
+            //   startDate: widget.type == 0
+            //       ? null
+            //       : AppUtil.stringToDate(phaseDetails.end_date.toString()),
+            // validationCallBack: (String values) {
+            //   if (values.isEmpty ||
+            //       values == null ||
+            //       phaseDetails.end_date == null ||
+            //       phaseDetails.end_date!.isEmpty) {
+            //     // checkFormStatus();
+            //     return 'Please enter end date';
+            //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+            //       .isBefore(
+            //           (AppUtil.stringToDate(phaseDetails.start_date!))))) {
+            //     return 'End date must be greater then the start date';
+            //   } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
+            //       .isAtSameMomentAs(
+            //           (AppUtil.stringToDate(phaseDetails.start_date!))))) {
+            //     return 'End date should not be same as start date';
+            //   } else {
+            //     return null;
+            //   }
+            // },
+            // ),
 
-                    return 'Please enter phase type';
-                  }
-                  return null;
-                },
-                onChange: (text) => setState(() => name_ = text),
-              ),
-            ),
-
-            const SizedBox(
-              height: 10.0,
-            ),
-            DatePicker(
-              subtitle: 'Start date',
-              title: "Start date",
-              callback: (value) {
-                setState(() {
-                  phaseDetails.start_date = value.trim();
-                });
-                setState(() {});
-              },
-              startDate: widget.type == 0
-                  ? null
-                  : AppUtil.stringToDate(phaseDetails.start_date.toString()),
-              validationCallBack: (String values) {
-                // setState(() {
-                //   // checkFormStatus();
-                // });
-                if (values.isEmpty ||
-                    phaseDetails.start_date == null ||
-                    phaseDetails.start_date!.isEmpty) {
-                  return 'Please enter start date';
-                } else {
-                  return null;
-                }
-              },
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            DatePicker(
-              subtitle: 'end date',
-              title: "End date",
-              callback: (value) {
-                setState(() {
-                  phaseDetails.end_date = value.trim();
-                });
-              },
-              startDate: widget.type == 0
-                  ? null
-                  : AppUtil.stringToDate(phaseDetails.end_date.toString()),
-              validationCallBack: (String values) {
-                if (values.isEmpty ||
-                    values == null ||
-                    phaseDetails.end_date == null ||
-                    phaseDetails.end_date!.isEmpty) {
-                  // checkFormStatus();
-                  return 'Please enter end date';
-                } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                    .isBefore(
-                        (AppUtil.stringToDate(phaseDetails.start_date!))))) {
-                  return 'End date must be greater then the start date';
-                } else if ((AppUtil.stringToDate(phaseDetails.end_date!)
-                    .isAtSameMomentAs(
-                        (AppUtil.stringToDate(phaseDetails.start_date!))))) {
-                  return 'End date should not be same as start date';
-                } else {
-                  return null;
-                }
-              },
-            ),
             Padding(
               padding: EdgeInsets.only(left: 10, bottom: 10),
               child: titleHeadlineWidget("Resources needed", 16.0),
