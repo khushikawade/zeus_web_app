@@ -27,8 +27,10 @@ import 'package:http_parser/http_parser.dart';
 class CreatePeoplePage extends StatefulWidget {
   PeopleData? response;
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
+  bool? isEdit;
 
-  CreatePeoplePage({Key? key, this.formKey, this.response}) : super(key: key);
+  CreatePeoplePage({Key? key, this.formKey, this.response, this.isEdit})
+      : super(key: key);
 
   @override
   State<CreatePeoplePage> createState() => _EditPageState();
@@ -648,7 +650,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                               margin: EdgeInsets.only(
                                   left: 30.sp, top: 10.sp, bottom: 10.sp),
                               child: Text(
-                                "Add People",
+                                widget.isEdit! ? "Edit People" : "Add People",
                                 style: TextStyle(
                                     color: Color(0xffFFFFFF),
                                     fontStyle: FontStyle.normal,
@@ -856,14 +858,27 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                       height: 134.h,
                                                       width: 134.w,
                                                     )
-                                                  : Padding(
-                                                      padding:
-                                                          EdgeInsets.all(49.sp),
-                                                      child: SvgPicture.asset(
-                                                        'images/photo.svg',
-                                                        height: 36.0.h,
-                                                        width: 36.0.w,
-                                                      )),
+                                                  : widget.response != null &&
+                                                          widget.response!
+                                                                  .image !=
+                                                              null &&
+                                                          widget.response!
+                                                              .image!.isNotEmpty
+                                                      ? Image.network(
+                                                          widget
+                                                              .response!.image!,
+                                                          fit: BoxFit.fill,
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  49.sp),
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            'images/photo.svg',
+                                                            height: 36.0.h,
+                                                            width: 36.0.w,
+                                                          )),
                                             )),
                                       ),
                                     ),

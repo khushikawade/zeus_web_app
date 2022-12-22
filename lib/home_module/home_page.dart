@@ -353,6 +353,7 @@ class _NavigationRailState extends State<MyHomePage>
                   child: CreatePeoplePage(
                     formKey: _formKey,
                     response: null,
+                    isEdit: false,
                   )),
             ),
           );

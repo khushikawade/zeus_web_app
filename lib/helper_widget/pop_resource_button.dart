@@ -205,6 +205,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                               child: CreatePeoplePage(
                                 formKey: _formKey,
                                 response: widget.data,
+                                isEdit: true,
                               )),
                         ),
                       );
