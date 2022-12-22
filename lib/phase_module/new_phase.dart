@@ -648,7 +648,7 @@ class _NewPhaseState extends State<NewPhase> {
                                 ),
                                 child: Center(
                                     child: Icon(Icons.add,
-                                        color: Colors.white, size: 18)),
+                                        color: Colors.white, size: 18.sp)),
                               ))
                         ],
                       ),
@@ -864,13 +864,13 @@ class _NewPhaseState extends State<NewPhase> {
                         height: 48.h,
                         width: MediaQuery.of(context).size.width * 0.15.w,
                         margin: EdgeInsets.only(
-                            top: 16, left: 30.sp, right: 62.5.sp),
+                            top: 16.sp, left: 30.sp, right: 62.5.sp),
                         decoration: BoxDecoration(
                           color: const Color(0xff1E293B),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                                 color: Colors.black38,
-                                blurRadius: 2.0,
+                                blurRadius: 2.r,
                                 offset: Offset(0.0, 0.75))
                           ],
                           borderRadius: BorderRadius.circular(
@@ -981,7 +981,7 @@ class _NewPhaseState extends State<NewPhase> {
                             //   itemBuilder: (context, index) {
                             //     return
                             Wrap(
-                                spacing: 8,
+                                spacing: 8.sp,
                                 children: List.generate(selectedSource.length,
                                     (index) {
                                   return Padding(
@@ -1054,7 +1054,7 @@ class _NewPhaseState extends State<NewPhase> {
             Padding(
               padding: EdgeInsets.only(left: 29.5.sp, top: 18.5.sp),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   clickedAddMileStone == false
@@ -1103,8 +1103,8 @@ class _NewPhaseState extends State<NewPhase> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+              height: 8.h,
             ),
             clickedAddMileStone
                 ?
@@ -1135,7 +1135,7 @@ class _NewPhaseState extends State<NewPhase> {
                     child: CustomFormField(
                       controller: controllerMilestoneTitle,
                       maxline: 1,
-                      fontSizeForLabel: 14,
+                      fontSizeForLabel: 14.sp,
                       label: 'Milestone Title',
                       // contentpadding:
                       //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
@@ -1241,15 +1241,15 @@ class _NewPhaseState extends State<NewPhase> {
             savePhaseClick && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
-                    margin: const EdgeInsets.only(left: 30.0, top: 03),
+                    margin: EdgeInsets.only(left: 30.sp, top: 3.sp),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'Please add milestone',
-                          style: const TextStyle(
-                              fontSize: 14.0,
+                          style: TextStyle(
+                              fontSize: 14.sp,
                               color: Colors.red,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400),
@@ -1297,7 +1297,7 @@ class _NewPhaseState extends State<NewPhase> {
             Padding(
               padding: EdgeInsets.only(top: 18.5.sp, left: 29.5.sp),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   clickAddSubTask == false
@@ -1310,9 +1310,9 @@ class _NewPhaseState extends State<NewPhase> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.add,
-                                    size: 20,
+                                    size: 20.sp,
                                     color: Color(0xff93C5FD),
                                   ),
                                   SizedBox(
@@ -1345,8 +1345,8 @@ class _NewPhaseState extends State<NewPhase> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+              height: 8.h,
             ),
 
             clickAddSubTask
@@ -1441,12 +1441,12 @@ class _NewPhaseState extends State<NewPhase> {
             //       ;
             //     }),
 
-            const SizedBox(
-              height: 8.0,
+            SizedBox(
+              height: 8.h,
             ),
             clickAddSubTask
                 ? Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding: EdgeInsets.only(right: 8.h),
                     // child: DatePicker(
                     //   subtitle: 'subTask',
                     //   title: "End date",
@@ -1491,15 +1491,15 @@ class _NewPhaseState extends State<NewPhase> {
             clickAddSubTask && saveSubtaskClick && selectedSubTaskSource.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
-                    margin: EdgeInsets.only(left: 0.0, top: 03),
+                    margin: EdgeInsets.only(left: 0.0, top: 3.sp),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'Please select resource',
                           style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 14.sp,
                               color: Colors.red,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400),
@@ -1512,7 +1512,7 @@ class _NewPhaseState extends State<NewPhase> {
                 ? subTaskResourcesView()
                 : saveButtonClickForSubtask
                     ? Padding(
-                        padding: const EdgeInsets.only(right: 6.0),
+                        padding: EdgeInsets.only(right: 6.sp),
                         child: subTaskList(
                           context,
                           phaseDetails,
@@ -1534,15 +1534,15 @@ class _NewPhaseState extends State<NewPhase> {
             savePhaseClick && phaseDetails.sub_tasks!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
-                    margin: const EdgeInsets.only(left: 10.0, top: 03),
+                    margin: EdgeInsets.only(left: 10.sp, top: 3.sp),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'Please add subtask',
-                          style: const TextStyle(
-                              fontSize: 14.0,
+                          style: TextStyle(
+                              fontSize: 14.sp,
                               color: Colors.red,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400),
@@ -1631,7 +1631,7 @@ class _NewPhaseState extends State<NewPhase> {
                             ),
                             child: Center(
                                 child: Icon(Icons.add,
-                                    color: Colors.white, size: 18)),
+                                    color: Colors.white, size: 18.sp)),
                           ))
                     ],
                   ),
@@ -2110,19 +2110,19 @@ class _NewPhaseState extends State<NewPhase> {
         Padding(
           padding: EdgeInsets.only(left: 30.sp),
           child: Container(
-            height: 50.0,
+            height: 50.h,
             width: MediaQuery.of(context).size.width * 0.24,
-            margin: const EdgeInsets.only(top: 16),
+            margin: EdgeInsets.only(top: 16.sp),
             decoration: BoxDecoration(
               color: Color(0xff1E293B),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                     color: Colors.black38,
-                    blurRadius: 2.0,
+                    blurRadius: 2.r,
                     offset: Offset(0.0, 0.75))
               ],
               borderRadius: BorderRadius.circular(
-                6.0,
+                6.r,
               ),
             ),
             child: Column(
@@ -2138,14 +2138,14 @@ class _NewPhaseState extends State<NewPhase> {
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _subTaskResourcesController,
-                    style: const TextStyle(color: Colors.white, fontSize: 14.0),
+                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.white,
                     autofocus: true,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 15.0),
+                      contentPadding: EdgeInsets.only(top: 15.sp),
                       prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 4.0),
+                          padding: EdgeInsets.only(top: 4.sp),
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),
@@ -2186,30 +2186,30 @@ class _NewPhaseState extends State<NewPhase> {
         ),
         selectedSubTaskSource.isNotEmpty
             ? SizedBox(
-                height: 65,
+                height: 65.h,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 28.0),
+                  padding: EdgeInsets.only(left: 28.sp),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: selectedSubTaskSource.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16, bottom: 2, left: 5),
+                          padding: EdgeInsets.only(
+                              top: 16.sp, bottom: 2.sp, left: 5.sp),
                           child: InputChip(
-                              labelPadding:
-                                  EdgeInsets.only(left: 10, top: 5, bottom: 7),
-                              shape: const RoundedRectangleBorder(
+                              labelPadding: EdgeInsets.only(
+                                  left: 10.sp, top: 5.sp, bottom: 7.sp),
+                              shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                 Radius.circular(
-                                  10,
+                                  10.r,
                                 ),
                               )),
                               side: BorderSide(color: Color(0xff334155)),
-                              deleteIcon: const Icon(
+                              deleteIcon: Icon(
                                 Icons.close,
                                 color: Colors.white,
-                                size: 20,
+                                size: 20.sp,
                               ),
                               backgroundColor: Color(0xff334155),
                               visualDensity: VisualDensity.compact,
@@ -2280,16 +2280,11 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 saveButtonClickForMileStone = true;
-
-                print(mileStoneDate);
               });
-              print(
-                  "mileStoneDateCheck---------------------------$mileStoneDateCheck");
-              if (_mileStoneFormKey.currentState!.validate() &&
-                  mileStoneDateCheck == false) {
-                if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
-                  print(mileStoneDate);
 
+              if (_mileStoneFormKey.currentState!.validate() &&
+                  !mileStoneDateCheck) {
+                if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
@@ -2317,7 +2312,8 @@ class _NewPhaseState extends State<NewPhase> {
                       saveButtonClickForMileStone = true;
                     });
                   } catch (e) {
-                    print(e);
+                    print(
+                        "Error ------------------------------------------ ${e}");
                   }
                 } else {
                   print('Add milestone date');
@@ -2428,21 +2424,24 @@ class _NewPhaseState extends State<NewPhase> {
         style: TextStyle(
             color: const Color(0xffFFFFFF),
             fontSize: i,
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.w500),
+            fontFamily: 'Inter-Bold',
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w700),
       ),
     );
   }
 
   titleSubHeadlineWidget(String title, double i) {
     return Container(
-      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 14),
+      margin: EdgeInsets.only(top: 10.sp, bottom: 10.sp, right: 14.sp),
       child: Text(
         title,
         style: TextStyle(
             color: const Color(0xff93C5FD),
             fontSize: i,
-            fontFamily: 'Inter',
+            fontStyle: FontStyle.normal,
+            letterSpacing: 0.1,
+            fontFamily: 'Inter-Bold',
             fontWeight: FontWeight.w700),
       ),
     );
@@ -2581,8 +2580,6 @@ class _NewPhaseState extends State<NewPhase> {
     subTaskStartDate = "";
     subTaskEndDate = "";
   }
-
-  void editPhaseApi() {}
 
   String errorTexts(
       bool createButtonClicks, String? end_date, String? start_date) {
