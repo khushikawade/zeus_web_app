@@ -496,7 +496,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(
-                                          left: 0.0, top: 10.sp),
+                                          left: 10.sp, top: 10.sp),
                                       child: Text(
                                         list.resource != null
                                             ? list.resource!.city != null &&

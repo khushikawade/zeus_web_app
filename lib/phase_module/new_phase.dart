@@ -2030,16 +2030,11 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 saveButtonClickForMileStone = true;
-
-                print(mileStoneDate);
               });
-              print(
-                  "mileStoneDateCheck---------------------------$mileStoneDateCheck");
-              if (_mileStoneFormKey.currentState!.validate() &&
-                  mileStoneDateCheck == false) {
-                if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
-                  print(mileStoneDate);
 
+              if (_mileStoneFormKey.currentState!.validate() &&
+                  !mileStoneDateCheck) {
+                if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
                   try {
                     setState(() {
                       if (mileStoneAction.isEmpty) {
@@ -2067,7 +2062,8 @@ class _NewPhaseState extends State<NewPhase> {
                       saveButtonClickForMileStone = true;
                     });
                   } catch (e) {
-                    print(e);
+                    print(
+                        "Error ------------------------------------------ ${e}");
                   }
                 } else {
                   print('Add milestone date');
