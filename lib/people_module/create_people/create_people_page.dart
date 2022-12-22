@@ -1974,10 +1974,14 @@ class _EditPageState extends State<CreatePeoplePage> {
     _selectedFile = webImage;
     print(_selectedFile);
 
-    request.files.add(await http.MultipartFile.fromBytes(
-        'image', _selectedFile!,
-        contentType: new MediaType('application', 'octet-stream'),
-        filename: "file_up"));
+    if (_selectedFile != null) {
+      request.files.add(await http.MultipartFile.fromBytes(
+          'image', _selectedFile!,
+          contentType: new MediaType('application', 'octet-stream'),
+          filename: "file_up"));
+    }else {
+      //request.fields['image'] = widget.response!.image!;
+    }
 
     print("requestData ----------------------------------------- ${request}");
 
