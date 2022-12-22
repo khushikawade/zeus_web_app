@@ -101,6 +101,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                   hintText: widget.hint ?? '',
                   labelStyle: TextStyle(
                     fontSize: 15.sp,
+                    
                     overflow: TextOverflow.fade,
                     color: Color(0xff64748B),
                     fontFamily: 'Inter-Medium',
