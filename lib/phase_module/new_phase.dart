@@ -125,6 +125,8 @@ class _NewPhaseState extends State<NewPhase> {
       if (getPhaseDetails!.data != null) {
         setState(() {
           phaseDetails.start_date = getPhaseDetails?.data?.startDate ?? "";
+          print("Main Date-------------------------");
+          print(phaseDetails.start_date);
           phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
         });
 
@@ -313,6 +315,9 @@ class _NewPhaseState extends State<NewPhase> {
                                           const Duration(microseconds: 500),
                                           () {
                                         createPhase();
+
+                                        print(
+                                            "99999999999999999999999999999999999999999");
                                       });
                                     },
                                   ),
