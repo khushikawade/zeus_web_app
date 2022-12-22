@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zeus/services/model/mileston_model.dart';
 import 'package:zeus/services/model/phase_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/utility/util.dart';
 
 Widget milestoneList(context, PhaseDetails phaseDetails,
         {required Null Function(Milestones values, int index, String action)
@@ -70,7 +71,10 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                               Row(
                                 children: [
                                   Text(
-                                      phaseDetails.milestone?[index].m_date ??
+                                      AppUtil.dateToString(
+                                              AppUtil.stringToDateValidate(
+                                                  phaseDetails.milestone![index]
+                                                      .m_date!)) ??
                                           '',
                                       style: TextStyle(
                                           fontSize: 14.0.sp,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zeus/services/model/phase_details.dart';
 import 'package:zeus/services/model/subtask_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/utility/util.dart';
 
 Widget subTaskList(context, PhaseDetails phaseDetails,
         {required Null Function(SubTasksModel values, int index, String action)
@@ -127,7 +128,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                 Row(
                                   children: [
                                     Text(
-                                        "${phaseDetails.sub_tasks?[index].start_date ?? ''} - ${phaseDetails.sub_tasks?[index].end_date ?? ''}",
+                                        "${AppUtil.dateToString(AppUtil.stringToDateValidate(phaseDetails.sub_tasks![index].start_date!)) ?? ''} - ${AppUtil.dateToString(AppUtil.stringToDateValidate(phaseDetails.sub_tasks![index].end_date!)) ?? ''}",
                                         style: TextStyle(
                                             fontSize: 14.0.sp,
                                             color: Color(0xff8897ac),
