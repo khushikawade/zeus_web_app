@@ -608,9 +608,7 @@ class _NewPhaseState extends State<NewPhase> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 10.sp,
-                    ),
+                    padding: EdgeInsets.only(left: 10.sp, top: 21.sp),
                     child: Container(
                       height: 60.h,
                       width: 60.w,
@@ -654,11 +652,9 @@ class _NewPhaseState extends State<NewPhase> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 18.0.sp,
-                            ),
+                            padding: EdgeInsets.only(left: 18.0.sp, top: 12.sp),
                             child: CustomSearchDropdown(
-                              hint: "Typesss",
+                              hint: "Type",
                               label: "",
                               margin: EdgeInsets.all(0),
                               showSearchBar: true,
@@ -1044,7 +1040,7 @@ class _NewPhaseState extends State<NewPhase> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 29.5.sp, top: 0.0.sp),
+              padding: EdgeInsets.only(left: 29.5.sp, top: 18.5.sp),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1058,13 +1054,10 @@ class _NewPhaseState extends State<NewPhase> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Container(
-                                // color: Colors.red,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 15.sp,
-                                  color: Color(0xff93C5FD),
-                                ),
+                              Icon(
+                                Icons.add,
+                                size: 15.sp,
+                                color: Color(0xff93C5FD),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -1583,20 +1576,20 @@ class _NewPhaseState extends State<NewPhase> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
+          // color: Colors.red,
           padding: EdgeInsets.only(
-            left: 30.5.sp,
-            right: 16.sp,
-          ),
+              // left: 30.5.sp,
+              // right: 16.sp,
+              ),
           width: MediaQuery.of(context).size.width * 3,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 24.sp),
+                padding: EdgeInsets.only(left: 30.sp, top: 21.sp),
                 child: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(),
+                  height: 60.h,
+                  width: 60.w,
                   child: Stack(
                     children: [
                       Positioned(
@@ -1606,19 +1599,22 @@ class _NewPhaseState extends State<NewPhase> {
                         bottom: 0,
                         child: CircleAvatar(
                           backgroundColor: Color(0xff334155),
-                          radius: 30,
-                          child: Icon(Icons.person_outline,
-                              size: 30, color: Color(0xffDADADA)),
+                          radius: 30.r,
+                          child: Icon(
+                            Icons.person_outline,
+                            size: 30.sp,
+                            color: Color(0xffDADADA),
+                          ),
                         ),
                       ),
                       Positioned(
                           bottom: 0,
                           right: 0,
                           child: Container(
-                            padding: EdgeInsets.all(3),
+                            padding: EdgeInsets.all(3.sp),
                             decoration: BoxDecoration(
                               color: Color(0xff10B981),
-                              borderRadius: BorderRadius.circular(100),
+                              borderRadius: BorderRadius.circular(100.r),
                             ),
                             child: Center(
                                 child: Icon(Icons.add,
@@ -1626,89 +1622,18 @@ class _NewPhaseState extends State<NewPhase> {
                           ))
                     ],
                   ),
-                  // Expanded(
-                  //   child: Container(
-                  //     margin: const EdgeInsets.only(left: 30.0),
-                  //     height: 56.0,
-                  //     width: (MediaQuery.of(context).size.width * 0.22),
-                  //     decoration: BoxDecoration(
-                  //       color: const Color(0xff334155),
-                  //       borderRadius: BorderRadius.circular(
-                  //         8.0,
-                  //       ),
-                  //     ),
-                  //     child: Container(
-                  //       margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  //       height: 20.0,
-                  //       child: Container(child: StatefulBuilder(
-                  //         builder: (BuildContext context, StateSettersetState) {
-                  //           return DropdownButtonHideUnderline(
-                  //             child: CustomDropdownButton(
-                  //               dropdownColor: ColorSelect.class_color,
-                  //               value: subtaskDepat,
-                  //               underline: Container(),
-                  //               hint: const Text(
-                  //                 "Type",
-                  //                 style: TextStyle(
-                  //                     fontSize: 14.0,
-                  //                     color: Color(0xffFFFFFF),
-                  //                     fontFamily: 'Inter',
-                  //                     fontWeight: FontWeight.w500),
-                  //               ),
-                  //               //  isExpanded: true,
-                  //               icon: const Icon(
-                  //                 Icons.arrow_drop_down,
-                  //                 color: Color(0xff64748B),
-                  //               ),
-                  //               items: removeDuplicate().map((items) {
-                  //                 return DropdownMenuItem(
-                  //                   value: items.department,
-                  //                   child: Text(
-                  //                     items.department!,
-                  //                     style: const TextStyle(
-                  //                         fontSize: 14.0,
-                  //                         color: Color(0xffFFFFFF),
-                  //                         fontFamily: 'Inter',
-                  //                         fontWeight: FontWeight.w400),
-                  //                   ),
-                  //                 );
-                  //               }).toList(),
-                  //               onChanged: (newValue) {
-                  //                 setState(() {
-                  //                   selectedSubTaskSource.clear();
-                  //                 });
-                  //                 setState(() {
-                  //                   resourceSuggestions.clear();
-                  //                   for (var element in listResource) {
-                  //                     if (element.department!.toLowerCase() ==
-                  //                         newValue.toString().toLowerCase()) {
-                  //                       resourceSuggestions.add(element.details!);
-                  //                     }
-                  //                   }
-
-                  //                   subtaskDepat = newValue.toString();
-                  //                   if (newValue != null) {}
-                  //                 });
-                  //               },
-                  //             ),
-                  //           );
-                  //         },
-                  //       )),
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 15.sp, right: 30.sp),
+                  padding: EdgeInsets.only(top: 12.sp, right: 30.sp),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(
-                            left: 30.sp,
+                            left: 16.sp,
                           ),
                           child: CustomSearchDropdownSubTask(
                             hint: "Type",
@@ -1933,7 +1858,7 @@ class _NewPhaseState extends State<NewPhase> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: 30.sp),
           child: Container(
             height: 50.0,
             width: MediaQuery.of(context).size.width * 0.24,
@@ -1967,7 +1892,7 @@ class _NewPhaseState extends State<NewPhase> {
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.white,
                     autofocus: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 15.0),
                       prefixIcon: Padding(
                           padding: EdgeInsets.only(top: 4.0),
@@ -1977,7 +1902,7 @@ class _NewPhaseState extends State<NewPhase> {
                           )),
                       hintText: 'Search',
                       hintStyle: TextStyle(
-                          fontSize: 14.0,
+                          fontSize: 14.0.sp,
                           color: Colors.white,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w400),
@@ -2198,7 +2123,8 @@ class _NewPhaseState extends State<NewPhase> {
                 saveButtonClickForSubtask1 = true;
               });
 
-              if (_subtaskFormKey.currentState!.validate()) {
+              if (_subtaskFormKey.currentState!.validate() &&
+                  subtaskdateCheck == false) {
                 if (selectedSubTaskSource.isNotEmpty &&
                     subTaskStartDate!.isNotEmpty &&
                     subTaskEndDate!.isNotEmpty) {
