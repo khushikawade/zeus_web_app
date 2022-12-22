@@ -82,8 +82,8 @@ class _NewPhaseState extends State<NewPhase> {
   // String mileStoneDate = AppUtil.dateToString(DateTime.now());
   DateTime? mileStoneDate;
 
-  String? subTaskStartDate;
-  String? subTaskEndDate;
+  String? subTaskStartDate = "";
+  String? subTaskEndDate = "";
   String subTaskResourceName = "";
 
   bool allValidate = true;
@@ -1351,12 +1351,16 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
-                          initialDate: widget.type == 0
-                              ? null
-                              : AppUtil.stringToDate(subTaskStartDate!),
-                          onChange: (date) {
+                          initialDate: widget.type == 0 ? null : null,
+                          //: AppUtil.stringToDateValidate(subTaskStartDate!),
+                          onChange: (dates) {
+                            print("------------Start date----------------");
+
                             setState(() {
-                              subTaskStartDate = date.toString();
+                              subTaskStartDate = dates.toString();
+
+                              print(
+                                  "subTaskStartDate------------------$subTaskStartDate");
                             });
                             setState(() {});
                           },
@@ -1366,7 +1370,7 @@ class _NewPhaseState extends State<NewPhase> {
                             });
                           },
                           errorText: (saveButtonClickForSubtask1 &&
-                                  subTaskStartDate == null)
+                                  subTaskStartDate!.isEmpty)
                               ? 'Please enter start date'
                               : "",
                           validator: (value) {},
@@ -1374,12 +1378,12 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "End date",
-                          initialDate: widget.type == 0
-                              ? null
-                              : AppUtil.stringToDate(subTaskEndDate!),
+                          initialDate: widget.type == 0 ? null : null,
+                          // AppUtil.stringToDateValidate(subTaskEndDate!),
                           onChange: (date) {
                             setState(() {
                               subTaskEndDate = date.toString();
+                              print("end date-----------------$subTaskEndDate");
                             });
                             setState(() {});
                           },
@@ -1388,7 +1392,11 @@ class _NewPhaseState extends State<NewPhase> {
                               subTaskEndDate = null;
                             });
                           },
-                          errorText: errorTexts(saveButtonClickForSubtask1,
+                          // errorText: (saveButtonClickForSubtask1 &&
+                          //         subTaskEndDate!.isEmpty)
+                          //     ? 'Please enter end date'
+                          //     : "",
+                          errorText: errorTextForSubtask(
                               subTaskStartDate, subTaskEndDate),
                           validator: (value) {},
                         )
@@ -2026,7 +2034,7 @@ class _NewPhaseState extends State<NewPhase> {
             ),
             onTap: () {
               setState(() {
-                mileStoneDate = null;
+                // mileStoneDate = null;
                 mileStoneTitle = "";
                 controllerMilestoneTitle.text = "";
                 clickedAddMileStone = false;
@@ -2050,7 +2058,6 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 saveButtonClickForMileStone = true;
-                
 
                 print(mileStoneDate);
               });
@@ -2063,7 +2070,7 @@ class _NewPhaseState extends State<NewPhase> {
                       if (mileStoneAction.isEmpty) {
                         phaseDetails.milestone!.add(Milestones(
                             title: mileStoneTitle,
-                            m_date: mileStoneDate.toString()));
+                            m_date: AppUtil.dateToString(mileStoneDate!)));
                       } else {
                         phaseDetails.milestone![mileStoneEditIndex].title =
                             mileStoneTitle;
@@ -2075,7 +2082,7 @@ class _NewPhaseState extends State<NewPhase> {
                       mileStoneEditIndex = 0;
                       mileStoneAction = '';
 
-                      mileStoneDate = AppUtil.dateToString(DateTime.now());
+                      // mileStoneDate = AppUtil.dateToString(DateTime.now());
                       mileStoneTitle = "";
                       controllerMilestoneTitle.text = "";
                       clickedAddMileStone = false;
@@ -2118,7 +2125,7 @@ class _NewPhaseState extends State<NewPhase> {
                 subTaskStartDate = "";
                 subTaskEndDate = "";
                 clickAddSubTask = false;
-                saveButtonClickForSubtask = true;
+                saveButtonClickForSubtask1 = true;
               });
             },
           ),
@@ -2137,17 +2144,25 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 saveButtonClickForSubtask1 = true;
-                saveSubtaskClick = true;
-                if (_subtaskFormKey.currentState!.validate()) {
-                  if (selectedSubTaskSource.isNotEmpty &&
-                      subTaskStartDate!.isNotEmpty &&
-                      subTaskEndDate!.isNotEmpty) {
+                print(
+                    "saveButtonClickForSubtask1---------------$saveButtonClickForSubtask1");
+                print("----------------------------$subTaskStartDate");
+                print("----------------------------$subTaskEndDate");
+              });
+
+              if (_subtaskFormKey.currentState!.validate()) {
+                if (selectedSubTaskSource.isNotEmpty &&
+                    subTaskStartDate!.isNotEmpty &&
+                    subTaskEndDate!.isNotEmpty) {
+                  setState(() {
                     try {
                       if (subtaskActionType.isEmpty) {
                         phaseDetails.sub_tasks!.add(SubTasksModel(
                           resource: selectedSubTaskSource[0],
-                          end_date: subTaskEndDate,
-                          start_date: subTaskStartDate,
+                          end_date: AppUtil.dateToString(
+                              AppUtil.stringToDateValidate(subTaskEndDate!)),
+                          start_date: AppUtil.dateToString(
+                              AppUtil.stringToDateValidate(subTaskStartDate!)),
                         ));
                         subtaskActionType = '';
                       } else {
@@ -2168,11 +2183,11 @@ class _NewPhaseState extends State<NewPhase> {
                     } catch (e) {
                       print(e);
                     }
-                  } else {
-                    print('Enter sub task data');
-                  }
+                  });
+                } else {
+                  print('Enter sub task data');
                 }
-              });
+              }
             },
           )
         ],
@@ -2371,6 +2386,37 @@ class _NewPhaseState extends State<NewPhase> {
 
       if (end.isBefore(start)) {
         return 'Milestone date must be less then the phase end date';
+      }
+    }
+
+    return '';
+  }
+
+  String errorTextForSubtask(String? subtask, String? enddate) {
+    print("enddate------------------------------$enddate");
+    if (saveButtonClickForSubtask1 &&
+        enddate!.isEmpty &&
+        enddate != null &&
+        subtask != null) {
+      return 'Please enter end date';
+    } else if (saveButtonClickForSubtask1 &&
+        enddate != null &&
+        subtask != null) {
+      print('jhhhhhhhhhhhhhhhhhh99999');
+      try {
+        DateTime start = AppUtil.stringToDateValidate(subtask);
+        DateTime end = AppUtil.stringToDateValidate(enddate);
+        // DateTime phase = AppUtil.stringToDateValidate(phaseDetails.end_date!);
+        print("77777777777777");
+        if (end.isBefore(start)) {
+          return 'End date must be greater then the start date';
+        } else if (AppUtil.stringToDateValidate(enddate)
+            .isAtSameMomentAs((AppUtil.stringToDateValidate(subtask)))) {
+          return 'End date should not be same as start date';
+        }
+        return '';
+      } catch (e) {
+        print(e);
       }
     }
 
