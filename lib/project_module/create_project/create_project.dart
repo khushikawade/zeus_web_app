@@ -3,42 +3,37 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/helper_widget/custom_form_field.dart';
+import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:zeus/utility/constant.dart';
-import 'package:zeus/utility/upertextformate.dart';
 import 'package:zeus/utility/util.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateProjectPage extends StatefulWidget {
+  ProjectDetailResponse? response;
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
-  CreateProjectPage({Key? key, this.formKey}) : super(key: key);
+
+  CreateProjectPage({Key? key, this.formKey, this.response}) : super(key: key);
 
   @override
   State<CreateProjectPage> createState() => _EditPageState();
 }
 
 class _EditPageState extends State<CreateProjectPage> {
-  String dropdownvalue = 'Item 1';
-  String? _depat, _account, _custome, _curren, _status, _time, _tag;
+  String? _account, _custome, _curren, _status;
   DateTime? selectedDate;
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
   String name_ = '';
 
-  bool selectAccountablePerson = false;
-  bool selectCurrency = false;
-  bool selectStatus = false;
-  bool selectCustomer = false;
   bool createButtonClick = false;
-  bool selectDeliveryDate = false;
+  bool createProjectValidate = true;
+  bool dataLoading = false;
 
   TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
@@ -46,47 +41,16 @@ class _EditPageState extends State<CreateProjectPage> {
   final TextEditingController _budget = TextEditingController();
   final TextEditingController _estimatehours = TextEditingController();
 
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController descriptionController =
+      TextEditingController(text: '');
 
   final ScrollController verticalScroll = ScrollController();
 
-  bool _submitted = true;
-  bool _addSubmitted = false;
-  List _accountableId = [];
-  List _customerName = [];
-  List _currencyName = [];
-  List _statusList = [];
-  List _timeline = [];
-  List addTag = [];
-  List<String> _tag1 = [];
-  GlobalKey<ScaffoldState>? _key;
-  bool? _isSelected;
-  List<String>? _filters1 = [
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface'
-  ];
-  List<String>? addTag1 = [];
-  List<int> add1 = [1];
-  bool imageavail = false;
-  var isIndex = 0;
-  var isLoading = false;
-  Future<void> _selectDate(setState) async {
-    selectedDate = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate!,
-        lastDate: DateTime(5000),
-        firstDate: DateTime.now());
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-    selectDeliveryDate = true;
-  }
+  List<DropdownModel>? accountablePersonList = [];
+  List<DropdownModel>? consumerList = [];
+  List<DropdownModel>? projectStatusList = [];
+
+  List<DropdownModel>? currencyList = [];
 
   Future<String?> getSelectStatus() async {
     String? value;
@@ -103,7 +67,22 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _statusList = mdata;
+          try {
+            projectStatusList!.clear();
+
+            mdata.forEach((element) {
+              projectStatusList!.add(
+                  DropdownModel(element['id'].toString(), element['title']));
+            });
+
+            // _accountableId.map((result) {
+            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
+            //   print(result);
+            //   accountablePersonList!.add(result['name']);
+            // });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -130,7 +109,22 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _accountableId = mdata;
+          try {
+            accountablePersonList!.clear();
+
+            mdata.forEach((element) {
+              accountablePersonList!.add(
+                  DropdownModel(element['id'].toString(), element['name']));
+            });
+
+            // _accountableId.map((result) {
+            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
+            //   print(result);
+            //   accountablePersonList!.add(result['name']);
+            // });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -157,7 +151,18 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _customerName = mdata;
+          try {
+            consumerList!.clear();
+
+            mdata.forEach((element) {
+              if (!currencyList!.contains(element)) {
+                consumerList!.add(
+                    DropdownModel(element['id'].toString(), element['name']));
+              }
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -169,1098 +174,493 @@ class _EditPageState extends State<CreateProjectPage> {
     return null;
   }
 
+  // update Controller Value
+  updateControllerValue() {
+    _projecttitle.text = widget.response!.data != null &&
+            widget.response!.data!.title != null &&
+            widget.response!.data!.title!.isNotEmpty
+        ? widget.response!.data!.title!
+        : '';
+
+    _crmtask.text = widget.response!.data != null &&
+            widget.response!.data!.crmTaskId != null &&
+            widget.response!.data!.crmTaskId!.isNotEmpty
+        ? widget.response!.data!.crmTaskId!
+        : '';
+
+    _warkfolderId.text = widget.response!.data != null &&
+            widget.response!.data!.workFolderId != null &&
+            widget.response!.data!.workFolderId!.isNotEmpty
+        ? widget.response!.data!.workFolderId!
+        : '';
+
+    _budget.text =
+        widget.response!.data != null && widget.response!.data!.budget != null
+            ? widget.response!.data!.budget!.toString()
+            : '';
+
+    _estimatehours.text = widget.response!.data != null &&
+            widget.response!.data!.estimationHours != null &&
+            widget.response!.data!.estimationHours!.isNotEmpty
+        ? widget.response!.data!.estimationHours!.toString()
+        : '';
+
+    _custome = widget.response!.data != null &&
+            widget.response!.data!.customerId != null
+        ? widget.response!.data!.customerId.toString()
+        : '';
+
+    _account = widget.response!.data != null &&
+            widget.response!.data!.accountablePersonId != null
+        ? widget.response!.data!.accountablePersonId.toString()
+        : '';
+
+    _status =
+        widget.response!.data != null && widget.response!.data!.status != null
+            ? widget.response!.data!.status.toString()
+            : '';
+
+    _curren =
+        widget.response!.data != null && widget.response!.data!.currency != null
+            ? widget.response!.data!.currency.toString()
+            : '';
+
+    try {
+      DropdownModel? result = getAllInitialValue(projectStatusList, _status);
+      if (result != null) {
+        _status = result.id;
+      } else {
+        _status = null;
+      }
+    } catch (e) {}
+
+    if (widget.response!.data != null &&
+        widget.response!.data!.deliveryDate != null &&
+        widget.response!.data!.deliveryDate!.isNotEmpty) {
+      selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
+    }
+  }
+
   @override
   void initState() {
-    getSelectStatus();
-    getAccountable();
-    getCustomer();
-    getCurrency();
+    callAllApi();
 
     super.initState();
+  }
+
+  callAllApi() async {
+    setState(() {
+      if (widget.response != null) {
+        dataLoading = true;
+      }
+    });
+
+    await getSelectStatus();
+    await getAccountable();
+    await getCustomer();
+    await getCurrency();
+    if (widget.response != null) {
+      await updateControllerValue();
+    }
+    setState(() {
+      dataLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.33,
-          child: RawScrollbar(
-            controller: verticalScroll,
-            thumbColor: const Color(0xff4b5563),
-            crossAxisMargin: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            thickness: 8,
-            child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: ListView(
-                controller: verticalScroll,
-                padding: EdgeInsets.all(20),
-                shrinkWrap: true,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: const Text(
-                        'Create Project',
-                        style: TextStyle(
-                            color: Color(0xffFFFFFF),
-                            fontSize: 18.0,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700),
-                      )),
-                      GestureDetector(
+      children: [createProjectView()],
+    );
+  }
+
+  Widget createProjectView() {
+    return Container(
+      width: 523.w,
+      child: dataLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : RawScrollbar(
+              controller: verticalScroll,
+              thumbColor: const Color(0xff4b5563),
+              crossAxisMargin: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              thickness: 8,
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ListView(
+                  controller: verticalScroll,
+                  padding: EdgeInsets.all(20),
+                  shrinkWrap: true,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            child: Text(
+                          widget.response != null
+                              ? 'Edit Project'
+                              : 'Create Project',
+                          style: TextStyle(
+                              color: Color(0xffFFFFFF),
+                              fontSize: 18.sp,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
+                        )),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              width: 30.sp,
+                              height: 30.sp,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: const Color(0xff1E293B),
+                                border: Border.all(
+                                    color: Color(0xff334155), width: 0.6),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'images/cross.svg',
+                                  height: 13.8.sp,
+                                  width: 13.18.sp,
+                                ),
+                              ),
+                            ))
+                      ],
+                    ),
+                    SizedBox(height: 32.w),
+                    CustomFormField(
+                      controller: _projecttitle,
+                      hint: '',
+                      label: "Project title",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: CustomSearchDropdown(
+                          label: 'AP',
+                          hint: 'Select Accountable Person',
+                          initialValue: getAllInitialValue(
+                              accountablePersonList, _account),
+                          errorText: createButtonClick &&
+                                  (_account == null || _account!.isEmpty)
+                              ? 'Please Select this field'
+                              : '',
+                          items: accountablePersonList!,
+                          onChange: ((DropdownModel value) {
+                            setState(() {
+                              _account = value.id;
+                              print("account:${_account}");
+                            });
+                          }),
+                        )),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        Expanded(
+                            child: CustomSearchDropdown(
+                          label: 'Customer',
+                          hint: 'Select Customer',
+                          initialValue:
+                              getAllInitialValue(consumerList, _custome) ??
+                                  null,
+                          errorText: createButtonClick &&
+                                  (_custome == null || _custome!.isEmpty)
+                              ? 'Please Select this field'
+                              : '',
+                          items: consumerList!,
+                          onChange: ((value) {
+                            setState(() {
+                              _custome = value.id;
+                              print("account:$_custome");
+                            });
+                          }),
+                        ))
+                      ],
+                    ),
+                    CustomFormField(
+                      controller: _crmtask,
+                      hint: '',
+                      label: "CRM task ID",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                    CustomFormField(
+                      controller: _warkfolderId,
+                      hint: '',
+                      label: "Work Folder ID:",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            createProjectValidate = false;
+                          });
+                          return 'Please enter';
+                        }
+                        return null;
+                      },
+                      onChange: (text) => setState(() => name_ = text),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 9,
+                          child: CustomFormField(
+                            controller: _budget,
+                            hint: '',
+                            label: "Budget",
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Please enter';
+                              }
+                              return null;
+                            },
+                            onChange: (text) => setState(() => name_ = text),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                            flex: 8,
+                            child: CustomSearchDropdown(
+                              hint: 'Select',
+                              label: "AB",
+                              initialValue:
+                                  getAllInitialValue(currencyList, _curren),
+                              errorText: createButtonClick &&
+                                      (_curren == null || _curren!.isEmpty)
+                                  ? 'Please Select this field'
+                                  : '',
+                              items: currencyList!,
+                              onChange: ((value) {
+                                _curren = value.id;
+                                setState(() {});
+                              }),
+                            )),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          flex: 18,
+                          child: CustomFormField(
+                            controller: _estimatehours,
+                            hint: '',
+                            label: "Estimated hours",
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Please enter';
+                              }
+                              return null;
+                            },
+                            onChange: (text) => setState(() => name_ = text),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                            child: CustomSearchDropdown(
+                          hint: 'Select Status',
+                          label: "",
+                          initialValue:
+                              getAllInitialValue(projectStatusList, _status),
+                          errorText: createButtonClick &&
+                                  (_status == null || _status!.isEmpty)
+                              ? 'Please Select this field'
+                              : '',
+                          items: projectStatusList!,
+                          onChange: ((value) {
+                            setState(() {
+                              _status = value.id;
+                              print('value of status' + _status!);
+                            });
+                          }),
+                        )),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: CustomDatePicker(
+                            hint: 'Select Date',
+                            label: 'Delivery Date',
+                            initialDate: selectedDate,
+                            onChange: (date) {
+                              setState(() {
+                                selectedDate = date;
+                              });
+                            },
+                            onCancel: () {
+                              setState(() {
+                                selectedDate = null;
+                              });
+                            },
+                            errorText:
+                                (createButtonClick && selectedDate == null)
+                                    ? 'Please select this field'
+                                    : "",
+                            validator: (value) {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
                           onTap: () {
                             Navigator.of(context).pop();
                           },
                           child: Container(
-                            width: 40,
-                            height: 40,
+                            width: 97.w,
+                            margin: EdgeInsets.only(
+                              top: 16.0.h,
+                            ),
+                            height: 40.0.h,
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xff1E293B),
-                              border: Border.all(
-                                  color: Color(0xff334155), width: 0.6),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: SvgPicture.asset(
-                                'images/cross.svg',
+                              color: const Color(0xff334155),
+                              borderRadius: BorderRadius.circular(
+                                40.0.r,
                               ),
                             ),
-                          ))
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 15.0, left: 0.0, right: 0.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin:
-                                  const EdgeInsets.only(top: 24.0, left: 14.0),
-                              child: const Text(
-                                "Project title",
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Cancel",
                                 style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Color(0xff64748B),
+                                    fontSize: 15.0.sp,
+                                    color: ColorSelect.white_color,
                                     fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ],
-                      ),
-                      TextFormField(
-                        maxLength: 50,
-                        controller: _projecttitle,
-                        // inputFormatters: [UpperCaseTextFormatter()],
-                        textCapitalization: TextCapitalization.characters,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(
-                              bottom: 16.0,
-                              top: 54.0,
-                              right: 0,
-                              left: 14.0,
-                            ),
-                            errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        autovalidateMode: _submitted
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter';
-                          }
-                          return null;
-                        },
-                        onChanged: (text) => setState(() => name_ = text),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
-                              height: 60.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
+                                    fontWeight: FontWeight.w700),
                               ),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                            top: 4.0, left: 14.0),
-                                        child: const Text(
-                                          "AP",
-                                          style: TextStyle(
-                                              fontSize: 13.0,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                    StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSettersetState) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 0, top: 2),
-                                        child: DropdownButtonHideUnderline(
-                                            child: CustomDropdownButton(
-                                          isDense: true,
-                                          dropdownColor: Color(0xff0F172A),
-                                          value: _account,
-                                          underline: Container(),
-                                          hint: const Text(
-                                            "Select Accountable Person",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          icon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            color: Color(0xff64748B),
-                                          ),
-                                          elevation: 12,
-                                          items: _accountableId.map((items) {
-                                            return DropdownMenuItem(
-                                              value: items['id'].toString(),
-                                              child: Text(
-                                                items['name'],
-                                                style: const TextStyle(
-                                                    fontSize: 15.0,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              _account = newValue;
-                                              print("account:$_account");
-                                              selectAccountablePerson = true;
-                                            });
-                                          },
-                                        )),
-                                      );
-                                    }),
-                                  ]),
                             ),
-                            createButtonClick
-                                ? selectAccountablePerson
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 26,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
-                              height: 60.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                            top: 4.0, left: 14.0),
-                                        child: const Text(
-                                          "Customer",
-                                          style: TextStyle(
-                                              fontSize: 13.0,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                                    StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSettersetState) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 0, top: 2),
-                                        child: DropdownButtonHideUnderline(
-                                            child: CustomDropdownButton(
-                                          isDense: true,
-                                          dropdownColor:
-                                              ColorSelect.class_color,
-                                          value: _custome,
-                                          underline: Container(),
-                                          hint: const Text(
-                                            "Select Customer",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          icon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            color: Color(0xff64748B),
-                                          ),
-                                          items: _customerName.map((items) {
-                                            return DropdownMenuItem(
-                                              value: items['id'].toString(),
-                                              child: Text(
-                                                items['name'],
-                                                style: const TextStyle(
-                                                    fontSize: 15.0,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              _custome = newValue;
-                                              print("account:$_custome");
-                                              selectCustomer = true;
-                                            });
-                                          },
-                                        )),
-                                      );
-                                    })
-                                  ]),
-                            ),
-                            createButtonClick
-                                ? selectAccountablePerson
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 26,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 24.0, left: 0.0, right: 0.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
                           ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin:
-                                  const EdgeInsets.only(top: 33.0, left: 14.0),
-                              child: const Text(
-                                "CRM task ID",
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Color(0xff64748B),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ],
-                      ),
-                      TextFormField(
-                        maxLength: 20,
-                        controller: _crmtask,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            counterText: "",
-                            errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
-                            contentPadding: EdgeInsets.only(
-                              bottom: 16.0,
-                              top: 63.0,
-                              right: 0,
-                              left: 14.0,
-                            ),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        autovalidateMode: _submitted
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter';
-                          }
-                          return null;
-                        },
-                        onChanged: (text) => setState(() => name_ = text),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 15.0, left: 0.0, right: 0.0),
-                        height: 56.0,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff334155),
-                          borderRadius: BorderRadius.circular(
-                            8.0,
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff475569),
-                              offset: Offset(
-                                0.0,
-                                2.0,
-                              ),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
+                        SizedBox(
+                          width: 16.w,
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin:
-                                  const EdgeInsets.only(top: 26.0, left: 14.0),
-                              child: const Text(
-                                "Work Folder ID:",
-                                style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Color(0xff64748B),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              )),
-                        ],
-                      ),
-                      TextFormField(
-                        maxLength: 20,
-                        controller: _warkfolderId,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            counterText: "",
-                            errorStyle: TextStyle(fontSize: 15.0, height: 0.20),
-                            contentPadding: EdgeInsets.only(
-                              bottom: 16.0,
-                              top: 55.0,
-                              right: 0,
-                              left: 14.0,
-                            ),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        autovalidateMode: _submitted
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter';
-                          }
-                          return null;
-                        },
-                        onChanged: (text) => setState(() => name_ = text),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ), //BoxShadow
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 26.0, left: 14.0),
-                                    child: const Text(
-                                      "Budget",
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Color(0xff64748B),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                              ],
-                            ),
-                            TextFormField(
-                              maxLength: 8,
-                              controller: _budget,
-                              cursorColor: const Color(0xffFFFFFF),
-                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                              textAlignVertical: TextAlignVertical.bottom,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  counterText: "",
-                                  errorStyle:
-                                      TextStyle(fontSize: 15.0, height: 0.20),
-                                  contentPadding: EdgeInsets.only(
-                                    bottom: 18.0,
-                                    top: 55.0,
-                                    right: 0,
-                                    left: 14.0,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500)),
-                              autovalidateMode: _submitted
-                                  ? AutovalidateMode.onUserInteraction
-                                  : AutovalidateMode.disabled,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter';
+                        InkWell(
+                          onTap: () async {
+                            setState(() {
+                              createProjectValidate = true;
+                              createButtonClick = true;
+                            });
+                            if (await widget.formKey!.currentState!
+                                .validate()) {
+                              Future.delayed(const Duration(microseconds: 500),
+                                  () {
+                                if (_account != null &&
+                                    _account!.isNotEmpty &&
+                                    _custome != null &&
+                                    _custome!.isNotEmpty &&
+                                    _curren != null &&
+                                    _curren!.isNotEmpty &&
+                                    _status != null &&
+                                    _status!.isNotEmpty &&
+                                    selectedDate != null) {
+                                  SmartDialog.showLoading(
+                                    msg:
+                                        "Your request is in progress please wait for a while...",
+                                  );
+                                  createProject(context);
                                 }
-                                return null;
-                              },
-                              onChanged: (text) => setState(() => name_ = text),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 0.0, top: 16.0, bottom: 8.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                              ),
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 12.0, right: 5.0),
-                                  child: StatefulBuilder(
-                                    builder: (BuildContext context,
-                                        StateSettersetState) {
-                                      return DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          dropdownColor:
-                                              ColorSelect.class_color,
-                                          value: _curren,
-                                          underline: Container(),
-                                          hint: const Text(
-                                            "Select",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          icon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            color: Color(0xff64748B),
-                                          ),
-                                          items: _currencyName.map((items) {
-                                            return DropdownMenuItem(
-                                              value: items['id'].toString(),
-                                              child: Text(
-                                                items['currency']['symbol'],
-                                                style: const TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            StateSettersetState(() {
-                                              _curren = newValue;
-                                              setState(() {
-                                                selectCurrency = true;
-                                              });
-                                            });
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  )),
-                            ),
-                            createButtonClick
-                                ? selectCurrency
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : const Padding(
-                                        padding: EdgeInsets.only(left: 13),
-                                        child: Text("Please Select ",
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 221, 49, 60),
-                                                fontSize: 14)),
-                                      )
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 7,
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, right: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 26.0, left: 14.0),
-                                    child: const Text(
-                                      "Estimated hours",
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Color(0xff64748B),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                              ],
-                            ),
-                            TextFormField(
-                              maxLength: 10,
-                              controller: _estimatehours,
-                              cursorColor: const Color(0xffFFFFFF),
-                              style: const TextStyle(color: Color(0xffFFFFFF)),
-                              textAlignVertical: TextAlignVertical.bottom,
-                              keyboardType: TextInputType.text,
-                              decoration: const InputDecoration(
-                                  counterText: "",
-                                  errorStyle:
-                                      TextStyle(fontSize: 14.0, height: 0.20),
-                                  contentPadding: EdgeInsets.only(
-                                    bottom: 18.0,
-                                    top: 55.0,
-                                    right: 0,
-                                    left: 14.0,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xffFFFFFF),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500)),
-                              autovalidateMode: _submitted
-                                  ? AutovalidateMode.onUserInteraction
-                                  : AutovalidateMode.disabled,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter';
-                                }
-                                return null;
-                              },
-                              onChanged: (text) => setState(() => name_ = text),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, left: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                              ),
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 16.0, right: 0.0),
-                                  child: StatefulBuilder(
-                                    builder: (BuildContext context,
-                                        StateSettersetState) {
-                                      return DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          dropdownColor:
-                                              ColorSelect.class_color,
-                                          value: _status,
-                                          underline: Container(),
-                                          hint: const Text(
-                                            "Select Status",
-                                            style: TextStyle(
-                                                fontSize: 15.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          icon: const Icon(
-                                            Icons.arrow_drop_down,
-                                            color: Color(0xff64748B),
-                                          ),
-                                          items: _statusList.map((items) {
-                                            return DropdownMenuItem(
-                                              value: items['id'].toString(),
-                                              child: Text(
-                                                items['title'],
-                                                style: const TextStyle(
-                                                    fontSize: 15.0,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              _status = newValue;
-                                              print(
-                                                  'value of status' + _status!);
-                                              selectStatus = true;
-                                            });
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  )),
-                            ),
-                            createButtonClick
-                                ? selectStatus
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 26,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(top: 15.0, right: 0.0),
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: const Color(0xff334155),
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xff475569),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      _selectDate(setState);
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(left: 13.0),
-                                      child: Image.asset(
-                                        'images/date.png',
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                            top: 8.0,
-                                            left: 20.0,
-                                          ),
-                                          child: const Text(
-                                            "Delivery Date",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                overflow: TextOverflow.fade,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          setState(() {
-                                            _selectDate(setState);
-                                            // selectDeliveryDate = true;
-                                          });
-                                        },
-                                        child: Container(
-                                            margin: const EdgeInsets.only(
-                                              top: 3.0,
-                                              left: 20.0,
-                                            ),
-                                            child: selectedDate == null
-                                                ? const Text(
-                                                    'Select Date',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w300),
-                                                  )
-                                                : Text(
-                                                    '${selectedDate!.day} / ${selectedDate!.month} / ${selectedDate!.year}',
-                                                    style: const TextStyle(
-                                                        fontSize: 14,
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                      ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedDate = null;
-                                          selectDeliveryDate = false;
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            createButtonClick
-                                ? selectDeliveryDate
-                                    ? const Text(
-                                        " ",
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.only(
-                                          top: 8,
-                                          left: 20,
-                                        ),
-                                        child: errorWidget())
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          width: 97,
-                          margin: const EdgeInsets.only(
-                            top: 16.0,
-                          ),
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              40.0,
-                            ),
-                          ),
-                          child: const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  color: ColorSelect.white_color,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            createButtonClick = true;
-                          });
-                          if (widget.formKey!.currentState!.validate()) {
-                            if (selectAccountablePerson == true &&
-                                selectCustomer == true &&
-                                selectCurrency == true &&
-                                selectStatus == true &&
-                                selectDeliveryDate == true) {
-                              SmartDialog.showLoading(
-                                msg:
-                                    "Your request is in progress please wait for a while...",
-                              );
-
-                              Future.delayed(const Duration(seconds: 2), () {
-                                createProject(context);
                               });
-                              print(
-                                  "after -------------------------check validation");
                             }
-                          }
-                        },
-                        child: Container(
-                          width: 97.0,
-                          margin: const EdgeInsets.only(
-                            top: 16.0,
-                            right: 10.0,
-                          ),
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff7DD3FC),
-                            borderRadius: BorderRadius.circular(
-                              40.0,
+                          },
+                          child: Container(
+                            width: 97.0.w,
+                            margin: EdgeInsets.only(
+                              top: 16.0.h,
+                              right: 10.0.w,
                             ),
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Create",
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  color: ColorSelect.black_color,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700),
+                            height: 40.0.h,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff7DD3FC),
+                              borderRadius: BorderRadius.circular(
+                                40.0.r,
+                              ),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                widget.response != null ? "Save" : "Create",
+                                style: TextStyle(
+                                    fontSize: 15.0.sp,
+                                    color: ColorSelect.black_color,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-      ],
     );
+  }
+
+  DropdownModel? getAllInitialValue(List<DropdownModel>? list, String? id) {
+    if (widget.response != null && list!.isNotEmpty) {
+      try {
+        DropdownModel? result = list.firstWhere(
+            (o) => o.id == id || o.item == id,
+            orElse: () => DropdownModel("", ""));
+        if (result.id.isEmpty) {
+          return null;
+        } else {
+          return result;
+        }
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
   //Create project_detail Api
@@ -1269,7 +669,10 @@ class _EditPageState extends State<CreateProjectPage> {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.post(
-        Uri.parse(AppUrl.create_project),
+        widget.response != null
+            ? Uri.parse(
+                '${AppUrl.baseUrl}/project/${widget.response?.data?.id ?? 0}/update')
+            : Uri.parse(AppUrl.create_project),
         body: jsonEncode({
           "title": _projecttitle.text.toString(),
           "accountable_person_id": _account,
@@ -1316,7 +719,7 @@ class _EditPageState extends State<CreateProjectPage> {
         );
       }
     } catch (e) {
-      // print('error caught: $e');
+      print('error caught: $e');
     }
   }
 
@@ -1335,7 +738,17 @@ class _EditPageState extends State<CreateProjectPage> {
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _currencyName = mdata;
+          try {
+            currencyList!.clear();
+            mdata.forEach((element) {
+              if (!currencyList!.contains(element['currency']['symbol'])) {
+                currencyList!.add(DropdownModel(
+                    element['id'].toString(), element['currency']['symbol']));
+              }
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -1344,64 +757,5 @@ class _EditPageState extends State<CreateProjectPage> {
       }
       return value;
     }
-  }
-
-  Future<String?> getTagpeople() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/skills"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-
-        print("yes to much");
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAddpeople() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/tags"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          addTag = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  errorWidget() {
-    return Text('Please Select this field',
-        style:
-            TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
   }
 }

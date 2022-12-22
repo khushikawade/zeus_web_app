@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:time_range/time_range.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
@@ -29,6 +31,8 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:http_parser/http_parser.dart';
 import '../utility/constant.dart';
 import '../utility/upertextformate.dart';
+import 'package:zeus/helper_widget/custom_form_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyHomePage extends StatefulWidget {
   final ValueChanged<String> onSubmit;
@@ -43,19 +47,17 @@ class MyHomePage extends StatefulWidget {
 
 class _NavigationRailState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  AutoCompleteTextField? searchTextField;
+  // AutoCompleteTextField? searchTextField;
   final fieldText = TextEditingController();
   final searchController = TextEditingController();
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
   static List<Datum> users = <Datum>[];
   bool loading = true;
   List<int>? _selectedFile;
-  Uint8List? _bytesData;
   GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   List<String> abc = [];
   List<String> selectedDaysList = List.empty(growable: true);
-  TimeRangeResult? _timeRange;
   Debouncer _debouncer = Debouncer();
   bool peopleListTapIcon = false;
   bool projectListTapIcon = true;
@@ -63,6 +65,9 @@ class _NavigationRailState extends State<MyHomePage>
   bool circleTapIcon = false;
   bool bellTapIcon = false;
   bool settingIcon = false;
+  bool createButtonClick = false;
+  TypeAheadFormField? searchTextField;
+  final TextEditingController _typeAheadController = TextEditingController();
 
   var items = [
     'Item 1',
@@ -81,7 +86,6 @@ class _NavigationRailState extends State<MyHomePage>
 
   var startTime1;
   var endTime2;
-  bool saveButtonClick = false;
   bool selectDepartment = false;
   bool selectSalary = false;
   bool selectDays = false;
@@ -89,7 +93,9 @@ class _NavigationRailState extends State<MyHomePage>
   bool selectTime = false;
   bool selectTimeZone = false;
   bool selectImage = false;
-
+  bool saveButtonClick = false;
+  bool createProjectValidate = true;
+  String name_ = '';
   getformattedTime(TimeOfDay time) {
     DateTime tempDate = DateFormat("hh:mm")
         .parse(time.hour.toString() + ":" + time.minute.toString());
@@ -118,12 +124,20 @@ class _NavigationRailState extends State<MyHomePage>
     super.didChangeDependencies();
   }
 
+  List<Datum> getSuggestions(String query) {
+    List<Datum> matches = List.empty(growable: true);
+    matches.addAll(users);
+    matches.retainWhere(
+        (s) => s.title!.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+
   Image? image;
   Uint8List? webImage;
 
   Future? _getTag;
   List addSkills = [];
-  String name_ = '';
+
   String name1 = '';
   bool _autoValidate = false;
 
@@ -222,7 +236,7 @@ class _NavigationRailState extends State<MyHomePage>
       Navigator.pop(
         context,
       );
-      setState(() {
+      setStateView(() {
         _selectedIndex = 2;
         clearContoller();
         selectDays = false;
@@ -256,65 +270,20 @@ class _NavigationRailState extends State<MyHomePage>
     }
   }
 
-  //Create project_detail Api
-  createProject() async {
-    var token = 'Bearer ' + storage.read("token");
-    try {
-      var response = await http.post(
-        Uri.parse(AppUrl.create_project),
-        body: jsonEncode({
-          "title": _projecttitle.text.toString(),
-          "accountable_person_id": _account,
-          "customer_id": _custome,
-          "crm_task_id": _crmtask.text.toString(),
-          "work_folder_id": _warkfolderId.text.toString(),
-          "budget": _budget.toString(),
-          "currency": "&",
-          "estimation_hours": '80',
-          "status": _status,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        var responseJson =
-            jsonDecode(response.body.toString()) as Map<String, dynamic>;
-        final stringRes = JsonEncoder.withIndent('').convert(responseJson);
-        print(stringRes);
-        print("yes Creaete");
-        print(response.body);
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failuree");
-        Fluttertoast.showToast(
-          msg: 'Something Went Wrong',
-          backgroundColor: Colors.grey,
-        );
-      }
-    } catch (e) {
-      // print('error caught: $e');
-    }
-  }
-
-  /* Future? getProject() {
-    return Provider.of<TagDetail>(context, listen: false).getTagData();
-  }*/
-
   MyDropdownData myDropdownData = MyDropdownData();
   int _selectedIndex = 1;
   DateTime selectedDate = DateTime.now();
   String dropdownvalue = 'Item 1';
   ImagePicker picker = ImagePicker();
   String? _depat;
-  String? _account, _custome, _curren, _status, _time, _tag, _day, _shortday;
+  String? _curren, _time, _day, _shortday;
 
-  bool _addSubmitted = true;
   String name = '';
 
   List _department = [];
+  List<DropdownModel>? departmentlist;
+  List<DropdownModel>? selecTimeZoneList = [];
+  List<DropdownModel>? selectDaysList;
   var items1 = [
     'Monday',
     'Tuesday',
@@ -329,19 +298,13 @@ class _NavigationRailState extends State<MyHomePage>
   List _accountableId = [];
   List _customerName = [];
   List _currencyName = [];
+  List<DropdownModel>? currencyList = [];
   List _statusList = [];
   List _timeline = [];
   List addTag = [];
   List<String> _tag1 = [];
-  GlobalKey<ScaffoldState>? _key;
   bool? _isSelected;
-  List<String>? _filters1 = [
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface',
-    'User interface'
-  ];
+
   List<String>? addTag1 = [];
   List<int> add1 = [1];
   bool imageavail = false;
@@ -356,7 +319,7 @@ class _NavigationRailState extends State<MyHomePage>
     getUsers();
     change();
     _isSelected = false;
-    //-----------sayyam
+
     getAddpeople();
 
     getTagpeople();
@@ -385,40 +348,7 @@ class _NavigationRailState extends State<MyHomePage>
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _emailAddress = TextEditingController();
 
-  //creatrptoject
-  TextEditingController _projecttitle = TextEditingController();
-  final TextEditingController _crmtask = TextEditingController();
-  final TextEditingController _warkfolderId = TextEditingController();
-  final TextEditingController _budget = TextEditingController();
-  final TextEditingController _estimatehours = TextEditingController();
-
   final ScrollController verticalScroll = ScrollController();
-
-  Future<void> _selectDate(setState) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-              primaryColor: const Color(0xff0F172A),
-              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-              colorScheme: ColorScheme.light(primary: const Color(0xff0F172A))
-                  .copyWith(secondary: const Color(0xff0F172A)),
-            ),
-            child: child!,
-          );
-        },
-        initialDate: selectedDate,
-        firstDate: new DateTime.now().subtract(new Duration(days: 0)),
-        initialEntryMode: DatePickerEntryMode.calendarOnly,
-        lastDate: DateTime(2101));
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
 
   final List<Widget> _mainContents = [
     Container(
@@ -486,6 +416,7 @@ class _NavigationRailState extends State<MyHomePage>
                   key: _addFormKey,
                   child: CreateProjectPage(
                     formKey: _addFormKey,
+                    response: null,
                   )),
             ),
           );
@@ -499,7 +430,13 @@ class _NavigationRailState extends State<MyHomePage>
         builder: (context) {
           abc.clear();
           //---------------sayyam
+          selectDaysList = [];
+          items1.forEach((element) {
+            selectDaysList!.add(DropdownModel('', element));
+          });
           imageavail = false;
+
+          createButtonClick = false;
 
           _day = '';
 
@@ -633,50 +570,63 @@ class _NavigationRailState extends State<MyHomePage>
                                 const SizedBox(
                                   width: 16,
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      if (selectImage == true &&
-                                          selectDepartment == true &&
-                                          selectDays == true &&
-                                          selectSkill == true &&
-                                          selectTime == true &&
-                                          selectTimeZone == true) {
-                                        SmartDialog.showLoading(
-                                          msg:
-                                              "Your request is in progress please wait for a while...",
-                                        );
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10.0, right: 30.0, bottom: 10.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      setStateView(() {
+                                        createProjectValidate = true;
+                                        createButtonClick = true;
+                                      });
 
+                                      if (_formKey.currentState!.validate()) {
                                         Future.delayed(
-                                            const Duration(seconds: 2), () {
-                                          createPeople(context, setStateView);
+                                            const Duration(microseconds: 500),
+                                            () {
+                                          if (createProjectValidate) {
+                                            if (selectImage == true &&
+                                                selectDepartment == true &&
+                                                selectDays == true &&
+                                                selectSalary == true &&
+                                                selectSkill == true &&
+                                                selectTime == true &&
+                                                selectTimeZone == true) {
+                                              SmartDialog.showLoading(
+                                                msg:
+                                                    "Your request is in progress please wait for a while...",
+                                              );
+
+                                              createPeople(
+                                                  context, setStateView);
+                                            }
+                                          }
                                         });
                                       }
-                                    }
-                                    setStateView(() {
-                                      saveButtonClick = true;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 97,
-                                    margin: const EdgeInsets.only(
-                                        top: 10.0, right: 30.0, bottom: 10.0),
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff7DD3FC),
-                                      borderRadius: BorderRadius.circular(
-                                        40.0,
+                                      setStateView(() {
+                                        saveButtonClick = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 97,
+                                      margin: const EdgeInsets.only(),
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff7DD3FC),
+                                        borderRadius: BorderRadius.circular(
+                                          40.0,
+                                        ),
                                       ),
-                                    ),
-                                    child: const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Save",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xff000000),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700),
+                                      child: const Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Save",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: Color(0xff000000),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -695,19 +645,18 @@ class _NavigationRailState extends State<MyHomePage>
                                   Row(
                                     children: [
                                       Container(
-                                          width: 134.0,
-                                          height: 134.0,
-                                          margin: const EdgeInsets.only(
-                                              left: 27.0, top: 28.0),
+                                          width: 120.0.sp,
+                                          height: 120.0.sp,
+                                          margin: EdgeInsets.only(
+                                              left: 27.0, top: 28),
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
-                                            borderRadius: BorderRadius.circular(
-                                              110.0,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(200.0.r),
                                           ),
                                           child: ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(110.0),
+                                                BorderRadius.circular(200.0.r),
                                             child: imageavail
                                                 ? Image.memory(
                                                     webImage!,
@@ -715,93 +664,107 @@ class _NavigationRailState extends State<MyHomePage>
                                                   )
                                                 : Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            46.0),
+                                                        EdgeInsets.all(46.0),
                                                     child: SvgPicture.asset(
                                                       'images/photo.svg',
-                                                      height: 36.0,
-                                                      width: 36.0,
+                                                      height: 36.0.h,
+                                                      width: 36.0.w,
                                                     )),
                                           )),
-                                      InkWell(
-                                        onTap: () async {
-                                          final image = await ImagePickerWeb
-                                              .getImageAsBytes();
-                                          setStateView(() {
-                                            webImage = image!;
-                                            imageavail = true;
-                                            selectImage = true;
-                                          });
-                                        },
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 35.0,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.11,
-                                              margin: const EdgeInsets.only(
-                                                  left: 48.0, top: 57.0),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  40.0,
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 48.0.sp, top: 57.0.sp),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                final image =
+                                                    await ImagePickerWeb
+                                                        .getImageAsBytes();
+                                                setStateView(() {
+                                                  webImage = image!;
+                                                  imageavail = true;
+                                                  selectImage = true;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 35.0.h,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.11.w,
+                                                // margin: const EdgeInsets.only(
+                                                //     left: 48.0, top: 57.0),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  //color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    40.0.r,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 16.0),
+                                                      child: const Icon(
+                                                          Icons.camera_alt,
+                                                          size: 18,
+                                                          color: Color(
+                                                              0xffFFFFFF)),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 11.0.sp),
+                                                      child: Wrap(
+                                                        children: [
+                                                          Text(
+                                                            "Upload new",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xffFFFFFF),
+                                                                fontSize:
+                                                                    14.0.sp,
+                                                                fontFamily:
+                                                                    'Inter',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0),
-                                                    child: const Icon(
-                                                        Icons.camera_alt,
-                                                        size: 18,
-                                                        color:
-                                                            Color(0xffFFFFFF)),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 11.0),
-                                                    child: const Text(
-                                                      "Upload new",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontSize: 14.0,
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
                                             ),
-                                            Row(
-                                              children: [
-                                                SizedBox(width: 10),
-                                                saveButtonClick
-                                                    ? selectImage
-                                                        ? const Text(
-                                                            " ",
-                                                          )
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              top: 8,
-                                                              left: 0,
-                                                            ),
-                                                            child:
-                                                                errorWidget())
-                                                    : Text(''),
-                                              ],
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              saveButtonClick
+                                                  ? selectImage
+                                                      ? const Text(
+                                                          " ",
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 8,
+                                                            left: 0,
+                                                          ),
+                                                          child: errorWidget())
+                                                  : Text(''),
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -821,267 +784,278 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 16.0,
                                   ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, right: 25.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget2(validateName)
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 11.0,
-                                          left: 45.0,
-                                        ),
-                                        child: const Text(
-                                          "Name",
-                                          style: TextStyle(
-                                              fontSize: 11.0,
-                                              letterSpacing: 0.5,
-                                              color: Color(0xff64748B),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      TextFormField(
-                                        controller: _name,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        minLines: 1,
-                                        maxLength: 30,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 36.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter name',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.25,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex = RegExp(r'^[a-z A-Z]+$',
-                                              caseSensitive: false);
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid name';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 25,
+                                      left: 30.0,
+                                      bottom: 0,
+                                    ),
+                                    child: CustomFormField(
+                                      controller: _name,
+                                      hint: 'Enter name',
+                                      label: 'Name',
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        RegExp regex = RegExp(r'^[a-z A-Z]+$',
+                                            caseSensitive: false);
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        } else if (!regex.hasMatch(value)) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+                                          return 'Please enter valid name';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.99,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0,
-                                                top: 5.0,
-                                                right: 25.0,
-                                                bottom: 10),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 14.0, left: 45.0),
-                                          child: const Text(
-                                            "Nickname",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        controller: _nickName,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        maxLength: 30,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 45.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter nickname',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  //  const SizedBox(
+                                  //   height: 16.0,
+                                  // ),
+
+                                  // Stack(
+                                  //   children: [
+                                  //     Column(
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         Container(
+                                  //           width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width *
+                                  //               0.99,
+                                  //           margin: const EdgeInsets.only(
+                                  //               left: 30.0,
+                                  //               top: 5.0,
+                                  //               right: 25.0,
+                                  //               bottom: 10),
+                                  //           height: 56.0,
+                                  //           decoration: BoxDecoration(
+                                  //             color: const Color(0xff334155),
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(
+                                  //               8.0,
+                                  //             ),
+                                  //             boxShadow: const [
+                                  //               BoxShadow(
+                                  //                 color: Color(0xff475569),
+                                  //                 offset: Offset(
+                                  //                   0.0,
+                                  //                   2.0,
+                                  //                 ),
+                                  //                 blurRadius: 0.0,
+                                  //                 spreadRadius: 0.0,
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 14.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Nickname",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       controller: _nickName,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       maxLength: 30,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 16.0,
+                                  //             top: 45.0,
+                                  //             right: 10,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter nickname',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w400)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 25, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      controller: _nickName,
+                                      hint: 'Enter nickname',
+                                      label: 'Nickname',
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.99,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0, right: 25.0),
-                                        height: 110.0,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xff334155),
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(8.0),
-                                            topLeft: Radius.circular(8.0),
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
-                                          child: const Text(
-                                            "Your bio",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLines: 5,
-                                        controller: _bio,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 10.0,
-                                              top: 47.0,
-                                              right: 40,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter your bio',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 25,
+                                      left: 30.0,
+                                    ),
+                                    child: CustomFormField(
+                                      controller: _bio,
+                                      maxline: 4,
+                                      fontSizeForLabel: 14,
+                                      hint: 'Enter your bio',
+                                      label: 'Your bio',
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
+                                  // Stack(
+                                  //   children: [
+                                  //     Container(
+                                  //       width:
+                                  //           MediaQuery.of(context).size.width *
+                                  //               0.99,
+                                  //       margin: const EdgeInsets.only(
+                                  //           left: 30.0, top: 16.0, right: 25.0),
+                                  //       height: 110.0,
+                                  //       decoration: const BoxDecoration(
+                                  //         color: Color(0xff334155),
+                                  //         borderRadius: BorderRadius.only(
+                                  //           topRight: Radius.circular(8.0),
+                                  //           topLeft: Radius.circular(8.0),
+                                  //         ),
+                                  //         boxShadow: [
+                                  //           BoxShadow(
+                                  //             color: Color(0xff475569),
+                                  //             offset: Offset(
+                                  //               0.0,
+                                  //               2.0,
+                                  //             ),
+                                  //             blurRadius: 0.0,
+                                  //             spreadRadius: 0.0,
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Container(
+                                  //         margin: const EdgeInsets.only(
+                                  //             top: 22.0, left: 45.0),
+                                  //         child: const Text(
+                                  //           "Your bio",
+                                  //           style: TextStyle(
+                                  //               fontSize: 11.0,
+                                  //               color: Color(0xff64748B),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w500),
+                                  //         )),
+                                  //     TextFormField(
+                                  //       maxLines: 5,
+                                  //       controller: _bio,
+                                  //       cursorColor: const Color(0xffFFFFFF),
+                                  //       style: const TextStyle(
+                                  //           color: Color(0xffFFFFFF)),
+                                  //       textAlignVertical:
+                                  //           TextAlignVertical.bottom,
+                                  //       keyboardType: TextInputType.text,
+                                  //       decoration: const InputDecoration(
+                                  //           counterText: "",
+                                  //           errorStyle: TextStyle(
+                                  //               fontSize: 14, height: 0.20),
+                                  //           contentPadding: EdgeInsets.only(
+                                  //             bottom: 10.0,
+                                  //             top: 47.0,
+                                  //             right: 40,
+                                  //             left: 45.0,
+                                  //           ),
+                                  //           border: InputBorder.none,
+                                  //           hintText: 'Enter your bio',
+                                  //           hintStyle: TextStyle(
+                                  //               fontSize: 14.0,
+                                  //               color: Color(0xffFFFFFF),
+                                  //               fontFamily: 'Inter',
+                                  //               fontWeight: FontWeight.w400)),
+                                  //       autovalidateMode: _addSubmitted
+                                  //           ? AutovalidateMode.onUserInteraction
+                                  //           : AutovalidateMode.disabled,
+                                  //       validator: (value) {
+                                  //         if (value!.isEmpty) {
+                                  //           return 'Please enter';
+                                  //         }
+                                  //         return null;
+                                  //       },
+                                  //       onChanged: (text) =>
+                                  //           setStateView(() => name1 = text),
+                                  //     ),
+                                  //   ],
+                                  // ),
+
                                   Padding(
                                     padding: const EdgeInsets.only(top: 3.0),
                                     child: Row(
@@ -1092,360 +1066,202 @@ class _NavigationRailState extends State<MyHomePage>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: Stack(
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.12,
-                                                margin: const EdgeInsets.only(
-                                                    left: 30.0,
-                                                    top: 16.0,
-                                                    right: 16.0),
-                                                height: 56.0,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xff334155),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    8.0,
-                                                  ),
-                                                  boxShadow: const [
-                                                    BoxShadow(
-                                                      color: Color(0xff475569),
-                                                      offset: Offset(
-                                                        0.0,
-                                                        2.0,
-                                                      ),
-                                                      blurRadius: 0.0,
-                                                      spreadRadius: 0.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 23.0, left: 45.0),
-                                                  child: const Text(
-                                                    "Designation",
-                                                    style: TextStyle(
-                                                        fontSize: 11.0,
-                                                        color:
-                                                            Color(0xff64748B),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                              TextFormField(
-                                                controller: _designation,
-                                                // inputFormatters: [
-                                                //   UpperCaseTextFormatter()
-                                                // ],
-                                                maxLength: 20,
-                                                cursorColor:
-                                                    const Color(0xffFFFFFF),
-                                                style: const TextStyle(
-                                                    color: Color(0xffFFFFFF)),
-                                                textAlignVertical:
-                                                    TextAlignVertical.bottom,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        counterText: "",
-                                                        errorStyle: TextStyle(
-                                                            fontSize: 14,
-                                                            height: 0.20),
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                          bottom: 16.0,
-                                                          top: 53.0,
-                                                          right: 10,
-                                                          left: 45.0,
-                                                        ),
-                                                        border:
-                                                            InputBorder.none,
-                                                        hintText: 'Enter',
-                                                        hintStyle: TextStyle(
-                                                            fontSize: 14.0,
-                                                            color: Color(
-                                                                0xffFFFFFF),
-                                                            fontFamily: 'Inter',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500)),
-                                                autovalidateMode: _addSubmitted
-                                                    ? AutovalidateMode
-                                                        .onUserInteraction
-                                                    : AutovalidateMode.disabled,
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Please enter';
-                                                  }
-                                                  return null;
-                                                },
-                                                onChanged: (text) =>
-                                                    setStateView(
-                                                        () => name1 = text),
-                                              ),
-                                            ],
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              right: 16.0,
+                                              left: 30.0,
+                                            ),
+                                            child: CustomFormField(
+                                              controller: _designation,
+                                              maxLength: 20,
+                                              fontSizeForLabel: 14,
+                                              hint: 'Enter ',
+                                              label: 'Designation',
+                                              contentpadding: EdgeInsets.only(
+                                                  left: 16,
+                                                  bottom: 10,
+                                                  right: 10,
+                                                  top: 10),
+                                              hintTextHeight: 1.7,
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  setState(() {
+                                                    createProjectValidate =
+                                                        false;
+                                                  });
+
+                                                  return 'Please enter';
+                                                }
+                                                return null;
+                                              },
+                                              onChange: (text) =>
+                                                  setState(() => name_ = text),
+                                            ),
                                           ),
                                         ),
+                                        // Expanded(
+                                        //   child: Stack(
+                                        //     children: [
+                                        //       Container(
+                                        // width: MediaQuery.of(context)
+                                        //         .size
+                                        //         .width *
+                                        //     0.12,
+                                        //         margin: const EdgeInsets.only(
+                                        //             left: 30.0, right: 16.0),
+                                        //         height: 56.0,
+                                        //         decoration: BoxDecoration(
+                                        //           color:
+                                        //               const Color(0xff334155),
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //             8.0,
+                                        //           ),
+                                        //           boxShadow: const [
+                                        //             BoxShadow(
+                                        //               color: Color(0xff475569),
+                                        //               offset: Offset(
+                                        //                 0.0,
+                                        //                 2.0,
+                                        //               ),
+                                        //               blurRadius: 0.0,
+                                        //               spreadRadius: 0.0,
+                                        //             ),
+                                        //           ],
+                                        //         ),
+                                        //       ),
+                                        //       Container(
+                                        //           margin: const EdgeInsets.only(
+                                        //               top: 23.0, left: 45.0),
+                                        //           child: const Text(
+                                        //             "Designation",
+                                        //             style: TextStyle(
+                                        //                 fontSize: 11.0,
+                                        //                 color:
+                                        //                     Color(0xff64748B),
+                                        //                 fontFamily: 'Inter',
+                                        //                 fontWeight:
+                                        //                     FontWeight.w500),
+                                        //           )),
+                                        //       TextFormField(
+                                        //         controller: _designation,
+                                        //         // inputFormatters: [
+                                        //         //   UpperCaseTextFormatter()
+                                        //         // ],
+                                        //         maxLength: 20,
+                                        //         cursorColor:
+                                        //             const Color(0xffFFFFFF),
+                                        //         style: const TextStyle(
+                                        //             color: Color(0xffFFFFFF)),
+                                        //         textAlignVertical:
+                                        //             TextAlignVertical.bottom,
+                                        //         keyboardType:
+                                        //             TextInputType.text,
+                                        //         decoration:
+                                        //             const InputDecoration(
+                                        //                 counterText: "",
+                                        //                 errorStyle: TextStyle(
+                                        //                     fontSize: 14,
+                                        //                     height: 0.20),
+                                        //                 contentPadding:
+                                        //                     EdgeInsets.only(
+                                        //                   bottom: 16.0,
+                                        //                   top: 53.0,
+                                        //                   right: 10,
+                                        //                   left: 45.0,
+                                        //                 ),
+                                        //                 border:
+                                        //                     InputBorder.none,
+                                        //                 hintText: 'Enter',
+                                        //                 hintStyle: TextStyle(
+                                        //                     fontSize: 14.0,
+                                        //                     color: Color(
+                                        //                         0xffFFFFFF),
+                                        //                     fontFamily: 'Inter',
+                                        //                     fontWeight:
+                                        //                         FontWeight
+                                        //                             .w500)),
+                                        //         autovalidateMode: _addSubmitted
+                                        //             ? AutovalidateMode
+                                        //                 .onUserInteraction
+                                        //             : AutovalidateMode.disabled,
+                                        //         validator: (value) {
+                                        //           if (value!.isEmpty) {
+                                        //             return 'Please enter';
+                                        //           }
+                                        //           return null;
+                                        //         },
+                                        //         onChanged: (text) =>
+                                        //             setStateView(
+                                        //                 () => name1 = text),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
+
                                         SizedBox(
                                           width: 8,
                                         ),
+
                                         Expanded(
-                                          flex: 1,
-                                          child: Stack(
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 16.0,
-                                                            right: 30),
-                                                    height: 56.0,
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xff334155),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        8.0,
-                                                      ),
-                                                      boxShadow: const [
-                                                        BoxShadow(
-                                                          color:
-                                                              Color(0xff475569),
-                                                          offset: Offset(
-                                                            0.0,
-                                                            2.0,
-                                                          ),
-                                                          blurRadius: 0.0,
-                                                          spreadRadius: 0.0,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      top: 4.0,
-                                                                      left:
-                                                                          16.0),
-                                                              child: const Text(
-                                                                "Department",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13.0,
-                                                                    color: Color(
-                                                                        0xff64748B),
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              )),
-                                                          StatefulBuilder(builder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  StateSettersetState) {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 15,
-                                                                      right: 4,
-                                                                      top: 2),
-                                                              child:
-                                                                  DropdownButtonHideUnderline(
-                                                                      child:
-                                                                          CustomDropdownButton(
-                                                                isDense: true,
-                                                                dropdownColor:
-                                                                    Color(
-                                                                        0xff0F172A),
-                                                                value: _depat,
-                                                                underline:
-                                                                    Container(),
-                                                                hint:
-                                                                    const Text(
-                                                                  "Select",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          15.0,
-                                                                      color: Color(
-                                                                          0xffFFFFFF),
-                                                                      fontFamily:
-                                                                          'Inter',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w300),
-                                                                ),
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .arrow_drop_down,
-                                                                  color: Color(
-                                                                      0xff64748B),
-                                                                ),
-                                                                elevation: 12,
-                                                                items: _department
-                                                                    .map(
-                                                                        (items) {
-                                                                  return DropdownMenuItem(
-                                                                    value: items[
-                                                                            'id']
-                                                                        .toString(),
-                                                                    child: Text(
-                                                                      items[
-                                                                          'name'],
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              15.0,
-                                                                          color: Color(
-                                                                              0xffFFFFFF),
-                                                                          fontFamily:
-                                                                              'Inter',
-                                                                          fontWeight:
-                                                                              FontWeight.w500),
-                                                                    ),
-                                                                  );
-                                                                }).toList(),
-                                                                onChanged: (String?
-                                                                    newValue) {
-                                                                  setStateView(
-                                                                      () {
-                                                                    print(
-                                                                        "---------newValue--------------${newValue}");
-                                                                    _depat =
-                                                                        newValue!;
-                                                                    selectDepartment =
-                                                                        true;
-                                                                  });
-                                                                },
-                                                              )),
-                                                            );
-                                                          }),
-                                                        ]),
-                                                  ),
-                                                  saveButtonClick
-                                                      ? selectDepartment
-                                                          ? const Text(
-                                                              " ",
-                                                            )
-                                                          : Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                top: 8,
-                                                                left: 15,
-                                                              ),
-                                                              child:
-                                                                  errorWidget())
-                                                      : Text(''),
-                                                ],
-                                              ),
-                                            ],
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 30.sp),
+                                            child: CustomSearchDropdown(
+                                              hint: 'Select',
+                                              label: "Department",
+                                              errorText: createButtonClick ==
+                                                          true &&
+                                                      (_depat == null ||
+                                                          _depat!.isEmpty)
+                                                  ? 'Please Select this field'
+                                                  : '',
+                                              items: departmentlist!,
+                                              onChange: ((value) {
+                                                // _curren = value.id;
+                                                _depat = value.id;
+                                                setStateView(() {
+                                                  selectDepartment = true;
+                                                });
+                                              }),
+                                            ),
                                           ),
                                         )
                                       ],
                                     ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.99,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 10.0, right: 26.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
-                                          child: const Text(
-                                            "Associated with",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        controller: _association,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        maxLength: 30,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 52.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter team name',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 25, left: 30.0, bottom: 0),
+                                    child: CustomFormField(
+                                      controller: _association,
+                                      maxLength: 30,
+                                      hint: 'Enter team name',
+                                      label: "Associated with",
+                                      fontSizeForLabel: 14,
+                                      contentpadding: EdgeInsets.only(
+                                          left: 16,
+                                          bottom: 10,
+                                          right: 10,
+                                          top: 10),
+                                      hintTextHeight: 1.7,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          setState(() {
+                                            createProjectValidate = false;
+                                          });
+
+                                          return 'Please enter';
+                                        }
+                                        return null;
+                                      },
+                                      onChange: (text) =>
+                                          setState(() => name_ = text),
+                                    ),
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(
-                                        left: 30.0, top: 16.0),
+                                        left: 30.0, top: 0.0),
                                     child: const Text(
                                       "Salary",
                                       style: TextStyle(
@@ -1457,189 +1273,81 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Row(
                                     children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.10,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0,
-                                                top: 16.0,
-                                                bottom: 16.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                            ),
-                                            child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 13.0, right: 18.0),
-                                                child: StatefulBuilder(
-                                                  builder:
-                                                      (BuildContext context,
-                                                          StateSettersetState) {
-                                                    return DropdownButtonHideUnderline(
-                                                      child: DropdownButton(
-                                                        dropdownColor:
-                                                            ColorSelect
-                                                                .class_color,
-                                                        value: _curren,
-                                                        underline: Container(),
-                                                        hint: const Text(
-                                                          "Select",
-                                                          style: TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        isExpanded: true,
-                                                        icon: Icon(
-                                                          Icons.arrow_drop_down,
-                                                          color:
-                                                              Color(0xff64748B),
-                                                        ),
-                                                        items: _currencyName
-                                                            .map((items) {
-                                                          return DropdownMenuItem(
-                                                            value: items['id']
-                                                                .toString(),
-                                                            child: Text(
-                                                              items['currency']
-                                                                  ['symbol'],
-                                                              style: const TextStyle(
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontFamily:
-                                                                      'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          );
-                                                        }).toList(),
-                                                        onChanged:
-                                                            (String? newValue) {
-                                                          setStateView(() {
-                                                            _curren = newValue;
-                                                            selectSalary = true;
-                                                          });
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 8.0,
-                                      ),
                                       Expanded(
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.12,
-                                              margin: const EdgeInsets.only(
-                                                  top: 16.0, bottom: 16.0),
-                                              height: 56.0,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  8.0,
-                                                ),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Color(0xff475569),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                    blurRadius: 0.0,
-                                                    spreadRadius: 0.0,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 23.0, left: 15.0),
-                                                child: const Text(
-                                                  "Monthly Salary",
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      color: Color(0xff64748B),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )),
-                                            TextFormField(
-                                              maxLength: 15,
-                                              controller: _salary,
-                                              cursorColor:
-                                                  const Color(0xffFFFFFF),
-                                              style: const TextStyle(
-                                                  color: Color(0xffFFFFFF)),
-                                              textAlignVertical:
-                                                  TextAlignVertical.bottom,
-                                              keyboardType: TextInputType.text,
-                                              decoration: const InputDecoration(
-                                                  counterText: "",
-                                                  errorStyle: TextStyle(
-                                                      fontSize: 14,
-                                                      height: 0.20),
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    bottom: 16.0,
-                                                    top: 52.0,
-                                                    right: 10,
-                                                    left: 15.0,
-                                                  ),
-                                                  border: InputBorder.none,
-                                                  hintText: '0.00',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xffFFFFFF),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              autovalidateMode: _addSubmitted
-                                                  ? AutovalidateMode
-                                                      .onUserInteraction
-                                                  : AutovalidateMode.disabled,
-                                              validator: (value) {
-                                                RegExp regex = RegExp(
-                                                    r'^\D+|(?<=\d),(?=\d)');
-
-                                                if (value!.isEmpty) {
-                                                  return 'Please enter';
-                                                } else if (regex
-                                                    .hasMatch(value)) {
-                                                  return 'Please enter valid salary';
-                                                }
-                                                return null;
-                                              },
-                                              onChanged: (text) => setStateView(
-                                                  () => name1 = text),
-                                            ),
-                                          ],
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 14.sp,
+                                              left: 26.0.sp,
+                                              bottom: 0),
+                                          child: CustomSearchDropdown(
+                                            hint: 'Select',
+                                            label: "A",
+                                            errorText: createButtonClick &&
+                                                    (_curren == null ||
+                                                        _curren!.isEmpty)
+                                                ? 'Please Select this field'
+                                                : '',
+                                            items: currencyList!,
+                                            onChange: ((value) {
+                                              _curren = value.id;
+                                              setStateView(() {
+                                                selectSalary = true;
+                                              });
+                                            }),
+                                          ),
                                         ),
                                       ),
+                                      SizedBox(
+                                        width: 8.w,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 14, right: 50, bottom: 0),
+                                          child: CustomFormField(
+                                            controller: _salary,
+                                            maxLength: 15,
+                                            hint: '0.00',
+                                            label: "Monthly Salary",
+                                            fontSizeForLabel: 14,
+                                            contentpadding: EdgeInsets.only(
+                                                left: 16,
+                                                bottom: 10,
+                                                right: 10,
+                                                top: 10),
+                                            hintTextHeight: 1.7,
+                                            validator: (value) {
+                                              RegExp regex = RegExp(
+                                                  r'^\D+|(?<=\d),(?=\d)');
+                                              if (value.isEmpty) {
+                                                setState(() {
+                                                  createProjectValidate = false;
+                                                });
+
+                                                return 'Please enter';
+                                              } else if (regex
+                                                  .hasMatch(value)) {
+                                                setState(() {
+                                                  createProjectValidate = false;
+                                                });
+                                                return 'Please enter valid salary';
+                                              }
+                                              return null;
+                                            },
+                                            onChange: (text) =>
+                                                setState(() => name_ = text),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 11.w,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: 56,
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ],
@@ -1675,128 +1383,165 @@ class _NavigationRailState extends State<MyHomePage>
                                   ),
                                   Stack(
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                )
-                                              ],
-                                            ),
+                                      // Column(
+                                      //   crossAxisAlignment:
+                                      //       CrossAxisAlignment.start,
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.start,
+                                      //   children: [
+                                      //     Container(
+                                      //       width: MediaQuery.of(context)
+                                      //               .size
+                                      //               .width *
+                                      //           0.26,
+                                      //       margin: const EdgeInsets.only(
+                                      //           left: 30.0, right: 29.6),
+                                      //       height: 56.0,
+                                      //       decoration: BoxDecoration(
+                                      //         color: const Color(0xff334155),
+                                      //         borderRadius:
+                                      //             BorderRadius.circular(
+                                      //           8.0,
+                                      //         ),
+                                      //         boxShadow: const [
+                                      //           BoxShadow(
+                                      //             color: Color(0xff475569),
+                                      //             offset: Offset(
+                                      //               0.0,
+                                      //               2.0,
+                                      //             ),
+                                      //             blurRadius: 0.0,
+                                      //             spreadRadius: 0.0,
+                                      //           )
+                                      //         ],
+                                      //       ),
+                                      //     ),
+                                      //     handleAllerrorWidget(selectDays)
+                                      //   ],
+                                      // ),
+                                      // Container(
+                                      //     margin: const EdgeInsets.only(
+                                      //         top: 6.0, left: 45.0),
+                                      //     child: const Text(
+                                      //       "Select days",
+                                      //       style: TextStyle(
+                                      //           fontSize: 11.0,
+                                      //           color: Color(0xff64748B),
+                                      //           fontFamily: 'Inter',
+                                      //           fontWeight: FontWeight.w500),
+                                      //     )),
+                                      // Container(
+                                      //   margin: const EdgeInsets.only(
+                                      //       left: 30.0,
+                                      //       right: 55,
+                                      //       top: 26,
+                                      //       bottom: 10),
+                                      //   height: 20.0,
+                                      //   child: Container(
+                                      //       margin: const EdgeInsets.only(
+                                      //           left: 16.0, right: 20.0),
+                                      //       child: StatefulBuilder(
+                                      //         builder: (BuildContext context,
+                                      //             StateSettersetState) {
+                                      //           return DropdownButtonHideUnderline(
+                                      //             child: CustomDropdownButton(
+                                      //               dropdownColor:
+                                      //                   ColorSelect.class_color,
+                                      //               underline: Container(),
+                                      //               hint: const Text(
+                                      //                 "Select",
+                                      //                 style: TextStyle(
+                                      //                     fontSize: 14.0,
+                                      //                     color:
+                                      //                         Color(0xffFFFFFF),
+                                      //                     fontFamily: 'Inter',
+                                      //                     fontWeight:
+                                      //                         FontWeight.w500),
+                                      //               ),
+                                      //               // isExpanded: true,
+                                      //               icon: const Icon(
+                                      //                 Icons.arrow_drop_down,
+                                      //                 color: Color(0xff64748B),
+                                      //               ),
+                                      //               items: items1
+                                      //                   .map((String items1) {
+                                      //                 return DropdownMenuItem(
+                                      //                   value: items1,
+                                      //                   child: Text(items1,
+                                      //                       style: (const TextStyle(
+                                      //                           color: Colors
+                                      //                               .white))),
+                                      //                 );
+                                      //               }).toList(),
+                                      //               onChanged:
+                                      //                   (String? newValue) {
+                                      //                 setStateView(() {
+                                      //                   _day = newValue;
+                                      //                   _shortday = _day!
+                                      //                       .substring(0, 3);
+                                      //                   if (selectedDaysList
+                                      //                       .isNotEmpty) {
+                                      //                     if (selectedDaysList
+                                      //                         .contains(
+                                      //                             _shortday)) {
+                                      //                     } else {
+                                      //                       selectedDaysList
+                                      //                           .add(_shortday!
+                                      //                               .toString());
+                                      //                       selectDays = true;
+                                      //                     }
+                                      //                   } else {
+                                      //                     selectedDaysList.add(
+                                      //                         _shortday!
+                                      //                             .toString());
+                                      //                     selectDays = true;
+                                      //                   }
+                                      //                 });
+                                      //               },
+                                      //             ),
+                                      //           );
+                                      //         },
+                                      //       )),
+                                      // ),
+
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 29.6.sp,
+                                              left: 25.0.sp,
+                                              bottom: 0),
+                                          child: CustomSearchDropdown(
+                                            hint: 'Select days',
+                                            label: "Select",
+                                            errorText: createButtonClick &&
+                                                    (_day == null ||
+                                                        _day!.isEmpty)
+                                                ? 'Please Select this field'
+                                                : '',
+                                            items: selectDaysList!,
+                                            onChange: ((value) {
+                                              setStateView(() {
+                                                _day = value.item;
+                                                _shortday =
+                                                    _day!.substring(0, 3);
+                                                if (selectedDaysList
+                                                    .isNotEmpty) {
+                                                  if (selectedDaysList
+                                                      .contains(_shortday)) {
+                                                  } else {
+                                                    selectedDaysList.add(
+                                                        _shortday!.toString());
+                                                    selectDays = true;
+                                                  }
+                                                } else {
+                                                  selectedDaysList.add(
+                                                      _shortday!.toString());
+                                                  selectDays = true;
+                                                }
+                                              });
+                                            }),
                                           ),
-                                          handleAllerrorWidget(selectDays)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 6.0, left: 45.0),
-                                          child: const Text(
-                                            "Select days",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0,
-                                            right: 30.0,
-                                            top: 26,
-                                            bottom: 10),
-                                        height: 20.0,
-                                        child: Container(child: StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSettersetState) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16, right: 70),
-                                              child:
-                                                  DropdownButtonHideUnderline(
-                                                child: DropdownButton(
-                                                  dropdownColor:
-                                                      ColorSelect.class_color,
-                                                  underline: Container(),
-                                                  hint: const Text(
-                                                    "Select",
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  isExpanded: true,
-                                                  icon: const Icon(
-                                                    Icons.arrow_drop_down,
-                                                    color: Color(0xff64748B),
-                                                  ),
-                                                  items: items1
-                                                      .map((String items1) {
-                                                    return DropdownMenuItem(
-                                                      value: items1,
-                                                      child: Text(items1,
-                                                          style:
-                                                              (const TextStyle(
-                                                                  color: Colors
-                                                                      .white))),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    setStateView(() {
-                                                      _day = newValue;
-                                                      _shortday =
-                                                          _day!.substring(0, 3);
-                                                      if (selectedDaysList
-                                                          .isNotEmpty) {
-                                                        if (selectedDaysList
-                                                            .contains(
-                                                                _shortday)) {
-                                                        } else {
-                                                          selectedDaysList.add(
-                                                              _shortday!
-                                                                  .toString());
-                                                          selectDays = true;
-                                                        }
-                                                      } else {
-                                                        selectedDaysList.add(
-                                                            _shortday!
-                                                                .toString());
-                                                        selectDays = true;
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        )),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -1872,31 +1617,31 @@ class _NavigationRailState extends State<MyHomePage>
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, top: 0.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 29.6.sp,
+                                                left: 25.0.sp,
+                                                bottom: 0),
+                                            child: Container(
+                                              height: 57.h,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff334155),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  8.0,
                                                 ),
-                                              ],
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                    color: Color(0xff475569),
+                                                    offset: Offset(
+                                                      0.0,
+                                                      2.0,
+                                                    ),
+                                                    blurRadius: 0.0,
+                                                    spreadRadius: 0.0,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           handleAllerrorWidget(selectTime)
@@ -1904,11 +1649,13 @@ class _NavigationRailState extends State<MyHomePage>
                                       ),
                                       Container(
                                           margin: const EdgeInsets.only(
-                                              top: 22.0, left: 45.0),
-                                          child: const Text(
+                                            top: 11.0,
+                                            left: 45.0,
+                                          ),
+                                          child: Text(
                                             "Select time",
                                             style: TextStyle(
-                                                fontSize: 11.0,
+                                                fontSize: 11.sp,
                                                 color: Color(0xff64748B),
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500),
@@ -1916,7 +1663,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       Container(
                                           margin: const EdgeInsets.only(
                                             bottom: 16.0,
-                                            top: 50.0,
+                                            top: 28.0,
                                             right: 10,
                                             left: 45.0,
                                           ),
@@ -1928,7 +1675,7 @@ class _NavigationRailState extends State<MyHomePage>
                                                 ? "$startTime1 - $endTime2"
                                                 : '',
                                             style: TextStyle(
-                                                fontSize: 11.0,
+                                                fontSize: 14.sp,
                                                 color: Colors.white,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w500),
@@ -2030,99 +1777,106 @@ class _NavigationRailState extends State<MyHomePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Container(
-                                        padding:
-                                            EdgeInsets.only(left: 5, right: 5),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 16.0),
-                                        height: 55.0,
+                                        padding: EdgeInsets.only(
+                                          left: 5,
+                                          right: 5,
+                                        ),
+                                        margin: EdgeInsets.only(
+                                            right: 30.5.sp,
+                                            left: 25.0.sp,
+                                            top: 20.sp),
+                                        height: 49.0.h,
                                         decoration: BoxDecoration(
                                           color: const Color(0xff334155),
                                           borderRadius: BorderRadius.circular(
-                                            48.0,
+                                            48.0.r,
                                           ),
                                         ),
                                         child: Column(
                                           children: [
-                                            loading
-                                                ? CircularProgressIndicator()
-                                                : searchTextField =
-                                                    AutoCompleteTextField<
-                                                        Datum>(
-                                                    clearOnSubmit: false,
-                                                    key: key,
-                                                    cursorColor: Colors.white,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      contentPadding:
-                                                          EdgeInsets.only(
-                                                              top: 15.0),
-                                                      prefixIcon: Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 4.0,
-                                                                  right: 21,
-                                                                  left: 27),
-                                                          child: Icon(
-                                                            Icons.search,
-                                                            color: Color(
-                                                                0xff64748B),
-                                                          )),
-                                                      hintText: 'Search',
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Color(0xff64748B),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                      border: InputBorder.none,
-                                                    ),
-                                                    suggestions: users,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14.0),
-                                                    itemFilter: (item, query) {
-                                                      return item.title!
-                                                          .toLowerCase()
-                                                          .startsWith(query
-                                                              .toLowerCase());
-                                                    },
-                                                    itemSorter: (a, b) {
-                                                      return a.title!
-                                                          .compareTo(b.title!);
-                                                    },
-                                                    itemSubmitted: (item) {
-                                                      setStateView(() {
-                                                        searchTextField!
-                                                            .textField!
-                                                            .controller!
-                                                            .text = '';
+                                            searchTextField =
+                                                TypeAheadFormField(
+                                              keepSuggestionsOnLoading: false,
+                                              suggestionsBoxVerticalOffset: 0.0,
+                                              suggestionsBoxDecoration:
+                                                  SuggestionsBoxDecoration(
+                                                      color: Color(0xff0F172A)),
+                                              hideOnLoading: true,
+                                              suggestionsCallback: (pattern) {
+                                                return getSuggestions(pattern);
+                                              },
+                                              textFieldConfiguration:
+                                                  TextFieldConfiguration(
+                                                controller:
+                                                    _typeAheadController,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14.0),
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                cursorColor: Colors.white,
+                                                autofocus: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  // border: InputBorder.none,
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          top: 15.0, left: 10),
+                                                  prefixIcon: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 4.0),
+                                                      child: Icon(
+                                                        Icons.search,
+                                                        color:
+                                                            Color(0xff64748B),
+                                                      )),
+                                                  hintText: 'Search',
+                                                  hintStyle: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: Colors.white,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  border: InputBorder.none,
+                                                ),
+                                              ),
+                                              itemBuilder: (context, item) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    item.title.toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white),
+                                                  ),
+                                                );
+                                                // Text("khushi");
+                                                // rowResourceName(item);
+                                              },
+                                              transitionBuilder: (context,
+                                                  suggestionsBox, controller) {
+                                                return suggestionsBox;
+                                              },
+                                              onSuggestionSelected: (item) {
+                                                setStateView(() {
+                                                  searchTextField!
+                                                      .textFieldConfiguration
+                                                      .controller!
+                                                      .text = '';
 
-                                                        if (abc.isNotEmpty) {
-                                                          if (abc.contains(
-                                                              item.title!)) {
-                                                          } else {
-                                                            abc.add(item.title!
-                                                                .toString());
-                                                            selectSkill = true;
-                                                          }
-                                                        } else {
-                                                          abc.add(item.title!
-                                                              .toString());
-                                                          selectSkill = true;
-                                                        }
-                                                      });
-                                                    },
-                                                    itemBuilder:
-                                                        (context, item) {
-                                                      return row(item);
-                                                    },
-                                                  )
+                                                  if (abc.isNotEmpty) {
+                                                    if (abc
+                                                        .contains(item.title)) {
+                                                    } else {
+                                                      abc.add(item.title!);
+                                                    }
+                                                  } else {
+                                                    abc.add(item.title!);
+                                                  }
+                                                });
+                                              },
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -2214,442 +1968,189 @@ class _NavigationRailState extends State<MyHomePage>
                                   const SizedBox(
                                     height: 8.0,
                                   ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget2(validateCountry)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 6.0, left: 45.0),
-                                          child: const Text(
-                                            "Country",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 20,
-                                        controller: _country,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 35.0,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 30,
+                                      right: 30,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        CustomFormField(
+                                          maxLength: 20,
+                                          controller: _country,
+                                          hint: 'Enter country',
+                                          label: "Country",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
                                               right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter country',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex =
-                                              RegExp(r'^[a-z A-Z]+$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid  country name';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.26,
-                                            margin: const EdgeInsets.only(
-                                                left: 30.0, top: 7.0),
-                                            height: 56.0,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.0,
-                                              ),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Color(0xff475569),
-                                                  offset: Offset(
-                                                    0.0,
-                                                    2.0,
-                                                  ),
-                                                  blurRadius: 0.0,
-                                                  spreadRadius: 0.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget2(validateCity)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 12.0, left: 45.0),
-                                          child: const Text(
-                                            "City",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 20,
-                                        controller: _enterCity,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 40.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter city',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex =
-                                              RegExp(r'^[a-z A-Z]+$');
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regex.hasMatch(value)) {
-                                            return 'Please enter valid  city name';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 7.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 12.0, left: 45.0),
-                                          child: const Text(
-                                            "Phone number",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 10,
-                                        controller: _phoneNumber,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 40.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter number',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          String pattern =
-                                              r'(^(?:[+0]9)?[0-9]{10}$)';
-                                          RegExp regExp = new RegExp(pattern);
-                                          if (value!.isEmpty) {
-                                            return 'Please enter';
-                                          } else if (!regExp.hasMatch(value)) {
-                                            return 'Please enter valid mobile number';
-                                          }
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            RegExp regex =
+                                                RegExp(r'^[a-z A-Z]+$');
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
 
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
+                                              return 'Please enter';
+                                            } else if (!regex.hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter valid  country name';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                        CustomFormField(
+                                          maxLength: 20,
+                                          controller: _enterCity,
+                                          hint: 'Enter city',
+                                          label: "City",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            RegExp regex =
+                                                RegExp(r'^[a-z A-Z]+$');
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter';
+                                            } else if (!regex.hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter valid  city name';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                        CustomFormField(
+                                          maxLength: 10,
+                                          controller: _phoneNumber,
+                                          hint: 'Enter number',
+                                          label: "Phone number",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            String pattern =
+                                                r'(^(?:[+0]9)?[0-9]{10}$)';
+                                            RegExp regExp = new RegExp(pattern);
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter';
+                                            } else if (!regExp
+                                                .hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter valid mobile number';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                        CustomFormField(
+                                          maxLength: 20,
+                                          controller: _emailAddress,
+                                          hint: 'Enter email address',
+                                          label: "Email address",
+                                          fontSizeForLabel: 14,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16,
+                                              bottom: 10,
+                                              right: 10,
+                                              top: 10),
+                                          hintTextHeight: 1.7,
+                                          validator: (value) {
+                                            RegExp regex = RegExp(
+                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Please enter email';
+                                            } else if (!regex.hasMatch(value)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+
+                                              return 'Enter valid Email';
+                                            }
+                                            if (regex.hasMatch(values)) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+                                              return 'please enter valid email';
+                                            }
+                                            if (value.length > 50) {
+                                              setState(() {
+                                                createProjectValidate = false;
+                                              });
+                                              return 'No more length 50';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Stack(
                                     children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, top: 20.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
-                                          ),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color(0xff475569),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
-                                              ),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              top: 25.0, left: 45.0),
-                                          child: const Text(
-                                            "Email address",
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      TextFormField(
-                                        maxLength: 20,
-                                        controller: _emailAddress,
-                                        cursorColor: const Color(0xffFFFFFF),
-                                        style: const TextStyle(
-                                            color: Color(0xffFFFFFF)),
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
-                                        keyboardType: TextInputType.text,
-                                        decoration: const InputDecoration(
-                                            counterText: "",
-                                            errorStyle: TextStyle(
-                                                fontSize: 14, height: 0.20),
-                                            contentPadding: EdgeInsets.only(
-                                              bottom: 16.0,
-                                              top: 50.0,
-                                              right: 10,
-                                              left: 45.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Enter email address',
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color(0xffFFFFFF),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500)),
-                                        autovalidateMode: _addSubmitted
-                                            ? AutovalidateMode.onUserInteraction
-                                            : AutovalidateMode.disabled,
-                                        validator: (value) {
-                                          RegExp regex = RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                                          if (value!.isEmpty) {
-                                            return 'Please enter email';
-                                          }
-                                          if (!regex.hasMatch(value)) {
-                                            return 'Enter valid Email';
-                                          }
-                                          if (regex.hasMatch(values)) {
-                                            return 'please enter valid email';
-                                          }
-                                          if (value.length > 50) {
-                                            return 'No more length 50';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (text) =>
-                                            setStateView(() => name1 = text),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.26,
-                                        margin: const EdgeInsets.only(
-                                            top: 26.0, left: 30.0),
-                                        height: 56.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            8.0,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 29.6.sp,
+                                              left: 25.0.sp,
+                                              bottom: 0),
+                                          child: CustomSearchDropdown(
+                                            hint: "Select timezone",
+                                            label: "Select",
+                                            errorText: createButtonClick &&
+                                                    (_time == null ||
+                                                        _time!.isEmpty)
+                                                ? 'Please Select this field'
+                                                : '',
+                                            items: selecTimeZoneList!,
+                                            onChange: ((value) {
+                                              setStateView(() {
+                                                _time = value.item;
+                                                print("account:$_time");
+                                                selectTimeZone = true;
+                                              });
+                                            }),
                                           ),
                                         ),
-                                        child: Container(
-                                            margin: const EdgeInsets.only(
-                                                left: 16.0, right: 20.0),
-                                            child: StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  StateSettersetState) {
-                                                return DropdownButtonHideUnderline(
-                                                  child: DropdownButton(
-                                                    dropdownColor:
-                                                        ColorSelect.class_color,
-                                                    value: _time,
-                                                    underline: Container(),
-                                                    hint: const Text(
-                                                      "Select timezone",
-                                                      style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color:
-                                                              Color(0xffFFFFFF),
-                                                          fontFamily: 'Inter',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    isExpanded: true,
-                                                    icon: Icon(
-                                                      Icons.arrow_drop_down,
-                                                      color: Color(0xff64748B),
-                                                    ),
-                                                    items:
-                                                        _timeline.map((items) {
-                                                      return DropdownMenuItem(
-                                                        value: items['id']
-                                                            .toString(),
-                                                        child: Text(
-                                                          items['name'] +
-                                                              ', ' +
-                                                              items[
-                                                                  'diff_from_gtm'],
-                                                          style: const TextStyle(
-                                                              fontSize: 14.0,
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      setStateView(() {
-                                                        _time = newValue;
-                                                        print("account:$_time");
-                                                        selectTimeZone = true;
-                                                      });
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            )),
                                       ),
-                                      handleAllerrorWidget(selectTimeZone)
                                     ],
                                   ),
                                 ],
@@ -2678,25 +2179,25 @@ class _NavigationRailState extends State<MyHomePage>
           appBar: AppBar(
             centerTitle: false,
             automaticallyImplyLeading: false,
-            toolbarHeight: 70.0,
+            toolbarHeight: 70.h,
             backgroundColor: const Color(0xff0F172A),
             elevation: 0,
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: EdgeInsets.only(right: 16.sp),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
-                      width: 475,
-                      height: 48.0,
+                      padding: EdgeInsets.only(left: 5.sp, right: 5.sp),
+                      width: 475.w,
+                      height: 48.h,
                       decoration: BoxDecoration(
                         color: const Color(0xff1e293b),
                         borderRadius: BorderRadius.circular(
-                          42.0,
+                          42.r,
                         ),
                       ),
                       child: TextField(
@@ -2725,46 +2226,54 @@ class _NavigationRailState extends State<MyHomePage>
                           }
                         },
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 16.0),
-                          prefixIcon: const Padding(
+                          contentPadding: EdgeInsets.only(top: 16.sp),
+                          prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0, left: 15, right: 20),
+                                  top: 4.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),
                               )),
                           hintText: projectListTapIcon
-                              ? 'Search Project'
+                              ? 'Search project'
                               : peopleListTapIcon
-                                  ? 'Search People'
+                                  ? 'Search people'
                                   : 'Search',
-                          hintStyle: const TextStyle(
-                              fontSize: 14.0,
+                          hintStyle: TextStyle(
+                              fontSize: 14.sp,
                               color: Color(0xff64748B),
-                              fontFamily: 'Inter',
+                              fontFamily: 'Inter-Recgular',
+                              fontStyle: FontStyle.normal,
+                              letterSpacing: 0.1,
                               fontWeight: FontWeight.w400),
                           border: InputBorder.none,
                         ),
                         keyboardType: TextInputType.text,
-                        style: TextStyle(color: Colors.white, fontSize: 14.0),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontFamily: 'Inter-Medium',
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: 0.1,
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     Container(
-                        width: 40.0,
-                        height: 40.0,
-                        child: const CircleAvatar(
-                          radius: 20,
+                        width: 40.w,
+                        height: 40.h,
+                        child: CircleAvatar(
+                          radius: 20.r,
                           backgroundImage: AssetImage('images/images.jpeg'),
                         )),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     LogOut(returnValue: () {}),
                     SizedBox(
-                      width: 15,
+                      width: 15.w,
                     ),
                   ],
                 ),
@@ -2779,8 +2288,8 @@ class _NavigationRailState extends State<MyHomePage>
                   onTap: () {},
                   child: SvgPicture.asset(
                     'images/hamburger.svg',
-                    width: 18.0,
-                    height: 12.0,
+                    width: 18.w,
+                    height: 12.h,
                   ),
                 ),
                 SvgPicture.asset(
@@ -2798,8 +2307,8 @@ class _NavigationRailState extends State<MyHomePage>
                           children: [
                             projectListTapIcon
                                 ? Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12, left: 12),
+                                    padding: EdgeInsets.only(
+                                        top: 12.sp, left: 12.sp),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -2811,39 +2320,43 @@ class _NavigationRailState extends State<MyHomePage>
                                             Text("List",
                                                 style: TextStyle(
                                                     color: Color(0xff93C5FD),
-                                                    fontSize: 14.0,
-                                                    fontFamily: 'Inter',
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Medium',
+                                                    fontStyle: FontStyle.normal,
+                                                    letterSpacing: 0.1,
                                                     fontWeight:
                                                         FontWeight.w500)),
-                                            const SizedBox(
-                                              height: 12,
+                                            SizedBox(
+                                              height: 12.h,
                                             ),
                                             Container(
-                                              width: 25,
-                                              height: 3,
-                                              decoration: const BoxDecoration(
+                                              width: 25.w,
+                                              height: 3.h,
+                                              decoration: BoxDecoration(
                                                   color: Color(0xff93C5FD),
                                                   borderRadius:
                                                       BorderRadius.only(
                                                           topLeft:
                                                               Radius.circular(
-                                                                  3),
+                                                                  3.r),
                                                           topRight:
                                                               Radius.circular(
-                                                                  3))),
+                                                                  3.r))),
                                             )
                                           ],
                                         ),
                                         SizedBox(
-                                          width: 30,
+                                          width: 30.w,
                                         ),
                                         projectListTapIcon
                                             // _selectedIndex == 1
                                             ? Text("Timeline",
                                                 style: TextStyle(
                                                     color: Color(0xffffffff),
-                                                    fontSize: 14.0,
-                                                    fontFamily: 'Inter',
+                                                    fontSize: 14.sp,
+                                                    letterSpacing: 0.1,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontFamily: 'Inter-Medium',
                                                     fontWeight:
                                                         FontWeight.w500))
                                             : Container(),
@@ -2857,12 +2370,14 @@ class _NavigationRailState extends State<MyHomePage>
                                     settingIcon == false &&
                                     bellTapIcon == false
                                 ? Padding(
-                                    padding: const EdgeInsets.only(left: 22.0),
-                                    child: const Text("Profile",
+                                    padding: EdgeInsets.only(left: 22.sp),
+                                    child: Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),
-                                            fontSize: 22.0,
-                                            fontFamily: 'Inter',
+                                            fontSize: 22.sp,
+                                            fontFamily: 'Inter-Medium',
+                                            letterSpacing: 0.1,
+                                            fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w700)),
                                   )
                                 : Container(),
@@ -2886,18 +2401,18 @@ class _NavigationRailState extends State<MyHomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: 46.0,
-                          height: 46.0,
+                          width: 56.w,
+                          height: 56.h,
                           decoration: BoxDecoration(
                             color: const Color(0xff93C5FD),
                             border: Border.all(color: const Color(0xff93C5FD)),
                             borderRadius: BorderRadius.circular(
-                              16.0,
+                              16.r,
                             ),
                           ),
-                          margin: const EdgeInsets.only(
-                            top: 40.0,
-                            left: 10.0,
+                          margin: EdgeInsets.only(
+                            top: 40.sp,
+                            left: 10.sp,
                             right: 0.0,
                           ),
                           child: InkWell(
@@ -2912,7 +2427,7 @@ class _NavigationRailState extends State<MyHomePage>
                               });
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: EdgeInsets.all(20.sp),
                               child: SvgPicture.asset(
                                 "images/plus.svg",
                               ),
@@ -2920,10 +2435,10 @@ class _NavigationRailState extends State<MyHomePage>
                           ),
                         ),
                         SizedBox(
-                          height: 100,
+                          height: 100.h,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
+                          padding: EdgeInsets.only(left: 12.sp),
                           child: Column(
                             children: [
                               projectListTapIcon
@@ -2935,23 +2450,35 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/notification_icon.svg",
                                         ),
                                       ),
                                     )
                                   : InkWell(
-                                      child: SvgPicture.asset(
-                                        "images/notification_icon.svg",
+                                      child: Tooltip(
+                                        // verticalOffset: 40,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          border: Border.all(
+                                              color: const Color(0xff334155)),
+                                          borderRadius: BorderRadius.circular(
+                                            18.0,
+                                          ),
+                                        ),
+                                        message: 'Projects',
+                                        child: SvgPicture.asset(
+                                          "images/notification_icon.svg",
+                                        ),
                                       ),
                                       onTap: () {
                                         setState(() {
@@ -2970,7 +2497,7 @@ class _NavigationRailState extends State<MyHomePage>
                                       style: TextStyle(color: Colors.white),
                                     )
                                   : Container(),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               cameraTapIcon
                                   ? Container(
                                       // height: 40,
@@ -2980,15 +2507,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/camera.svg",
                                         ),
@@ -3009,7 +2536,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         });
                                       },
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               peopleListTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3019,23 +2546,34 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/people.svg",
                                         ),
                                       ),
                                     )
                                   : InkWell(
-                                      child: SvgPicture.asset(
-                                        "images/people.svg",
+                                      child: Tooltip(
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff334155),
+                                          border: Border.all(
+                                              color: const Color(0xff334155)),
+                                          borderRadius: BorderRadius.circular(
+                                            18.0,
+                                          ),
+                                        ),
+                                        message: 'People',
+                                        child: SvgPicture.asset(
+                                          "images/people.svg",
+                                        ),
                                       ),
                                       onTap: () {
                                         bellTapIcon = false;
@@ -3050,7 +2588,7 @@ class _NavigationRailState extends State<MyHomePage>
                                   ? Text('People',
                                       style: TextStyle(color: Colors.white))
                                   : Container(),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               circleTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3060,15 +2598,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/button.svg",
                                         ),
@@ -3087,7 +2625,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         "images/button.svg",
                                       ),
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               bellTapIcon
                                   ? Container(
                                       // height: 40,
@@ -3097,15 +2635,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/bell.svg",
                                         ),
@@ -3125,7 +2663,7 @@ class _NavigationRailState extends State<MyHomePage>
                                         "images/bell.svg",
                                       ),
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 40.h),
                               settingIcon
                                   ? Container(
                                       // height: 40,
@@ -3135,15 +2673,15 @@ class _NavigationRailState extends State<MyHomePage>
                                         border: Border.all(
                                             color: const Color(0xff334155)),
                                         borderRadius: BorderRadius.circular(
-                                          18.0,
+                                          18.r,
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0,
-                                            right: 16,
-                                            top: 8,
-                                            bottom: 8),
+                                        padding: EdgeInsets.only(
+                                            left: 16.sp,
+                                            right: 16.sp,
+                                            top: 8.sp,
+                                            bottom: 8.sp),
                                         child: SvgPicture.asset(
                                           "images/setting.svg",
                                         ),
@@ -3172,7 +2710,7 @@ class _NavigationRailState extends State<MyHomePage>
                 Column(
                   children: [
                     SizedBox(
-                      width: 25,
+                      width: 25.w,
                     ),
                   ],
                 ),
@@ -3727,6 +3265,17 @@ class _NavigationRailState extends State<MyHomePage>
         List<dynamic> mdata = map["data"];
         setState(() {
           _currencyName = mdata;
+          try {
+            currencyList!.clear();
+            _currencyName.forEach((element) {
+              if (!currencyList!.contains(element['currency']['symbol'])) {
+                currencyList!.add(DropdownModel(
+                    element['id'].toString(), element['currency']['symbol']));
+              }
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -3781,6 +3330,17 @@ class _NavigationRailState extends State<MyHomePage>
         List<dynamic> mdata = map["data"];
         setState(() {
           _timeline = mdata;
+
+          try {
+            selecTimeZoneList = [];
+            _timeline.forEach((element) {
+              print(element);
+              selecTimeZoneList!.add(DropdownModel(element['id'].toString(),
+                  '${element['name'] + ', ' + element['diff_from_gtm']}'));
+            });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
@@ -3944,8 +3504,27 @@ class _NavigationRailState extends State<MyHomePage>
         Map<String, dynamic> map = jsonDecode(response.body.toString());
         List<dynamic> mdata = map["data"];
         setState(() {
-          _department.clear();
           _department = mdata;
+          print(_department);
+          print(_department);
+          try {
+            departmentlist = []; //!.clear();
+            _department.forEach((element) {
+              print(element);
+              departmentlist!.add(
+                  DropdownModel(element['id'].toString(), element['name']));
+            });
+            // _department.forEach((element) {
+            //   print(element);
+            //   print(element);
+            //   if (!departmentlist!.contains(element["id"])) {
+            //     departmentlist!
+            //         .add(DropdownModel(element["id"], element["id"]));
+            //   }
+            // });
+          } catch (e) {
+            print(e);
+          }
         });
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);

@@ -21,7 +21,7 @@ import 'search_view.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/app_url.dart';
 
 class MyMenu extends StatefulWidget {
@@ -56,15 +56,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   static List<Datum> users = <Datum>[];
   List<String> selectedDaysList = List.empty(growable: true);
   List _timeline = [];
-  String? _depat,
-      _account,
-      _custome,
-      _curren,
-      _status,
-      _time,
-      _tag,
-      _day,
-      _shortday;
+  String? _depat, _curren, _time, _day, _shortday;
 
   var startTime;
   var endTime;
@@ -78,7 +70,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   String token = "";
   var dataPeople = 'people_data';
   bool imageavail = false;
-  Future? _getList;
   bool selectedColor = false;
   var postion;
   SharedPreferences? sharedPreferences;
@@ -108,7 +99,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   bool? _isSelected;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _nickName = TextEditingController();
-  final TextEditingController _password = TextEditingController();
   final TextEditingController _bio = TextEditingController();
   final TextEditingController _designation = TextEditingController();
   final TextEditingController _association = TextEditingController();
@@ -116,7 +106,6 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   final TextEditingController _salaryCurrency = TextEditingController();
   final TextEditingController _availableDay = TextEditingController();
   final TextEditingController _availableTime = TextEditingController();
-  final TextEditingController _search = TextEditingController();
   final TextEditingController _country = TextEditingController();
   final TextEditingController _enterCity = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
@@ -163,28 +152,30 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
       tooltip: "",
-      constraints: const BoxConstraints.expand(width: 140, height: 120),
-      padding: EdgeInsets.only(left: 50, right: 50),
-      offset: const Offset(-15, 12),
+      constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
+      padding: EdgeInsets.only(left: 50.sp, right: 50.sp),
+      offset: Offset(-15.sp, 12.sp),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
       child: Container(
         // color: Colors.red,
         // margin: const EdgeInsets.only(right: 12.0, top: 16.0),
-        height: 38,
-        width: 38,
+        height: 40.h,
+        width: 40.w,
         decoration: BoxDecoration(
             color: const Color(0xff334155),
             border: Border.all(
               color: ColorSelect.box_decoration,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(100))),
+            shape: BoxShape.circle),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.sp),
             child: SvgPicture.asset(
               "images/edit.svg",
+              height: 16.h,
+              width: 4.w,
             ),
           ),
         ),
@@ -193,169 +184,165 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
         PopupMenuItem(
           padding: EdgeInsets.zero,
           value: 1,
-          child: Container(
-            child: InkWell(
-              hoverColor: Color(0xff1e293b),
-              onTap: () {
-                if (widget.data != null) {
-                  setState(() {
-                    selectedColor = true;
-                    final splitNames =
-                        widget.data!.resource!.availibiltyDay!.split(", ");
+          child: InkWell(
+            hoverColor: Color(0xff1e293b),
+            onTap: () {
+              if (widget.data != null) {
+                setState(() {
+                  selectedColor = true;
+                  final splitNames =
+                      widget.data!.resource!.availibiltyDay!.split(", ");
 
-                    for (int i = 0; i < splitNames.length; i++) {
-                      selectedDaysList.add(splitNames[i]);
-                    }
+                  for (int i = 0; i < splitNames.length; i++) {
+                    selectedDaysList.add(splitNames[i]);
+                  }
 
-                    widget.data!.resource!.availibiltyTime != null
-                        ? finalTime = widget.data!.resource!.availibiltyTime!
-                        : " ";
+                  widget.data!.resource!.availibiltyTime != null
+                      ? finalTime = widget.data!.resource!.availibiltyTime!
+                      : " ";
 
-                    var names;
+                  var names;
 
-                    print("--------------------------");
-                    finalTime.toString().trim();
-                    if (finalTime.contains("-")) {
-                      print("here");
-                      List<String> splitedList = finalTime!.split("-");
-                      Time1 = splitedList[0].trim();
-                      Time2 = splitedList[1].trim();
-                      print(Time1);
-                      print(Time2);
-                      setState(() {});
-                    } else {}
+                  print("--------------------------");
+                  finalTime.toString().trim();
+                  if (finalTime.contains("-")) {
+                    print("here");
+                    List<String> splitedList = finalTime!.split("-");
+                    Time1 = splitedList[0].trim();
+                    Time2 = splitedList[1].trim();
+                    print(Time1);
+                    print(Time2);
+                    setState(() {});
+                  } else {}
 
-                    _name.text = widget.data!.name != null &&
-                            widget.data!.name!.isNotEmpty
-                        ? widget.data!.name!
-                        : '';
-
-                    _nickName.text = widget.data!.resource != null
-                        ? widget.data!.resource!.nickname != null &&
-                                widget.data!.resource!.nickname!.isNotEmpty
-                            ? widget.data!.resource!.nickname!
-                            : ''
-                        : '';
-
-                    _bio.text = widget.data!.resource != null
-                        ? widget.data!.resource!.bio != null &&
-                                widget.data!.resource!.bio!.isNotEmpty
-                            ? widget.data!.resource!.bio!
-                            : ''
-                        : '';
-
-                    _designation.text = widget.data!.resource != null
-                        ? widget.data!.resource!.designation != null &&
-                                widget.data!.resource!.designation!.isNotEmpty
-                            ? widget.data!.resource!.designation!
-                            : ''
-                        : '';
-
-                    _association.text = widget.data!.resource != null
-                        ? widget.data!.resource!.associate != null &&
-                                widget.data!.resource!.associate!.isNotEmpty
-                            ? widget.data!.resource!.associate!
-                            : ''
-                        : '';
-
-                    _salary.text = widget.data!.resource != null
-                        ? widget.data!.resource!.salary != null
-                            ? widget.data!.resource!.salary!.toString()
-                            : ''
-                        : '';
-
-                    _availableDay.text = widget.data!.resource != null
-                        ? widget.data!.resource!.availibiltyDay != null &&
-                                widget
-                                    .data!.resource!.availibiltyDay!.isNotEmpty
-                            ? widget.data!.resource!.availibiltyDay!
-                            : ''
-                        : '';
-
-                    _availableTime.text = widget.data!.resource != null
-                        ? widget.data!.resource!.availibiltyTime != null &&
-                                widget
-                                    .data!.resource!.availibiltyTime!.isNotEmpty
-                            ? widget.data!.resource!.availibiltyTime!
-                            : ''
-                        : '';
-
-                    if (widget.data!.resource != null) {
-                      _country.text = widget.data!.resource!.country != null &&
-                              widget.data!.resource!.country!.isNotEmpty
-                          ? widget.data!.resource!.country!
+                  _name.text =
+                      widget.data!.name != null && widget.data!.name!.isNotEmpty
+                          ? widget.data!.name!
                           : '';
-                    }
 
-                    if (widget.data!.resource != null) {
-                      _enterCity.text = widget.data!.resource!.city != null &&
-                              widget.data!.resource!.city!.isNotEmpty
-                          ? widget.data!.resource!.city!
-                          : '';
-                    }
+                  _nickName.text = widget.data!.resource != null
+                      ? widget.data!.resource!.nickname != null &&
+                              widget.data!.resource!.nickname!.isNotEmpty
+                          ? widget.data!.resource!.nickname!
+                          : ''
+                      : '';
 
-                    _phoneNumber.text = widget.data!.phoneNumber != null &&
-                            widget.data!.phoneNumber!.isNotEmpty
-                        ? widget.data!.phoneNumber!
+                  _bio.text = widget.data!.resource != null
+                      ? widget.data!.resource!.bio != null &&
+                              widget.data!.resource!.bio!.isNotEmpty
+                          ? widget.data!.resource!.bio!
+                          : ''
+                      : '';
+
+                  _designation.text = widget.data!.resource != null
+                      ? widget.data!.resource!.designation != null &&
+                              widget.data!.resource!.designation!.isNotEmpty
+                          ? widget.data!.resource!.designation!
+                          : ''
+                      : '';
+
+                  _association.text = widget.data!.resource != null
+                      ? widget.data!.resource!.associate != null &&
+                              widget.data!.resource!.associate!.isNotEmpty
+                          ? widget.data!.resource!.associate!
+                          : ''
+                      : '';
+
+                  _salary.text = widget.data!.resource != null
+                      ? widget.data!.resource!.salary != null
+                          ? widget.data!.resource!.salary!.toString()
+                          : ''
+                      : '';
+
+                  _availableDay.text = widget.data!.resource != null
+                      ? widget.data!.resource!.availibiltyDay != null &&
+                              widget.data!.resource!.availibiltyDay!.isNotEmpty
+                          ? widget.data!.resource!.availibiltyDay!
+                          : ''
+                      : '';
+
+                  _availableTime.text = widget.data!.resource != null
+                      ? widget.data!.resource!.availibiltyTime != null &&
+                              widget.data!.resource!.availibiltyTime!.isNotEmpty
+                          ? widget.data!.resource!.availibiltyTime!
+                          : ''
+                      : '';
+
+                  if (widget.data!.resource != null) {
+                    _country.text = widget.data!.resource!.country != null &&
+                            widget.data!.resource!.country!.isNotEmpty
+                        ? widget.data!.resource!.country!
                         : '';
+                  }
 
-                    _emailAddress.text = widget.data!.email != null &&
-                            widget.data!.email!.isNotEmpty
-                        ? widget.data!.email!
+                  if (widget.data!.resource != null) {
+                    _enterCity.text = widget.data!.resource!.city != null &&
+                            widget.data!.resource!.city!.isNotEmpty
+                        ? widget.data!.resource!.city!
                         : '';
-                    if (widget.data!.resource != null) {
-                      _depat =
-                          widget.data!.resource!.department!.name!.isNotEmpty
-                              ? widget.data!.resource!.departmentId.toString()
-                              : '';
-                    }
+                  }
 
-                    _time = widget.data!.resource != null &&
-                            widget.data!.resource!.timeZone!.name!.isNotEmpty
-                        ? widget.data!.resource!.timeZone!.id.toString()
+                  _phoneNumber.text = widget.data!.phoneNumber != null &&
+                          widget.data!.phoneNumber!.isNotEmpty
+                      ? widget.data!.phoneNumber!
+                      : '';
+
+                  _emailAddress.text = widget.data!.email != null &&
+                          widget.data!.email!.isNotEmpty
+                      ? widget.data!.email!
+                      : '';
+                  if (widget.data!.resource != null) {
+                    _depat = widget.data!.resource!.department!.name!.isNotEmpty
+                        ? widget.data!.resource!.departmentId.toString()
                         : '';
-                    if (widget.data!.resource != null) {
-                      _salaryCurrency.text =
-                          widget.data!.resource!.salaryCurrency != null &&
-                                  widget.data!.resource!.salaryCurrency!
-                                      .isNotEmpty
-                              ? widget.data!.resource!.salaryCurrency!
-                              : '';
-                    }
+                  }
 
-                    var image = widget.data!.image;
+                  _time = widget.data!.resource != null &&
+                          widget.data!.resource!.timeZone!.name!.isNotEmpty
+                      ? widget.data!.resource!.timeZone!.id.toString()
+                      : '';
+                  if (widget.data!.resource != null) {
+                    _salaryCurrency
+                        .text = widget.data!.resource!.salaryCurrency != null &&
+                            widget.data!.resource!.salaryCurrency!.isNotEmpty
+                        ? widget.data!.resource!.salaryCurrency!
+                        : '';
+                  }
 
-                    if (widget.data!.resource!.skills!.isNotEmpty) {
-                      widget.data!.resource!.skills!.forEach((element) {
-                        if (abc.isNotEmpty) {
-                          if (abc.contains(element.title!)) {
-                          } else {
-                            abc.add(element.title!.toString());
-                          }
+                  var image = widget.data!.image;
+
+                  if (widget.data!.resource!.skills!.isNotEmpty) {
+                    widget.data!.resource!.skills!.forEach((element) {
+                      if (abc.isNotEmpty) {
+                        if (abc.contains(element.title!)) {
                         } else {
                           abc.add(element.title!.toString());
                         }
-                        // abc.add(element.title!);
-                      });
-                    }
-                  });
-                }
-                showAddPeople(context);
-                Navigator.pop(context);
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 20.0, top: 15),
-                  child: Text(
-                    "Edit",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
-                        color: ColorSelect.white_color),
-                  ),
+                      } else {
+                        abc.add(element.title!.toString());
+                      }
+                      // abc.add(element.title!);
+                    });
+                  }
+                });
+              }
+              showAddPeople(context);
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: double.infinity,
+              height: 50.h,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
+                child: Text(
+                  "Edit",
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: 0.1,
+                      color: ColorSelect.white_color),
                 ),
               ),
             ),
@@ -374,39 +361,43 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                     return StatefulBuilder(
                       builder: (context, setState) => AlertDialog(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28.0),
+                          borderRadius: BorderRadius.circular(28.r),
                         ),
                         backgroundColor: ColorSelect.peoplelistbackgroundcolor,
                         content: Container(
-                          height: 110.0,
+                          height: 110.h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: const EdgeInsets.only(right: 20.0),
+                                margin: EdgeInsets.only(right: 20.sp),
                                 child: Text(
                                   "Do you want to delete @${widget.data!.resource!.nickname!} ?",
-                                  style: const TextStyle(
-                                      fontSize: 20,
+                                  style: TextStyle(
+                                      fontSize: 24.sp,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: 'Inter',
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing: 0.1,
                                       color: ColorSelect.white_color),
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 15.0),
-                                child: const Text(
+                                margin: EdgeInsets.only(top: 15.sp),
+                                child: Text(
                                   "Once deleted, you will not find this person in people list anymore.",
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
                                       fontFamily: 'Inter',
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing: 0.1,
                                       color: ColorSelect.delete),
                                 ),
                               ),
                               Expanded(
                                 child: Container(
-                                  margin: const EdgeInsets.only(top: 30.0),
+                                  margin: EdgeInsets.only(top: 30.sp),
                                   child: Row(
                                     children: [
                                       Spacer(),
@@ -415,14 +406,15 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin: const EdgeInsets.only(
-                                              right: 56.0),
-                                          child: const Text(
+                                          margin: EdgeInsets.only(right: 56.sp),
+                                          child: Text(
                                             "Cancel",
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
+                                                fontStyle: FontStyle.normal,
+                                                letterSpacing: 0.1,
                                                 color: ColorSelect.delete_text),
                                           ),
                                         ),
@@ -441,14 +433,17 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 widget.buildContext);
                                           });
                                         },
-                                        child: const Padding(
-                                          padding: EdgeInsets.only(right: 10.0),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.only(right: 10.sp),
                                           child: Text(
                                             "Delete",
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
+                                                fontStyle: FontStyle.normal,
+                                                letterSpacing: 0.1,
                                                 color: ColorSelect.red_color),
                                           ),
                                         ),
@@ -466,15 +461,17 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
             },
             child: Container(
               width: double.infinity,
-              height: 50,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 20, top: 15),
+              height: 50.h,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
                 child: Text(
                   "Delete",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Inter',
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: 0.1,
                       color: ColorSelect.white_color),
                 ),
               ),
@@ -492,7 +489,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           return StatefulBuilder(
             builder: (context, setState) => AlertDialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               contentPadding: EdgeInsets.zero,
               backgroundColor: const Color(0xff1E293B),
@@ -2355,17 +2352,17 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
   errorWidget() {
     return Text('Please Select this field',
-        style:
-            TextStyle(color: Color.fromARGB(255, 221, 49, 60), fontSize: 14));
+        style: TextStyle(
+            color: Color.fromARGB(255, 221, 49, 60), fontSize: 14.sp));
   }
 
   handleAllerrorWidget() {
     return Row(
       children: [
-        const SizedBox(width: 45),
+        SizedBox(width: 45.w),
         Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
+            padding: EdgeInsets.only(
+              top: 8.sp,
               left: 0,
             ),
             child: errorWidget())

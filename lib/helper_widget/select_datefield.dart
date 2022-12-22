@@ -107,6 +107,8 @@ class _DatePickerState extends State<DatePicker> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 5.0),
                                 child: TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   cursorColor: const Color(0xffFFFFFF),
                                   enabled: false,
 
@@ -137,11 +139,18 @@ class _DatePickerState extends State<DatePicker> {
 
                                   validator: (value) {
                                     setState(() {
+                                      print(
+                                          "------------------------------------------------------");
+                                      print(widget.validationCallBack!(value!));
+
                                       errorText =
-                                          widget.validationCallBack!(value!) ??
-                                              "";
+                                          widget.validationCallBack!(value) ??
+                                              " ";
+
+                                      print("-------------------${errorText}");
                                     });
-                                    return null;
+
+                                    // return null;
                                   },
                                   // onSaved: (value) {
                                   //   controller = value;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zeus/services/model/mileston_model.dart';
 import 'package:zeus/services/model/phase_details.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/utility/util.dart';
 
 Widget milestoneList(context, PhaseDetails phaseDetails,
         {required Null Function(Milestones values, int index, String action)
@@ -15,77 +17,81 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
             itemCount: phaseDetails.milestone?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.only(
-                    left: 15.0, bottom: 15, top: 5, right: 15),
+                padding: EdgeInsets.only(
+                    left: 29.5.sp, bottom: 16.sp, top: 16.sp, right: 30.5.sp),
                 child: Container(
                     width: MediaQuery.of(context).size.width * 0.30,
-                    height: 65.0,
+                    height: 69.h,
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
 
                       //border: Border.all(color:  const Color(0xff1E293B)),
 
                       borderRadius: BorderRadius.circular(
-                        8.0,
+                        8.r,
                       ),
 
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
                           color: Color(0xff475569),
                           offset: Offset(
-                            0.0,
-                            2.0,
+                            0.0.sp,
+                            2.0..sp,
                           ),
-                          blurRadius: 0.0,
+                          blurRadius: 0.0.r,
                           spreadRadius: 0.0,
                         ), //BoxShadow
                       ],
                     ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, right: 16, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                        phaseDetails.milestone?[index].title ??
-                                            '',
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500))
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                        phaseDetails.milestone?[index].m_date ??
-                                            '',
-                                        style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xff8897ac),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 11.sp, left: 22.sp, bottom: 3.sp),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
+                                children: [
+                                  Text(
+                                      phaseDetails.milestone?[index].title ??
+                                          '',
+                                      style: TextStyle(
+                                          fontSize: 14.0.sp,
+                                          color: Color(0xffFFFFFF),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500))
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                      AppUtil.dateToString(
+                                              AppUtil.stringToDateValidate(
+                                                  phaseDetails.milestone![index]
+                                                      .m_date!)) ??
+                                          '',
+                                      style: TextStyle(
+                                          fontSize: 14.0.sp,
+                                          color: Color(0xff8897ac),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsets.only(top: 15.sp, right: 15.sp),
+                              child: Row(
                                 children: [
                                   Column(
                                     children: [
@@ -96,30 +102,29 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                                               index,
                                               'Edit');
                                         },
-                                        child: const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 20.0, top: 7),
-                                            child: CircleAvatar(
-                                                backgroundColor:
-                                                    Color(0xff475569),
-                                                radius: 20,
-                                                child: Icon(Icons.edit,
-                                                    color: Colors.white,
-                                                    size: 20)
+                                        child: CircleAvatar(
+                                            backgroundColor: Color(0xff475569),
+                                            radius: 20.r,
+                                            child: Icon(Icons.edit,
+                                                color: Colors.white,
+                                                size: 18.sp)
 
-                                                // SvgPicture.asset(
+                                            // SvgPicture.asset(
 
-                                                //   'images/photo.svg',
+                                            //   'images/photo.svg',
 
-                                                //   width: 24.0,
+                                            //   width: 24.0,
 
-                                                //   height: 24.0,
+                                            //   height: 24.0,
 
-                                                // ),
+                                            // ),
 
-                                                )),
+                                            ),
                                       ),
                                     ],
+                                  ),
+                                  SizedBox(
+                                    width: 8.w,
                                   ),
                                   Column(
                                     children: [
@@ -130,37 +135,33 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                                               index,
                                               'Delete');
                                         },
-                                        child: const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10.0, top: 7),
-                                            child: CircleAvatar(
-                                                backgroundColor:
-                                                    Color(0xff475569),
-                                                radius: 20,
-                                                child: Icon(Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 20)
+                                        child: CircleAvatar(
+                                            backgroundColor: Color(0xff475569),
+                                            radius: 20.r,
+                                            child: Icon(Icons.delete,
+                                                color: Colors.white,
+                                                size: 18.sp)
 
-                                                // SvgPicture.asset(
+                                            // SvgPicture.asset(
 
-                                                //   'images/photo.svg',
+                                            //   'images/photo.svg',
 
-                                                //   width: 24.0,
+                                            //   width: 24.0,
 
-                                                //   height: 24.0,
+                                            //   height: 24.0,
 
-                                                // ),
+                                            // ),
 
-                                                )),
+                                            ),
                                       ),
                                     ],
                                   )
                                 ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     )),
               );
             }),
