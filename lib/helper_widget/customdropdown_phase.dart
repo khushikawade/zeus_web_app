@@ -1,24 +1,25 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/services/model/resources_needed.dart';
 
 // ignore: must_be_immutable
-class CustomSearchDropdown extends StatefulWidget {
+class CustomSearchDropdownSubTask extends StatefulWidget {
   bool? showSearchBar = false;
-  List<DropdownModel> items = [];
+  List<PhasesSortedResources> items = [];
   String? label;
   String? hint;
   String? errorText;
   EdgeInsets? paddingForLabeltext;
   EdgeInsets? margin;
   double? fontsizeForLabel;
-  DropdownModel? initialValue;
-  DropDownforPhase? initalValueforPhase;
+  PhasesSortedResources? initialValue;
+  PhasesSortedResources? initalValueforPhase;
   String? type;
 
-  Function(DropdownModel value)? onChange;
-  CustomSearchDropdown(
+  Function(PhasesSortedResources value)? onChange;
+  CustomSearchDropdownSubTask(
       {this.showSearchBar,
       required this.items,
       this.label,
@@ -31,12 +32,12 @@ class CustomSearchDropdown extends StatefulWidget {
       this.initialValue});
 
   @override
-  State<CustomSearchDropdown> createState() => _MyHomePageState();
+  State<CustomSearchDropdownSubTask> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<CustomSearchDropdown> {
-  DropdownModel? selectedValue;
-  DropDownforPhase? selectPhase;
+class _MyHomePageState extends State<CustomSearchDropdownSubTask> {
+  PhasesSortedResources? selectedValue;
+
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -92,10 +93,10 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                       ),
                     ),
                     items: widget.items
-                        .map((item) => DropdownMenuItem<DropdownModel>(
+                        .map((item) => DropdownMenuItem<PhasesSortedResources>(
                               value: item,
                               child: Text(
-                                item.item,
+                                item.department,
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
@@ -110,9 +111,9 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                       print(value);
                       setState(() {
                         if (widget.onChange != null) {
-                          widget.onChange!(value as DropdownModel);
+                          widget.onChange!(value as PhasesSortedResources);
                         }
-                        selectedValue = value as DropdownModel;
+                        selectedValue = value as PhasesSortedResources;
                       });
                     },
 
@@ -183,12 +184,6 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
       ),
     );
   }
-}
-
-class DropdownModel {
-  String id = "";
-  String item = "";
-  DropdownModel(this.id, this.item);
 }
 
 class DropDownforPhase {
