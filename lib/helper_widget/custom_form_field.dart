@@ -98,6 +98,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                   counterText: "",
                   border: InputBorder.none,
                   labelText: widget.label ?? '',
+                  hintText: widget.hint ?? '',
                   labelStyle: TextStyle(
                     fontSize: 15.sp,
                     overflow: TextOverflow.fade,
@@ -107,7 +108,6 @@ class CustomFormFieldState extends State<CustomFormField> {
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500,
                   ),
-                  hintText: widget.hint ?? '',
                   hintStyle: TextStyle(
                       fontSize: 14.sp,
                       letterSpacing: 0.25,

@@ -309,6 +309,7 @@ class _NewPhaseState extends State<NewPhase> {
                                         savePhaseClick = true;
                                         createButtonClick = true;
                                       });
+                                      
                                       Future.delayed(
                                           const Duration(microseconds: 500),
                                           () {
@@ -2019,7 +2020,7 @@ class _NewPhaseState extends State<NewPhase> {
             child: Padding(
               padding: EdgeInsets.only(right: 36.5.sp, left: 26.sp),
               child: Text(
-                "Save",
+                "Save 1",
                 style: TextStyle(
                     fontSize: 14.0.sp,
                     color: Color(0xff93C5FD),
@@ -2032,42 +2033,48 @@ class _NewPhaseState extends State<NewPhase> {
                 saveButtonClickForMileStone = true;
               });
 
-              if (_mileStoneFormKey.currentState!.validate() &&
-                  !mileStoneDateCheck) {
-                if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
-                  try {
-                    setState(() {
-                      if (mileStoneAction.isEmpty) {
-                        phaseDetails.milestone!.add(Milestones(
-                            title: mileStoneTitle,
-                            m_date: mileStoneDate.toString()
-                            // m_date: AppUtil.dateToString(mileStoneDate!)
-                            ));
-                      } else {
-                        phaseDetails.milestone![mileStoneEditIndex].title =
-                            mileStoneTitle;
-                        phaseDetails.milestone![mileStoneEditIndex].m_date =
-                            mileStoneDate.toString();
-                      }
-                      print("here11111-------------------");
+              try {
+                if (_mileStoneFormKey.currentState!.validate() 
+                //&&
+                    //!mileStoneDateCheck
+                    ) {
+                  if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
+                    try {
+                      setState(() {
+                        if (mileStoneAction.isEmpty) {
+                          phaseDetails.milestone!.add(Milestones(
+                              title: mileStoneTitle,
+                              m_date: mileStoneDate.toString()
+                              // m_date: AppUtil.dateToString(mileStoneDate!)
+                              ));
+                        } else {
+                          phaseDetails.milestone![mileStoneEditIndex].title =
+                              mileStoneTitle;
+                          phaseDetails.milestone![mileStoneEditIndex].m_date =
+                              mileStoneDate.toString();
+                        }
+                        print("here11111-------------------");
 
-                      mileStoneEditIndex = 0;
-                      mileStoneAction = '';
+                        mileStoneEditIndex = 0;
+                        mileStoneAction = '';
 
-                      // mileStoneDate = AppUtil.dateToString(DateTime.now());
-                      mileStoneTitle = "";
-                      controllerMilestoneTitle.text = "";
-                      clickedAddMileStone = false;
-                      saveButtonClick = true;
-                      saveButtonClickForMileStone = true;
-                    });
-                  } catch (e) {
-                    print(
-                        "Error ------------------------------------------ ${e}");
+                        // mileStoneDate = AppUtil.dateToString(DateTime.now());
+                        mileStoneTitle = "";
+                        controllerMilestoneTitle.text = "";
+                        clickedAddMileStone = false;
+                        saveButtonClick = true;
+                        saveButtonClickForMileStone = true;
+                      });
+                    } catch (e) {
+                      print(
+                          "Error ------------------------------------------ ${e}");
+                    }
+                  } else {
+                    print('Add milestone date');
                   }
-                } else {
-                  print('Add milestone date');
                 }
+              } catch (e) {
+                print("Erorr ----------------------- $e");
               }
             },
           )
