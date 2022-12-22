@@ -277,8 +277,8 @@ class _NewPhaseState extends State<NewPhase> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 16,
+                                   SizedBox(
+                                    width: 16.w,
                                   ),
                                   InkWell(
                                     child: Container(
@@ -328,14 +328,14 @@ class _NewPhaseState extends State<NewPhase> {
                     children: [
                       phaseView(),
                       Container(
-                          height: MediaQuery.of(context).size.height * 1.2,
+                          height: MediaQuery.of(context).size.height * 1.1,
                           child: const VerticalDivider(
                             color: Color(0xff94A3B8),
                             thickness: 0.2,
                           )),
                       mileStoneView(),
                       Container(
-                          height: MediaQuery.of(context).size.height * 1.2,
+                          height: MediaQuery.of(context).size.height * 1.1,
                           child: const VerticalDivider(
                             color: Color(0xff94A3B8),
                             thickness: 0.2,
@@ -442,7 +442,7 @@ class _NewPhaseState extends State<NewPhase> {
                   CustomFormField(
                     controller: controller_next_phase,
                     maxline: 1,
-                    fontSizeForLabel: 14,
+                    fontSizeForLabel: 14.sp,
                     label: 'Phase Title',
                     // contentpadding:
                     //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
@@ -465,7 +465,7 @@ class _NewPhaseState extends State<NewPhase> {
                   CustomFormField(
                     controller: controller_phase_type,
                     maxline: 1,
-                    fontSizeForLabel: 14,
+                    fontSizeForLabel: 14.sp,
                     label: 'Phase Type',
                     // contentpadding:
                     //     EdgeInsets.only(left: 16, bottom: 10, right: 10, top: 10),
