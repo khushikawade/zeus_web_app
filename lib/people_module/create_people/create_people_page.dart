@@ -418,7 +418,7 @@ class _EditPageState extends State<CreatePeoplePage> {
         : " ";
 
     finalTime.toString().trim();
-    if (finalTime.contains("-")) {
+    if (finalTime != null && finalTime.contains("-")) {
       print("here");
       List<String> splitedList = finalTime!.split("-");
       startTime1 = splitedList[0].trim();
@@ -459,12 +459,12 @@ class _EditPageState extends State<CreatePeoplePage> {
             widget.response!.resource!.timeZone!.name!.isNotEmpty
         ? widget.response!.resource!.timeZone!.id.toString()
         : '';
+
     if (widget.response!.resource != null) {
-      _salaryCurrency.text =
-          widget.response!.resource!.salaryCurrency != null &&
-                  widget.response!.resource!.salaryCurrency!.isNotEmpty
-              ? widget.response!.resource!.salaryCurrency!
-              : '';
+      _curren = widget.response!.resource!.salaryCurrency != null &&
+              widget.response!.resource!.salaryCurrency!.isNotEmpty
+          ? widget.response!.resource!.salaryCurrency!
+          : '';
 
       if (widget.response!.resource!.skills!.isNotEmpty) {
         widget.response!.resource!.skills!.forEach((element) {
@@ -565,6 +565,25 @@ class _EditPageState extends State<CreatePeoplePage> {
       return value;
     }
     return null;
+  }
+
+  TimeOfDay? stringToTimeOfDay(String tod) {
+    DateFormat? format;
+    if (tod.contains(":")) {
+      format = DateFormat("h:mm a");
+    } else {
+      format = DateFormat("hha");
+    }
+
+    TimeOfDay? result;
+    try {
+      result = TimeOfDay.fromDateTime(format.parse(tod));
+    } catch (e) {
+      print(e);
+    }
+    print(result);
+
+    return result;
   }
 
   Future<String?> getUsers() async {
@@ -802,7 +821,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "Save",
+                                      widget.isEdit! ? "Update" : "Save",
                                       style: TextStyle(
                                           color: Color(0xff000000),
                                           fontSize: 14.sp,
@@ -1244,7 +1263,8 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     CustomSearchDropdown(
                                       hint: 'Select days',
                                       label: "Select",
-                                      errorText: createButtonClick &&
+                                      errorText: selectedDaysList.isEmpty &&
+                                              createButtonClick &&
                                               (_day == null || _day!.isEmpty)
                                           ? 'Please Select this field'
                                           : '',
@@ -1405,6 +1425,12 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   height: 16.h,
                                 ),
                                 TimeRange(
+                                    initialRange:
+                                        startTime1 != null && endTime2 != null
+                                            ? TimeRangeResult(
+                                                stringToTimeOfDay(startTime1!)!,
+                                                stringToTimeOfDay(endTime2!)!)
+                                            : null,
                                     fromTitle: Text(
                                       'From',
                                       style: TextStyle(
@@ -1520,7 +1546,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                   fontSize: 14.sp),
                                               keyboardType: TextInputType.text,
                                               cursorColor: Colors.white,
-                                              autofocus: true,
+                                              autofocus: false,
                                               decoration: InputDecoration(
                                                 // border: InputBorder.none,
                                                 contentPadding: EdgeInsets.only(
@@ -1836,7 +1862,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       items: selecTimeZoneList!,
                                       onChange: ((value) {
                                         setState(() {
-                                          _time = value.item;
+                                          _time = value.id;
                                           print("account:$_time");
                                           selectTimeZone = true;
                                         });
@@ -1911,12 +1937,19 @@ class _EditPageState extends State<CreatePeoplePage> {
     print("add People---------------------------------------------------");
     var token = 'Bearer ' + storage.read("token");
 
-    var request =
-        http.MultipartRequest('POST', Uri.parse('${AppUrl.baseUrl}/resource'));
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(widget.isEdit!
+            ? '${AppUrl.baseUrl}/resource/update'
+            : '${AppUrl.baseUrl}/resource'));
     request.headers.addAll({
       "Content-Type": "application/json",
       "Authorization": token,
     });
+    if (widget.response != null && widget.response!.id != null) {
+      request.fields['user_id'] = widget.response!.id.toString();
+    }
+
     request.fields['name'] = _name.text.toString();
     request.fields['nickname'] = _nickName.text.toString();
     request.fields['email'] = _emailAddress.text.toString();
