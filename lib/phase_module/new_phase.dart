@@ -316,8 +316,7 @@ class _NewPhaseState extends State<NewPhase> {
                                           () {
                                         createPhase();
 
-                                        print(
-                                            "99999999999999999999999999999999999999999");
+                                      
                                       });
                                     },
                                   ),
