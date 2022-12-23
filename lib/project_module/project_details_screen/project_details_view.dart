@@ -518,91 +518,101 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
               margin: EdgeInsets.only(
                 top: 15.sp,
               ),
-              child: Expanded(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    tagView(),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.99,
-                      margin: EdgeInsets.only(left: 15.0.sp, top: 16.0.sp),
-                      height: MediaQuery.of(context).size.height * 0.14,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff1E293B),
-                        border:
-                            Border.all(color: Color(0xff424D5F), width: 0.5.sp),
-                        borderRadius: BorderRadius.circular(
-                          8.0.r,
-                        ),
-                      ),
-                      child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: _description,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        maxLines: 10,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                              bottom: 20.0.sp,
-                              top: 14.0.sp,
-                              right: 10.sp,
-                              left: 14.0.sp,
-                            ),
-                            border: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(
-                                fontSize: 14.0.sp,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        onChanged: (value) {
-                          try {
-                            _debouncer.run(() async {
-                              addDescriptionProject();
-                            });
-                          } catch (e) {
-                            print(e);
-                            print(value);
-                          }
-                        },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  tagView(),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    margin: EdgeInsets.only(left: 15.0.sp, top: 16.0.sp),
+                    height: MediaQuery.of(context).size.height * 0.14,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff1E293B),
+                      border:
+                          Border.all(color: Color(0xff424D5F), width: 0.5.sp),
+                      borderRadius: BorderRadius.circular(
+                        8.0.r,
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 30.0.sp, top: 24.h, bottom: 12.h),
-                      child: Text(
-                        "Potential roadblocks",
-                        style: TextStyle(
-                            color: Color(0xffFFFFFF),
-                            fontSize: 16.0.sp,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.99,
-                      margin: EdgeInsets.only(
-                        left: 15.0.sp,
-                      ),
-                      height: 40.0.h,
-                      decoration: BoxDecoration(
-                        color: Color(0xff334155),
-                        borderRadius: BorderRadius.circular(
-                          12.0.r,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 15.w,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _description,
+                      cursorColor: const Color(0xffFFFFFF),
+                      style: const TextStyle(color: Color(0xffFFFFFF)),
+                      textAlignVertical: TextAlignVertical.bottom,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            bottom: 20.0.sp,
+                            top: 14.0.sp,
+                            right: 10.sp,
+                            left: 14.0.sp,
                           ),
-                          Expanded(
-                            flex: 11,
+                          border: InputBorder.none,
+                          hintText: '',
+                          hintStyle: TextStyle(
+                              fontSize: 14.0.sp,
+                              color: Color(0xffFFFFFF),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500)),
+                      onChanged: (value) {
+                        try {
+                          _debouncer.run(() async {
+                            addDescriptionProject();
+                          });
+                        } catch (e) {
+                          print(e);
+                          print(value);
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin:
+                        EdgeInsets.only(left: 30.0.sp, top: 24.h, bottom: 12.h),
+                    child: Text(
+                      "Potential roadblocks",
+                      style: TextStyle(
+                          color: Color(0xffFFFFFF),
+                          fontSize: 16.0.sp,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
+                    margin: EdgeInsets.only(
+                      left: 15.0.sp,
+                    ),
+                    height: 40.0.h,
+                    decoration: BoxDecoration(
+                      color: Color(0xff334155),
+                      borderRadius: BorderRadius.circular(
+                        12.0.r,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 15.w,
+                        ),
+                        Expanded(
+                          flex: 11,
+                          child: Text(
+                            "Occurrence",
+                            style: TextStyle(
+                                color: Color(0xff94A3B8),
+                                fontSize: 14.0.sp,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Center(
                             child: Text(
-                              "Occurrence",
+                              "Responsible",
                               style: TextStyle(
                                   color: Color(0xff94A3B8),
                                   fontSize: 14.0.sp,
@@ -610,154 +620,136 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                          Expanded(
-                            flex: 4,
-                            child: Center(
-                              child: Text(
-                                "Responsible",
-                                style: TextStyle(
-                                    color: Color(0xff94A3B8),
-                                    fontSize: 14.0.sp,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Center(
+                            child: Text(
+                              "Date created",
+                              style: TextStyle(
+                                  color: Color(0xff94A3B8),
+                                  fontSize: 14.0.sp,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
-                          Expanded(
-                            flex: 4,
-                            child: Center(
-                              child: Text(
-                                "Date created",
-                                style: TextStyle(
-                                    color: Color(0xff94A3B8),
-                                    fontSize: 14.0.sp,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      child: Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 3.0.sp),
-                          child: RawScrollbar(
+                  ),
+                  Container(
+                    child: Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 3.0.sp),
+                        child: RawScrollbar(
+                          controller: _ScrollController,
+                          thumbColor: Color(0xff4b5563),
+                          radius: Radius.circular(20.r),
+                          thickness: 8,
+                          child: ListView.builder(
                             controller: _ScrollController,
-                            thumbColor: Color(0xff4b5563),
-                            radius: Radius.circular(20.r),
-                            thickness: 8,
-                            child: ListView.builder(
-                              controller: _ScrollController,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: roadblock.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 12,
-                                      child: Row(
-                                        children: [
-                                          Container(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: roadblock.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    flex: 12,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              left: 45.0.sp, top: 8.0.sp),
+                                          height: 12.0.h,
+                                          width: 12.0.w,
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xffEF4444),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                        ),
+                                        Expanded(
+                                          child: Container(
                                             margin: EdgeInsets.only(
-                                                left: 45.0.sp, top: 8.0.sp),
-                                            height: 12.0.h,
-                                            width: 12.0.w,
-                                            decoration: const BoxDecoration(
-                                                color: Color(0xffEF4444),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                  left: 16.0.sp, top: 8.0..sp),
-                                              child: Text(
-                                                roadblock[index],
-                                                maxLines: 1,
-                                                softWrap: false,
-                                                style: TextStyle(
-                                                    color: Color(0xffE2E8F0),
-                                                    fontSize: 14.0.sp,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
+                                                left: 16.0.sp, top: 8.0..sp),
+                                            child: Text(
+                                              roadblock[index],
+                                              maxLines: 1,
+                                              softWrap: false,
+                                              style: TextStyle(
+                                                  color: Color(0xffE2E8F0),
+                                                  fontSize: 14.0.sp,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 4,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            height: 28.0.w,
-                                            width: 28.0.w,
-                                            margin:
-                                                EdgeInsets.only(top: 8.0.sp),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff0F172A),
-                                                  width: 3.0.w),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                100.0.r,
-                                              ),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "$fullName",
-                                                style: TextStyle(
-                                                    color: Color(0xffFFFFFF),
-                                                    fontSize: 10.0.sp,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 4,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          top: 8.0.sp,
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            "$roadblockCreateDate1",
-                                            // roadblockCreateDate[0],
-                                            style: TextStyle(
-                                                color: Color(0xffffffff),
-                                                fontSize: 14.0.sp,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 28.0.w,
+                                          width: 28.0.w,
+                                          margin: EdgeInsets.only(top: 8.0.sp),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            border: Border.all(
+                                                color: const Color(0xff0F172A),
+                                                width: 3.0.w),
+                                            borderRadius: BorderRadius.circular(
+                                              100.0.r,
+                                            ),
                                           ),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "$fullName",
+                                              style: TextStyle(
+                                                  color: Color(0xffFFFFFF),
+                                                  fontSize: 10.0.sp,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: 8.0.sp,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "$roadblockCreateDate1",
+                                          // roadblockCreateDate[0],
+                                          style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontSize: 14.0.sp,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                );
-                              },
-                            ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
