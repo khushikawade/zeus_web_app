@@ -782,117 +782,134 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                       abc.length,
                       (index) {
                         return abc[index]!.isEmpty
-                            ? PopupMenuButton<int>(
-                                tooltip: '',
-                                offset: Offset(35, 48),
-                                color: Color(0xFF0F172A),
-                                child: Container(
-                                    width: 45.0.h,
-                                    height: 45.0.h,
-                                    margin: EdgeInsets.only(
-                                        left: abc.length < 2 ? 0 : 15.0.sp,
-                                        top: 0),
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xff334155),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Container(
-                                      child: Padding(
-                                          padding: EdgeInsets.all(10.0.sp),
-                                          child: SvgPicture.asset(
-                                              'images/tag_new.svg')),
-                                    )),
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    padding: const EdgeInsets.all(0),
-                                    value: 1,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                  top: 2.sp,
+                                  bottom: 2.sp,
+                                ),
+                                child: PopupMenuButton<int>(
+                                  tooltip: '',
+                                  offset: Offset(35, 48),
+                                  color: Color(0xFF0F172A),
+                                  child: Container(
+                                      width: 45.0.h,
+                                      height: 45.0.h,
+                                      margin: EdgeInsets.only(
+                                          left: abc.length < 2 ? 0 : 15.0.sp,
+                                          top: 0),
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xff334155),
+                                        shape: BoxShape.circle,
+                                      ),
                                       child: Container(
-                                        width: 400.w,
-                                        color: const Color(0xff1E293B),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            searchTextField =
-                                                TypeAheadFormField(
-                                              keepSuggestionsOnLoading: false,
-                                              hideOnLoading: true,
-                                              suggestionsBoxVerticalOffset: 0.0,
-                                              suggestionsBoxDecoration:
-                                                  SuggestionsBoxDecoration(
-                                                      color: Color(0xff0F172A)),
-                                              suggestionsCallback: (pattern) {
-                                                return getSuggestions(pattern);
-                                              },
-                                              textFieldConfiguration:
-                                                  TextFieldConfiguration(
-                                                controller:
-                                                    _typeAheadController,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14.0.sp),
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                cursorColor: Colors.white,
-                                                autofocus: true,
-                                                decoration: InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    top: 15.0.sp,
-                                                  ),
-                                                  prefixIcon: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 4.0.sp),
-                                                      child: Icon(
-                                                        Icons.search,
+                                        child: Padding(
+                                            padding: EdgeInsets.all(10.0.sp),
+                                            child: SvgPicture.asset(
+                                              'images/tag_new.svg',
+                                              height: 5.h,
+                                              width: 5.h,
+                                            )),
+                                      )),
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                      padding: const EdgeInsets.all(0),
+                                      value: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          width: 400.w,
+                                          color: const Color(0xff1E293B),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              searchTextField =
+                                                  TypeAheadFormField(
+                                                keepSuggestionsOnLoading: false,
+                                                hideOnLoading: true,
+                                                suggestionsBoxVerticalOffset:
+                                                    0.0,
+                                                suggestionsBoxDecoration:
+                                                    SuggestionsBoxDecoration(
                                                         color:
-                                                            Color(0xff64748B),
-                                                      )),
-                                                  hintText: 'Search',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0.sp,
+                                                            Color(0xff0F172A)),
+                                                suggestionsCallback: (pattern) {
+                                                  return getSuggestions(
+                                                      pattern);
+                                                },
+                                                textFieldConfiguration:
+                                                    TextFieldConfiguration(
+                                                  controller:
+                                                      _typeAheadController,
+                                                  style: TextStyle(
                                                       color: Colors.white,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  border: InputBorder.none,
+                                                      fontSize: 14.0.sp),
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  cursorColor: Colors.white,
+                                                  autofocus: true,
+                                                  decoration: InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                      top: 15.0.sp,
+                                                    ),
+                                                    prefixIcon: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 4.0.sp),
+                                                        child: Icon(
+                                                          Icons.search,
+                                                          color:
+                                                              Color(0xff64748B),
+                                                        )),
+                                                    hintText: 'Search',
+                                                    hintStyle: TextStyle(
+                                                        fontSize: 14.0.sp,
+                                                        color: Colors.white,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                    border: InputBorder.none,
+                                                  ),
                                                 ),
+                                                itemBuilder: (context, item) {
+                                                  return rowProject(item);
+                                                },
+                                                transitionBuilder: (context,
+                                                    suggestionsBox,
+                                                    controller) {
+                                                  return suggestionsBox;
+                                                },
+                                                onSuggestionSelected: (item) {
+                                                  _typeAheadController.text =
+                                                      '';
+                                                  if (!abc
+                                                      .contains(item.name)) {
+                                                    abc.removeWhere((element) =>
+                                                        element.isEmpty);
+                                                    abc.add(item.name!);
+                                                    abc.add("");
+                                                    saveTagApi(
+                                                        widget
+                                                            .response!.data!.id
+                                                            .toString(),
+                                                        item.name!);
+                                                  }
+                                                  setState(() {
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                },
                                               ),
-                                              itemBuilder: (context, item) {
-                                                return rowProject(item);
-                                              },
-                                              transitionBuilder: (context,
-                                                  suggestionsBox, controller) {
-                                                return suggestionsBox;
-                                              },
-                                              onSuggestionSelected: (item) {
-                                                _typeAheadController.text = '';
-                                                if (!abc.contains(item.name)) {
-                                                  abc.removeWhere((element) =>
-                                                      element.isEmpty);
-                                                  abc.add(item.name!);
-                                                  abc.add("");
-                                                  saveTagApi(
-                                                      widget.response!.data!.id
-                                                          .toString(),
-                                                      item.name!);
-                                                }
-                                                setState(() {
-                                                  Navigator.of(context).pop();
-                                                });
-                                              },
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                                elevation: 8.0,
+                                  ],
+                                  elevation: 8.0,
+                                ),
                               )
                             : Padding(
                                 padding: EdgeInsets.only(
