@@ -66,7 +66,8 @@ class AppUtil {
 
   static DateTime stringToDate(String date) {
     try {
-      DateTime parseDate = DateFormat("dd/mm/yyyy").parse(date);
+      DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
+      print("Parsed date ------------------------ ${parseDate}");
       return parseDate;
     } catch (e) {
       print("Error--------------------$e");
@@ -77,7 +78,7 @@ class AppUtil {
 
   static DateTime stringToDateValidate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date);
+     DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
       return parseDate;
     } catch (e) {
       print(e);
@@ -87,7 +88,7 @@ class AppUtil {
 
   static String stringToDate1(String date) {
     try {
-      print("jfdkffff");
+      
       DateTime dateTime = DateTime.parse(date);
       DateFormat dateFormat = DateFormat('d MMM yyyy');
       print(dateFormat.format(dateTime).toString());

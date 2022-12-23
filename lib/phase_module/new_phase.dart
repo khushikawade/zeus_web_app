@@ -92,6 +92,7 @@ class _NewPhaseState extends State<NewPhase> {
   bool allValidate = true;
   bool savePhaseClick = false;
   bool saveSubtaskClick = false;
+  bool isEditDataLoading = false;
 
   bool addMilestoneBtnClick = false;
   bool addSubtaskBtnClick = false;
@@ -129,6 +130,12 @@ class _NewPhaseState extends State<NewPhase> {
           print(phaseDetails.start_date);
           phaseDetails.end_date = getPhaseDetails?.data?.endDate ?? "";
         });
+
+        _depat = getPhaseDetails!.data!.assignedResources![0].departmentId;
+
+        subtaskDepat = getPhaseDetails!
+            .data!.subTasks![0].assignResource!.departmentId
+            .toString();
 
         phaseDetails.phase_type = getPhaseDetails?.data?.phaseType ?? "";
         controller_phase_type.text = getPhaseDetails?.data?.phaseType ?? "";
@@ -191,6 +198,7 @@ class _NewPhaseState extends State<NewPhase> {
     beforeScreenLoad();
     getDepartment();
     if (widget.type == 1) {
+      isEditDataLoading = true;
       getPhaseDetailsByID(widget.id);
     }
 
@@ -214,140 +222,152 @@ class _NewPhaseState extends State<NewPhase> {
               borderRadius: BorderRadius.circular(20.r),
             ),
             thickness: 8,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
-                      // height: MediaQuery.of(context).size.height * 0.11,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Color(0xff283345),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16.0.r),
-                          topLeft: Radius.circular(16.0.r),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x26000000),
-                            offset: Offset(
-                              0.0,
-                              1.0,
+            child: isEditDataLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
+                            // height: MediaQuery.of(context).size.height * 0.11,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Color(0xff283345),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16.0.r),
+                                topLeft: Radius.circular(16.0.r),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0x26000000),
+                                  offset: Offset(
+                                    0.0,
+                                    1.0,
+                                  ),
+                                  blurRadius: 0.0,
+                                  spreadRadius: 0.0,
+                                ),
+                              ],
                             ),
-                            blurRadius: 0.0,
-                            spreadRadius: 0.0,
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 30.sp, right: 30.sp),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            titleHeadlineWidget("New Phase", 22.0.sp),
-                            Expanded(
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(left: 30.sp, right: 30.sp),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                      width: 97.0.w,
-                                      margin: EdgeInsets.only(
-                                          top: 10.0.sp, bottom: 10.0.sp),
-                                      height: 40.h,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        borderRadius: BorderRadius.circular(
-                                          40.0.r,
+                                  titleHeadlineWidget("New Phase", 22.0.sp),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                            width: 97.0.w,
+                                            margin: EdgeInsets.only(
+                                                top: 10.0.sp, bottom: 10.0.sp),
+                                            height: 40.h,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                40.0.r,
+                                              ),
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Cancel",
+                                                style: TextStyle(
+                                                    fontSize: 14.0.sp,
+                                                    color: Color(0xffFFFFFF),
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Cancel",
-                                          style: TextStyle(
-                                              fontSize: 14.0.sp,
-                                              color: Color(0xffFFFFFF),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700),
+                                        SizedBox(
+                                          width: 16.w,
                                         ),
-                                      ),
+                                        InkWell(
+                                          child: Container(
+                                            width: 97.w,
+                                            margin: EdgeInsets.only(
+                                                top: 10.0.sp, bottom: 10.0.sp),
+                                            height: 40.0.h,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff7DD3FC),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                40.0.r,
+                                              ),
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Save",
+                                                style: TextStyle(
+                                                    fontSize: 14.0.sp,
+                                                    color: Color(0xff000000),
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              savePhaseClick = true;
+                                              createButtonClick = true;
+                                            });
+
+                                            Future.delayed(
+                                                const Duration(
+                                                    microseconds: 500), () {
+                                              createPhase();
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 16.w,
-                                  ),
-                                  InkWell(
-                                    child: Container(
-                                      width: 97.w,
-                                      margin: EdgeInsets.only(
-                                          top: 10.0.sp, bottom: 10.0.sp),
-                                      height: 40.0.h,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff7DD3FC),
-                                        borderRadius: BorderRadius.circular(
-                                          40.0.r,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Save",
-                                          style: TextStyle(
-                                              fontSize: 14.0.sp,
-                                              color: Color(0xff000000),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        savePhaseClick = true;
-                                        createButtonClick = true;
-                                      });
-                                      Future.delayed(
-                                          const Duration(microseconds: 500),
-                                          () {
-                                        createPhase();
-                                      });
-                                    },
-                                  ),
+                                  )
                                 ],
                               ),
-                            )
+                            )),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            phaseView(),
+                            Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 1.2,
+                                child: const VerticalDivider(
+                                  color: Color(0xff94A3B8),
+                                  thickness: 0.2,
+                                )),
+                            mileStoneView(),
+                            Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 1.2,
+                                child: const VerticalDivider(
+                                  color: Color(0xff94A3B8),
+                                  thickness: 0.2,
+                                )),
+                            subtaskView()
                           ],
                         ),
-                      )),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      phaseView(),
-                      Container(
-                          height: MediaQuery.of(context).size.height * 1.1,
-                          child: const VerticalDivider(
-                            color: Color(0xff94A3B8),
-                            thickness: 0.2,
-                          )),
-                      mileStoneView(),
-                      Container(
-                          height: MediaQuery.of(context).size.height * 1.1,
-                          child: const VerticalDivider(
-                            color: Color(0xff94A3B8),
-                            thickness: 0.2,
-                          )),
-                      subtaskView()
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
           ),
         ));
   }
@@ -651,176 +671,35 @@ class _NewPhaseState extends State<NewPhase> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 18.0.sp, top: 12.sp),
-                            child: CustomSearchDropdown(
-                              hint: "Type",
-                              label: "",
-                              margin: EdgeInsets.all(0),
-                              showSearchBar: true,
-                              errorText: createButtonClick == true &&
-                                      (_depat == null || _depat!.isEmpty)
-                                  ? 'Please select resources'
-                                  : '',
-                              items: departmentlist,
-                              onChange: ((value) {
-                                // _curren = value.id;
-                                _depat = value.item;
-                                setState(() {
-                                  startloading = true;
-                                  getResourcesNeeded(value.id.toString());
-                                });
-                              }),
-                            ),
-                            //  PopupMenuButton<int>(
-                            //   tooltip: '',
-                            //   // offset: const Offset(0, 7),
-                            //   position: PopupMenuPosition.under,
-                            //   color: Color(0xFF0F172A),
-                            //   child: Container(
-                            //       // margin: const EdgeInsets.only(left: 20.0),
-                            //       width: (MediaQuery.of(context).size.width *
-                            //           0.22),
-                            //       height: 56.0,
-                            //       decoration: BoxDecoration(
-                            //         color: const Color(0xff334155),
-                            //         borderRadius: BorderRadius.circular(
-                            //           8.0,
-                            //         ),
-                            //       ),
-                            //       child: Row(
-                            //         mainAxisAlignment:
-                            //             MainAxisAlignment.spaceBetween,
-                            //         crossAxisAlignment:
-                            //             CrossAxisAlignment.center,
-                            //         children: [
-                            //           Padding(
-                            //             padding:
-                            //                 const EdgeInsets.only(left: 16.0),
-                            //             child: Text(
-                            //               _depat == null
-                            //                   ? "Type"
-                            //                   : _depat.toString(),
-                            //               style: TextStyle(
-                            //                   fontSize: 14.0,
-                            //                   color: Color(0xffFFFFFF),
-                            //                   fontFamily: 'Inter',
-                            //                   fontWeight: FontWeight.w500),
-                            //             ),
-                            //           ),
-                            //           Padding(
-                            //             padding:
-                            //                 const EdgeInsets.only(right: 8.0),
-                            //             child: Icon(
-                            //               Icons.arrow_drop_down,
-                            //               color: Color(0xff64748B),
-                            //             ),
-                            //           )
-                            //         ],
-                            //       )),
-                            //   padding:
-                            //       const EdgeInsets.only(left: 12.0, right: 20),
-                            //   constraints: BoxConstraints.tightForFinite(
-                            //       width: (MediaQuery.of(context).size.width *
-                            //           0.22)),
-                            //   itemBuilder: (context) => [
-                            //     PopupMenuItem(
-                            //       padding: const EdgeInsets.all(0),
-                            //       value: 1,
-                            //       child: Container(
-                            //         // margin: const EdgeInsets.only(
-                            //         //     left: 30.0, right: 18),
-                            //         width: (MediaQuery.of(context).size.width *
-                            //             0.22),
-                            //         color: const Color(0xff334155),
-                            //         child: Column(
-                            //           crossAxisAlignment:
-                            //               CrossAxisAlignment.start,
-                            //           children: [
-                            //             searchTextFieldForphaseLanguage =
-                            //                 TypeAheadFormField(
-                            //               keepSuggestionsOnLoading: false,
-                            //               hideOnLoading: true,
-                            //               suggestionsBoxVerticalOffset: 0.0,
-                            //               suggestionsBoxDecoration:
-                            //                   SuggestionsBoxDecoration(
-                            //                       color: Color(0xff334155)),
-                            //               suggestionsCallback: (pattern) {
-                            //                 return getSuggestionsForPhaseType(
-                            //                     pattern);
-                            //               },
-                            //               textFieldConfiguration:
-                            //                   TextFieldConfiguration(
-                            //                 controller:
-                            //                     _phaseLangugaeController,
-                            //                 style: const TextStyle(
-                            //                     color: Colors.white,
-                            //                     fontSize: 14.0),
-                            //                 keyboardType: TextInputType.text,
-                            //                 cursorColor: Colors.white,
-                            //                 autofocus: true,
-                            //                 decoration: const InputDecoration(
-                            //                   contentPadding: EdgeInsets.only(
-                            //                     top: 15.0,
-                            //                   ),
-                            //                   prefixIcon: Padding(
-                            //                       padding:
-                            //                           EdgeInsets.only(top: 4.0),
-                            //                       child: Icon(
-                            //                         Icons.search,
-                            //                         color: Color(0xff64748B),
-                            //                       )),
-                            //                   hintText: 'Search',
-                            //                   hintStyle: TextStyle(
-                            //                       fontSize: 14.0,
-                            //                       color: Color(0xff64748B),
-                            //                       fontFamily: 'Inter',
-                            //                       fontWeight: FontWeight.w400),
-                            //                   border: InputBorder.none,
-                            //                 ),
-                            //               ),
-                            //               itemBuilder: (context, item) {
-                            //                 // return rowPhasesType(item);
-                            //                 return rowPhasesType(item);
-                            //               },
-                            //               transitionBuilder: (context,
-                            //                   suggestionsBox, controller) {
-                            //                 return suggestionsBox;
-                            //               },
-                            //               onSuggestionSelected: (item) {
-                            //                 _phaseLangugaeController.text = '';
-
-                            //                 setState(() {
-                            //                   for (var element in _department) {
-                            //                     if (element.name!
-                            //                             .toLowerCase() ==
-                            //                         item.name
-                            //                             .toString()
-                            //                             .toLowerCase()) {
-                            //                       _depat = item.name.toString();
-                            //                       print(_depat);
-                            //                       print(_depat);
-                            //                     }
-                            //                   }
-
-                            //                   if (item != null) {
-                            //                     setState(() {
-                            //                       startloading = true;
-                            //                       getResourcesNeeded(
-                            //                           item.id.toString());
-                            //                       Navigator.of(context).pop();
-                            //                     });
-                            //                   }
-                            //                 });
-                            //               },
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            //   elevation: 0.0,
-                            // ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                flex: 7,
+                                child: CustomSearchDropdown(
+                                  hint: "Type",
+                                  label: "",
+                                  initialValue: getAllInitialValue(
+                                          departmentlist, _depat.toString()) ??
+                                      null,
+                                  margin: EdgeInsets.all(0),
+                                  showSearchBar: true,
+                                  errorText: createButtonClick == true &&
+                                          (_depat == null)
+                                      ? 'Please select resources'
+                                      : '',
+                                  items: departmentlist,
+                                  onChange: ((value) {
+                                    // _curren = value.id;
+                                    _depat = value.item;
+                                    setState(() {
+                                      startloading = true;
+                                      getResourcesNeeded(value.id.toString());
+                                    });
+                                  }),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -1028,6 +907,47 @@ class _NewPhaseState extends State<NewPhase> {
         ),
       ),
     );
+  }
+
+  DropdownModel? getAllInitialValue(List<DropdownModel>? list, String? id) {
+    //if (widget.response != null && list!.isNotEmpty) {
+    try {
+      DropdownModel? result = list!.firstWhere(
+          (o) => o.id == id || o.item == id,
+          orElse: () => DropdownModel("", ""));
+      if (result.id.isEmpty) {
+        return null;
+      } else {
+        return result;
+      }
+    } catch (e) {
+      return null;
+    }
+    // } else {
+    //   return null;
+    // }
+  }
+
+  PhasesSortedResources? getIntialValueForSubTask(
+      List<PhasesSortedResources>? list, String? id) {
+    //if (widget.response != null && list!.isNotEmpty) {
+    try {
+      PhasesSortedResources? result = list!.firstWhere(
+          (o) =>
+              o.details!.departmentId.toString() == id ||
+              o.details!.departmentId.toString() == id,
+          orElse: () => PhasesSortedResources(department: null, details: null));
+      if (result.details == null) {
+        return null;
+      } else {
+        return result;
+      }
+    } catch (e) {
+      return null;
+    }
+    // } else {
+    //   return null;
+    // }
   }
 
   Widget mileStoneView() {
@@ -1347,8 +1267,9 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
-                          initialDate: widget.type == 0 ? null : null,
-                          //: AppUtil.stringToDateValidate(subTaskStartDate!),
+                          initialDate: widget.type == 0
+                              ? null
+                              : AppUtil.stringToDateValidate(subTaskStartDate!),
                           onChange: (dates) {
                             print("------------Start date----------------");
 
@@ -1378,8 +1299,9 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "End date",
-                          initialDate: widget.type == 0 ? null : null,
-                          // AppUtil.stringToDateValidate(subTaskEndDate!),
+                          initialDate: widget.type == 0
+                              ? null
+                              : AppUtil.stringToDateValidate(subTaskEndDate!),
                           onChange: (date) {
                             setState(() {
                               subTaskEndDate = date.toString();
@@ -1641,6 +1563,10 @@ class _NewPhaseState extends State<NewPhase> {
                             hint: "Type",
                             label: "",
                             margin: EdgeInsets.all(0),
+                            initialValue: getIntialValueForSubTask(
+                                    removeDuplicate(),
+                                    subtaskDepat.toString()) ??
+                                null,
                             showSearchBar: true,
                             errorText: saveButtonClickForSubtask1 == true &&
                                     (subtaskDepat == null ||
@@ -2238,9 +2164,9 @@ class _NewPhaseState extends State<NewPhase> {
 
   getPhaseDetailsByID(String id) async {
     try {
-      SmartDialog.showLoading(
-        msg: "Your request is in progress please wait for a while...",
-      );
+      // SmartDialog.showLoading(
+      //   msg: "Your request is in progress please wait for a while...",
+      // );
       getPhaseDetails = await api.getPhaseDetails(id, context);
       if (getPhaseDetails!.status == true &&
           getPhaseDetails!.statusCode == 200) {
@@ -2250,11 +2176,13 @@ class _NewPhaseState extends State<NewPhase> {
       } else {
         print('');
       }
-      SmartDialog.dismiss();
+      //SmartDialog.dismiss();
     } catch (e) {
-      SmartDialog.dismiss();
-      print("details phase --------------------------$e");
+      //SmartDialog.dismiss();
+      print(e);
     }
+
+    isEditDataLoading = false;
   }
 
   addNewPhaseApi() async {
@@ -2283,6 +2211,31 @@ class _NewPhaseState extends State<NewPhase> {
       msg: "Your request is in progress please wait for a while...",
     );
     try {
+      // phaseDetails.start_date =
+      //     AppUtil.dateToString(DateTime.parse(phaseDetails.start_date!));
+
+      // phaseDetails.end_date =
+      //     AppUtil.dateToString(DateTime.parse(phaseDetails.end_date!));
+
+      // if (phaseDetails.milestone != null &&
+      //     phaseDetails.milestone!.isNotEmpty) {
+      //   phaseDetails.milestone!.forEach((element) {
+      //     element.m_date =
+      //         AppUtil.dateToString(DateTime.parse(element.m_date!));
+      //   });
+      // }
+
+      // if (phaseDetails.sub_tasks != null &&
+      //     phaseDetails.sub_tasks!.isNotEmpty) {
+      //   phaseDetails.sub_tasks!.forEach((element) {
+      //     element.start_date =
+      //         AppUtil.dateToString(DateTime.parse(element.start_date!));
+
+      //     element.end_date =
+      //         AppUtil.dateToString(DateTime.parse(element.end_date!));
+      //   });
+      // }
+
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
