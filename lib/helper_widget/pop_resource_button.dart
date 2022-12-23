@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:time_range/time_range.dart';
+
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/people_module/create_people/create_people_page.dart';

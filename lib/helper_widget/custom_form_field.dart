@@ -74,7 +74,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                   ),
                 ],
               ),
-              padding: EdgeInsets.only(bottom: 3.sp),
+              padding: EdgeInsets.only(bottom: 3.sp, top: 4.sp),
               child: TextFormField(
                 maxLines: widget.maxline ?? 1,
                 maxLength: widget.maxLength ?? null,
@@ -101,7 +101,6 @@ class CustomFormFieldState extends State<CustomFormField> {
                   hintText: widget.hint ?? '',
                   labelStyle: TextStyle(
                     fontSize: 15.sp,
-                    
                     overflow: TextOverflow.fade,
                     color: Color(0xff64748B),
                     fontFamily: 'Inter-Medium',

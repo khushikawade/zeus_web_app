@@ -69,6 +69,8 @@ class AppUtil {
       DateTime parseDate = DateFormat("dd/mm/yyyy").parse(date);
       return parseDate;
     } catch (e) {
+      print("Error--------------------$e");
+
       return DateTime.now();
     }
   }

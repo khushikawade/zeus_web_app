@@ -5,11 +5,12 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:time_range/time_range.dart';
+
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
+import 'package:zeus/helper_widget/time_range_data.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
@@ -1515,8 +1516,8 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   children: [
                                     Container(
                                       padding: EdgeInsets.only(
-                                        left: 5,
-                                        right: 5,
+                                        left: 5.sp,
+                                        right: 5.sp,
                                       ),
                                       margin: EdgeInsets.only(top: 16.sp),
                                       height: 49.h,

@@ -756,6 +756,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
     if (list.resource != null &&
         list.resource!.availibiltyDay != null &&
         list.resource!.availibiltyDay!.isNotEmpty) {
+      print("-------------------------------------------");
+      print(list.resource!.availibiltyDay);
       commaSepratedList = list.resource!.availibiltyDay!.split(", ");
 
       commaSepratedList.forEach((element) {
@@ -827,10 +829,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  list.resource != null
-                      ? startDay == endDay
-                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
-                          : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                  list.resource != null && list.resource!.availibiltyDay != null
+                      ? "${list.resource!.availibiltyDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                      // startDay == endDay
+                      //     ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                      //     : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
                       : 'N/A',
                   style: TextStyle(
                       color: ColorSelect.white_color,
