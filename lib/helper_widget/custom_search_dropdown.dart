@@ -125,32 +125,32 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                     dropdownDecoration: BoxDecoration(color: Color(0xff0F172A)),
 
                     searchController: textEditingController,
-                    searchInnerWidget:
-                        widget.showSearchBar != null && widget.showSearchBar!
-                            ? Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 4,
-                                  right: 8,
-                                  left: 8,
-                                ),
-                                child: TextFormField(
-                                  controller: textEditingController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 8,
-                                    ),
-                                    hintText: 'Search for an item...',
-                                    hintStyle: TextStyle(fontSize: 12.sp),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : SizedBox.shrink(),
+                    // searchInnerWidget:
+                    //     widget.showSearchBar != null && widget.showSearchBar!
+                    //         ? Padding(
+                    //             padding: const EdgeInsets.only(
+                    //               top: 8,
+                    //               bottom: 4,
+                    //               right: 8,
+                    //               left: 8,
+                    //             ),
+                    //             child: TextFormField(
+                    //               controller: textEditingController,
+                    //               decoration: InputDecoration(
+                    //                 isDense: true,
+                    //                 contentPadding: const EdgeInsets.symmetric(
+                    //                   horizontal: 10,
+                    //                   vertical: 8,
+                    //                 ),
+                    //                 hintText: 'Search for an item...',
+                    //                 hintStyle: TextStyle(fontSize: 12.sp),
+                    //                 border: OutlineInputBorder(
+                    //                   borderRadius: BorderRadius.circular(8),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           )
+                    //         : SizedBox.shrink(),
                     searchMatchFn: (item, searchValue) {
                       return (item.value.toString().contains(searchValue));
                     },
