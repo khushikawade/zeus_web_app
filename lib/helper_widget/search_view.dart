@@ -7,6 +7,7 @@ import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/util.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchTextClass extends StatefulWidget {
   const SearchTextClass({Key? key}) : super(key: key);
@@ -200,25 +201,25 @@ Widget rowResourceName(item) {
     }
   }
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: EdgeInsets.all(8.0.sp),
     child: Row(
       children: [
         SizedBox(
-          width: 6,
+          width: 6.w,
         ),
         item.image != null && item.image.isNotEmpty
             ? Container(
                 width: 38.0,
                 height: 36.0,
-                margin: const EdgeInsets.only(left: 0.0, bottom: 2.0),
+                margin: EdgeInsets.only(left: 0.0.sp, bottom: 2.0.sp),
                 decoration: BoxDecoration(
                   color: const Color(0xff334155),
                   borderRadius: BorderRadius.circular(
-                    40.0,
+                    40.0.r,
                   ),
                 ),
                 child: CircleAvatar(
-                  radius: 20,
+                  radius: 20.r,
                   backgroundImage: NetworkImage(item.image),
                 ))
             : Container(
@@ -229,9 +230,9 @@ Widget rowResourceName(item) {
                     shape: BoxShape.circle, color: Color(0xffF2F2F2)),
                 child: Text(
                   fullName.isNotEmpty ? fullName : '',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontFamily: 'Inter-Medium',
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w500,
                       letterSpacing: -0.33,

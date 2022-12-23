@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/services/model/resources_needed.dart';
 
 // ignore: must_be_immutable
 class CustomSearchDropdown extends StatefulWidget {
@@ -13,6 +14,8 @@ class CustomSearchDropdown extends StatefulWidget {
   EdgeInsets? margin;
   double? fontsizeForLabel;
   DropdownModel? initialValue;
+  DropDownforPhase? initalValueforPhase;
+  String? type;
 
   Function(DropdownModel value)? onChange;
   CustomSearchDropdown(
@@ -33,6 +36,7 @@ class CustomSearchDropdown extends StatefulWidget {
 
 class _MyHomePageState extends State<CustomSearchDropdown> {
   DropdownModel? selectedValue;
+  DropDownforPhase? selectPhase;
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -161,27 +165,6 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
               ],
             ),
           ),
-
-          // Container(
-          //   height: 57.h,
-          //   child: Stack(
-          //     children: [
-          //       // widget.label != null
-          //       //     ? Padding(
-          //       //         padding: EdgeInsets.only(top: 10.sp, left: 10.sp),
-          //       //         child: Text(
-          //       //           widget.label ?? "",
-          //       //           style: TextStyle(
-          //       //               fontSize: 11.sp,
-          //       //               color: Color(0xff64748B),
-          //       //               fontFamily: 'Inter-Medium',
-          //       //               fontWeight: FontWeight.w500),
-          //       //         ),
-          //       //       )
-          //       //     : SizedBox.shrink(),
-          //     ],
-          //   ),
-          // ),
           widget.errorText != null && widget.errorText!.isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(
@@ -206,4 +189,10 @@ class DropdownModel {
   String id = "";
   String item = "";
   DropdownModel(this.id, this.item);
+}
+
+class DropDownforPhase {
+  String department = "";
+  List<Details> details = [];
+  DropDownforPhase(this.department, this.details);
 }
