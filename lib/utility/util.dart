@@ -70,6 +70,8 @@ class AppUtil {
       print("Parsed date ------------------------ ${parseDate}");
       return parseDate;
     } catch (e) {
+      print("Error--------------------$e");
+
       return DateTime.now();
     }
   }

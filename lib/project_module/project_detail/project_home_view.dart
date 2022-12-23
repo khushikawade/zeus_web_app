@@ -66,11 +66,11 @@ class ProjectHomeState extends State<ProjectHome> {
   double? _scrollPosition = 0;
   double? _opacity = 0;
 
-  _scrollListener() {
-    setState(() {
-      _scrollPosition;
-    });
-  }
+  // _scrollListener() {
+  //   setState(() {
+  //     _scrollPosition;
+  //   });
+  // }
 
   showMenus(BuildContext context, int index) async {
     await showMenu(
@@ -274,9 +274,8 @@ class ProjectHomeState extends State<ProjectHome> {
     List<DataRow> rows = [];
     if (data!.projectDetailsResponse != null) {
       if (data.projectDetailsResponse!.data!.isNotEmpty) {
-        // print("ONE");
-        print(data.projectDetailsResponse!.data!.length);
-        print(data.projectDetailsResponse!.data!.length);
+        // print(data.projectDetailsResponse!.data!.length);
+        // print(data.projectDetailsResponse!.data!.length);
         data.projectDetailsResponse!.data!.asMap().forEach((index, element) {
           Datum _projectData = data.projectDetailsResponse!.data![index];
 

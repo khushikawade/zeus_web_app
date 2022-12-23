@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomDatePicker extends StatefulWidget {
   TextEditingController? controller;
@@ -149,7 +150,7 @@ class CustomDatePickerState extends State<CustomDatePicker> {
                   ),
                   const Spacer(),
                   Padding(
-                    padding: EdgeInsets.only(right: 8.w),
+                    padding: EdgeInsets.only(right: 16.w),
                     child: InkWell(
                       onTap: () {
                         setState(() {
@@ -159,10 +160,16 @@ class CustomDatePickerState extends State<CustomDatePicker> {
                           }
                         });
                       },
-                      child: Icon(
-                        Icons.close,
-                        size: 13.sp,
-                        color: Colors.white,
+                      // child: Icon(
+                      //   Icons.close,
+                      //   size: 13.sp,
+                      //   color: Colors.white,
+                      // ),
+
+                      child: SvgPicture.asset(
+                        'images/cross.svg',
+                        height: 13.18.sp,
+                        width: 13.18.sp,
                       ),
                     ),
                   ),

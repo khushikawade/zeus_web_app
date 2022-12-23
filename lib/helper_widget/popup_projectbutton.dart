@@ -724,7 +724,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                 Container(
                                   margin: const EdgeInsets.only(right: 20.0),
                                   child: const Text(
-                                    "Do you want to delete this project_detail?",
+                                    "Do you want to delete this project_detail ?",
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700,
@@ -735,7 +735,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                 Container(
                                   margin: EdgeInsets.only(top: 15.0),
                                   child: const Text(
-                                    "Once deleted, you will not find this project_detail in the list ",
+                                    "Once deleted, you will not find this project in the list. ",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
@@ -749,13 +749,13 @@ class _ProjectEditState extends State<ProjectEdit>
                                     child: Row(
                                       children: [
                                         Spacer(),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 35.0),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              right: 35.0),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
                                             child: const Text(
                                               "Cancel",
                                               style: TextStyle(
@@ -787,7 +787,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
-                                                color: ColorSelect.delete_text),
+                                                color: Color(0xffEF4444)),
                                           ),
                                         ),
                                       ],
@@ -895,7 +895,6 @@ class _ProjectEditState extends State<ProjectEdit>
 
       try {
         var response = await http.post(
-          
           Uri.parse('${AppUrl.baseUrl}/project/${widget.id}/update'),
           body: map,
           headers: {
