@@ -1883,6 +1883,9 @@ class _NewPhaseState extends State<NewPhase> {
       //   });
       // }
 
+      print(
+          "Logs -------------------------------------- ${json.encode(phaseDetails)}");
+
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
