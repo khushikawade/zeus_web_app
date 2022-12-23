@@ -226,6 +226,7 @@ class Api {
       print(response.body);
     } catch (e) {
       print(e);
+      
     }
 
     if (response!.statusCode == 200) {
