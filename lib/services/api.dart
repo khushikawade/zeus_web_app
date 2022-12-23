@@ -223,32 +223,33 @@ class Api {
       response = await _apiClient.putMethod(AppUrl.updatePhase + id, key);
       print(
           '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
+      var res = response.body;
+
+      if (response!.statusCode == 200) {
+        try {
+          if (response.body.contains('error')) {
+            var jsonResponse = json.decode(response.body);
+            return UpdatePhaseResp(
+                message: jsonResponse['error']['message'], statusCode: 500);
+          } else {
+            UpdatePhaseResp resourceNeededModel =
+                updatePhaseRespFromJson(response.body);
+            resourceNeededModel.statusCode = 200;
+            return resourceNeededModel;
+          }
+        } catch (e) {
+          print(e);
+          return UpdatePhaseResp(message: somethingWentWorng, statusCode: 500);
+        }
+      } else if (response.statusCode == 401) {
+        return AppUtil.showErrorDialog(context);
+      } else {
+        return UpdatePhaseResp(
+            message: somethingWentWorng, statusCode: response.statusCode);
+      }
       print(response.body);
     } catch (e) {
-      print(e);
-    }
-
-    if (response!.statusCode == 200) {
-      try {
-        if (response.body.contains('error')) {
-          var jsonResponse = json.decode(response.body);
-          return UpdatePhaseResp(
-              message: jsonResponse['error']['message'], statusCode: 500);
-        } else {
-          UpdatePhaseResp resourceNeededModel =
-              updatePhaseRespFromJson(response.body);
-          resourceNeededModel.statusCode = 200;
-          return resourceNeededModel;
-        }
-      } catch (e) {
-        print(e);
-        return UpdatePhaseResp(message: somethingWentWorng, statusCode: 500);
-      }
-    } else if (response.statusCode == 401) {
-      return AppUtil.showErrorDialog(context);
-    } else {
-      return UpdatePhaseResp(
-          message: somethingWentWorng, statusCode: response.statusCode);
+      return UpdatePhaseResp(message: somethingWentWorng, statusCode: 501);
     }
   }
 }

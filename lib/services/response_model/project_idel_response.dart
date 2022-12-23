@@ -62,6 +62,8 @@ class Datum {
     this.createdAt,
     this.updatedAt,
     this.currentPhase,
+    this.roadblocks,
+    this.spiInfo,
     this.tags,
     this.projectResource,
     this.accountablePerson,
@@ -90,6 +92,8 @@ class Datum {
   String? createdAt;
   String? updatedAt;
   CurrentPhase? currentPhase;
+  List<Roadblock>? roadblocks;
+  SpiInfo? spiInfo;
   List<Tag>? tags;
   List<dynamic>? projectResource;
   AccountablePerson? accountablePerson;
@@ -127,6 +131,13 @@ class Datum {
         currentPhase: json["current_phase"] == null
             ? null
             : CurrentPhase.fromJson(json["current_phase"]),
+        roadblocks: json["roadblocks"] == null
+            ? null
+            : List<Roadblock>.from(
+                json["roadblocks"].map((x) => Roadblock.fromJson(x))),
+        spiInfo: json["spi_info"] == null
+            ? null
+            : SpiInfo.fromJson(json["spi_info"]),
         tags: json["tags"] == null
             ? null
             : List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
@@ -167,6 +178,10 @@ class Datum {
         "created_at": createdAt == null ? null : createdAt,
         "updated_at": updatedAt == null ? null : updatedAt,
         "current_phase": currentPhase == null ? null : currentPhase!.toJson(),
+        "roadblocks": roadblocks == null
+            ? null
+            : List<dynamic>.from(roadblocks!.map((x) => x.toJson())),
+        "spi_info": spiInfo == null ? null : spiInfo!.toJson(),
         "tags": tags == null
             ? null
             : List<dynamic>.from(tags!.map((x) => x.toJson())),
@@ -838,5 +853,135 @@ class Tag {
         "deleted_at": deletedAt,
         "created_at": createdAt == null ? null : createdAt,
         "updated_at": updatedAt == null ? null : updatedAt,
+      };
+}
+
+class Roadblock {
+  Roadblock({
+    this.id,
+    this.projectId,
+    this.phaseId,
+    this.potentialRoadblockId,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    this.rodblockDetails,
+    this.responsiblePerson,
+  });
+
+  int? id;
+  int? projectId;
+  int? phaseId;
+  int? potentialRoadblockId;
+  int? userId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic? deletedAt;
+  RodblockDetails? rodblockDetails;
+  AccountablePerson? responsiblePerson;
+
+  factory Roadblock.fromJson(Map<String, dynamic> json) => Roadblock(
+        id: json["id"],
+        projectId: json["project_id"],
+        phaseId: json["phase_id"] == null ? null : json["phase_id"],
+        potentialRoadblockId: json["potential_roadblock_id"],
+        userId: json["user_id"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        deletedAt: json["deleted_at"],
+        rodblockDetails: RodblockDetails.fromJson(json["rodblock_details"]),
+        responsiblePerson:
+            AccountablePerson.fromJson(json["responsible_person"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "project_id": projectId,
+        "phase_id": phaseId == null ? null : phaseId,
+        "potential_roadblock_id": potentialRoadblockId,
+        "user_id": userId,
+        "created_at": createdAt!.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
+        "deleted_at": deletedAt,
+        "rodblock_details": rodblockDetails!.toJson(),
+        "responsible_person": responsiblePerson!.toJson(),
+      };
+}
+
+class RodblockDetails {
+  RodblockDetails({
+    this.id,
+    this.description,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  int? id;
+  String? description;
+  int? userId;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic deletedAt;
+
+  factory RodblockDetails.fromJson(Map<String, dynamic> json) =>
+      RodblockDetails(
+        id: json["id"],
+        description: json["description"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        deletedAt: json["deleted_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "description": description,
+        "user_id": userId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "deleted_at": deletedAt,
+      };
+}
+
+class SpiInfo {
+  SpiInfo({
+    this.id,
+    this.projectId,
+    this.spi,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    this.name,
+  });
+
+  int? id;
+  int? projectId;
+  String? spi;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic? deletedAt;
+  String? name;
+
+  factory SpiInfo.fromJson(Map<String, dynamic> json) => SpiInfo(
+        id: json["id"],
+        projectId: json["project_id"],
+        spi: json["spi"] == null ? null : json["spi"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        deletedAt: json["deleted_at"],
+        name: json["name"] == null ? null : json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "project_id": projectId,
+        "spi": spi == null ? null : spi,
+        "created_at": createdAt!.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
+        "deleted_at": deletedAt,
+        "name": name == null ? null : name,
       };
 }

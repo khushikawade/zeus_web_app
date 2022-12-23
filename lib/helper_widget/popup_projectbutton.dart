@@ -163,7 +163,7 @@ class _ProjectEditState extends State<ProjectEdit>
                               Container(
                                 margin: EdgeInsets.only(right: 20.0.r),
                                 child: Text(
-                                  "Do you want to delete this project_detail?",
+                                  "Do you want to delete this project_detail ?",
                                   style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
@@ -174,7 +174,7 @@ class _ProjectEditState extends State<ProjectEdit>
                               Container(
                                 margin: EdgeInsets.only(top: 15.0.h),
                                 child: Text(
-                                  "Once deleted, you will not find this project_detail in the list ",
+                                  "Once deleted, you will not find this project_detail in the list.",
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
@@ -201,7 +201,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
-                                                color: ColorSelect.delete_text),
+                                                color: Color(0xffEF4444)),
                                           ),
                                         ),
                                       ),
@@ -224,7 +224,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: 'Inter',
-                                              color: ColorSelect.delete_text),
+                                              color: Color(0xffEB4444)),
                                         ),
                                       ),
                                     ],

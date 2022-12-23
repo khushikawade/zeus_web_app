@@ -316,8 +316,8 @@ class _EditPageState extends State<CreateProjectPage> {
                               Navigator.of(context).pop();
                             },
                             child: Container(
-                              width: 30.sp,
-                              height: 30.sp,
+                              width: 35.sp,
+                              height: 35.sp,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: const Color(0xff1E293B),
@@ -327,7 +327,7 @@ class _EditPageState extends State<CreateProjectPage> {
                               child: Center(
                                 child: SvgPicture.asset(
                                   'images/cross.svg',
-                                  height: 13.8.sp,
+                                  height: 13.18.sp,
                                   width: 13.18.sp,
                                 ),
                               ),
@@ -543,9 +543,9 @@ class _EditPageState extends State<CreateProjectPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -636,6 +636,9 @@ class _EditPageState extends State<CreateProjectPage> {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 10.h,
                     ),
                   ],
                 ),

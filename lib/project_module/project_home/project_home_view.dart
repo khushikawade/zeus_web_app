@@ -18,6 +18,7 @@ import '../../services/response_model/project_idel_response.dart';
 import 'package:zeus/services/response_model/project_idel_response.dart';
 
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class ProjectHome extends StatefulWidget {
   const ProjectHome({Key? key}) : super(key: key);
@@ -51,6 +52,10 @@ class ProjectHomeState extends State<ProjectHome> {
   Offset exitFrom = const Offset(0, 0);
   bool hovered = false;
 
+  Future? _getProjectDetail;
+  String? spiValue, roadblocks1;
+  bool _isDownArrow = true;
+  List<String> roadblock = [];
   final ScrollController horizontalScroll = ScrollController();
   final double width = 18;
 
@@ -116,9 +121,8 @@ class ProjectHomeState extends State<ProjectHome> {
     List<DataRow> rows = [];
     if (data!.projectDetailsResponse != null) {
       if (data.projectDetailsResponse!.data!.isNotEmpty) {
-        // print("ONE");
-        print(data.projectDetailsResponse!.data!.length);
-        print(data.projectDetailsResponse!.data!.length);
+        // print(data.projectDetailsResponse!.data!.length);
+        // print(data.projectDetailsResponse!.data!.length);
         data.projectDetailsResponse!.data!.asMap().forEach((index, element) {
           Datum _projectData = data.projectDetailsResponse!.data![index];
 
@@ -131,6 +135,7 @@ class ProjectHomeState extends State<ProjectHome> {
           var customerImage = '';
           var nextMileStone = '';
           var apName = '';
+          var spi = '';
 
           if (_projectData.title != null && _projectData.title!.isNotEmpty) {
             projectName = _projectData.title!;
@@ -178,9 +183,7 @@ class ProjectHomeState extends State<ProjectHome> {
               _projectData.customer!.image != null &&
               _projectData.customer!.image!.isNotEmpty) {
             print(_projectData.customer!.image!);
-          } else {
-            //print("96939633");
-          }
+          } else {}
 
           String firstName = "";
           String lastName = "";
@@ -204,6 +207,42 @@ class ProjectHomeState extends State<ProjectHome> {
                   .substring(0, 1)
                   .toUpperCase();
             }
+          }
+
+          if (_projectData.spiInfo != null &&
+              _projectData.spiInfo!.spi != null) {
+            spiValue = double.parse(_projectData.spiInfo!.spi.toString())
+                .toStringAsFixed(2)
+                .toString();
+            ;
+          } else {
+            spiValue = 'N/A';
+          }
+
+          if (_projectData != null &&
+              _projectData.roadblocks != null &&
+              _projectData.roadblocks!.isNotEmpty) {
+            _projectData.roadblocks!.forEach((element) {
+              if (!roadblock.contains(element.rodblockDetails!.description)) {
+                roadblock.add(element.rodblockDetails!.description!);
+              }
+            });
+            // roadblocks1 =
+            //     _projectData.roadblocks![index].rodblockDetails!.description;
+            // _projectData != null &&
+            //               _projectData.roadblocks != null &&
+            //               _projectData.roadblocks![0].rodblockDetails !=
+            //                   null &&
+            //               _projectData.roadblocks![0].rodblockDetails!
+            //                       .description !=
+            //                   null
+            //           ? _projectData
+            //                   .roadblocks![0].rodblockDetails!.description ??
+            //               "N/A"
+            //           : 'N/A',
+
+          } else {
+            if (roadblock.isEmpty && roadblock == null) {}
           }
 
           rows.add(DataRow(
@@ -292,9 +331,9 @@ class ProjectHomeState extends State<ProjectHome> {
                     ),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
-                    "TBD",
+                    "$spiValue",
                     style: TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,
@@ -302,9 +341,20 @@ class ProjectHomeState extends State<ProjectHome> {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const DataCell(
+                DataCell(
                   Text(
-                    "TBD",
+                    data.projectDetailsResponse != null &&
+                            data.projectDetailsResponse!.data != null &&
+                            data.projectDetailsResponse!.data!.isNotEmpty &&
+                            data.projectDetailsResponse!.data![index]
+                                    .roadblocks !=
+                                null &&
+                            data.projectDetailsResponse!.data![index]
+                                .roadblocks!.isNotEmpty
+                        ? data.projectDetailsResponse?.data![index]
+                                .roadblocks![0].rodblockDetails?.description ??
+                            "N/A"
+                        : "N/A",
                     style: TextStyle(
                         color: ColorSelect.white_color,
                         fontSize: 14.0,
