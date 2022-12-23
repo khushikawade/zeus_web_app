@@ -16,6 +16,7 @@ import '../helper_widget/search_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:zeus/utility/app_url.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MenuPhase extends StatefulWidget {
   int index;
@@ -142,7 +143,7 @@ class _MenuPhaseState extends State<MenuPhase>
       // tooltip: null,
       // offset: widget.offset,
       // color: Color(0xFF0F172A),
-      constraints: const BoxConstraints.expand(width: 140, height: 120),
+      constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
       // padding: EdgeInsets.only(left: 50, right: 50),
       offset: const Offset(-15, 12),
       position: PopupMenuPosition.under,
@@ -150,9 +151,8 @@ class _MenuPhaseState extends State<MenuPhase>
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
       child: Container(
-        margin: const EdgeInsets.only(right: 12.0, top: 12.0),
-        height: 38,
-        width: 38,
+        height: 28.0.w,
+        width: 28.0.w,
         decoration: BoxDecoration(
             color: const Color(0xff334155),
             border: Border.all(
@@ -161,7 +161,7 @@ class _MenuPhaseState extends State<MenuPhase>
             borderRadius: const BorderRadius.all(Radius.circular(100))),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.sp),
             child: SvgPicture.asset(
               "images/edit.svg",
             ),
@@ -191,13 +191,13 @@ class _MenuPhaseState extends State<MenuPhase>
             // ),
             child: Container(
               width: double.infinity,
-              height: 50,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 15),
+              height: 50.h,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.0.sp, top: 15.sp),
                 child: Text(
                   "Edit",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Inter',
                       color: ColorSelect.white_color),
@@ -219,31 +219,31 @@ class _MenuPhaseState extends State<MenuPhase>
                     return StatefulBuilder(
                       builder: (context, setState) => AlertDialog(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28.0),
+                          borderRadius: BorderRadius.circular(28.0.r),
                         ),
                         backgroundColor: ColorSelect.peoplelistbackgroundcolor,
                         content: Container(
-                          height: 110.0,
+                          height: 110.0.h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: const EdgeInsets.only(right: 20.0),
-                                child: const Text(
+                                margin: EdgeInsets.only(right: 20.0.r),
+                                child: Text(
                                   "Do you want to delete this phase?",
                                   style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: 'Inter',
                                       color: ColorSelect.white_color),
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 15.0),
-                                child: const Text(
+                                margin: EdgeInsets.only(top: 15.0.sp),
+                                child: Text(
                                   "Once deleted, you will not find this phase in phase list ",
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
                                       fontFamily: 'Inter',
                                       color: ColorSelect.delete),
@@ -251,7 +251,7 @@ class _MenuPhaseState extends State<MenuPhase>
                               ),
                               Expanded(
                                 child: Container(
-                                  margin: const EdgeInsets.only(top: 30.0),
+                                  margin: EdgeInsets.only(top: 30.0.sp),
                                   child: Row(
                                     children: [
                                       Spacer(),
@@ -260,12 +260,12 @@ class _MenuPhaseState extends State<MenuPhase>
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin: const EdgeInsets.only(
-                                              right: 35.0),
-                                          child: const Text(
+                                          margin:
+                                              EdgeInsets.only(right: 35.0.sp),
+                                          child: Text(
                                             "Cancel",
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
                                                 color: ColorSelect.delete_text),
@@ -288,10 +288,10 @@ class _MenuPhaseState extends State<MenuPhase>
                                                 widget.index);
                                           });
                                         },
-                                        child: const Text(
+                                        child: Text(
                                           "Delete",
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: 'Inter',
                                               color: ColorSelect.delete_text),
@@ -310,13 +310,13 @@ class _MenuPhaseState extends State<MenuPhase>
             },
             child: Container(
               width: double.infinity,
-              height: 50,
-              child: const Padding(
-                padding: EdgeInsets.only(left: 20, top: 15),
+              height: 50.h,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.sp, top: 15.sp),
                 child: Text(
                   "Delete",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Inter',
                       color: ColorSelect.white_color),

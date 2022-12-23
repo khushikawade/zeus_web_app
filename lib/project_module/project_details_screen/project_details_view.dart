@@ -144,33 +144,114 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.response?.data?.title ?? '',
-                              style: TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontSize: 22.0.sp,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 12.0.sp),
-                              padding: EdgeInsets.only(
-                                  left: 16.sp,
-                                  right: 16.sp,
-                                  top: 10.sp,
-                                  bottom: 10.sp),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  color: AppUtil.getStatusContainerColor(
-                                      _status ?? "")),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.30,
                               child: Text(
-                                _status ?? "",
+                                widget.response?.data?.title ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: ColorSelect.white_color,
-                                    fontSize: 14.0.sp,
+                                    color: Color(0xffFFFFFF),
+                                    fontSize: 22.0.sp,
                                     fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 12.0.sp),
+                                  padding: EdgeInsets.only(
+                                      left: 16.sp,
+                                      right: 16.sp,
+                                      top: 10.sp,
+                                      bottom: 10.sp),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      color: AppUtil.getStatusContainerColor(
+                                          _status ?? "")),
+                                  child: Text(
+                                    _status ?? "",
+                                    style: TextStyle(
+                                        color: ColorSelect.white_color,
+                                        fontSize: 14.0.sp,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      left: 16.0.sp, top: 12.0.sp),
+                                  width: 110.w,
+                                  height: 32.h,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        top: 0,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: Image.network(
+                                            'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                                            width: 32.w,
+                                            height: 32.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 22.sp,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: Image.network(
+                                            'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                                            width: 32.w,
+                                            height: 32.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 46.0.sp,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100.r),
+                                          child: Container(
+                                            width: 32.w,
+                                            height: 32.w,
+                                            color: Color(0xff334155),
+                                            child: Image.network(
+                                              'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                                              width: 32.w,
+                                              height: 32.w,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 70.0.sp,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100.r),
+                                          child: Container(
+                                            width: 32.w,
+                                            height: 32.w,
+                                            color: Color(0xff334155),
+                                            child: Image.network(
+                                              'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
+                                              width: 32.w,
+                                              height: 32.w,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -426,13 +507,14 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
 
   tagAndCommentView() {
     return (Container(
-      height: 474.h,
+      height: 350.h,
       width: MediaQuery.of(context).size.width * 0.99,
       child: Row(
         children: [
           Expanded(
             child: Container(
               width: MediaQuery.of(context).size.width * (0.99 / 2),
+              padding: EdgeInsets.only(right: 16.sp),
               margin: EdgeInsets.only(
                 top: 15.sp,
               ),
@@ -503,7 +585,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.99,
                       margin: EdgeInsets.only(
-                        left: 30.0.sp,
+                        left: 15.0.sp,
                       ),
                       height: 40.0.h,
                       decoration: BoxDecoration(
@@ -596,6 +678,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                               child: Text(
                                                 roadblock[index],
                                                 maxLines: 1,
+                                                softWrap: false,
                                                 style: TextStyle(
                                                     color: Color(0xffE2E8F0),
                                                     fontSize: 14.0.sp,
@@ -690,6 +773,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
 
   tagView() {
     return Container(
+      padding: EdgeInsets.only(left: 30.sp),
       width: MediaQuery.of(context).size.width * 0.99,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -713,8 +797,9 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 child: Container(
                                     width: 45.0.h,
                                     height: 45.0.h,
-                                    margin:
-                                        EdgeInsets.only(left: 15.0.sp, top: 0),
+                                    margin: EdgeInsets.only(
+                                        left: abc.length < 2 ? 0 : 15.0.sp,
+                                        top: 0),
                                     decoration: const BoxDecoration(
                                       color: Color(0xff334155),
                                       shape: BoxShape.circle,
@@ -870,44 +955,57 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(right: 10.sp, top: 8.0.sp),
-            child: Container(
-              child: Text(
-                'Work folder',
-                style: TextStyle(
-                    color: ColorSelect.cermany_color,
-                    fontSize: 14.0.sp,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 10.sp,
+                ),
+                child: Container(
+                  child: Text(
+                    'Work folder',
+                    style: TextStyle(
+                        color: ColorSelect.cermany_color,
+                        fontSize: 14.0.sp,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 10.0, right: 35.0, top: 8),
-            child: SvgPicture.asset(
-              'images/cermony.svg',
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0.sp),
-            child: Container(
-              child: Text(
-                'CRM',
-                style: TextStyle(
-                    color: ColorSelect.cermany_color,
-                    fontSize: 14.0.sp,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400),
+              Container(
+                margin: EdgeInsets.only(
+                  left: 10.0.sp,
+                  right: 35.0.sp,
+                ),
+                child: SvgPicture.asset(
+                  'images/cermony.svg',
+                ),
               ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 10.0, right: 16.0, top: 8),
-            child: SvgPicture.asset(
-              'images/cermony.svg',
-            ),
-          ),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0.sp),
+                child: Container(
+                  child: Text(
+                    'CRM',
+                    style: TextStyle(
+                        color: ColorSelect.cermany_color,
+                        fontSize: 14.0.sp,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  left: 10.0.sp,
+                  right: 16.0.sp,
+                ),
+                child: SvgPicture.asset(
+                  'images/cermony.svg',
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -925,12 +1023,12 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             child: Row(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(left: 50.0, top: 0.0),
-                  child: const Text(
+                  margin: EdgeInsets.only(left: 30.sp, top: 0.0),
+                  child: Text(
                     "Timeline",
                     style: TextStyle(
                         color: Color(0xffFFFFFF),
-                        fontSize: 16.0,
+                        fontSize: 16.0.sp,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w700),
                   ),
@@ -949,11 +1047,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 45.0.sp, top: 0.0),
-                      child: const Text(
+                      child: Text(
                         "Request resources",
                         style: TextStyle(
                             color: Color(0xff93C5FD),
-                            fontSize: 12.0,
+                            fontSize: 12.0.sp,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w700),
                       ),
@@ -968,17 +1066,17 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         child: SvgPicture.asset(
                           'images/plus.svg',
                           color: const Color(0xff93C5FD),
-                          width: 10.0,
-                          height: 10.0,
+                          width: 10.0.h,
+                          height: 10.0.h,
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
-                        child: const Text(
+                        child: Text(
                           "New phase",
                           style: TextStyle(
                               color: Color(0xff93C5FD),
-                              fontSize: 12.0,
+                              fontSize: 12.0.sp,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700),
                         ),
@@ -1019,49 +1117,59 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             ),
             child: Row(
               children: [
-                Container(
-                  margin: EdgeInsets.only(left: 15.0.sp, top: 0.0),
-                  child: Text(
-                    "Phase",
-                    style: TextStyle(
-                        color: Color(0xff94A3B8),
-                        fontSize: 14.0.sp,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                Expanded(
+                  flex: 65,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 15.0.sp, top: 0.0),
+                    child: Text(
+                      "Phase",
+                      style: TextStyle(
+                          color: Color(0xff94A3B8),
+                          fontSize: 14.0.sp,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-                const Spacer(),
-                Container(
-                  margin: EdgeInsets.only(right: 40.0.sp, top: 0.0),
-                  child: Text(
-                    "From",
-                    style: TextStyle(
-                        color: Color(0xff94A3B8),
-                        fontSize: 14.0.sp,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    child: Text(
+                      "From",
+                      style: TextStyle(
+                          color: Color(0xff94A3B8),
+                          fontSize: 14.0.sp,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 16.0.sp, right: 50.0.sp),
-                  child: const Text(
-                    "Till",
-                    style: TextStyle(
-                        color: Color(0xff94A3B8),
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    child: Text(
+                      "Till",
+                      style: TextStyle(
+                          color: Color(0xff94A3B8),
+                          fontSize: 14.0.sp,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 15.0.sp, right: 50.0.sp),
-                  child: Text(
-                    "Action",
-                    style: TextStyle(
-                        color: Color(0xff94A3B8),
-                        fontSize: 14.0.sp,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                Expanded(
+                  flex: 6,
+                  child: Center(
+                    child: Container(
+                      child: Text(
+                        "Action",
+                        style: TextStyle(
+                            color: Color(0xff94A3B8),
+                            fontSize: 14.0.sp,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -1093,118 +1201,150 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 38.0,
-                          width: 38.0,
-                          margin: const EdgeInsets.only(left: 45.0, top: 12.0),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff334155),
-                            borderRadius: BorderRadius.circular(
-                              30.0,
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.99,
+                      margin: EdgeInsets.only(
+                          left: 15.0.sp, top: 12.0.sp, right: 15.0.sp),
+                      height: 50.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          12.0.r,
+                        ),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 65,
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(left: 15.0.sp, top: 0.0),
+                                  child: Container(
+                                    height: 38.0.sp,
+                                    width: 38.0.sp,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff334155),
+                                      borderRadius: BorderRadius.circular(
+                                        30.0.r,
+                                      ),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "$name",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Color(0xffFFFFFF),
+                                            fontSize: 12.0.sp,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Text(
+                                    "$phaseType",
+                                    style: TextStyle(
+                                        color: Color(0xffE2E8F0),
+                                        fontSize: 14.0.sp,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "$name",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontSize: 12.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
+                          Expanded(
+                            flex: 5,
+                            child: Container(
+                              child: Container(
+                                child: Text(
+                                  "$fromDate",
+                                  style: TextStyle(
+                                      color: Color(0xffffffff),
+                                      fontSize: 14.0.sp,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 16.0, top: 20.0),
-                          child: Text(
-                            "$phaseType",
-                            style: const TextStyle(
-                                color: Color(0xffE2E8F0),
-                                fontSize: 14.0,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500),
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              child: Text(
+                                "$tillDate",
+                                style: TextStyle(
+                                    color: Color(0xffffffff),
+                                    fontSize: 14.0.sp,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        Container(
-                          margin: const EdgeInsets.only(top: 22.0, right: 42.0),
-                          child: Text(
-                            "$fromDate",
-                            style: const TextStyle(
-                                color: Color(0xffffffff),
-                                fontSize: 14.0,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500),
+                          Expanded(
+                            flex: 6,
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  MenuPhase(
+                                    index: index,
+                                    onDeleteSuccess: () {
+                                      setState(() {
+                                        widget.response!.data!.phase!
+                                            .removeAt(index);
+                                      });
+                                    },
+                                    onEditClick: () async {
+                                      Navigator.pop(context);
+                                      bool result = await showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return NewPhase(
+                                                widget.response!.data!
+                                                    .phase![index].id
+                                                    .toString(),
+                                                1);
+                                          });
+                                      if (result != null && result) {
+                                        widget.response = await Provider.of<
+                                                    ProjectHomeViewModel>(
+                                                context,
+                                                listen: false)
+                                            .getProjectDetail(widget
+                                                .response!.data!.id!
+                                                .toString());
+                                        setState(() {});
+                                      }
+                                    },
+                                    setState: setState,
+                                    response: widget.response!,
+                                    data: phase,
+                                    title: 'Menu at bottom',
+                                    alignment: Alignment.bottomRight,
+                                    buildContext: context,
+                                    returnValue: () {
+                                      print(
+                                          "Value returned --------------------------------------");
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 22.0, right: 36.0),
-                          child: Text(
-                            "$tillDate",
-                            style: const TextStyle(
-                                color: Color(0xffffffff),
-                                fontSize: 14.0,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: 62.0, bottom: 8),
-                          child: Stack(children: [
-                            MenuPhase(
-                              index: index,
-                              onDeleteSuccess: () {
-                                setState(() {
-                                  widget.response!.data!.phase!.removeAt(index);
-                                });
-                              },
-                              onEditClick: () async {
-                                Navigator.pop(context);
-                                bool result = await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return NewPhase(
-                                          widget
-                                              .response!.data!.phase![index].id
-                                              .toString(),
-                                          1);
-                                    });
-                                if (result != null && result) {
-                                  widget.response =
-                                      await Provider.of<ProjectHomeViewModel>(
-                                              context,
-                                              listen: false)
-                                          .getProjectDetail(widget
-                                              .response!.data!.id!
-                                              .toString());
-                                  setState(() {});
-                                }
-                              },
-                              setState: setState,
-                              response: widget.response!,
-                              data: phase,
-                              title: 'Menu at bottom',
-                              alignment: Alignment.bottomRight,
-                              buildContext: context,
-                              returnValue: () {
-                                print(
-                                    "Value returned --------------------------------------");
-                              },
-                            )
-                          ]),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Container(
                         margin: EdgeInsets.only(
-                            left: 30.0.sp, right: 30.0.sp, bottom: 0.0),
+                          left: 30.0.sp,
+                          right: 30.0.sp,
+                        ),
                         width: MediaQuery.of(context).size.width,
                         child: Container(
                           color: Color(0xff94A3B8),
@@ -1301,6 +1441,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           abc.add(element.name!);
         }
       });
+      abc.add("");
+    } else {
       abc.add("");
     }
     if (widget.response!.data != null &&

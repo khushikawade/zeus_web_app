@@ -215,8 +215,7 @@ class _ProjectEditState extends State<ProjectEdit>
 
                                           Future.delayed(
                                               const Duration(seconds: 2), () {
-                                            deleteProject(
-                                                widget.id, widget.buildContext);
+                                            deleteProject(widget.id, context);
                                           });
                                         },
                                         child: Text(

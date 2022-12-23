@@ -249,13 +249,20 @@ class ProjectHomeState extends State<ProjectHome> {
                   ),
                 )),
                 DataCell(
-                  Text(
-                    "$projectName",
-                    style: const TextStyle(
-                        color: ColorSelect.white_color,
-                        fontSize: 14.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500),
+                  ConstrainedBox(
+                    constraints: new BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * .18,
+                    ),
+                    child: Text(
+                      "$projectName",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          color: ColorSelect.white_color,
+                          fontSize: 14.0,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
                 DataCell(
