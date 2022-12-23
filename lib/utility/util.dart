@@ -85,7 +85,6 @@ class AppUtil {
         return parseDate;
       } catch (e) {
         parseDate = DateFormat("dd/MM/yyyy").parse(date);
-
         return parseDate;
       }
     } catch (e) {

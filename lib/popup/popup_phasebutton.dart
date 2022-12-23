@@ -230,7 +230,7 @@ class _MenuPhaseState extends State<MenuPhase>
                               Container(
                                 margin: const EdgeInsets.only(right: 20.0),
                                 child: const Text(
-                                  "Do you want to delete this phase?",
+                                  "Do you want to delete this phase ?",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
@@ -241,7 +241,7 @@ class _MenuPhaseState extends State<MenuPhase>
                               Container(
                                 margin: EdgeInsets.only(top: 15.0),
                                 child: const Text(
-                                  "Once deleted, you will not find this phase in phase list ",
+                                  "Once deleted, you will not find this phase in phase list.",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -294,7 +294,7 @@ class _MenuPhaseState extends State<MenuPhase>
                                               fontSize: 14,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: 'Inter',
-                                              color: ColorSelect.delete_text),
+                                              color: Color(0xffEB4444)),
                                         ),
                                       ),
                                     ],
