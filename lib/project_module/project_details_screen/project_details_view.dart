@@ -11,6 +11,9 @@ import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/helper_widget/search_view.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/phase_module/new_phase.dart';
+import 'package:zeus/popup/popup_phasebutton.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -21,6 +24,7 @@ import 'package:zeus/utility/debouncer.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProjectDetailsDialogView extends StatefulWidget {
   ProjectDetailResponse? response;
@@ -95,11 +99,18 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           thickness: 8,
           child: SingleChildScrollView(
               child: Container(
-            width: MediaQuery.of(context).size.width * 0.99,
-            height: MediaQuery.of(context).size.height * 0.99,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [topView(), tagAndCommentView()],
+              children: [
+                topView(),
+                tagAndCommentView(),
+                Container(
+                  color: Color(0xff424D5F),
+                  width: double.infinity,
+                  height: 2,
+                ),
+                phaseView()
+              ],
             ),
           )),
         ),
@@ -190,7 +201,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                       thumbVisibility: true,
                       controller: _horizontalScrollController,
                       thumbColor: Color(0xff4b5563),
-                      radius: Radius.circular(10),
+                      radius: Radius.circular(10.r),
                       thickness: 8,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +210,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                           Expanded(
                             child: ListView(
                               padding: EdgeInsets.only(
-                                  left: 20, top: 30, right: 100),
+                                  left: 20.sp, top: 45.sp, right: 100.sp),
                               controller: _horizontalScrollController,
                               scrollDirection: Axis.horizontal,
                               // physics:
@@ -253,7 +264,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w400),
                                     ),
-                                  SizedBox(
+                                    SizedBox(
                                       height: 8.h,
                                     ),
                                     InkWell(
@@ -320,7 +331,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(
-                                      height: 8,
+                                      height: 8.h,
                                     ),
                                     InkWell(
                                       onTap: () {
@@ -339,7 +350,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                   ],
                                 ),
                                 SizedBox(
-                                  width: 40,
+                                  width: 40.w,
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,7 +364,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(
-                                      height: 8,
+                                      height: 8.h,
                                     ),
                                     Text(
                                       widget.response!.data != null &&
@@ -379,7 +390,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                             child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.only(
-                                  top: 20.0.sp, right: 30.0.sp, bottom: 0),
+                                  top: 30.0.sp, right: 30.0.sp, bottom: 0),
                               height: 35.0.sp,
                               width: 35.0.sp,
                               decoration: BoxDecoration(
@@ -415,110 +426,302 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
 
   tagAndCommentView() {
     return (Container(
-      height: MediaQuery.of(context).size.height / 2,
+      height: 474.h,
       width: MediaQuery.of(context).size.width * 0.99,
       child: Row(
         children: [
           Expanded(
             child: Container(
+              width: MediaQuery.of(context).size.width * (0.99 / 2),
+              margin: EdgeInsets.only(
+                top: 15.sp,
+              ),
               child: Expanded(
                 flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                // width: 256,
-                                // margin:
-                                //     EdgeInsets.only(right: 40),
-                                // color: Colors.red,
-                                child: Wrap(
-                                  spacing: 8,
-                                  children: List.generate(
-                                    abc.length,
-                                    (index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 2, bottom: 2, left: 5),
-                                        child: InputChip(
-                                          labelPadding: EdgeInsets.only(
-                                              left: 10, top: 7, bottom: 7),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                              13,
-                                            ),
-                                          )),
-                                          side: BorderSide(
-                                              color: Color(0xff334155)),
-                                          deleteIcon: const Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                          backgroundColor: Color(0xff334155),
-                                          visualDensity: VisualDensity.compact,
-                                          materialTapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          label: Text(
-                                            abc[index],
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          onSelected: (bool selected) {
-                                            setState(() {
-                                              _isSelected = selected;
-                                            });
-                                          },
-                                          onDeleted: () {
-                                            widget.response!.data!.tags!
-                                                .forEach(
-                                              (element) {
-                                                if (element.name ==
-                                                    abc[index]) {
-                                                  removeTagAPI(
-                                                      element.id.toString());
-                                                }
-                                              },
-                                            );
-                                            setState(() {
-                                              abc.removeAt(index);
-                                            });
-                                          },
-                                          showCheckmark: false,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                    tagView(),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.99,
+                      margin: EdgeInsets.only(left: 15.0.sp, top: 16.0.sp),
+                      height: MediaQuery.of(context).size.height * 0.14,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff1E293B),
+                        border:
+                            Border.all(color: Color(0xff424D5F), width: 0.5.sp),
+                        borderRadius: BorderRadius.circular(
+                          8.0.r,
+                        ),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: _description,
+                        cursorColor: const Color(0xffFFFFFF),
+                        style: const TextStyle(color: Color(0xffFFFFFF)),
+                        textAlignVertical: TextAlignVertical.bottom,
+                        maxLines: 10,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              bottom: 20.0.sp,
+                              top: 14.0.sp,
+                              right: 10.sp,
+                              left: 14.0.sp,
+                            ),
+                            border: InputBorder.none,
+                            hintText: '',
+                            hintStyle: TextStyle(
+                                fontSize: 14.0.sp,
+                                color: Color(0xffFFFFFF),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500)),
+                        onChanged: (value) {
+                          try {
+                            _debouncer.run(() async {
+                              addDescriptionProject();
+                            });
+                          } catch (e) {
+                            print(e);
+                            print(value);
+                          }
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 30.0.sp, top: 24.h, bottom: 12.h),
+                      child: Text(
+                        "Potential roadblocks",
+                        style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 16.0.sp,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.99,
+                      margin: EdgeInsets.only(
+                        left: 30.0.sp,
+                      ),
+                      height: 40.0.h,
+                      decoration: BoxDecoration(
+                        color: Color(0xff334155),
+                        borderRadius: BorderRadius.circular(
+                          12.0.r,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 15.w,
+                          ),
+                          Expanded(
+                            flex: 11,
+                            child: Text(
+                              "Occurrence",
+                              style: TextStyle(
+                                  color: Color(0xff94A3B8),
+                                  fontSize: 14.0.sp,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Center(
+                              child: Text(
+                                "Responsible",
+                                style: TextStyle(
+                                    color: Color(0xff94A3B8),
+                                    fontSize: 14.0.sp,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w500),
                               ),
-                              PopupMenuButton<int>(
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Center(
+                              child: Text(
+                                "Date created",
+                                style: TextStyle(
+                                    color: Color(0xff94A3B8),
+                                    fontSize: 14.0.sp,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 3.0.sp),
+                          child: RawScrollbar(
+                            controller: _ScrollController,
+                            thumbColor: Color(0xff4b5563),
+                            radius: Radius.circular(20.r),
+                            thickness: 8,
+                            child: ListView.builder(
+                              controller: _ScrollController,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: roadblock.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 12,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 45.0.sp, top: 8.0.sp),
+                                            height: 12.0.h,
+                                            width: 12.0.w,
+                                            decoration: const BoxDecoration(
+                                                color: Color(0xffEF4444),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 16.0.sp, top: 8.0..sp),
+                                              child: Text(
+                                                roadblock[index],
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    color: Color(0xffE2E8F0),
+                                                    fontSize: 14.0.sp,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 28.0.w,
+                                            width: 28.0.w,
+                                            margin:
+                                                EdgeInsets.only(top: 8.0.sp),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xff0F172A),
+                                                  width: 3.0.w),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                100.0.r,
+                                              ),
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "$fullName",
+                                                style: TextStyle(
+                                                    color: Color(0xffFFFFFF),
+                                                    fontSize: 10.0.sp,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                          top: 8.0.sp,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "$roadblockCreateDate1",
+                                            // roadblockCreateDate[0],
+                                            style: TextStyle(
+                                                color: Color(0xffffffff),
+                                                fontSize: 14.0.sp,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: Color(0xff263143),
+            ),
+          )
+        ],
+      ),
+    ));
+  }
+
+  tagView() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.99,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                    child: Container(
+                  child: Wrap(
+                    spacing: 8.sp,
+                    children: List.generate(
+                      abc.length,
+                      (index) {
+                        return abc[index]!.isEmpty
+                            ? PopupMenuButton<int>(
                                 tooltip: '',
-                                offset: const Offset(35, 48),
+                                offset: Offset(35, 48),
                                 color: Color(0xFF0F172A),
                                 child: Container(
-                                    width: 45.0,
-                                    height: 45.0,
-                                    margin: const EdgeInsets.only(
-                                        left: 15.0, top: 0),
+                                    width: 45.0.h,
+                                    height: 45.0.h,
+                                    margin:
+                                        EdgeInsets.only(left: 15.0.sp, top: 0),
                                     decoration: const BoxDecoration(
                                       color: Color(0xff334155),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Container(
                                       child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
+                                          padding: EdgeInsets.all(10.0.sp),
                                           child: SvgPicture.asset(
                                               'images/tag_new.svg')),
                                     )),
@@ -531,7 +734,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                         Navigator.pop(context);
                                       },
                                       child: Container(
-                                        width: 400,
+                                        width: 400.w,
                                         color: const Color(0xff1E293B),
                                         child: Column(
                                           crossAxisAlignment:
@@ -552,22 +755,21 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                                   TextFieldConfiguration(
                                                 controller:
                                                     _typeAheadController,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 14.0),
+                                                    fontSize: 14.0.sp),
                                                 keyboardType:
                                                     TextInputType.text,
                                                 cursorColor: Colors.white,
                                                 autofocus: true,
-                                                decoration:
-                                                    const InputDecoration(
+                                                decoration: InputDecoration(
                                                   contentPadding:
                                                       EdgeInsets.only(
-                                                    top: 15.0,
+                                                    top: 15.0.sp,
                                                   ),
                                                   prefixIcon: Padding(
                                                       padding: EdgeInsets.only(
-                                                          top: 4.0),
+                                                          top: 4.0.sp),
                                                       child: Icon(
                                                         Icons.search,
                                                         color:
@@ -575,7 +777,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                                       )),
                                                   hintText: 'Search',
                                                   hintStyle: TextStyle(
-                                                      fontSize: 14.0,
+                                                      fontSize: 14.0.sp,
                                                       color: Colors.white,
                                                       fontFamily: 'Inter',
                                                       fontWeight:
@@ -593,7 +795,10 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                               onSuggestionSelected: (item) {
                                                 _typeAheadController.text = '';
                                                 if (!abc.contains(item.name)) {
+                                                  abc.removeWhere((element) =>
+                                                      element.isEmpty);
                                                   abc.add(item.name!);
+                                                  abc.add("");
                                                   saveTagApi(
                                                       widget.response!.data!.id
                                                           .toString(),
@@ -611,574 +816,316 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                   ),
                                 ],
                                 elevation: 8.0,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            child: const Text(
-                              'Work folder',
-                              style: TextStyle(
-                                  color: ColorSelect.cermany_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                              left: 10.0, right: 35.0, top: 8),
-                          child: SvgPicture.asset(
-                            'images/cermony.svg',
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            child: const Text(
-                              'CRM',
-                              style: TextStyle(
-                                  color: ColorSelect.cermany_color,
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                              left: 10.0, right: 16.0, top: 8),
-                          child: SvgPicture.asset(
-                            'images/cermony.svg',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.99,
-                      margin: const EdgeInsets.only(left: 15.0, top: 16.0),
-                      height: MediaQuery.of(context).size.height * 0.14,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff1E293B),
-                        border: Border.all(
-                            color: const Color(0xff424D5F), width: 0.5),
-                        borderRadius: BorderRadius.circular(
-                          8.0,
-                        ),
-                      ),
-                      child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: _description,
-                        cursorColor: const Color(0xffFFFFFF),
-                        style: const TextStyle(color: Color(0xffFFFFFF)),
-                        textAlignVertical: TextAlignVertical.bottom,
-                        maxLines: 10,
-                        decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                              bottom: 20.0,
-                              top: 14.0,
-                              right: 10,
-                              left: 14.0,
-                            ),
-                            border: InputBorder.none,
-                            hintText: '',
-                            hintStyle: TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xffFFFFFF),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500)),
-                        onChanged: (value) {
-                          try {
-                            _debouncer.run(() async {
-                              addDescriptionProject();
-                            });
-                          } catch (e) {
-                            print(e);
-                            print(value);
-                          }
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 30.0, top: 20.0),
-                        child: const Text(
-                          "Potential roadblocks",
-                          style: TextStyle(
-                              color: Color(0xffFFFFFF),
-                              fontSize: 16.0,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.99,
-                      margin: const EdgeInsets.only(left: 30.0, top: 12.0),
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff334155),
-                        borderRadius: BorderRadius.circular(
-                          12.0,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 15.0, top: 0.0),
-                            child: const Text(
-                              "Occurrence",
-                              style: TextStyle(
-                                  color: Color(0xff94A3B8),
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          const Spacer(),
-                          Container(
-                            margin:
-                                const EdgeInsets.only(right: 40.0, top: 0.0),
-                            child: const Text(
-                              "Responsible",
-                              style: TextStyle(
-                                  color: Color(0xff94A3B8),
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                const EdgeInsets.only(left: 15.0, right: 30.0),
-                            child: const Text(
-                              "Date created",
-                              style: TextStyle(
-                                  color: Color(0xff94A3B8),
-                                  fontSize: 14.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 3.0),
-                        child: RawScrollbar(
-                          controller: _ScrollController,
-                          thumbColor: Color(0xff4b5563),
-                          radius: Radius.circular(20),
-                          thickness: 8,
-                          child: ListView.builder(
-                            controller: _ScrollController,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: roadblock.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 45.0, top: 8.0),
-                                    height: 12.0,
-                                    width: 12.0,
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xffEF4444),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 16.0, top: 8.0),
-                                    child: Text(
-                                      roadblock[index],
-                                      style: TextStyle(
-                                          color: Color(0xffE2E8F0),
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(
+                                    top: 2.sp, bottom: 2.sp, left: 5.sp),
+                                child: InputChip(
+                                  labelPadding: EdgeInsets.only(
+                                      left: 10.sp, top: 7.sp, bottom: 7.sp),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      13.r,
                                     ),
+                                  )),
+                                  side: BorderSide(color: Color(0xff334155)),
+                                  deleteIcon: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 20.sp,
                                   ),
-                                  const Spacer(),
-                                  Container(
-                                    height: 28.0,
-                                    width: 28.0,
-                                    margin: const EdgeInsets.only(
-                                        right: 98.0, top: 8.0),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff334155),
-                                      border: Border.all(
-                                          color: const Color(0xff0F172A),
-                                          width: 3.0),
-                                      borderRadius: BorderRadius.circular(
-                                        30.0,
-                                      ),
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "$fullName",
-                                        style: TextStyle(
-                                            color: Color(0xffFFFFFF),
-                                            fontSize: 10.0,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
+                                  backgroundColor: Color(0xff334155),
+                                  visualDensity: VisualDensity.compact,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  label: Text(
+                                    abc[index] ?? '',
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 8.0, right: 50.0),
-                                    child: Text(
-                                      "$roadblockCreateDate1",
-                                      // roadblockCreateDate[0],
-                                      style: TextStyle(
-                                          color: Color(0xffffffff),
-                                          fontSize: 14.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ],
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      _isSelected = selected;
+                                    });
+                                  },
+                                  onDeleted: () {
+                                    widget.response!.data!.tags!.forEach(
+                                      (element) {
+                                        if (element.name == abc[index]) {
+                                          removeTagAPI(element.id.toString());
+                                        }
+                                      },
+                                    );
+                                    setState(() {
+                                      abc.removeAt(index);
+                                    });
+                                  },
+                                  showCheckmark: false,
+                                ),
                               );
-                            },
-                          ),
-                        ),
+                      },
+                    ),
+                  ),
+                )),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 10.sp, top: 8.0.sp),
+            child: Container(
+              child: Text(
+                'Work folder',
+                style: TextStyle(
+                    color: ColorSelect.cermany_color,
+                    fontSize: 14.0.sp,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 10.0, right: 35.0, top: 8),
+            child: SvgPicture.asset(
+              'images/cermony.svg',
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8.0.sp),
+            child: Container(
+              child: Text(
+                'CRM',
+                style: TextStyle(
+                    color: ColorSelect.cermany_color,
+                    fontSize: 14.0.sp,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 10.0, right: 16.0, top: 8),
+            child: SvgPicture.asset(
+              'images/cermony.svg',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  phaseView() {
+    return Container(
+      // color: Colors.red,
+      height: widget.response!.data!.phase!.length == 0 ? 180.h : 250.h,
+      width: MediaQuery.of(context).size.width * 0.99,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 45.sp),
+            child: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 50.0, top: 0.0),
+                  child: const Text(
+                    "Timeline",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontSize: 16.0,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 8.0.sp, top: 0.0),
+                      child: SvgPicture.asset(
+                        'images/plus.svg',
+                        color: const Color(0xff93C5FD),
+                        width: 10.0.h,
+                        height: 10.0.h,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 45.0.sp, top: 0.0),
+                      child: const Text(
+                        "Request resources",
+                        style: TextStyle(
+                            color: Color(0xff93C5FD),
+                            fontSize: 12.0,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 130,
-              color: Colors.yellow,
-            ),
-          )
-        ],
-      ),
-    ));
-
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                InkWell(
+                  child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              // width: 256,
-                              // margin:
-                              //     EdgeInsets.only(right: 40),
-                              // color: Colors.red,
-                              child: Wrap(
-                                spacing: 8,
-                                children: List.generate(
-                                  abc.length,
-                                  (index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 2, bottom: 2, left: 5),
-                                      child: InputChip(
-                                        labelPadding: EdgeInsets.only(
-                                            left: 10, top: 7, bottom: 7),
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            13,
-                                          ),
-                                        )),
-                                        side: BorderSide(
-                                            color: Color(0xff334155)),
-                                        deleteIcon: const Icon(
-                                          Icons.close,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                        backgroundColor: Color(0xff334155),
-                                        visualDensity: VisualDensity.compact,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        label: Text(
-                                          abc[index],
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        onSelected: (bool selected) {
-                                          setState(() {
-                                            _isSelected = selected;
-                                          });
-                                        },
-                                        onDeleted: () {
-                                          widget.response!.data!.tags!.forEach(
-                                            (element) {
-                                              if (element.name == abc[index]) {
-                                                removeTagAPI(
-                                                    element.id.toString());
-                                              }
-                                            },
-                                          );
-                                          setState(() {
-                                            abc.removeAt(index);
-                                          });
-                                        },
-                                        showCheckmark: false,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            PopupMenuButton<int>(
-                              tooltip: '',
-                              offset: const Offset(35, 48),
-                              color: Color(0xFF0F172A),
-                              child: Container(
-                                  width: 45.0,
-                                  height: 45.0,
-                                  margin:
-                                      const EdgeInsets.only(left: 15.0, top: 0),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xff334155),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Container(
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: SvgPicture.asset(
-                                            'images/tag_new.svg')),
-                                  )),
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  padding: const EdgeInsets.all(0),
-                                  value: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                      width: 400,
-                                      color: const Color(0xff1E293B),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          searchTextField = TypeAheadFormField(
-                                            keepSuggestionsOnLoading: false,
-                                            hideOnLoading: true,
-                                            suggestionsBoxVerticalOffset: 0.0,
-                                            suggestionsBoxDecoration:
-                                                SuggestionsBoxDecoration(
-                                                    color: Color(0xff0F172A)),
-                                            suggestionsCallback: (pattern) {
-                                              return getSuggestions(pattern);
-                                            },
-                                            textFieldConfiguration:
-                                                TextFieldConfiguration(
-                                              controller: _typeAheadController,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14.0),
-                                              keyboardType: TextInputType.text,
-                                              cursorColor: Colors.white,
-                                              autofocus: true,
-                                              decoration: const InputDecoration(
-                                                contentPadding: EdgeInsets.only(
-                                                  top: 15.0,
-                                                ),
-                                                prefixIcon: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 4.0),
-                                                    child: Icon(
-                                                      Icons.search,
-                                                      color: Color(0xff64748B),
-                                                    )),
-                                                hintText: 'Search',
-                                                hintStyle: TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: Colors.white,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                                border: InputBorder.none,
-                                              ),
-                                            ),
-                                            itemBuilder: (context, item) {
-                                              return rowProject(item);
-                                            },
-                                            transitionBuilder: (context,
-                                                suggestionsBox, controller) {
-                                              return suggestionsBox;
-                                            },
-                                            onSuggestionSelected: (item) {
-                                              _typeAheadController.text = '';
-                                              if (!abc.contains(item.name)) {
-                                                abc.add(item.name!);
-                                                saveTagApi(
-                                                    widget.response!.data!.id
-                                                        .toString(),
-                                                    item.name!);
-                                              }
-                                              setState(() {
-                                                Navigator.of(context).pop();
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              elevation: 8.0,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                          child: const Text(
-                            'Work folder',
-                            style: TextStyle(
-                                color: ColorSelect.cermany_color,
-                                fontSize: 14.0,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400),
-                          ),
+                      Container(
+                        margin: EdgeInsets.only(right: 8.0.sp, top: 0.0),
+                        child: SvgPicture.asset(
+                          'images/plus.svg',
+                          color: const Color(0xff93C5FD),
+                          width: 10.0,
+                          height: 10.0,
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(
-                            left: 10.0, right: 35.0, top: 8),
-                        child: SvgPicture.asset(
-                          'images/cermony.svg',
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                          child: const Text(
-                            'CRM',
-                            style: TextStyle(
-                                color: ColorSelect.cermany_color,
-                                fontSize: 14.0,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 10.0, right: 16.0, top: 8),
-                        child: SvgPicture.asset(
-                          'images/cermony.svg',
+                        margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
+                        child: const Text(
+                          "New phase",
+                          style: TextStyle(
+                              color: Color(0xff93C5FD),
+                              fontSize: 12.0,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.99,
-                    margin: const EdgeInsets.only(left: 15.0, top: 16.0),
-                    height: MediaQuery.of(context).size.height * 0.14,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1E293B),
-                      border: Border.all(
-                          color: const Color(0xff424D5F), width: 0.5),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: _description,
-                      cursorColor: const Color(0xffFFFFFF),
-                      style: const TextStyle(color: Color(0xffFFFFFF)),
-                      textAlignVertical: TextAlignVertical.bottom,
-                      maxLines: 10,
-                      decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                            bottom: 20.0,
-                            top: 14.0,
-                            right: 10,
-                            left: 14.0,
-                          ),
-                          border: InputBorder.none,
-                          hintText: '',
-                          hintStyle: TextStyle(
-                              fontSize: 14.0,
-                              color: Color(0xffFFFFFF),
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500)),
-                      onChanged: (value) {
-                        try {
-                          _debouncer.run(() async {
-                            addDescriptionProject();
-                          });
-                        } catch (e) {
-                          print(e);
-                          print(value);
-                        }
-                      },
-                    ),
+                  onTap: () async {
+                    // Navigator.pop(context);
+                    bool result = await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return NewPhase(
+                              widget.response!.data!.id!.toString(), 0);
+                        });
+                    if (result != null && result) {
+                      widget.response = await Provider.of<ProjectHomeViewModel>(
+                              context,
+                              listen: false)
+                          .getProjectDetail(
+                              widget.response!.data!.id!.toString());
+                      setState(() {});
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.99,
+            margin:
+                EdgeInsets.only(left: 15.0.sp, top: 12.0.sp, right: 15.0.sp),
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: const Color(0xff334155),
+              borderRadius: BorderRadius.circular(
+                12.0.r,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15.0.sp, top: 0.0),
+                  child: Text(
+                    "Phase",
+                    style: TextStyle(
+                        color: Color(0xff94A3B8),
+                        fontSize: 14.0.sp,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 30.0, top: 20.0),
-                      child: const Text(
-                        "Potential roadblocks",
-                        style: TextStyle(
-                            color: Color(0xffFFFFFF),
-                            fontSize: 16.0,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
+                ),
+                const Spacer(),
+                Container(
+                  margin: EdgeInsets.only(right: 40.0.sp, top: 0.0),
+                  child: Text(
+                    "From",
+                    style: TextStyle(
+                        color: Color(0xff94A3B8),
+                        fontSize: 14.0.sp,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.99,
-                    margin: const EdgeInsets.only(left: 30.0, top: 12.0),
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff334155),
-                      borderRadius: BorderRadius.circular(
-                        12.0,
-                      ),
-                    ),
-                    child: Row(
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16.0.sp, right: 50.0.sp),
+                  child: const Text(
+                    "Till",
+                    style: TextStyle(
+                        color: Color(0xff94A3B8),
+                        fontSize: 14.0,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 15.0.sp, right: 50.0.sp),
+                  child: Text(
+                    "Action",
+                    style: TextStyle(
+                        color: Color(0xff94A3B8),
+                        fontSize: 14.0.sp,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: ListView.builder(
+              padding: EdgeInsets.only(
+                  bottom: widget.response!.data!.phase!.length > 0 ? 0 : 0),
+              controller: _verticalScrollController,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: widget.response!.data!.phase!.length,
+              itemBuilder: (BuildContext context, int index) {
+                Phase phase = widget.response!.data!.phase![index];
+                var title = phase.title;
+                var phaseType = phase.phaseType;
+                String name = title!.substring(0, 2).toUpperCase();
+                var date = phase.startDate;
+                var endDate = phase.endDate;
+                var _date = date.toString();
+                var date1 = AppUtil.getFormatedDate(_date);
+                var fromDate = AppUtil.formattedDateYear1(date1);
+                var _endDate = endDate.toString();
+                var date2 = AppUtil.getFormatedDate(_endDate);
+                var tillDate = AppUtil.formattedDateYear1(date2);
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(left: 15.0, top: 0.0),
-                          child: const Text(
-                            "Occurrence",
-                            style: TextStyle(
-                                color: Color(0xff94A3B8),
+                          height: 38.0,
+                          width: 38.0,
+                          margin: const EdgeInsets.only(left: 45.0, top: 12.0),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff334155),
+                            borderRadius: BorderRadius.circular(
+                              30.0,
+                            ),
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "$name",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Color(0xffFFFFFF),
+                                  fontSize: 12.0,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 16.0, top: 20.0),
+                          child: Text(
+                            "$phaseType",
+                            style: const TextStyle(
+                                color: Color(0xffE2E8F0),
                                 fontSize: 14.0,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
@@ -1186,156 +1133,96 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         ),
                         const Spacer(),
                         Container(
-                          margin: const EdgeInsets.only(right: 40.0, top: 0.0),
-                          child: const Text(
-                            "Responsible",
-                            style: TextStyle(
-                                color: Color(0xff94A3B8),
+                          margin: const EdgeInsets.only(top: 22.0, right: 42.0),
+                          child: Text(
+                            "$fromDate",
+                            style: const TextStyle(
+                                color: Color(0xffffffff),
                                 fontSize: 14.0,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
                         Container(
-                          margin:
-                              const EdgeInsets.only(left: 15.0, right: 30.0),
-                          child: const Text(
-                            "Date created",
-                            style: TextStyle(
-                                color: Color(0xff94A3B8),
+                          margin: const EdgeInsets.only(top: 22.0, right: 36.0),
+                          child: Text(
+                            "$tillDate",
+                            style: const TextStyle(
+                                color: Color(0xffffffff),
                                 fontSize: 14.0,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: 62.0, bottom: 8),
+                          child: Stack(children: [
+                            MenuPhase(
+                              index: index,
+                              onDeleteSuccess: () {
+                                setState(() {
+                                  widget.response!.data!.phase!.removeAt(index);
+                                });
+                              },
+                              onEditClick: () async {
+                                Navigator.pop(context);
+                                bool result = await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return NewPhase(
+                                          widget
+                                              .response!.data!.phase![index].id
+                                              .toString(),
+                                          1);
+                                    });
+                                if (result != null && result) {
+                                  widget.response =
+                                      await Provider.of<ProjectHomeViewModel>(
+                                              context,
+                                              listen: false)
+                                          .getProjectDetail(widget
+                                              .response!.data!.id!
+                                              .toString());
+                                  setState(() {});
+                                }
+                              },
+                              setState: setState,
+                              response: widget.response!,
+                              data: phase,
+                              title: 'Menu at bottom',
+                              alignment: Alignment.bottomRight,
+                              buildContext: context,
+                              returnValue: () {
+                                print(
+                                    "Value returned --------------------------------------");
+                              },
+                            )
+                          ]),
+                        ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 3.0),
-                      child: RawScrollbar(
-                        controller: _ScrollController,
-                        thumbColor: Color(0xff4b5563),
-                        radius: Radius.circular(20),
-                        thickness: 8,
-                        child: ListView.builder(
-                          controller: _ScrollController,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: roadblock.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 45.0, top: 8.0),
-                                  height: 12.0,
-                                  width: 12.0,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xffEF4444),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 16.0, top: 8.0),
-                                  child: Text(
-                                    roadblock[index],
-                                    style: TextStyle(
-                                        color: Color(0xffE2E8F0),
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                const Spacer(),
-                                Container(
-                                  height: 28.0,
-                                  width: 28.0,
-                                  margin: const EdgeInsets.only(
-                                      right: 98.0, top: 8.0),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff0F172A),
-                                        width: 3.0),
-                                    borderRadius: BorderRadius.circular(
-                                      30.0,
-                                    ),
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "$fullName",
-                                      style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 10.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 8.0, right: 50.0),
-                                  child: Text(
-                                    "$roadblockCreateDate1",
-                                    // roadblockCreateDate[0],
-                                    style: TextStyle(
-                                        color: Color(0xffffffff),
-                                        fontSize: 14.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                    Container(
+                        margin: EdgeInsets.only(
+                            left: 30.0.sp, right: 30.0.sp, bottom: 0.0),
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          color: Color(0xff94A3B8),
+                          height: .5.sp,
+                        )),
+                  ],
+                );
+              },
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        // color: Colors.green,
-                        height: MediaQuery.of(context).size.height * 0.37,
-                        width: MediaQuery.of(context).size.width * 0.99,
-                        decoration: const BoxDecoration(
-                          color:
-                              // Colors.red,
-                              Color(0xff263143),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   // update Controller Value
   updateControllerValue() {
+    users = widget.skills ?? [];
     _projecttitle.text = widget.response!.data != null &&
             widget.response!.data!.title != null &&
             widget.response!.data!.title!.isNotEmpty
@@ -1414,6 +1301,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           abc.add(element.name!);
         }
       });
+      abc.add("");
     }
     if (widget.response!.data != null &&
         widget.response!.data!.roadblocks != null &&

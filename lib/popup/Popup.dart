@@ -23,6 +23,7 @@ import 'package:zeus/utility/util.dart';
 import 'package:provider/provider.dart';
 import '../home_module/home_page.dart';
 import 'package:zeus/utility/debouncer.dart';
+
 showDailog(
     BuildContext context,
     ProjectDetailResponse response,
@@ -114,6 +115,7 @@ showDailog(
       }
     } catch (e) {}
   }
+
   //Edit project_detail api
   Future<void> removeTagAPI(String tagId) async {
     var token = 'Bearer ' + storage.read("token");
@@ -137,6 +139,7 @@ showDailog(
       }
     } catch (e) {}
   }
+
   //Edit project_detail api
   Future<void> saveTagApi(String projectId, String tagName) async {
     var token = 'Bearer ' + storage.read("token");
@@ -165,6 +168,7 @@ showDailog(
       }
     } catch (e) {}
   }
+
   //Add
   //Add description and time api
   Future<void> addDescriptionProject() async {
@@ -221,6 +225,7 @@ showDailog(
       // print('error caught: $e');
     }
   }
+
   // update Controller Value
   updateControllerValue() {
     _projecttitle.text = response.data != null &&
@@ -356,7 +361,7 @@ showDailog(
     //     ? response.data!.status.toString()
     //     : '';
   }
- 
+
   DateTime getInitialDate(int calendarTapValue) {
     if (calendarTapValue == 1) {
       return selectedDate!;
@@ -368,6 +373,7 @@ showDailog(
       return selectedDateDeadline!;
     }
   }
+
   DateTime getFirstDate(int calendarTapValue) {
     if (calendarTapValue == 1) {
       if (selectedDate!.compareTo(DateTime.now()) < 0) {
@@ -388,6 +394,7 @@ showDailog(
     }
     return DateTime.now();
   }
+
   List<SkillsData> getSuggestions(String query) {
     List<SkillsData> matches = List.empty(growable: true);
     matches.addAll(users);
@@ -395,6 +402,7 @@ showDailog(
         (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
     return matches;
   }
+
   Future<void> _selectDate(setState, int calendarTapValue) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -458,6 +466,7 @@ showDailog(
       addDescriptionProject();
     }
   }
+
   //   print(projectDetail.projectDetailResponse!.data!.title);
   showDialog(
       context: context,
