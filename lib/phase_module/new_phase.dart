@@ -1043,7 +1043,8 @@ class _NewPhaseState extends State<NewPhase> {
       clickedAddMileStone = true;
       controllerMilestoneTitle.text = values.title ?? "";
       mileStoneTitle = values.title ?? "";
-      mileStoneDate = values.m_date ?? AppUtil.dateToString(DateTime.now());
+      mileStoneDate = AppUtil.stringToDate(values.m_date!) ??
+          AppUtil.dateToString(DateTime.now());
     });
   }
 
@@ -1858,33 +1859,46 @@ class _NewPhaseState extends State<NewPhase> {
       msg: "Your request is in progress please wait for a while...",
     );
     try {
-      // phaseDetails.start_date =
-      //     AppUtil.dateToString(DateTime.parse(phaseDetails.start_date!));
+      try {
+        phaseDetails.start_date =
+            AppUtil.dateToString(DateTime.parse(phaseDetails.start_date!));
+      } catch (e) {
+        return phaseDetails.start_date;
+      }
 
-      // phaseDetails.end_date =
-      //     AppUtil.dateToString(DateTime.parse(phaseDetails.end_date!));
+      try {
+        phaseDetails.end_date =
+            AppUtil.dateToString(DateTime.parse(phaseDetails.end_date!));
+      } catch (e) {
+        return phaseDetails.end_date;
+      }
 
-      // if (phaseDetails.milestone != null &&
-      //     phaseDetails.milestone!.isNotEmpty) {
-      //   phaseDetails.milestone!.forEach((element) {
-      //     element.m_date =
-      //         AppUtil.dateToString(DateTime.parse(element.m_date!));
-      //   });
-      // }
+      try {
+        if (phaseDetails.milestone != null &&
+            phaseDetails.milestone!.isNotEmpty) {
+          phaseDetails.milestone!.forEach((element) {
+            element.m_date =
+                AppUtil.dateToString(DateTime.parse(element.m_date!));
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
 
-      // if (phaseDetails.sub_tasks != null &&
-      //     phaseDetails.sub_tasks!.isNotEmpty) {
-      //   phaseDetails.sub_tasks!.forEach((element) {
-      //     element.start_date =
-      //         AppUtil.dateToString(DateTime.parse(element.start_date!));
+      try {
+        if (phaseDetails.sub_tasks != null &&
+            phaseDetails.sub_tasks!.isNotEmpty) {
+          phaseDetails.sub_tasks!.forEach((element) {
+            element.start_date =
+                AppUtil.dateToString(DateTime.parse(element.start_date!));
 
-      //     element.end_date =
-      //         AppUtil.dateToString(DateTime.parse(element.end_date!));
-      //   });
-      // }
-
-      print(
-          "Logs -------------------------------------- ${json.encode(phaseDetails)}");
+            element.end_date =
+                AppUtil.dateToString(DateTime.parse(element.end_date!));
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
 
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
