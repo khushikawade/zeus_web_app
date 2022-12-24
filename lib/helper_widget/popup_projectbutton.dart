@@ -201,7 +201,7 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
-                                                color: Color(0xffEF4444)),
+                                                color: ColorSelect.delete_text),
                                           ),
                                         ),
                                       ),
@@ -261,9 +261,9 @@ class _ProjectEditState extends State<ProjectEdit>
     );
   }
 
-  deleteProject(String? peopleId, BuildContext buildContext) async {
+  deleteProject(String? projectId, BuildContext buildContext) async {
     var response;
-    var url = '${AppUrl.deleteForProject}${peopleId}';
+    var url = '${AppUrl.deleteForProject}${projectId}';
     var token = 'Bearer ' + storage.read("token");
 
     // var userId = storage.read("user_id");
@@ -278,7 +278,7 @@ class _ProjectEditState extends State<ProjectEdit>
       SmartDialog.dismiss();
 
       try {
-        Navigator.of(buildContext).pushAndRemoveUntil(
+        Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
                       onSubmit: (String value) {},
@@ -290,9 +290,6 @@ class _ProjectEditState extends State<ProjectEdit>
         print("Error in navigating ------------------------------");
         print(e);
       }
-    } else if (response.statusCode == 401) {
-      SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(context);

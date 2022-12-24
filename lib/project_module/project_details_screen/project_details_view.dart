@@ -264,7 +264,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                           accountableId: [],
                           currencyList: [],
                           customerName: [],
-                          id: '',
+                          id: widget.response!.data!.id.toString(),
                           statusList: [],
                         ),
                       ],
@@ -661,7 +661,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                       children: [
                                         Container(
                                           margin: EdgeInsets.only(
-                                              left: 45.0.sp, top: 8.0.sp),
+                                              left: 30.0.sp, top: 8.0.sp),
                                           height: 12.0.h,
                                           width: 12.0.w,
                                           decoration: const BoxDecoration(

@@ -101,7 +101,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 return data.loading
                     ? const Expanded(
                         child: Center(child: CircularProgressIndicator()))
-                    : data.peopleList == null || data.peopleList!.data!.isEmpty
+                    : data.peopleList == null ||
+                            data.peopleList == null ||
+                            data.peopleList!.data!.isEmpty
                         ? Expanded(
                             child: Center(
                                 child: Text(
@@ -148,6 +150,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
   // Make People List widget or Data Table
   Widget makePeopleList(PeopleHomeViewModel data) {
     List<DataRow> rows = [];
+    String firstName = "";
+    String lastName = "";
+    String fullName = '';
 
     if (data.peopleList != null) {
       if (data.peopleList!.data!.isNotEmpty) {
@@ -161,49 +166,71 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
           var capacity = '';
 
           var name = _peopleList.name;
-          if (_peopleList.resource != null) {
-            designation = _peopleList.resource!.designation!;
-          } else {
-            designation = 'TBD';
+
+          try {
+            if (_peopleList.resource != null) {
+              designation = _peopleList.resource!.designation!;
+            } else {
+              designation = 'N/A';
+            }
+          } catch (e) {
+            print("Exception in ----------------------------- 1 ${e}");
           }
 
-          if (_peopleList.resource != null) {
-            associate = _peopleList.resource!.associate!;
-          } else {
-            associate = 'TBD';
+          try {
+            if (_peopleList.resource != null) {
+              associate = _peopleList.resource!.associate!;
+            } else {
+              associate = 'N/A';
+            }
+          } catch (e) {
+            print("Exception in ----------------------------- 2 ${e}");
           }
 
-          if (_peopleList.resource != null) {
-            nickname = _peopleList.resource!.nickname!;
-          } else {
-            nickname = 'TBD';
+          try {
+            if (_peopleList.resource != null) {
+              nickname = _peopleList.resource!.nickname!;
+            } else {
+              nickname = 'N/A';
+            }
+          } catch (e) {
+            print("Exception in ----------------------------- 3 ${e}");
           }
 
-          if (_peopleList.resource != null) {
-            capacity = _peopleList.resource!.capacity!;
-          } else {
-            capacity = 'TBD';
+          try {
+            if (_peopleList.resource != null) {
+              capacity = _peopleList.resource!.capacity!;
+            } else {
+              capacity = 'N/A';
+            }
+          } catch (e) {
+            print("Exception in ----------------------------- 4 ${e}");
           }
 
           var image = _peopleList.image;
 
-          String firstName = "";
-          String lastName = "";
-          String fullName = '';
+          try {
+            if (_peopleList.name != null && _peopleList.name!.isNotEmpty) {
+              if (_peopleList.name!.contains(" ")) {
+                List<String> splitedList = _peopleList.name!.split(" ");
 
-          var names;
-          if (_peopleList.name != null && _peopleList.name!.isNotEmpty) {
-            if (_peopleList.name!.contains(" ")) {
-              List<String> splitedList = _peopleList.name!.split(" ");
+                if (splitedList.length > 1) {
+                  firstName = splitedList[0];
+                  if (splitedList[1].isNotEmpty) {
+                    lastName = splitedList[1];
+                  }
+                } else {
+                  firstName = splitedList[0];
+                }
 
-              firstName = splitedList[0];
-              lastName = splitedList[1];
-
-              fullName = firstName.substring(0, 1).toUpperCase() +
-                  lastName.substring(0, 1).toUpperCase();
-            } else {
-              fullName = _peopleList.name!.substring(0, 1).toUpperCase();
+                fullName = firstName.substring(0, 1).toUpperCase() +
+                    lastName.substring(0, 1).toUpperCase();
+              } else {
+                fullName = _peopleList.name!.substring(0, 1).toUpperCase();
+              }
             }
+          } catch (e) {
+            print("Exception in ----------------------------- 5 ${e}");
           }
 
           rows.add(DataRow(
