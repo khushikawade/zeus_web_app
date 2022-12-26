@@ -2258,6 +2258,9 @@ class _NavigationRailState extends State<MyHomePage>
                                       children: [
                                         Column(
                                           children: [
+                                            SizedBox(
+                                              width: 12.w,
+                                            ),
                                             Text("List",
                                                 style: TextStyle(
                                                     color: Color(0xff93C5FD),

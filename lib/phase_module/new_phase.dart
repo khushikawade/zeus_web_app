@@ -549,14 +549,15 @@ class _NewPhaseState extends State<NewPhase> {
                     // margin: EdgeInsets.only(left: 16.0.sp, right: 62.5.sp),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(//left: 10.sp, top: 21.sp
                               ),
                           child: Container(
-                            height: 60.h,
-                            width: 60.w,
+                            height: 45.h,
+                            width: 45.w,
                             child: Stack(
                               children: [
                                 Positioned(
@@ -569,7 +570,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     radius: 30.r,
                                     child: Icon(
                                       Icons.person_outline,
-                                      size: 30.sp,
+                                      size: 28.sp,
                                       color: Color(0xffDADADA),
                                     ),
                                   ),
@@ -578,6 +579,8 @@ class _NewPhaseState extends State<NewPhase> {
                                     bottom: 0,
                                     right: 0,
                                     child: Container(
+                                      height: 18.h,
+                                      width: 18.w,
                                       padding: EdgeInsets.all(3.sp),
                                       decoration: BoxDecoration(
                                         color: Color(0xff10B981),
@@ -587,7 +590,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       child: Center(
                                           child: Icon(Icons.add,
                                               color: Colors.white,
-                                              size: 18.sp)),
+                                              size: 10.sp)),
                                     ))
                               ],
                             ),
@@ -1316,12 +1319,14 @@ class _NewPhaseState extends State<NewPhase> {
           width: MediaQuery.of(context).size.width * 3,
           child: Row(
             mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 30.sp, top: 21.sp),
                 child: Container(
-                  height: 60.h,
-                  width: 60.w,
+                  height: 45.h,
+                  width: 45.w,
                   child: Stack(
                     children: [
                       Positioned(
@@ -1334,7 +1339,7 @@ class _NewPhaseState extends State<NewPhase> {
                           radius: 30.r,
                           child: Icon(
                             Icons.person_outline,
-                            size: 30.sp,
+                            size: 28.sp,
                             color: Color(0xffDADADA),
                           ),
                         ),
@@ -1343,6 +1348,8 @@ class _NewPhaseState extends State<NewPhase> {
                           bottom: 0,
                           right: 0,
                           child: Container(
+                            width: 18.w,
+                            height: 18.h,
                             padding: EdgeInsets.all(3.sp),
                             decoration: BoxDecoration(
                               color: Color(0xff10B981),
@@ -1350,7 +1357,7 @@ class _NewPhaseState extends State<NewPhase> {
                             ),
                             child: Center(
                                 child: Icon(Icons.add,
-                                    color: Colors.white, size: 18.sp)),
+                                    color: Colors.white, size: 10.sp)),
                           ))
                     ],
                   ),
