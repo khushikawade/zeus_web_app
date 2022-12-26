@@ -2416,7 +2416,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           border: Border.all(
                                               color: const Color(0xff334155)),
                                           borderRadius: BorderRadius.circular(
-                                            18.0,
+                                            18.0.r,
                                           ),
                                         ),
                                         message: 'Projects',
@@ -2511,7 +2511,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           border: Border.all(
                                               color: const Color(0xff334155)),
                                           borderRadius: BorderRadius.circular(
-                                            18.0,
+                                            18.0.r,
                                           ),
                                         ),
                                         message: 'People',
