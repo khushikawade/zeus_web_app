@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:zeus/phase_module/model/department_model.dart';
 import 'package:zeus/phase_module/new_phase.dart';
+import 'package:zeus/services/model/resources_needed.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/util.dart';
@@ -181,18 +182,18 @@ Widget rowPhasesType(DepartementData Language) {
   );
 }
 
-Widget rowResourceName(item) {
+Widget rowResourceName(Details? item) {
   String firstName = "";
   String lastName = "";
   String fullName = '';
 
   var names;
-  if (item.name != null && item.name!.isNotEmpty) {
+  if (item!.name != null && item.name!.isNotEmpty) {
     if (item.name!.contains(" ")) {
       List<String> splitedList = item.name!.split(" ");
 
       firstName = splitedList[0];
-      lastName = splitedList[1];
+      lastName = splitedList.length == 3 ? splitedList[2] : splitedList[1];
 
       fullName = firstName.substring(0, 1).toUpperCase() +
           lastName.substring(0, 1).toUpperCase();
@@ -207,7 +208,7 @@ Widget rowResourceName(item) {
         SizedBox(
           width: 6.w,
         ),
-        item.image != null && item.image.isNotEmpty
+        item.image != null && item.image!.isNotEmpty
             ? Container(
                 width: 38.0,
                 height: 36.0,
@@ -220,7 +221,7 @@ Widget rowResourceName(item) {
                 ),
                 child: CircleAvatar(
                   radius: 20.r,
-                  backgroundImage: NetworkImage(item.image),
+                  backgroundImage: NetworkImage(item.image!),
                 ))
             : Container(
                 width: 32,

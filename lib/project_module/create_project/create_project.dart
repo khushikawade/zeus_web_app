@@ -294,7 +294,7 @@ class _EditPageState extends State<CreateProjectPage> {
                     ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: ListView(
                   controller: verticalScroll,
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(widget.response == null ? 20 : 0),
                   shrinkWrap: true,
                   children: [
                     Row(
@@ -353,6 +353,8 @@ class _EditPageState extends State<CreateProjectPage> {
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                             child: CustomSearchDropdown(
@@ -450,7 +452,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           ),
                         ),
                         SizedBox(
-                          width: 10.w,
+                          width: 16.w,
                         ),
                         Expanded(
                             flex: 8,
@@ -470,7 +472,7 @@ class _EditPageState extends State<CreateProjectPage> {
                               }),
                             )),
                         SizedBox(
-                          width: 10.w,
+                          width: 16.w,
                         ),
                         Expanded(
                           flex: 18,
@@ -516,7 +518,7 @@ class _EditPageState extends State<CreateProjectPage> {
                           }),
                         )),
                         SizedBox(
-                          width: 10.w,
+                          width: 16.w,
                         ),
                         Expanded(
                           flex: 1,
@@ -543,9 +545,9 @@ class _EditPageState extends State<CreateProjectPage> {
                         ),
                       ],
                     ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
+                    SizedBox(
+                      height: 16.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -555,9 +557,6 @@ class _EditPageState extends State<CreateProjectPage> {
                           },
                           child: Container(
                             width: 97.w,
-                            margin: EdgeInsets.only(
-                              top: 16.0.h,
-                            ),
                             height: 40.0.h,
                             decoration: BoxDecoration(
                               color: const Color(0xff334155),
@@ -611,10 +610,6 @@ class _EditPageState extends State<CreateProjectPage> {
                           },
                           child: Container(
                             width: 97.0.w,
-                            margin: EdgeInsets.only(
-                              top: 16.0.h,
-                              right: 10.0.w,
-                            ),
                             height: 40.0.h,
                             decoration: BoxDecoration(
                               color: const Color(0xff7DD3FC),

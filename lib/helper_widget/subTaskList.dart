@@ -193,7 +193,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                               backgroundColor:
                                                   Color(0xff475569),
                                               radius: 20.r,
-                                              child: Icon(Icons.delete,
+                                              child: Icon(Icons.delete_outline,
                                                   color: Colors.white,
                                                   size: 18.sp)
 

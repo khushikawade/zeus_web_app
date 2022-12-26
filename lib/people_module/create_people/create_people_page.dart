@@ -822,7 +822,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      widget.isEdit! ? "Update" : "Save",
+                                      widget.isEdit! ? "Save" : "Save",
                                       style: TextStyle(
                                           color: Color(0xff000000),
                                           fontSize: 14.sp,
@@ -1033,6 +1033,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 CustomFormField(
                                   controller: _bio,
                                   maxline: 4,
+                                  height: 110.h,
                                   fontSizeForLabel: 14.sp,
                                   hint: 'Enter your bio',
                                   label: 'Your bio',
@@ -1477,7 +1478,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       });
                                     }),
                                 SizedBox(
-                                  height: 16.sp,
+                                  height: 28.sp,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -1531,9 +1532,15 @@ class _EditPageState extends State<CreatePeoplePage> {
                                         children: [
                                           searchTextField = TypeAheadFormField(
                                             keepSuggestionsOnLoading: false,
-                                            suggestionsBoxVerticalOffset: 0.0,
+                                            suggestionsBoxVerticalOffset:
+                                                16.0.w,
                                             suggestionsBoxDecoration:
                                                 SuggestionsBoxDecoration(
+                                                    offsetX: 57.w,
+                                                    constraints:
+                                                        BoxConstraints.expand(
+                                                            width: 313.w,
+                                                            height: 262.h),
                                                     color: Color(0xff0F172A)),
                                             hideOnLoading: true,
                                             suggestionsCallback: (pattern) {
@@ -1551,16 +1558,13 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               decoration: InputDecoration(
                                                 // border: InputBorder.none,
                                                 contentPadding: EdgeInsets.only(
-                                                    top: 15.sp, left: 10.sp),
-                                                prefixIcon: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 12.sp),
-                                                  child: Icon(
-                                                    Icons.search,
-                                                    color: Color(0xff64748B),
-                                                  ),
+                                                    top: 14.sp, left: 10.sp),
+                                                prefixIcon: Icon(
+                                                  Icons.search,
+                                                  color: Color(0xff64748B),
                                                 ),
                                                 hintText: 'Search',
+
                                                 hintStyle: TextStyle(
                                                     fontSize: 14.sp,
                                                     color: Color(0xff64748B),
@@ -1574,7 +1578,10 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             ),
                                             itemBuilder: (context, item) {
                                               return Padding(
-                                                padding: EdgeInsets.all(8.sp),
+                                                padding: EdgeInsets.only(
+                                                    top: 12.sp,
+                                                    left: 16.sp,
+                                                    bottom: 15.sp),
                                                 child: Text(
                                                   item.title.toString(),
                                                   style: TextStyle(
