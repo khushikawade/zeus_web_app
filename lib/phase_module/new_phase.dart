@@ -67,6 +67,7 @@ class _NewPhaseState extends State<NewPhase> {
   bool mileStoneDateCheck = true;
   bool subtaskdateCheck = true;
   bool createButtonClick = false;
+  bool milestoneValidate = false;
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
   // List<ResourceData> selectedSubTaskSource = [];
@@ -330,6 +331,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             setState(() {
                                               savePhaseClick = true;
                                               createButtonClick = true;
+                                              milestoneValidate = true;
                                             });
 
                                             Future.delayed(
@@ -376,7 +378,10 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   List<Details> getSuggestions(String query) {
+    print(users);
+    print(users);
     List<Details> matches = List.empty(growable: true);
+    matches.clear();
     matches.addAll(users);
     matches.retainWhere(
         (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
@@ -691,14 +696,8 @@ class _NewPhaseState extends State<NewPhase> {
                                       ),
                                     ),
                                     itemBuilder: (context, item) {
-                                      return
-                                          // Text(
-                                          //   item.name.toString(),
-                                          //   style: const TextStyle(
-                                          //       fontSize: 16.0, color: Colors.white),
-                                          // );
-                                          // Text("khushi");milestone
-                                          rowResourceName(item);
+                                      print(item);
+                                      return rowResourceName(item);
                                     },
                                     transitionBuilder:
                                         (context, suggestionsBox, controller) {
@@ -745,8 +744,6 @@ class _NewPhaseState extends State<NewPhase> {
                                                       item.departmentId ?? 0,
                                                   profileImage: item.image));
                                           selectedSource.add(item.name!);
-                                          // listResorceDropDown
-                                          //     .add(DropdownModel(_depat, item));
                                         }
                                       });
                                     },
@@ -914,6 +911,7 @@ class _NewPhaseState extends State<NewPhase> {
                         : clickAddMileStone(),
                     onTap: () {
                       setState(() {
+                        milestoneValidate = true;
                         addMilestoneBtnClick = true;
                         createButtonClick = true;
                         saveButtonClickForMileStone = false;
@@ -1009,7 +1007,7 @@ class _NewPhaseState extends State<NewPhase> {
                       validator: (value) {},
                     ),
                   ),
-            savePhaseClick && phaseDetails.milestone!.isEmpty
+            milestoneValidate && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: EdgeInsets.only(left: 30.sp, top: 3.sp),
@@ -1102,6 +1100,7 @@ class _NewPhaseState extends State<NewPhase> {
                       setState(() {
                         savePhaseClick = true;
                         createButtonClick = true;
+                        milestoneValidate = true;
                         Future.delayed(const Duration(microseconds: 500), () {
                           if (_formKey.currentState!.validate()) {
                             if (allValidate && selectedSource.isNotEmpty) {
@@ -1565,6 +1564,7 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 // mileStoneDate = null;
+
                 mileStoneTitle = "";
                 controllerMilestoneTitle.text = "";
                 clickedAddMileStone = false;
