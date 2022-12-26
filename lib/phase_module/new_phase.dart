@@ -1172,8 +1172,10 @@ class _NewPhaseState extends State<NewPhase> {
                             setState(() {
                               subTaskEndDate = date.toString();
                               print("end date-----------------$subTaskEndDate");
+
+                              errorTextForSubtask(
+                                  subTaskStartDate, subTaskEndDate);
                             });
-                            setState(() {});
                           },
 
                           onCancel: () {
