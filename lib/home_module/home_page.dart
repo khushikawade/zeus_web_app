@@ -2168,10 +2168,9 @@ class _NavigationRailState extends State<MyHomePage>
                         },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 16.sp),
-                          
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 12.0.sp, left: 15.sp, right: 20.sp),
+                                  top: 0.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),

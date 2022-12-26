@@ -670,7 +670,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             top: 15.0.sp, left: 10.sp),
                                         prefixIcon: Padding(
                                             padding:
-                                                EdgeInsets.only(top: 9.0.sp),
+                                                EdgeInsets.only(top: 0.0.sp),
                                             child: Icon(
                                               Icons.search,
                                               color: Color(0xff64748B),
@@ -884,7 +884,7 @@ class _NewPhaseState extends State<NewPhase> {
                   clickedAddMileStone == false
                       ? titleHeadlineWidget("Milestones", 18.0.sp)
                       : titleHeadlineWidget("Add Milestones", 18.0.sp),
-                  InkWell(
+                  GestureDetector(
                     child: clickedAddMileStone == false
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -975,7 +975,7 @@ class _NewPhaseState extends State<NewPhase> {
                 ? Container()
                 : Padding(
                     padding: EdgeInsets.only(
-                        left: 29.5.sp, right: 30.5.sp, top: 20.sp),
+                        left: 29.5.sp, right: 30.5.sp, top: 0.sp),
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
                       label: 'Milestone Date',
@@ -1066,7 +1066,7 @@ class _NewPhaseState extends State<NewPhase> {
                   clickAddSubTask == false
                       ? titleHeadlineWidget("Subtasks", 18.0.sp)
                       : titleHeadlineWidget("Add Subtasks", 18.0.sp),
-                  InkWell(
+                  GestureDetector(
                     child: Container(
                         child: clickAddSubTask == false
                             ? Row(
@@ -1439,7 +1439,7 @@ class _NewPhaseState extends State<NewPhase> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 15.sp),
                       prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 4.sp),
+                          padding: EdgeInsets.only(top: 0.sp),
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),
@@ -1563,7 +1563,7 @@ class _NewPhaseState extends State<NewPhase> {
             child: Padding(
               padding: EdgeInsets.only(right: 36.5.sp, left: 26.sp),
               child: Text(
-                "Save 1",
+                "Save",
                 style: TextStyle(
                     fontSize: 14.0.sp,
                     color: Color(0xff93C5FD),
@@ -1656,7 +1656,7 @@ class _NewPhaseState extends State<NewPhase> {
             child: Padding(
               padding: EdgeInsets.only(right: 37.sp, left: 26.sp),
               child: Text(
-                "Save 2",
+                "Save",
                 style: TextStyle(
                     fontSize: 14.sp,
                     color: Color(0xff93C5FD),

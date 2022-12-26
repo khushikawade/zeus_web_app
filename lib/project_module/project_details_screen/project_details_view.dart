@@ -858,7 +858,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                                     prefixIcon: Padding(
                                                         padding:
                                                             EdgeInsets.only(
-                                                                top: 4.0.sp),
+                                                                top: 0.0.sp),
                                                         child: Icon(
                                                           Icons.search,
                                                           color:
@@ -1067,7 +1067,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     ),
                   ],
                 ),
-                InkWell(
+                GestureDetector(
                   child: Row(
                     children: [
                       Container(
