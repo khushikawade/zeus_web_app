@@ -2168,7 +2168,6 @@ class _NavigationRailState extends State<MyHomePage>
                         },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 16.sp),
-                          
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
                                   top: 12.0.sp, left: 15.sp, right: 20.sp),
@@ -2259,6 +2258,9 @@ class _NavigationRailState extends State<MyHomePage>
                                       children: [
                                         Column(
                                           children: [
+                                            SizedBox(
+                                              width: 12.w,
+                                            ),
                                             Text("List",
                                                 style: TextStyle(
                                                     color: Color(0xff93C5FD),
