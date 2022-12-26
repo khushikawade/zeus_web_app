@@ -2168,7 +2168,6 @@ class _NavigationRailState extends State<MyHomePage>
                         },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 16.sp),
-                          
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
                                   top: 12.0.sp, left: 15.sp, right: 20.sp),
@@ -2414,7 +2413,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           border: Border.all(
                                               color: const Color(0xff334155)),
                                           borderRadius: BorderRadius.circular(
-                                            18.0,
+                                            18.0.r,
                                           ),
                                         ),
                                         message: 'Projects',
@@ -2509,7 +2508,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           border: Border.all(
                                               color: const Color(0xff334155)),
                                           borderRadius: BorderRadius.circular(
-                                            18.0,
+                                            18.0.r,
                                           ),
                                         ),
                                         message: 'People',

@@ -75,8 +75,8 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                   child: DropdownButton2(
                     itemPadding: EdgeInsets.only(left: 10.sp, right: 10.sp),
                     buttonPadding: EdgeInsets.only(
-                      left: 0.w,
-                      right: 10,
+                      left: 0.sp,
+                      right: 10.sp,
                     ),
                     dropdownPadding: EdgeInsets.zero,
                     dropdownScrollPadding: EdgeInsets.zero,

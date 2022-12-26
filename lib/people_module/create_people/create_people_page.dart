@@ -1156,6 +1156,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
+                                      flex: 1,
                                       child: CustomSearchDropdown(
                                         hint: 'Select',
                                         label: "A",
@@ -1181,46 +1182,49 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     ),
                                     Expanded(
                                       flex: 2,
-                                      child: CustomFormField(
-                                        controller: _salary,
-                                        maxLength: 15,
-                                        hint: '0.00',
-                                        label: "Monthly Salary",
-                                        fontSizeForLabel: 14.sp,
-                                        contentpadding: EdgeInsets.only(
-                                            left: 16.sp,
-                                            bottom: 10.sp,
-                                            right: 10.sp,
-                                            top: 10.sp),
-                                        hintTextHeight: 1.7.h,
-                                        validator: (value) {
-                                          RegExp regex =
-                                              RegExp(r'^\D+|(?<=\d),(?=\d)');
-                                          if (value.isEmpty) {
-                                            setState(() {
-                                              createPeopleValidate = false;
-                                            });
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: 55.sp),
+                                        child: CustomFormField(
+                                          controller: _salary,
+                                          maxLength: 15,
+                                          hint: '0.00',
+                                          label: "Monthly Salary",
+                                          fontSizeForLabel: 14.sp,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16.sp,
+                                              bottom: 10.sp,
+                                              right: 10.sp,
+                                              top: 10.sp),
+                                          hintTextHeight: 1.7.h,
+                                          validator: (value) {
+                                            RegExp regex =
+                                                RegExp(r'^\D+|(?<=\d),(?=\d)');
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createPeopleValidate = false;
+                                              });
 
-                                            return 'Please enter';
-                                          } else if (regex.hasMatch(value)) {
-                                            setState(() {
-                                              createPeopleValidate = false;
-                                            });
-                                            return 'Please enter valid salary';
-                                          }
-                                          return null;
-                                        },
-                                        onChange: (text) =>
-                                            setState(() => name_ = text),
+                                              return 'Please enter';
+                                            } else if (regex.hasMatch(value)) {
+                                              setState(() {
+                                                createPeopleValidate = false;
+                                              });
+                                              return 'Please enter valid salary';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 8.w,
+                                      width: 47.w,
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        height: 56,
-                                      ),
+                                    Container(
+                                      // color: ,
+                                      width: 7.w,
+                                      height: 50.h,
                                     )
                                   ],
                                 ),
