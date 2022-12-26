@@ -18,6 +18,7 @@ class CustomDatePicker extends StatefulWidget {
   double? fontSizeForLabel;
   bool? obsecqureText;
   DateTime? initialDate;
+  DateTime? endDate;
 
   CustomDatePicker(
       {this.initialDate,
@@ -32,7 +33,8 @@ class CustomDatePicker extends StatefulWidget {
       this.maxline,
       this.fontSizeForLabel,
       this.obsecqureText,
-      this.errorText});
+      this.errorText,
+      this.endDate});
 
   @override
   State<StatefulWidget> createState() {
@@ -236,7 +238,8 @@ class CustomDatePickerState extends State<CustomDatePicker> {
         //   );
         // },
         initialDate: selectedDate!,
-        lastDate: DateTime(5000),
+        // lastDate: widget.endDate ?? DateTime(5000),
+        lastDate: widget.endDate ?? DateTime(5000),
         firstDate: selectedDate ?? DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
