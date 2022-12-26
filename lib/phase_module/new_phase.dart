@@ -88,6 +88,8 @@ class _NewPhaseState extends State<NewPhase> {
   String? subTaskStartDate = "";
   String? subTaskEndDate = "";
   String subTaskResourceName = "";
+  DateTime? milestoneEndDate = DateTime.now();
+  String? milestoneStartDate = "";
 
   bool allValidate = true;
   bool savePhaseClick = false;
@@ -497,6 +499,7 @@ class _NewPhaseState extends State<NewPhase> {
                     onChange: (date) {
                       setState(() {
                         phaseDetails.start_date = date.toString();
+                        milestoneStartDate = phaseDetails.start_date;
                       });
                     },
                     onCancel: () {
@@ -520,6 +523,7 @@ class _NewPhaseState extends State<NewPhase> {
                     onChange: (date) {
                       setState(() {
                         phaseDetails.end_date = date.toString();
+                        milestoneEndDate = date;
                       });
                     },
                     onCancel: () {
@@ -667,7 +671,9 @@ class _NewPhaseState extends State<NewPhase> {
                                       decoration: InputDecoration(
                                         // border: InputBorder.none,
                                         contentPadding: EdgeInsets.only(
-                                            top: 15.0.sp, left: 10.sp),
+                                            top: 15.0.sp,
+                                            left: 10.sp,
+                                            bottom: 5.sp),
                                         prefixIcon: Padding(
                                             padding:
                                                 EdgeInsets.only(top: 0.0.sp),
@@ -677,7 +683,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             )),
                                         hintText: 'Search',
                                         hintStyle: TextStyle(
-                                            fontSize: 14.0.sp,
+                                            fontSize: 14.sp,
                                             color: Colors.white,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w400),
@@ -982,6 +988,9 @@ class _NewPhaseState extends State<NewPhase> {
                       initialDate: widget.type == 0
                           ? null
                           : AppUtil.stringToDate(mileStoneDate.toString()),
+                      endDate: milestoneEndDate != null
+                          ? milestoneEndDate
+                          : DateTime.now(),
                       onChange: (date) {
                         setState(() {
                           mileStoneDate = date;
@@ -1125,6 +1134,7 @@ class _NewPhaseState extends State<NewPhase> {
                           initialDate: widget.type == 0
                               ? null
                               : AppUtil.stringToDateValidate(subTaskStartDate!),
+                          endDate: milestoneEndDate,
                           onChange: (dates) {
                             print("------------Start date----------------");
 
@@ -1157,13 +1167,17 @@ class _NewPhaseState extends State<NewPhase> {
                           initialDate: widget.type == 0
                               ? null
                               : AppUtil.stringToDateValidate(subTaskEndDate!),
+                          endDate: milestoneEndDate,
                           onChange: (date) {
                             setState(() {
                               subTaskEndDate = date.toString();
                               print("end date-----------------$subTaskEndDate");
+
+                              errorTextForSubtask(
+                                  subTaskStartDate, subTaskEndDate);
                             });
-                            setState(() {});
                           },
+
                           onCancel: () {
                             setState(() {
                               subTaskEndDate = null;
@@ -1446,7 +1460,7 @@ class _NewPhaseState extends State<NewPhase> {
                           )),
                       hintText: 'Search',
                       hintStyle: TextStyle(
-                          fontSize: 14.0.sp,
+                          fontSize: 14.sp,
                           color: Colors.white,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w400),
@@ -1863,14 +1877,16 @@ class _NewPhaseState extends State<NewPhase> {
         phaseDetails.start_date =
             AppUtil.dateToString(DateTime.parse(phaseDetails.start_date!));
       } catch (e) {
-        return phaseDetails.start_date;
+        phaseDetails.start_date = phaseDetails.start_date;
+        //return phaseDetails.start_date;
       }
 
       try {
         phaseDetails.end_date =
             AppUtil.dateToString(DateTime.parse(phaseDetails.end_date!));
       } catch (e) {
-        return phaseDetails.end_date;
+        phaseDetails.end_date = phaseDetails.end_date;
+        //return phaseDetails.end_date;
       }
 
       try {
