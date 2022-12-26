@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zeus/helper_widget/daysList.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
@@ -756,6 +756,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
     if (list.resource != null &&
         list.resource!.availibiltyDay != null &&
         list.resource!.availibiltyDay!.isNotEmpty) {
+      print("-------------------------------------------");
+      print(list.resource!.availibiltyDay);
       commaSepratedList = list.resource!.availibiltyDay!.split(", ");
 
       commaSepratedList.forEach((element) {
@@ -827,10 +829,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  list.resource != null
-                      ? startDay == endDay
-                          ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
-                          : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                  list.resource != null && list.resource!.availibiltyDay != null
+                      ? "${list.resource!.availibiltyDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                      // startDay == endDay
+                      //     ? "${startDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
+                      //     : "${startDay}  -  ${endDay} | ${list.resource!.availibiltyTime} | $timeoffset  $timezome"
                       : 'N/A',
                   style: TextStyle(
                       color: ColorSelect.white_color,

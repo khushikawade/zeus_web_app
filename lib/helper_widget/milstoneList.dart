@@ -107,19 +107,7 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                                             radius: 20.r,
                                             child: Icon(Icons.edit,
                                                 color: Colors.white,
-                                                size: 18.sp)
-
-                                            // SvgPicture.asset(
-
-                                            //   'images/photo.svg',
-
-                                            //   width: 24.0,
-
-                                            //   height: 24.0,
-
-                                            // ),
-
-                                            ),
+                                                size: 18.sp)),
                                       ),
                                     ],
                                   ),
