@@ -67,6 +67,7 @@ class _NewPhaseState extends State<NewPhase> {
   bool mileStoneDateCheck = true;
   bool subtaskdateCheck = true;
   bool createButtonClick = false;
+  bool milestoneValidate = false;
   List<String> selectedSource = [];
   List<PhasesSortedResources> listResource = [];
   // List<ResourceData> selectedSubTaskSource = [];
@@ -328,6 +329,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             setState(() {
                                               savePhaseClick = true;
                                               createButtonClick = true;
+                                              milestoneValidate = true;
                                             });
 
                                             Future.delayed(
@@ -374,7 +376,10 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   List<Details> getSuggestions(String query) {
+    print(users);
+    print(users);
     List<Details> matches = List.empty(growable: true);
+    matches.clear();
     matches.addAll(users);
     matches.retainWhere(
         (s) => s.name!.toLowerCase().contains(query.toLowerCase()));
@@ -669,12 +674,13 @@ class _NewPhaseState extends State<NewPhase> {
                                         contentPadding: EdgeInsets.only(
                                             top: 15.0.sp, left: 10.sp),
                                         prefixIcon: Padding(
-                                            padding:
-                                                EdgeInsets.only(top: 9.0.sp),
-                                            child: Icon(
-                                              Icons.search,
-                                              color: Color(0xff64748B),
-                                            )),
+                                          padding: EdgeInsets.only(
+                                              top: 12.0.sp, bottom: 9.sp),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Color(0xff64748B),
+                                          ),
+                                        ),
                                         hintText: 'Search',
                                         hintStyle: TextStyle(
                                             fontSize: 14.0.sp,
@@ -685,14 +691,8 @@ class _NewPhaseState extends State<NewPhase> {
                                       ),
                                     ),
                                     itemBuilder: (context, item) {
-                                      return
-                                          // Text(
-                                          //   item.name.toString(),
-                                          //   style: const TextStyle(
-                                          //       fontSize: 16.0, color: Colors.white),
-                                          // );
-                                          // Text("khushi");milestone
-                                          rowResourceName(item);
+                                      print(item);
+                                      return rowResourceName(item);
                                     },
                                     transitionBuilder:
                                         (context, suggestionsBox, controller) {
@@ -739,8 +739,6 @@ class _NewPhaseState extends State<NewPhase> {
                                                       item.departmentId ?? 0,
                                                   profileImage: item.image));
                                           selectedSource.add(item.name!);
-                                          // listResorceDropDown
-                                          //     .add(DropdownModel(_depat, item));
                                         }
                                       });
                                     },
@@ -908,6 +906,7 @@ class _NewPhaseState extends State<NewPhase> {
                         : clickAddMileStone(),
                     onTap: () {
                       setState(() {
+                        milestoneValidate = true;
                         addMilestoneBtnClick = true;
                         createButtonClick = true;
                         saveButtonClickForMileStone = false;
@@ -1000,7 +999,7 @@ class _NewPhaseState extends State<NewPhase> {
                       validator: (value) {},
                     ),
                   ),
-            savePhaseClick && phaseDetails.milestone!.isEmpty
+            milestoneValidate && phaseDetails.milestone!.isEmpty
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.26,
                     margin: EdgeInsets.only(left: 30.sp, top: 3.sp),
@@ -1093,6 +1092,7 @@ class _NewPhaseState extends State<NewPhase> {
                       setState(() {
                         savePhaseClick = true;
                         createButtonClick = true;
+                        milestoneValidate = true;
                         Future.delayed(const Duration(microseconds: 500), () {
                           if (_formKey.currentState!.validate()) {
                             if (allValidate && selectedSource.isNotEmpty) {
@@ -1439,7 +1439,7 @@ class _NewPhaseState extends State<NewPhase> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 15.sp),
                       prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 4.sp),
+                          padding: EdgeInsets.only(top: 12.0.sp, bottom: 9.sp),
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),
@@ -1551,6 +1551,7 @@ class _NewPhaseState extends State<NewPhase> {
             onTap: () {
               setState(() {
                 // mileStoneDate = null;
+
                 mileStoneTitle = "";
                 controllerMilestoneTitle.text = "";
                 clickedAddMileStone = false;
@@ -1563,7 +1564,7 @@ class _NewPhaseState extends State<NewPhase> {
             child: Padding(
               padding: EdgeInsets.only(right: 36.5.sp, left: 26.sp),
               child: Text(
-                "Save 1",
+                "Save",
                 style: TextStyle(
                     fontSize: 14.0.sp,
                     color: Color(0xff93C5FD),
@@ -1656,7 +1657,7 @@ class _NewPhaseState extends State<NewPhase> {
             child: Padding(
               padding: EdgeInsets.only(right: 37.sp, left: 26.sp),
               child: Text(
-                "Save 2",
+                "Save",
                 style: TextStyle(
                     fontSize: 14.sp,
                     color: Color(0xff93C5FD),
