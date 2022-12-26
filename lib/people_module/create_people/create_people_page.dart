@@ -5,11 +5,12 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:time_range/time_range.dart';
+
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
+import 'package:zeus/helper_widget/time_range_data.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
@@ -1246,7 +1247,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Availabilty",
+                                  "Availability",
                                   style: TextStyle(
                                       color: Color(0xffFFFFFF),
                                       fontSize: 18.sp,
@@ -1515,8 +1516,8 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   children: [
                                     Container(
                                       padding: EdgeInsets.only(
-                                        left: 5,
-                                        right: 5,
+                                        left: 5.sp,
+                                        right: 5.sp,
                                       ),
                                       margin: EdgeInsets.only(top: 16.sp),
                                       height: 49.h,
@@ -1551,14 +1552,18 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                 // border: InputBorder.none,
                                                 contentPadding: EdgeInsets.only(
                                                     top: 15.sp, left: 10.sp),
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: Color(0xff64748B),
+                                                prefixIcon: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 12.sp),
+                                                  child: Icon(
+                                                    Icons.search,
+                                                    color: Color(0xff64748B),
+                                                  ),
                                                 ),
                                                 hintText: 'Search',
                                                 hintStyle: TextStyle(
                                                     fontSize: 14.sp,
-                                                    color: Colors.white,
+                                                    color: Color(0xff64748B),
                                                     fontFamily: 'Inter-Medium',
                                                     letterSpacing: 0.1,
                                                     fontStyle: FontStyle.normal,
@@ -1979,7 +1984,7 @@ class _EditPageState extends State<CreatePeoplePage> {
           'image', _selectedFile!,
           contentType: new MediaType('application', 'octet-stream'),
           filename: "file_up"));
-    }else {
+    } else {
       //request.fields['image'] = widget.response!.image!;
     }
 

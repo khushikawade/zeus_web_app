@@ -9,14 +9,14 @@ import 'dart:typed_data';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:time_range/time_range.dart';
+
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/create_people/create_people_page.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
-import 'package:zeus/project_module/project_detail/project_home_view.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/logout_module/logout_view.dart';
 import 'package:zeus/utility/debouncer.dart';
@@ -2168,9 +2168,10 @@ class _NavigationRailState extends State<MyHomePage>
                         },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 16.sp),
+                          
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.sp, left: 15.sp, right: 20.sp),
+                                  top: 12.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),
@@ -2648,13 +2649,13 @@ class _NavigationRailState extends State<MyHomePage>
                     ),
                   ),
                 ),
-                Column(
-                  children: [
-                    SizedBox(
-                      width: 25.w,
-                    ),
-                  ],
-                ),
+                // Column(
+                //   children: [
+                //     SizedBox(
+                //       width: 25.w,
+                //     ),
+                //   ],
+                // ),
                 Expanded(
                     child: _mainContents[projectListTapIcon
                         ? 1

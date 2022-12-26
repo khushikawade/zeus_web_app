@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zeus/services/model/resources_needed.dart';
 
 // ignore: must_be_immutable
 class CustomSearchDropdown extends StatefulWidget {
@@ -10,8 +11,11 @@ class CustomSearchDropdown extends StatefulWidget {
   String? hint;
   String? errorText;
   EdgeInsets? paddingForLabeltext;
+  EdgeInsets? margin;
   double? fontsizeForLabel;
   DropdownModel? initialValue;
+  DropDownforPhase? initalValueforPhase;
+  String? type;
 
   Function(DropdownModel value)? onChange;
   CustomSearchDropdown(
@@ -19,6 +23,7 @@ class CustomSearchDropdown extends StatefulWidget {
       required this.items,
       this.label,
       this.hint,
+      this.margin,
       this.onChange,
       this.errorText,
       this.paddingForLabeltext,
@@ -31,6 +36,7 @@ class CustomSearchDropdown extends StatefulWidget {
 
 class _MyHomePageState extends State<CustomSearchDropdown> {
   DropdownModel? selectedValue;
+  DropDownforPhase? selectPhase;
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -51,7 +57,7 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 18.h),
+      margin: widget.margin ?? EdgeInsets.only(bottom: 18.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,32 +125,32 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
                     dropdownDecoration: BoxDecoration(color: Color(0xff0F172A)),
 
                     searchController: textEditingController,
-                    searchInnerWidget:
-                        widget.showSearchBar != null && widget.showSearchBar!
-                            ? Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 4,
-                                  right: 8,
-                                  left: 8,
-                                ),
-                                child: TextFormField(
-                                  controller: textEditingController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 8,
-                                    ),
-                                    hintText: 'Search for an item...',
-                                    hintStyle: TextStyle(fontSize: 12.sp),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : SizedBox.shrink(),
+                    // searchInnerWidget:
+                    //     widget.showSearchBar != null && widget.showSearchBar!
+                    //         ? Padding(
+                    //             padding: const EdgeInsets.only(
+                    //               top: 8,
+                    //               bottom: 4,
+                    //               right: 8,
+                    //               left: 8,
+                    //             ),
+                    //             child: TextFormField(
+                    //               controller: textEditingController,
+                    //               decoration: InputDecoration(
+                    //                 isDense: true,
+                    //                 contentPadding: const EdgeInsets.symmetric(
+                    //                   horizontal: 10,
+                    //                   vertical: 8,
+                    //                 ),
+                    //                 hintText: 'Search for an item...',
+                    //                 hintStyle: TextStyle(fontSize: 12.sp),
+                    //                 border: OutlineInputBorder(
+                    //                   borderRadius: BorderRadius.circular(8),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           )
+                    //         : SizedBox.shrink(),
                     searchMatchFn: (item, searchValue) {
                       return (item.value.toString().contains(searchValue));
                     },
@@ -159,27 +165,6 @@ class _MyHomePageState extends State<CustomSearchDropdown> {
               ],
             ),
           ),
-
-          // Container(
-          //   height: 57.h,
-          //   child: Stack(
-          //     children: [
-          //       // widget.label != null
-          //       //     ? Padding(
-          //       //         padding: EdgeInsets.only(top: 10.sp, left: 10.sp),
-          //       //         child: Text(
-          //       //           widget.label ?? "",
-          //       //           style: TextStyle(
-          //       //               fontSize: 11.sp,
-          //       //               color: Color(0xff64748B),
-          //       //               fontFamily: 'Inter-Medium',
-          //       //               fontWeight: FontWeight.w500),
-          //       //         ),
-          //       //       )
-          //       //     : SizedBox.shrink(),
-          //     ],
-          //   ),
-          // ),
           widget.errorText != null && widget.errorText!.isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(
@@ -204,4 +189,10 @@ class DropdownModel {
   String id = "";
   String item = "";
   DropdownModel(this.id, this.item);
+}
+
+class DropDownforPhase {
+  String department = "";
+  List<Details> details = [];
+  DropDownforPhase(this.department, this.details);
 }

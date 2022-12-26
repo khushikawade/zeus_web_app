@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +12,8 @@ import 'package:zeus/phase_module/new_phase.dart';
 import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -47,7 +47,6 @@ showDailog(
       fullName;
   List<String> abc = [];
   List<String> roadblock = [];
-
   final ValueChanged<String> onSubmit;
   var _id = id;
   var _formKey = GlobalKey<FormState>();
@@ -71,10 +70,8 @@ showDailog(
   ScrollController _horizontalScrollController = ScrollController();
   ScrollController _verticalScrollController = ScrollController();
   var myFormat = DateFormat('yyyy-MM-dd');
-
   final TextEditingController _typeAheadController = TextEditingController();
   Debouncer _debouncer = Debouncer();
-
   //Edit project_detail api
   Future<void> editProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -122,7 +119,6 @@ showDailog(
   //Edit project_detail api
   Future<void> removeTagAPI(String tagId) async {
     var token = 'Bearer ' + storage.read("token");
-
     try {
       var response = await http.delete(
         Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
@@ -131,27 +127,22 @@ showDailog(
           "Authorization": token,
         },
       );
-
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
-
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
-
         print(response.body);
       }
     } catch (e) {}
   }
 
   //Edit project_detail api
-
   Future<void> saveTagApi(String projectId, String tagName) async {
     var token = 'Bearer ' + storage.read("token");
-
     try {
       var response = await http.post(
         Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
@@ -164,26 +155,21 @@ showDailog(
           "Authorization": token,
         },
       );
-
       // ignore: unrelated_type_equality_checks
-
       if (response.statusCode == 200) {
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
-
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
         AppUtil.showErrorDialog(context);
       } else {
         print("failuree");
-
         print(response.body);
       }
     } catch (e) {}
   }
 
   //Add
-
   //Add description and time api
   Future<void> addDescriptionProject() async {
     var token = 'Bearer ' + storage.read("token");
@@ -191,7 +177,6 @@ showDailog(
       var apiResponse = await http.post(
         ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is
         Uri.parse('${AppUrl.baseUrl}/project/project-dates/$_id'),
-
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days":
@@ -215,7 +200,6 @@ showDailog(
           "Authorization": token,
         },
       );
-
       // ignore: unrelated_type_equality_checks
       if (apiResponse.statusCode == 200) {
         var responseJson =
@@ -235,7 +219,6 @@ showDailog(
           msg: responseJson['message'],
           backgroundColor: Colors.grey,
         );
-
         print("failuree");
       }
     } catch (e) {
@@ -250,72 +233,57 @@ showDailog(
             response.data!.title!.isNotEmpty
         ? response.data!.title!
         : '';
-
     _crmtask.text = response.data != null &&
             response.data!.crmTaskId != null &&
             response.data!.crmTaskId!.isNotEmpty
         ? response.data!.crmTaskId!
         : '';
-
     _warkfolderId.text = response.data != null &&
             response.data!.workFolderId != null &&
             response.data!.workFolderId!.isNotEmpty
         ? response.data!.workFolderId!
         : '';
-
     _budget.text = response.data != null && response.data!.budget != null
         ? response.data!.budget!.toString()
         : '';
-
     _estimatehours.text = response.data != null &&
             response.data!.estimationHours != null &&
             response.data!.estimationHours!.isNotEmpty
         ? response.data!.estimationHours!.toString()
         : '';
-
     _custome = response.data != null && response.data!.customerId != null
         ? response.data!.customerId.toString()
         : '';
-
     _account =
         response.data != null && response.data!.accountablePersonId != null
             ? response.data!.accountablePersonId.toString()
             : '';
-
     if (response.data != null &&
         response.data!.reminderDate != null &&
         response.data!.reminderDate!.isNotEmpty &&
         response.data!.reminderDate != "0000-00-00 00:00:00") {
       selectedDateReminder =
           DateTime.parse(response.data!.reminderDate!.toString());
-
       print("date time now ${DateTime.now()}");
       print('--------------------------------------');
-
       //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
     }
-
     if (response.data != null &&
         response.data!.deadlineDate != null &&
         response.data!.deadlineDate!.isNotEmpty &&
         response.data!.deadlineDate != "0000-00-00 00:00:00") {
       selectedDateDeadline =
           DateTime.parse(response.data!.deadlineDate!.toString());
-
       //selectedDateDeadline = DateTime.parse("2022-11-27 00:00:00");
-
     }
-
     if (response.data != null &&
         response.data!.deliveryDate != null &&
         response.data!.deliveryDate!.isNotEmpty &&
         response.data!.deliveryDate != "0000-00-00 00:00:00") {
       selectedDateDevlivery =
           DateTime.parse(response.data!.deliveryDate!.toString());
-
       //selectedDateDevlivery = DateTime.parse("2022-11-29 00:00:00");
     }
-
     if (response.data != null &&
         response.data!.startDate != null &&
         response.data!.startDate!.isNotEmpty &&
@@ -323,12 +291,10 @@ showDailog(
       // selectedDate = DateTime.parse("2022-11-29 00:00:00");
       selectedDate = DateTime.parse(response.data!.startDate!.toString());
     }
-
     _description.text =
         response.data != null && response.data!.description != null
             ? response.data!.description.toString()
             : '';
-
     if (response.data != null &&
         response.data!.tags != null &&
         response.data!.tags!.isNotEmpty) {
@@ -338,7 +304,6 @@ showDailog(
         }
       });
     }
-
     if (response.data != null &&
         response.data!.roadblocks != null &&
         response.data!.roadblocks!.isNotEmpty) {
@@ -348,14 +313,12 @@ showDailog(
         }
       });
     }
-
     if (response.data != null &&
         response.data!.roadblocks != null &&
         response.data!.roadblocks!.isNotEmpty) {
       response.data!.roadblocks!.forEach((element) {
         if (element.createdAt != null) {
           roadblockCreateDate = element.createdAt.toString();
-
           var newStr = roadblockCreateDate!.substring(0, 10) +
               ' ' +
               roadblockCreateDate!.substring(11, 23);
@@ -369,11 +332,9 @@ showDailog(
     } else {
       roadblockCreateDate1 = 'N/A';
     }
-
     String firstName = "";
     String lastName = "";
     // String fullName = '';
-
     if (response.data != null && response.data!.roadblocks != null)
       response.data!.roadblocks!.forEach((element) {
         if (element.responsiblePerson != null &&
@@ -382,10 +343,8 @@ showDailog(
           if (rcName!.contains(" ")) {
             List<String> splitedList =
                 element.responsiblePerson!.name!.split(" ");
-
             firstName = splitedList[0];
             lastName = splitedList[1];
-
             fullName = firstName.substring(0, 1).toUpperCase() +
                 lastName.substring(0, 1).toUpperCase();
           } else {
@@ -490,7 +449,6 @@ showDailog(
                         : DateTime.now(),
         //firstDate: DateTime.now(),
         lastDate: DateTime(5000));
-
     if (picked != null && picked != selectedDate) {
       setState(() {
         if (calendarTapValue == 1) {
@@ -706,7 +664,6 @@ showDailog(
                                                 ),
                                               ],
                                             ),
-
                                             ProjectEdit(
                                                 accountableId: accountableId,
                                                 currencyList: currencyName,
@@ -995,7 +952,6 @@ showDailog(
                                 ],
                               ),
                             ),
-
                             //---------------------SAYYAM YADAV
                             const Divider(
                               color: Color(0xff424D5F),
@@ -1005,7 +961,6 @@ showDailog(
                           ],
                         ),
                       ),
-
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 10),
@@ -1110,7 +1065,6 @@ showDailog(
                                                                 }
                                                               },
                                                             );
-
                                                             setState(() {
                                                               abc.removeAt(
                                                                   index);
@@ -1252,7 +1206,6 @@ showDailog(
                                                                     item.name)) {
                                                                   abc.add(item
                                                                       .name!);
-
                                                                   saveTagApi(
                                                                       response
                                                                           .data!
@@ -1372,7 +1325,6 @@ showDailog(
                                             });
                                           } catch (e) {
                                             print(e);
-
                                             print(value);
                                           }
                                         },
@@ -1688,7 +1640,6 @@ showDailog(
                                           builder: (context) {
                                             return NewPhase(id!, 0);
                                           });
-
                                       if (result != null && result) {
                                         response = await Provider.of<
                                                     ProjectHomeViewModel>(
@@ -1696,7 +1647,6 @@ showDailog(
                                                 listen: false)
                                             .getProjectDetail(
                                                 response.data!.id!.toString());
-
                                         setState(() {});
                                       }
                                     },
@@ -1787,20 +1737,15 @@ showDailog(
                                         title!.substring(0, 2).toUpperCase();
                                     var date = phase.startDate;
                                     var endDate = phase.endDate;
-
                                     var _date = date.toString();
-
                                     var date1 = AppUtil.getFormatedDate(_date);
                                     var fromDate =
                                         AppUtil.formattedDateYear1(date1);
-
                                     var _endDate = endDate.toString();
-
                                     var date2 =
                                         AppUtil.getFormatedDate(_endDate);
                                     var tillDate =
                                         AppUtil.formattedDateYear1(date2);
-
                                     return Column(
                                       mainAxisSize: MainAxisSize.max,
                                       crossAxisAlignment:
@@ -1905,7 +1850,6 @@ showDailog(
                                                                       .toString(),
                                                                   1);
                                                             });
-
                                                     if (result != null &&
                                                         result) {
                                                       response = await Provider
@@ -1915,7 +1859,6 @@ showDailog(
                                                           .getProjectDetail(
                                                               response.data!.id!
                                                                   .toString());
-
                                                       setState(() {});
                                                     }
                                                   },

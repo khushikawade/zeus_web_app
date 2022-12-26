@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:time_range/time_range.dart';
+import 'package:provider/provider.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/people_module/create_people/create_people_page.dart';
+import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -187,10 +188,10 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
           value: 1,
           child: InkWell(
             hoverColor: Color(0xff1e293b),
-            onTap: () {
+            onTap: () async {
               if (widget.data != null) {
                 Navigator.pop(context);
-                showDialog(
+                bool result = await showDialog(
                     context: context,
                     builder: (context) {
                       return StatefulBuilder(
@@ -210,6 +211,13 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                         ),
                       );
                     });
+
+                if (result != null && result) {
+                  Provider.of<PeopleHomeViewModel>(context, listen: false)
+                      .getPeopleDataList(searchText: '');
+
+                  setState(() {});
+                }
               }
               // if (widget.data != null) {
               //   setState(() {

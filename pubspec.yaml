@@ -40,7 +40,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   mime_type: ^1.0.0
   responsive_table: ^0.2.0+2
-  time_range: ^1.0.3
+  # time_range: ^1.0.3
   responsive_framework: ^0.2.0
   flutter_smart_dialog:
   flutter_typeahead: ^4.1.1
