@@ -2167,10 +2167,10 @@ class _NavigationRailState extends State<MyHomePage>
                           }
                         },
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 16.sp),
+                          contentPadding: EdgeInsets.only(top: 14.sp),
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 0.0.sp, left: 15.sp, right: 20.sp),
+                                  top: 10.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),
@@ -2249,7 +2249,7 @@ class _NavigationRailState extends State<MyHomePage>
                             projectListTapIcon
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                        top: 12.sp, left: 12.sp),
+                                        top: 12.sp, left: 30.sp),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -2310,14 +2310,18 @@ class _NavigationRailState extends State<MyHomePage>
                                     circleTapIcon == false &&
                                     settingIcon == false &&
                                     bellTapIcon == false
-                                ? Text("Profile",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 22.sp,
-                                        fontFamily: 'Inter-Medium',
-                                        letterSpacing: 0.1,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700))
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 12.sp, left: 20.sp),
+                                    child: Text("Profile",
+                                        style: TextStyle(
+                                            color: Color(0xffFFFFFF),
+                                            fontSize: 22.sp,
+                                            fontFamily: 'Inter-Medium',
+                                            letterSpacing: 0.1,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700)),
+                                  )
                                 : Container(),
                           ],
                         ),

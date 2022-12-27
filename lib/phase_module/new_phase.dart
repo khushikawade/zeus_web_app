@@ -684,10 +684,11 @@ class _NewPhaseState extends State<NewPhase> {
                                             bottom: 5.sp),
                                         prefixIcon: Padding(
                                             padding:
-                                                EdgeInsets.only(top: 0.0.sp),
+                                                EdgeInsets.only(top: 10.0.sp),
                                             child: Icon(
                                               Icons.search,
                                               color: Color(0xff64748B),
+                                              size: 20.sp,
                                             )),
                                         hintText: 'Search',
                                         hintStyle: TextStyle(
@@ -1459,10 +1460,11 @@ class _NewPhaseState extends State<NewPhase> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 15.sp),
                       prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 0.sp),
+                          padding: EdgeInsets.only(top: 10.sp),
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),
+                            size: 20.sp,
                           )),
                       hintText: 'Search',
                       hintStyle: TextStyle(

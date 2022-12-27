@@ -1562,10 +1562,14 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               decoration: InputDecoration(
                                                 // border: InputBorder.none,
                                                 contentPadding: EdgeInsets.only(
-                                                    top: 14.sp, left: 10.sp),
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: Color(0xff64748B),
+                                                    top: 15.sp, left: 21.95.sp),
+                                                prefixIcon: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 10.sp),
+                                                  child: Icon(
+                                                    Icons.search,
+                                                    color: Color(0xff64748B),
+                                                  ),
                                                 ),
                                                 hintText: 'Search',
 

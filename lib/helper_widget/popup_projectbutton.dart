@@ -195,10 +195,10 @@ class _ProjectEditState extends State<ProjectEdit>
                                         child: Container(
                                           margin:
                                               EdgeInsets.only(right: 35.0.w),
-                                          child: const Text(
+                                          child: Text(
                                             "Cancel",
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
                                                 color: ColorSelect.delete_text),
