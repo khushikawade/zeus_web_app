@@ -2258,9 +2258,6 @@ class _NavigationRailState extends State<MyHomePage>
                                       children: [
                                         Column(
                                           children: [
-                                            SizedBox(
-                                              width: 12.w,
-                                            ),
                                             Text("List",
                                                 style: TextStyle(
                                                     color: Color(0xff93C5FD),
@@ -2313,17 +2310,14 @@ class _NavigationRailState extends State<MyHomePage>
                                     circleTapIcon == false &&
                                     settingIcon == false &&
                                     bellTapIcon == false
-                                ? Padding(
-                                    padding: EdgeInsets.only(left: 22.sp),
-                                    child: Text("Profile",
-                                        style: TextStyle(
-                                            color: Color(0xffFFFFFF),
-                                            fontSize: 22.sp,
-                                            fontFamily: 'Inter-Medium',
-                                            letterSpacing: 0.1,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w700)),
-                                  )
+                                ? Text("Profile",
+                                    style: TextStyle(
+                                        color: Color(0xffFFFFFF),
+                                        fontSize: 22.sp,
+                                        fontFamily: 'Inter-Medium',
+                                        letterSpacing: 0.1,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700))
                                 : Container(),
                           ],
                         ),

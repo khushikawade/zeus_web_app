@@ -1323,7 +1323,7 @@ class _NewPhaseState extends State<NewPhase> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 30.sp, top: 21.sp),
+                padding: EdgeInsets.only(left: 30.sp, top: 12.sp),
                 child: Container(
                   height: 45.h,
                   width: 45.w,
@@ -1348,8 +1348,8 @@ class _NewPhaseState extends State<NewPhase> {
                           bottom: 0,
                           right: 0,
                           child: Container(
-                            width: 18.w,
                             height: 18.h,
+                            width: 18.w,
                             padding: EdgeInsets.all(3.sp),
                             decoration: BoxDecoration(
                               color: Color(0xff10B981),

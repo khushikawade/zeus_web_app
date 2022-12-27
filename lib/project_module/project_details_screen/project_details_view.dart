@@ -1368,146 +1368,235 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
 
   // update Controller Value
   updateControllerValue() {
-    users = widget.skills ?? [];
-    _projecttitle.text = widget.response!.data != null &&
-            widget.response!.data!.title != null &&
-            widget.response!.data!.title!.isNotEmpty
-        ? widget.response!.data!.title!
-        : '';
-    _crmtask.text = widget.response!.data != null &&
-            widget.response!.data!.crmTaskId != null &&
-            widget.response!.data!.crmTaskId!.isNotEmpty
-        ? widget.response!.data!.crmTaskId!
-        : '';
-    _warkfolderId.text = widget.response!.data != null &&
-            widget.response!.data!.workFolderId != null &&
-            widget.response!.data!.workFolderId!.isNotEmpty
-        ? widget.response!.data!.workFolderId!
-        : '';
-    _budget.text =
-        widget.response!.data != null && widget.response!.data!.budget != null
-            ? widget.response!.data!.budget!.toString()
-            : '';
-    _estimatehours.text = widget.response!.data != null &&
-            widget.response!.data!.estimationHours != null &&
-            widget.response!.data!.estimationHours!.isNotEmpty
-        ? widget.response!.data!.estimationHours!.toString()
-        : '';
-    _custome = widget.response!.data != null &&
-            widget.response!.data!.customerId != null
-        ? widget.response!.data!.customerId.toString()
-        : '';
-    _account = widget.response!.data != null &&
-            widget.response!.data!.accountablePersonId != null
-        ? widget.response!.data!.accountablePersonId.toString()
-        : '';
-    if (widget.response!.data != null &&
-        widget.response!.data!.reminderDate != null &&
-        widget.response!.data!.reminderDate!.isNotEmpty &&
-        widget.response!.data!.reminderDate != "0000-00-00 00:00:00") {
-      selectedDateReminder =
-          DateTime.parse(widget.response!.data!.reminderDate!.toString());
-      print("date time now ${DateTime.now()}");
-      print('--------------------------------------');
-      //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
-    }
-    if (widget.response!.data != null &&
-        widget.response!.data!.deadlineDate != null &&
-        widget.response!.data!.deadlineDate!.isNotEmpty &&
-        widget.response!.data!.deadlineDate != "0000-00-00 00:00:00") {
-      selectedDateDeadline =
-          DateTime.parse(widget.response!.data!.deadlineDate!.toString());
-      //selectedDateDeadline = DateTime.parse("2022-11-27 00:00:00");
-    }
-    if (widget.response!.data != null &&
-        widget.response!.data!.deliveryDate != null &&
-        widget.response!.data!.deliveryDate!.isNotEmpty &&
-        widget.response!.data!.deliveryDate != "0000-00-00 00:00:00") {
-      selectedDateDevlivery =
-          DateTime.parse(widget.response!.data!.deliveryDate!.toString());
-      //selectedDateDevlivery = DateTime.parse("2022-11-29 00:00:00");
-    }
-    if (widget.response!.data != null &&
-        widget.response!.data!.startDate != null &&
-        widget.response!.data!.startDate!.isNotEmpty &&
-        widget.response!.data!.startDate != "0000-00-00 00:00:00") {
-      // selectedDate = DateTime.parse("2022-11-29 00:00:00");
-      selectedDate =
-          DateTime.parse(widget.response!.data!.startDate!.toString());
-    }
-    _description.text = widget.response!.data != null &&
-            widget.response!.data!.description != null
-        ? widget.response!.data!.description.toString()
-        : '';
-    if (widget.response!.data != null &&
-        widget.response!.data!.tags != null &&
-        widget.response!.data!.tags!.isNotEmpty) {
-      widget.response!.data!.tags!.forEach((element) {
-        if (!abc.contains(element.name)) {
-          abc.add(element.name!);
-        }
-      });
-      abc.add("");
-    } else {
-      abc.add("");
-    }
-    if (widget.response!.data != null &&
-        widget.response!.data!.roadblocks != null &&
-        widget.response!.data!.roadblocks!.isNotEmpty) {
-      widget.response!.data!.roadblocks!.forEach((element) {
-        if (!roadblock.contains(element.rodblockDetails!.description)) {
-          roadblock.add(element.rodblockDetails!.description!);
-        }
-      });
-    }
-    if (widget.response!.data != null &&
-        widget.response!.data!.roadblocks != null &&
-        widget.response!.data!.roadblocks!.isNotEmpty) {
-      widget.response!.data!.roadblocks!.forEach((element) {
-        if (element.createdAt != null) {
-          roadblockCreateDate = element.createdAt.toString();
-          var newStr = roadblockCreateDate!.substring(0, 10) +
-              ' ' +
-              roadblockCreateDate!.substring(11, 23);
-          print(newStr);
-          DateTime dt = DateTime.parse(newStr);
-          roadblockCreateDate1 = DateFormat("d MMM").format(dt);
-        } else {
-          roadblockCreateDate1 = 'N/A';
-        }
-      });
-    } else {
-      roadblockCreateDate1 = 'N/A';
-    }
     String firstName = "";
     String lastName = "";
-    // String fullName = '';
-    if (widget.response!.data != null &&
-        widget.response!.data!.roadblocks != null)
-      widget.response!.data!.roadblocks!.forEach((element) {
-        if (element.responsiblePerson != null &&
-            element.responsiblePerson!.name != null) {
-          rcName = element.responsiblePerson!.name;
-          if (rcName!.contains(" ")) {
-            List<String> splitedList =
-                element.responsiblePerson!.name!.split(" ");
-            firstName = splitedList[0];
-            lastName = splitedList[1];
-            fullName = firstName.substring(0, 1).toUpperCase() +
-                lastName.substring(0, 1).toUpperCase();
-          } else {
-            fullName =
-                element.responsiblePerson!.name!.substring(0, 1).toUpperCase();
+    try {
+      users = widget.skills ?? [];
+    } catch (e) {
+      print("Exception in ----------------------- 1 ${e}");
+    }
+
+    try {
+      _projecttitle.text = widget.response!.data != null &&
+              widget.response!.data!.title != null &&
+              widget.response!.data!.title!.isNotEmpty
+          ? widget.response!.data!.title!
+          : '';
+    } catch (e) {
+      print("Exception in -------------------2 ${e}");
+    }
+
+    try {
+      _crmtask.text = widget.response!.data != null &&
+              widget.response!.data!.crmTaskId != null &&
+              widget.response!.data!.crmTaskId!.isNotEmpty
+          ? widget.response!.data!.crmTaskId!
+          : '';
+    } catch (e) {
+      print("Exception in -------------3 ${e}");
+    }
+
+    try {
+      _warkfolderId.text = widget.response!.data != null &&
+              widget.response!.data!.workFolderId != null &&
+              widget.response!.data!.workFolderId!.isNotEmpty
+          ? widget.response!.data!.workFolderId!
+          : '';
+    } catch (e) {
+      print("Exception in ------------- 4 ${e}");
+    }
+
+    try {
+      _budget.text =
+          widget.response!.data != null && widget.response!.data!.budget != null
+              ? widget.response!.data!.budget!.toString()
+              : '';
+    } catch (e) {
+      print("Exception in --------------------- 5 ${e}");
+    }
+
+    try {
+      _estimatehours.text = widget.response!.data != null &&
+              widget.response!.data!.estimationHours != null &&
+              widget.response!.data!.estimationHours!.isNotEmpty
+          ? widget.response!.data!.estimationHours!.toString()
+          : '';
+    } catch (e) {
+      print("Exception in ------------------------6 ${e}");
+    }
+
+    try {
+      _custome = widget.response!.data != null &&
+              widget.response!.data!.customerId != null
+          ? widget.response!.data!.customerId.toString()
+          : '';
+    } catch (e) {
+      print("Exception in ------------------------- 7 ${e}");
+    }
+
+    try {
+      _account = widget.response!.data != null &&
+              widget.response!.data!.accountablePersonId != null
+          ? widget.response!.data!.accountablePersonId.toString()
+          : '';
+    } catch (e) {
+      print("Exception in --------------------- 8 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.reminderDate != null &&
+          widget.response!.data!.reminderDate!.isNotEmpty &&
+          widget.response!.data!.reminderDate != "0000-00-00 00:00:00") {
+        selectedDateReminder =
+            DateTime.parse(widget.response!.data!.reminderDate!.toString());
+        print("date time now ${DateTime.now()}");
+        print('--------------------------------------');
+        //selectedDateReminder = DateTime.parse("2022-11-25 00:00:00");
+      }
+    } catch (e) {
+      print("Exception in ---------------- 9 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.deadlineDate != null &&
+          widget.response!.data!.deadlineDate!.isNotEmpty &&
+          widget.response!.data!.deadlineDate != "0000-00-00 00:00:00") {
+        selectedDateDeadline =
+            DateTime.parse(widget.response!.data!.deadlineDate!.toString());
+        //selectedDateDeadline = DateTime.parse("2022-11-27 00:00:00");
+      }
+    } catch (e) {
+      print("Exception in -------------------------- 10 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.deliveryDate != null &&
+          widget.response!.data!.deliveryDate!.isNotEmpty &&
+          widget.response!.data!.deliveryDate != "0000-00-00 00:00:00") {
+        selectedDateDevlivery =
+            DateTime.parse(widget.response!.data!.deliveryDate!.toString());
+        //selectedDateDevlivery = DateTime.parse("2022-11-29 00:00:00");
+      }
+    } catch (e) {
+      print("Exception in ----------------11 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.startDate != null &&
+          widget.response!.data!.startDate!.isNotEmpty &&
+          widget.response!.data!.startDate != "0000-00-00 00:00:00") {
+        // selectedDate = DateTime.parse("2022-11-29 00:00:00");
+        selectedDate =
+            DateTime.parse(widget.response!.data!.startDate!.toString());
+      }
+    } catch (e) {
+      print("Exception in ------------------- 12 ${e}");
+    }
+
+    try {
+      _description.text = widget.response!.data != null &&
+              widget.response!.data!.description != null
+          ? widget.response!.data!.description.toString()
+          : '';
+    } catch (e) {
+      print("Exception in --------------------- 13 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.tags != null &&
+          widget.response!.data!.tags!.isNotEmpty) {
+        widget.response!.data!.tags!.forEach((element) {
+          if (!abc.contains(element.name)) {
+            abc.add(element.name!);
           }
-        } else {
-          fullName = ' ';
-        }
-        _status = widget.response!.data != null &&
-                widget.response!.data!.status != null &&
-                widget.response!.data!.status!.isNotEmpty
-            ? widget.response!.data!.status.toString()
-            : '';
-      });
+        });
+        abc.add("");
+      } else {
+        abc.add("");
+      }
+    } catch (e) {
+      print("Exception in -------------------- 14 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.roadblocks != null &&
+          widget.response!.data!.roadblocks!.isNotEmpty) {
+        widget.response!.data!.roadblocks!.forEach((element) {
+          if (!roadblock.contains(element.rodblockDetails!.description)) {
+            roadblock.add(element.rodblockDetails!.description!);
+          }
+        });
+      }
+    } catch (e) {
+      print("Exception in --------------------- 15 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.roadblocks != null &&
+          widget.response!.data!.roadblocks!.isNotEmpty) {
+        widget.response!.data!.roadblocks!.forEach((element) {
+          if (element.createdAt != null) {
+            roadblockCreateDate = element.createdAt.toString();
+            var newStr = roadblockCreateDate!.substring(0, 10) +
+                ' ' +
+                roadblockCreateDate!.substring(11, 23);
+            print(newStr);
+            DateTime dt = DateTime.parse(newStr);
+            roadblockCreateDate1 = DateFormat("d MMM").format(dt);
+          } else {
+            roadblockCreateDate1 = 'N/A';
+          }
+        });
+      } else {
+        roadblockCreateDate1 = 'N/A';
+      }
+    } catch (e) {
+      print("Exception in -------------------16 ${e}");
+    }
+
+    try {
+      if (widget.response!.data != null &&
+          widget.response!.data!.roadblocks != null)
+        widget.response!.data!.roadblocks!.forEach((element) {
+          if (element.responsiblePerson != null &&
+              element.responsiblePerson!.name != null) {
+            rcName = element.responsiblePerson!.name;
+            if (rcName!.contains(" ")) {
+              List<String> splitedList =
+                  element.responsiblePerson!.name!.split(" ");
+              firstName = splitedList[0];
+              lastName = splitedList[1];
+              fullName = firstName.substring(0, 1).toUpperCase() +
+                  lastName.substring(0, 1).toUpperCase();
+            } else {
+              fullName = element.responsiblePerson!.name!
+                  .substring(0, 1)
+                  .toUpperCase();
+            }
+          } else {
+            fullName = ' ';
+          }
+        });
+    } catch (e) {
+      print("Exception in --------------------- 18 ${e}");
+    }
+
+    try {
+      _status = widget.response!.data != null &&
+              widget.response!.data!.status != null &&
+              widget.response!.data!.status!.isNotEmpty
+          ? widget.response!.data!.status.toString()
+          : '';
+    } catch (e) {
+      print("Exception in ------------------ 19 ${e}");
+    }
   }
 
   List<SkillsData> getSuggestions(String query) {

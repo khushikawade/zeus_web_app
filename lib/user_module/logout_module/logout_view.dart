@@ -64,6 +64,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
         PopupMenuItem(
           padding: EdgeInsets.zero,
           value: 1,
+          height: 30.h,
           child: InkWell(
             hoverColor: Color(0xff1e293b),
             onTap: () {
@@ -75,7 +76,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
               });
             },
             child: Padding(
-              padding: EdgeInsets.all(8.sp),
+              padding: EdgeInsets.only(left: 8.sp, right: 8.sp),
               child: Row(
                 children: [
                   SizedBox(

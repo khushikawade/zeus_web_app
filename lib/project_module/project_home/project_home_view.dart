@@ -448,7 +448,7 @@ class ProjectHomeState extends State<ProjectHome> {
                       data: Theme.of(context)
                           .copyWith(dividerColor: Color(0xff525f72)),
                       child: DataTable(
-                          horizontalMargin: 0,
+                          horizontalMargin: 10,
                           showCheckboxColumn: false,
                           dataRowHeight: 60,
                           dividerThickness: 0.7,
