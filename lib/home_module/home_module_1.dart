@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:typed_data';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,7 +16,7 @@ import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
-import 'package:zeus/project_module/project_detail/project_home_view.dart';
+import 'package:zeus/project_module/project_home/project_home_view.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/logout_module/logout_view.dart';
 import 'package:zeus/utility/debouncer.dart';
@@ -327,11 +328,14 @@ class _NavigationRailState extends State<MyHomePage1>
                           _selectedIndex = index;
 
                           final username = VRouter.of(context).path;
+                          print("User name ----------------- ${username}");
                           if (_selectedIndex == 1) {
                             ConnectedRoutes.toProject(context, username);
                           } else if (_selectedIndex == 3) {
                             ConnectedRoutes.toPeople(context, username);
                           } else {}
+
+                          setState(() {});
                         },
                         labelType: NavigationRailLabelType.selected,
                         backgroundColor: const Color(0xff0F172A),
@@ -666,10 +670,13 @@ class _NavigationRailState extends State<MyHomePage1>
                 : _selectedIndex == 3
                     ? PeopleHomeView()
                     : Container(
-                        width: 60,
-                        height: 60,
-                        color: Colors.red,
-                      )
+                        color: const Color(0xff0F172A),
+                        alignment: Alignment.center,
+                        child:  Text(
+                          'Coming Soon',
+                          style: TextStyle(fontSize: 40.sp, color: Colors.white),
+                        ),
+                      ),
             // sayyamm
             // Expanded(child: _mainContents[_selectedIndex]),
           ],

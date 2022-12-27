@@ -10,7 +10,6 @@ import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_module_1.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
-import 'package:zeus/project_module/project_detail/project_home_view.dart';
 import 'package:zeus/helper_widget/scroll_behaviour.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
@@ -29,6 +28,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:vrouter/src/logs/vlogs.dart';
+
+import 'project_module/project_home/project_home_view.dart';
 
 // void main() {
 //   runApp(
@@ -447,7 +448,8 @@ class MyApp extends StatelessWidget {
                 ),
                 VWidget(
                     path: MyRoutes.homeRoute,
-                    widget: MyHomePage1(ProjectHome(), currentIndex: 1)),
+                
+                    widget: MyHomePage1( ProjectHome(), currentIndex: 1)),
                 VRouteRedirector(
                   redirectTo: MyRoutes.loginRoute,
                   path: r'*',

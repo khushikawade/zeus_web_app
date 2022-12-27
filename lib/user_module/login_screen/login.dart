@@ -610,13 +610,13 @@ class _LoginScreenState extends State<LoginScreen> {
         context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
 
         //launchClickUpsUrl();
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                      onSubmit: (String value) {},
-                      adOnSubmit: (String value) {},
-                    )),
-            (Route<dynamic> route) => route is MyHomePage);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => MyHomePage(
+        //               onSubmit: (String value) {},
+        //               adOnSubmit: (String value) {},
+        //             )),
+        //     (Route<dynamic> route) => route is MyHomePage);
       } else {
         Fluttertoast.showToast(
           msg: 'Please check Email and Password',

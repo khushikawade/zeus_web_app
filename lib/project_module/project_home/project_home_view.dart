@@ -631,15 +631,22 @@ class ProjectHomeState extends State<ProjectHome> {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-
+    // return Container(
+    //   width: 950,
+    //   height: 969,
+    //   color: Colors.red,
+    // );
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: ColorSelect.class_color,
-        body: Container(
-          // width: MediaQuery.of(context).size.width < 950
-          //     ? MediaQuery.of(context).size.width * 2
-          //     : MediaQuery.of(context).size.width - 160,
+      child: 
+      // Scaffold(
+      //   backgroundColor: ColorSelect.class_color,
+      //   body: 
+        Container(
+          //width: 100,
+          width: MediaQuery.of(context).size.width < 950
+              ? MediaQuery.of(context).size.width * 2
+              : MediaQuery.of(context).size.width - 160,
           height: 969,
           margin: const EdgeInsets.only(
               left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
@@ -691,10 +698,11 @@ class ProjectHomeState extends State<ProjectHome> {
                               ),
                             ),
                           ));
-              }),
+              }
+             ),
             ],
           ),
-        ),
+        //),
       ),
     );
   }

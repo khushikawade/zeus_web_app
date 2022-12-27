@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:zeus/home_module/home_module_1.dart';
 import 'package:zeus/people_module/people_home/people_home.dart';
-import 'package:zeus/project_module/project_detail/project_home_view.dart';
+import 'package:zeus/project_module/project_home/project_home_view.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import '../home_module/home_page.dart';
 
@@ -37,22 +37,31 @@ class ConnectedRoutes extends VRouteElementBuilder {
   static final String project = 'project';
 
   static void toProject(BuildContext context, String username) =>
-      context.vRouter.to('/$username/$project');
+      context.vRouter.to('/$username/$project', isReplacement: false);
 
   static final String people = 'people';
 
   static void toPeople(BuildContext context, String username) =>
-      context.vRouter.to('$username/$people', isReplacement: false);
+      context.vRouter.to('$username/$people', isReplacement: true);
 
   @override
   List<VRouteElement> buildRoutes() {
+
+   
     return [
       VNester.builder(
         path: '/:username',
-        widgetBuilder: (_, state, child) => MyHomePage1(
-          child,
-          currentIndex: state.names.contains(project) ? 0 : 2,
-        ),
+        widgetBuilder: (_, state, child) {
+          print("State name ----------------------------- ${state.names}");
+          return MyHomePage1(
+            child,
+            currentIndex: state.names.contains(people)
+                ? 3
+                : state.names.contains(project)
+                    ? 1
+                    : 2,
+          );
+        },
         nestedRoutes: [
           VWidget(
               path: project,

@@ -77,9 +77,11 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: ColorSelect.class_color,
-        body: Container(
+      child: 
+      // Scaffold(
+      //   backgroundColor: ColorSelect.class_color,
+      //   body: 
+        Container(
           // width: MediaQuery.of(context).size.width < 950
           //     ? MediaQuery.of(context).size.width * 2
           //     : MediaQuery.of(context).size.width - 160,
@@ -144,7 +146,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
             ],
           ),
         ),
-      ),
+      //),
     );
   }
 
