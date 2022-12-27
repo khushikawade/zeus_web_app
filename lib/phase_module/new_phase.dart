@@ -90,7 +90,7 @@ class _NewPhaseState extends State<NewPhase> {
   String? subTaskEndDate = "";
   String subTaskResourceName = "";
   DateTime? milestoneEndDate = DateTime.now();
-  String? milestoneStartDate = "";
+  DateTime? milestoneStartDate = DateTime.now();
 
   bool allValidate = true;
   bool savePhaseClick = false;
@@ -211,170 +211,183 @@ class _NewPhaseState extends State<NewPhase> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        contentPadding: EdgeInsets.zero,
-        backgroundColor: const Color(0xff1E293B),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.99.w,
-          height: double.infinity,
-          child: RawScrollbar(
-            thumbColor: const Color(0xff4b5563),
+    return StatefulBuilder(
+      builder: (context, dialogSetState) {
+        return AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(16.r),
             ),
-            thickness: 8,
-            child: isEditDataLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
-                            // height: MediaQuery.of(context).size.height * 0.11,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Color(0xff283345),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(16.0.r),
-                                topLeft: Radius.circular(16.0.r),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x26000000),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
+            contentPadding: EdgeInsets.zero,
+            backgroundColor: const Color(0xff1E293B),
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.99.w,
+              height: double.infinity,
+              child: RawScrollbar(
+                thumbColor: const Color(0xff4b5563),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                thickness: 8,
+                child: isEditDataLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                padding:
+                                    EdgeInsets.only(top: 15.sp, bottom: 15.sp),
+                                // height: MediaQuery.of(context).size.height * 0.11,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff283345),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(16.0.r),
+                                    topLeft: Radius.circular(16.0.r),
                                   ),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0x26000000),
+                                      offset: Offset(
+                                        0.0,
+                                        1.0,
+                                      ),
+                                      blurRadius: 0.0,
+                                      spreadRadius: 0.0,
+                                    ),
+                                  ],
                                 ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 30.sp, right: 30.sp),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      titleHeadlineWidget("New Phase", 22.0.sp),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Container(
+                                                width: 97.0.w,
+                                                margin: EdgeInsets.only(
+                                                    top: 10.0.sp,
+                                                    bottom: 10.0.sp),
+                                                height: 40.h,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    40.0.r,
+                                                  ),
+                                                ),
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                        fontSize: 14.0.sp,
+                                                        color:
+                                                            Color(0xffFFFFFF),
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 16.w,
+                                            ),
+                                            InkWell(
+                                              child: Container(
+                                                width: 97.w,
+                                                margin: EdgeInsets.only(
+                                                    top: 10.0.sp,
+                                                    bottom: 10.0.sp),
+                                                height: 40.0.h,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff7DD3FC),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    40.0.r,
+                                                  ),
+                                                ),
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    "Save",
+                                                    style: TextStyle(
+                                                        fontSize: 14.0.sp,
+                                                        color:
+                                                            Color(0xff000000),
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                setState(() {
+                                                  savePhaseClick = true;
+                                                  createButtonClick = true;
+                                                  milestoneValidate = true;
+                                                });
+
+                                                Future.delayed(
+                                                    const Duration(
+                                                        microseconds: 500), () {
+                                                  createPhase();
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                phaseView(dialogSetState),
+                                Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        1.2,
+                                    child: const VerticalDivider(
+                                      color: Color(0xff94A3B8),
+                                      thickness: 0.2,
+                                    )),
+                                mileStoneView(dialogSetState),
+                                Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        1.2,
+                                    child: const VerticalDivider(
+                                      color: Color(0xff94A3B8),
+                                      thickness: 0.2,
+                                    )),
+                                subtaskView(dialogSetState)
                               ],
                             ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.only(left: 30.sp, right: 30.sp),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  titleHeadlineWidget("New Phase", 22.0.sp),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            width: 97.0.w,
-                                            margin: EdgeInsets.only(
-                                                top: 10.0.sp, bottom: 10.0.sp),
-                                            height: 40.h,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff334155),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                40.0.r,
-                                              ),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(
-                                                    fontSize: 14.0.sp,
-                                                    color: Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 16.w,
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                            width: 97.w,
-                                            margin: EdgeInsets.only(
-                                                top: 10.0.sp, bottom: 10.0.sp),
-                                            height: 40.0.h,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff7DD3FC),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                40.0.r,
-                                              ),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                    fontSize: 14.0.sp,
-                                                    color: Color(0xff000000),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            setState(() {
-                                              savePhaseClick = true;
-                                              createButtonClick = true;
-                                              milestoneValidate = true;
-                                            });
-
-                                            Future.delayed(
-                                                const Duration(
-                                                    microseconds: 500), () {
-                                              createPhase();
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            phaseView(),
-                            Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 1.2,
-                                child: const VerticalDivider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
-                                )),
-                            mileStoneView(),
-                            Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 1.2,
-                                child: const VerticalDivider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
-                                )),
-                            subtaskView()
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-          ),
-        ));
+                      ),
+              ),
+            ));
+      },
+    );
   }
 
   List<Details> getSuggestions(String query) {
@@ -423,7 +436,7 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   // Phase view
-  Widget phaseView() {
+  Widget phaseView(StateSetter dialogSetState) {
     return Expanded(
       flex: 1,
       child: Form(
@@ -502,13 +515,15 @@ class _NewPhaseState extends State<NewPhase> {
                         : AppUtil.stringToDate(
                             phaseDetails.start_date.toString()),
                     onChange: (date) {
-                      setState(() {
+                      dialogSetState(() {
                         phaseDetails.start_date = date.toString();
-                        milestoneStartDate = phaseDetails.start_date;
+                        milestoneStartDate = date;
+                        // AppUtil.stringToDateValidate(
+                        //     phaseDetails.start_date.toString());
                       });
                     },
                     onCancel: () {
-                      setState(() {
+                      dialogSetState(() {
                         phaseDetails.start_date = null;
                       });
                     },
@@ -521,18 +536,27 @@ class _NewPhaseState extends State<NewPhase> {
                   CustomDatePicker(
                     hint: 'dd/mm/yyyy',
                     label: "End date",
-                    initialDate: widget.type == 0
-                        ? null
-                        : AppUtil.stringToDate(
-                            phaseDetails.end_date.toString()),
+                    initialDate:
+                        // widget.type == 0
+                        //     ? null
+                        //     : AppUtil.stringToDateValidate(
+                        //         phaseDetails.start_date.toString()),
+                        phaseDetails.start_date == null ||
+                                phaseDetails.start_date!.isEmpty
+                            ? null
+                            : AppUtil.stringToDateValidate(
+                                phaseDetails.start_date.toString()),
                     onChange: (date) {
-                      setState(() {
+                      dialogSetState(() {
+                        print("78999");
+                        print(phaseDetails.start_date);
                         phaseDetails.end_date = date.toString();
+                        print(phaseDetails.end_date);
                         milestoneEndDate = date;
                       });
                     },
                     onCancel: () {
-                      setState(() {
+                      dialogSetState(() {
                         phaseDetails.end_date = null;
                       });
                     },
@@ -873,7 +897,7 @@ class _NewPhaseState extends State<NewPhase> {
     // }
   }
 
-  Widget mileStoneView() {
+  Widget mileStoneView(StateSetter dialogSetState) {
     return Expanded(
       flex: 1,
       child: Form(
@@ -952,7 +976,7 @@ class _NewPhaseState extends State<NewPhase> {
                           return 'Please enter milestone title';
                         } else {
                           setState(() {
-                            print(value);
+                            // print(value);
                             mileStoneTitle = value;
                             //savePhaseValidate = false;
                           });
@@ -967,7 +991,7 @@ class _NewPhaseState extends State<NewPhase> {
                         context,
                         phaseDetails,
                         callback: (values, index, action) {
-                          setState(() {
+                          dialogSetState(() {
                             if (action == "Delete") {
                               onDeleteMileStone(index);
                             } else if (action == "Edit") {
@@ -987,14 +1011,15 @@ class _NewPhaseState extends State<NewPhase> {
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
                       label: 'Milestone Date',
-                      initialDate: widget.type == 0
-                          ? null
-                          : AppUtil.stringToDate(mileStoneDate.toString()),
-                      endDate: milestoneEndDate != null
-                          ? milestoneEndDate
-                          : DateTime.now(),
+                      initialDate:
+                          //  widget.type == 0 ? null : milestoneStartDate,
+                          milestoneStartDate != null
+                              ? milestoneStartDate
+                              : DateTime.now(),
+                      endDate:
+                          milestoneEndDate != null ? milestoneEndDate : null,
                       onChange: (date) {
-                        setState(() {
+                        dialogSetState(() {
                           mileStoneDate = date;
                           print("Date---------------------");
 
@@ -1002,7 +1027,7 @@ class _NewPhaseState extends State<NewPhase> {
                         });
                       },
                       onCancel: () {
-                        setState(() {
+                        dialogSetState(() {
                           mileStoneDate = null;
                         });
                       },
@@ -1057,7 +1082,7 @@ class _NewPhaseState extends State<NewPhase> {
         AppUtil.dateToString(DateTime.now());
   }
 
-  Widget subtaskView() {
+  Widget subtaskView(StateSetter dialogSetState) {
     return Expanded(
       flex: 1,
       child: Form(
@@ -1099,14 +1124,14 @@ class _NewPhaseState extends State<NewPhase> {
                               )
                             : clickAddSubtask()),
                     onTap: () {
-                      setState(() {
+                      dialogSetState(() {
                         savePhaseClick = true;
                         createButtonClick = true;
                         milestoneValidate = true;
                         Future.delayed(const Duration(microseconds: 500), () {
                           if (_formKey.currentState!.validate()) {
                             if (allValidate && selectedSource.isNotEmpty) {
-                              setState(() {
+                              dialogSetState(() {
                                 clickAddSubTask = true;
                               });
                             }
@@ -1132,23 +1157,25 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
-                          initialDate: widget.type == 0
-                              ? null
-                              : AppUtil.stringToDateValidate(subTaskStartDate!),
+                          initialDate:
+                              widget.type == 0 ? null : milestoneStartDate,
+                          // widget.type == 0
+                          //     ? null
+                          //     : AppUtil.stringToDateValidate(subTaskStartDate!),
                           endDate: milestoneEndDate,
                           onChange: (dates) {
                             print("------------Start date----------------");
 
-                            setState(() {
+                            dialogSetState(() {
                               subTaskStartDate = dates.toString();
 
                               print(
                                   "subTaskStartDate------------------$subTaskStartDate");
                             });
-                            setState(() {});
+                            dialogSetState(() {});
                           },
                           onCancel: () {
-                            setState(() {
+                            dialogSetState(() {
                               subTaskStartDate = null;
                             });
                           },
@@ -1170,7 +1197,7 @@ class _NewPhaseState extends State<NewPhase> {
                               : AppUtil.stringToDateValidate(subTaskEndDate!),
                           endDate: milestoneEndDate,
                           onChange: (date) {
-                            setState(() {
+                            dialogSetState(() {
                               subTaskEndDate = date.toString();
                               print("end date-----------------$subTaskEndDate");
 
@@ -1180,7 +1207,7 @@ class _NewPhaseState extends State<NewPhase> {
                           },
 
                           onCancel: () {
-                            setState(() {
+                            dialogSetState(() {
                               subTaskEndDate = null;
                             });
                           },
@@ -1617,7 +1644,6 @@ class _NewPhaseState extends State<NewPhase> {
                           phaseDetails.milestone![mileStoneEditIndex].m_date =
                               mileStoneDate.toString();
                         }
-                        print("here11111-------------------");
 
                         mileStoneEditIndex = 0;
                         mileStoneAction = '';
@@ -1640,6 +1666,7 @@ class _NewPhaseState extends State<NewPhase> {
               } catch (e) {
                 print("Erorr ----------------------- $e");
               }
+              print("here11111-------------------");
             },
           )
         ],

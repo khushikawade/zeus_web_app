@@ -56,7 +56,9 @@ class CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   void initState() {
+    selectedDate = widget.initialDate;
     if (widget.initialDate != null) {
+      print(widget.initialDate);
       selectedDate = widget.initialDate;
     }
     super.initState();

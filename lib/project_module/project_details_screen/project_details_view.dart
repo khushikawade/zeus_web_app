@@ -1619,7 +1619,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.delete(
-        Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
+        Uri.parse('${AppUrl.baseUrl}/project/tags/${tagId}'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token,
