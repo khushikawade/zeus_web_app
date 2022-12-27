@@ -80,9 +80,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
       child: Scaffold(
         backgroundColor: ColorSelect.class_color,
         body: Container(
-          width: MediaQuery.of(context).size.width < 950
-              ? MediaQuery.of(context).size.width * 2
-              : MediaQuery.of(context).size.width - 160,
+          // width: MediaQuery.of(context).size.width < 950
+          //     ? MediaQuery.of(context).size.width * 2
+          //     : MediaQuery.of(context).size.width - 160,
           height: 969,
           margin: EdgeInsets.only(
               left: 40.sp, right: 30.sp, bottom: 10.sp, top: 40.sp),
@@ -473,7 +473,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                     data: Theme.of(context)
                         .copyWith(dividerColor: Color(0xff525f72)),
                     child: DataTable(
-                        horizontalMargin: 0,
+                        horizontalMargin: 10,
                         showCheckboxColumn: false,
                         dataRowHeight: 60.h,
                         dividerThickness: 0.7,

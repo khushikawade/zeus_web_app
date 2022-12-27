@@ -828,7 +828,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      widget.isEdit! ? "Update" : "Save",
+                                      widget.isEdit! ? "Save" : "Save",
                                       style: TextStyle(
                                           color: Color(0xff000000),
                                           fontSize: 14.sp,
@@ -1039,6 +1039,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 CustomFormField(
                                   controller: _bio,
                                   maxline: 4,
+                                  height: 110.h,
                                   fontSizeForLabel: 14.sp,
                                   hint: 'Enter your bio',
                                   label: 'Your bio',
@@ -1162,6 +1163,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
+                                      flex: 1,
                                       child: CustomSearchDropdown(
                                         hint: 'Select',
                                         label: "A",
@@ -1187,46 +1189,49 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     ),
                                     Expanded(
                                       flex: 2,
-                                      child: CustomFormField(
-                                        controller: _salary,
-                                        maxLength: 15,
-                                        hint: '0.00',
-                                        label: "Monthly Salary",
-                                        fontSizeForLabel: 14.sp,
-                                        contentpadding: EdgeInsets.only(
-                                            left: 16.sp,
-                                            bottom: 10.sp,
-                                            right: 10.sp,
-                                            top: 10.sp),
-                                        hintTextHeight: 1.7.h,
-                                        validator: (value) {
-                                          RegExp regex =
-                                              RegExp(r'^\D+|(?<=\d),(?=\d)');
-                                          if (value.isEmpty) {
-                                            setState(() {
-                                              createPeopleValidate = false;
-                                            });
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: 55.sp),
+                                        child: CustomFormField(
+                                          controller: _salary,
+                                          maxLength: 15,
+                                          hint: '0.00',
+                                          label: "Monthly Salary",
+                                          fontSizeForLabel: 14.sp,
+                                          contentpadding: EdgeInsets.only(
+                                              left: 16.sp,
+                                              bottom: 10.sp,
+                                              right: 10.sp,
+                                              top: 10.sp),
+                                          hintTextHeight: 1.7.h,
+                                          validator: (value) {
+                                            RegExp regex =
+                                                RegExp(r'^\D+|(?<=\d),(?=\d)');
+                                            if (value.isEmpty) {
+                                              setState(() {
+                                                createPeopleValidate = false;
+                                              });
 
-                                            return 'Please enter';
-                                          } else if (regex.hasMatch(value)) {
-                                            setState(() {
-                                              createPeopleValidate = false;
-                                            });
-                                            return 'Please enter valid salary';
-                                          }
-                                          return null;
-                                        },
-                                        onChange: (text) =>
-                                            setState(() => name_ = text),
+                                              return 'Please enter';
+                                            } else if (regex.hasMatch(value)) {
+                                              setState(() {
+                                                createPeopleValidate = false;
+                                              });
+                                              return 'Please enter valid salary';
+                                            }
+                                            return null;
+                                          },
+                                          onChange: (text) =>
+                                              setState(() => name_ = text),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 8.w,
+                                      width: 47.w,
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        height: 56,
-                                      ),
+                                    Container(
+                                      // color: ,
+                                      width: 7.w,
+                                      height: 50.h,
                                     )
                                   ],
                                 ),
@@ -1483,7 +1488,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       });
                                     }),
                                 SizedBox(
-                                  height: 16.sp,
+                                  height: 28.sp,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -1537,9 +1542,15 @@ class _EditPageState extends State<CreatePeoplePage> {
                                         children: [
                                           searchTextField = TypeAheadFormField(
                                             keepSuggestionsOnLoading: false,
-                                            suggestionsBoxVerticalOffset: 0.0,
+                                            suggestionsBoxVerticalOffset:
+                                                16.0.w,
                                             suggestionsBoxDecoration:
                                                 SuggestionsBoxDecoration(
+                                                    offsetX: 57.w,
+                                                    constraints:
+                                                        BoxConstraints.expand(
+                                                            width: 313.w,
+                                                            height: 262.h),
                                                     color: Color(0xff0F172A)),
                                             hideOnLoading: true,
                                             suggestionsCallback: (pattern) {
@@ -1557,16 +1568,13 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               decoration: InputDecoration(
                                                 // border: InputBorder.none,
                                                 contentPadding: EdgeInsets.only(
-                                                    top: 15.sp, left: 10.sp),
-                                                prefixIcon: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 12.sp),
-                                                  child: Icon(
-                                                    Icons.search,
-                                                    color: Color(0xff64748B),
-                                                  ),
+                                                    top: 14.sp, left: 10.sp),
+                                                prefixIcon: Icon(
+                                                  Icons.search,
+                                                  color: Color(0xff64748B),
                                                 ),
                                                 hintText: 'Search',
+
                                                 hintStyle: TextStyle(
                                                     fontSize: 14.sp,
                                                     color: Color(0xff64748B),
@@ -1580,7 +1588,10 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             ),
                                             itemBuilder: (context, item) {
                                               return Padding(
-                                                padding: EdgeInsets.all(8.sp),
+                                                padding: EdgeInsets.only(
+                                                    top: 12.sp,
+                                                    left: 16.sp,
+                                                    bottom: 15.sp),
                                                 child: Text(
                                                   item.title.toString(),
                                                   style: TextStyle(

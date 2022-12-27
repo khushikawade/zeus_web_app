@@ -277,7 +277,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                       child: Container(
                         padding: EdgeInsets.only(bottom: 60.sp),
                         margin: EdgeInsets.only(
-                            left: 45.sp, right: 40.sp, bottom: 0.0, top: 35.sp),
+                            left: 40.sp, right: 30.sp, bottom: 0.0, top: 35.sp),
                         decoration: BoxDecoration(
                           color: const Color(0xff1E293B),
                           border: Border.all(

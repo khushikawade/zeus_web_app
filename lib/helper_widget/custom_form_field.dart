@@ -16,6 +16,7 @@ class CustomFormField extends StatefulWidget {
   double? fontSizeForLabel;
   int? maxLength;
   bool? obsecqureText;
+  double? height;
 
   CustomFormField(
       {this.controller,
@@ -29,7 +30,8 @@ class CustomFormField extends StatefulWidget {
       this.maxline,
       this.fontSizeForLabel,
       this.maxLength,
-      this.obsecqureText});
+      this.obsecqureText,
+      this.height});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,7 +57,7 @@ class CustomFormFieldState extends State<CustomFormField> {
       child: Column(
         children: [
           SizedBox(
-            height: 56.h,
+            height: widget.height == null ? 56.h : widget.height,
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xff334155),
