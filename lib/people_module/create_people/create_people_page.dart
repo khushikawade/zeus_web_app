@@ -759,7 +759,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   String availabilityTime = "";
                                   if (startTime1 != null && endTime2 != null) {
                                     availabilityTime =
-                                        '${startTime1}-${endTime2}';
+                                        '${startTime1} - ${endTime2}';
                                   } else {
                                     availabilityTime = '';
                                   }
@@ -1310,11 +1310,19 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               padding: const EdgeInsets.only(
                                                   right: 8),
                                               child: InputChip(
+                                                shadowColor: Color(0xff334155),
                                                 shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        color:
+                                                            Color(0xff334155)),
                                                     borderRadius:
                                                         BorderRadius.all(
-                                                            Radius.circular(
-                                                                8.r))),
+                                                      Radius.circular(
+                                                        8.r,
+                                                      ),
+                                                    )),
+                                                side: BorderSide(
+                                                    color: Color(0xff334155)),
                                                 deleteIcon: Icon(
                                                   Icons.close,
                                                   color: Colors.white,
@@ -1642,11 +1650,18 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           return Container(
                                             height: 32.h,
                                             child: InputChip(
+                                              shadowColor: Color(0xff334155),
                                               shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: Color(0xff334155)),
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(
-                                                              8.r))),
+                                                    Radius.circular(
+                                                      8.r,
+                                                    ),
+                                                  )),
+                                              side: BorderSide(
+                                                  color: Color(0xff334155)),
                                               deleteIcon: Icon(
                                                 Icons.close,
                                                 color: Colors.white,
@@ -1784,7 +1799,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           setState(() => name_ = text),
                                     ),
                                     CustomFormField(
-                                      maxLength: 10,
+                                      // maxLength: 10,
                                       controller: _phoneNumber,
                                       hint: 'Enter number',
                                       label: "Phone number",
@@ -1796,8 +1811,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           top: 10.sp),
                                       hintTextHeight: 1.7.h,
                                       validator: (value) {
-                                        String pattern =
-                                            r'(^(?:[+0]9)?[0-9]{10}$)';
+                                        String pattern = r"([0-9])\w+";
                                         RegExp regExp = new RegExp(pattern);
                                         if (value.isEmpty) {
                                           setState(() {
@@ -1979,7 +1993,7 @@ class _EditPageState extends State<CreatePeoplePage> {
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
     request.fields['availibilty_day'] = commaSepratedString;
-    request.fields['availibilty_time'] = '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] = '${startTime1} - ${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -2041,6 +2055,7 @@ class _EditPageState extends State<CreatePeoplePage> {
       SmartDialog.dismiss();
 
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

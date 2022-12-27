@@ -438,7 +438,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin: EdgeInsets.only(right: 56.sp),
+                                          // margin: EdgeInsets.only(right: 56.sp),
                                           child: Text(
                                             "Cancel",
                                             style: TextStyle(
@@ -450,6 +450,9 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
                                                 color: ColorSelect.delete_text),
                                           ),
                                         ),
+                                      ),
+                                      SizedBox(
+                                        width: 46.w,
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -2313,6 +2316,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
       SmartDialog.dismiss();
 
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
@@ -2339,6 +2343,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

@@ -462,7 +462,7 @@ class _NewPhaseState extends State<NewPhase> {
                         return 'Please enter phase title';
                       } else {
                         setState(() {
-                          print(value);
+                          // print(value);
                           phaseDetails.title = value;
                           //savePhaseValidate = false;
                         });
@@ -485,7 +485,7 @@ class _NewPhaseState extends State<NewPhase> {
                         return 'Please enter phase type';
                       } else {
                         setState(() {
-                          print(value);
+                          // print(value);
                           phaseDetails.phase_type = value;
                           //savePhaseValidate = false;
                         });
@@ -764,16 +764,21 @@ class _NewPhaseState extends State<NewPhase> {
                                       padding: EdgeInsets.only(
                                           top: 16.sp, bottom: 2.sp, left: 5.sp),
                                       child: InputChip(
+                                        elevation: 1,
+                                        disabledColor: Color(0xff334155),
                                         labelPadding: EdgeInsets.only(
                                             left: 10.sp,
                                             top: 7.sp,
                                             bottom: 7.sp),
+                                        shadowColor: Color(0xff334155),
                                         shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: Color(0xff334155)),
                                             borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            13.r,
-                                          ),
-                                        )),
+                                              Radius.circular(
+                                                13.r,
+                                              ),
+                                            )),
                                         side: BorderSide(
                                             color: Color(0xff334155)),
                                         deleteIcon: Icon(
@@ -1034,15 +1039,13 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   onEditMileStone(int index, Milestones values) {
-    setState(() {
-      mileStoneEditIndex = index;
-      mileStoneAction = "Edit";
-      clickedAddMileStone = true;
-      controllerMilestoneTitle.text = values.title ?? "";
-      mileStoneTitle = values.title ?? "";
-      mileStoneDate = AppUtil.stringToDate(values.m_date!) ??
-          AppUtil.dateToString(DateTime.now());
-    });
+    mileStoneEditIndex = index;
+    mileStoneAction = "Edit";
+    clickedAddMileStone = true;
+    controllerMilestoneTitle.text = values.title ?? "";
+    mileStoneTitle = values.title ?? "";
+    mileStoneDate = AppUtil.stringToDate(values.m_date!) ??
+        AppUtil.dateToString(DateTime.now());
   }
 
   Widget subtaskView() {
@@ -1455,6 +1458,7 @@ class _NewPhaseState extends State<NewPhase> {
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),
+                            size: 20.sp,
                           )),
                       hintText: 'Search',
                       hintStyle: TextStyle(
@@ -1505,12 +1509,14 @@ class _NewPhaseState extends State<NewPhase> {
                           child: InputChip(
                               labelPadding: EdgeInsets.only(
                                   left: 10.sp, top: 5.sp, bottom: 7.sp),
+                              shadowColor: Color(0xff334155),
                               shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: Color(0xff334155)),
                                   borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  10.r,
-                                ),
-                              )),
+                                    Radius.circular(
+                                      13.r,
+                                    ),
+                                  )),
                               side: BorderSide(color: Color(0xff334155)),
                               deleteIcon: Icon(
                                 Icons.close,
@@ -1860,6 +1866,7 @@ class _NewPhaseState extends State<NewPhase> {
     } catch (e) {
       SmartDialog.dismiss();
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: e.toString(),
         backgroundColor: Colors.grey,
       );
@@ -1924,6 +1931,7 @@ class _NewPhaseState extends State<NewPhase> {
     } catch (e) {
       SmartDialog.dismiss();
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: e.toString(),
         backgroundColor: Colors.grey,
       );
@@ -2042,10 +2050,12 @@ class _NewPhaseState extends State<NewPhase> {
 
         if (end.isBefore(start)) {
           return 'End date must be greater then the start date';
-        } else if (AppUtil.stringToDateValidate(enddate)
-            .isAtSameMomentAs((AppUtil.stringToDateValidate(subtask)))) {
-          return 'End date should not be same as start date';
-        } else if (endphase.isBefore(AppUtil.stringToDateValidate(enddate))) {
+        }
+        // else if (AppUtil.stringToDateValidate(enddate)
+        //     .isAtSameMomentAs((AppUtil.stringToDateValidate(subtask)))) {
+        //   return 'End date should not be same as start date';
+        // }
+        else if (endphase.isBefore(AppUtil.stringToDateValidate(enddate))) {
           return 'End date must be less then the phase end date';
         } else {
           setState(() {
