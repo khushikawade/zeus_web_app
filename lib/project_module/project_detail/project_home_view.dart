@@ -538,7 +538,7 @@ class ProjectHomeState extends State<ProjectHome> {
                 data:
                     Theme.of(context).copyWith(dividerColor: Color(0xff525f72)),
                 child: DataTable(
-                  // fixedHeader: true,
+                    // fixedHeader: true,
                     horizontalMargin: 0,
                     showCheckboxColumn: false,
                     dataRowHeight: 60,
@@ -810,7 +810,8 @@ class ProjectHomeState extends State<ProjectHome> {
           _statusList = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -837,7 +838,8 @@ class ProjectHomeState extends State<ProjectHome> {
           _currencyName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -864,7 +866,8 @@ class ProjectHomeState extends State<ProjectHome> {
           _accountableId = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }
@@ -891,7 +894,8 @@ class ProjectHomeState extends State<ProjectHome> {
       skillsData.addAll(skills.data!);
       print(skillsData);
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
     }
@@ -915,7 +919,8 @@ class ProjectHomeState extends State<ProjectHome> {
           _customerName = mdata;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+        AppUtil.showErrorDialog(
+            context, 'Your Session has been expired, Please try again!');
       } else {
         print("failed to much");
       }

@@ -233,7 +233,7 @@ class _NavigationRailState extends State<MyHomePage1>
                   future: getList,
                   builder: (context, snapshot) {
                     return Visibility(
-                      visible: snapshot.data as bool,
+                      visible: snapshot.data != null && snapshot.data as bool,
                       child: Column(
                         children: [
                           _selectedIndex == 1
@@ -329,11 +329,11 @@ class _NavigationRailState extends State<MyHomePage1>
                           _selectedIndex = index;
 
                           final username = VRouter.of(context).path;
-                          print(
-                              "UserNAme --------------------------------- ${username}");
-                          ConnectedRoutes.toPeople(context, username);
-
-                          setState(() {});
+                          if (_selectedIndex == 1) {
+                            ConnectedRoutes.toProject(context, username);
+                          } else if (_selectedIndex == 3) {
+                            ConnectedRoutes.toPeople(context, username);
+                          } else {}
                         },
                         labelType: NavigationRailLabelType.selected,
                         backgroundColor: const Color(0xff0F172A),
@@ -661,8 +661,67 @@ class _NavigationRailState extends State<MyHomePage1>
                 ),
               );
             }),
+            _selectedIndex == 1
+                ?
+                //ProfileWidget()
+                ProjectHome()
+                : _selectedIndex == 3
+                    ? PeopleHomeView()
+                    : Container(
+                        width: 60,
+                        height: 60,
+                        color: Colors.red,
+                      )
             // sayyamm
             // Expanded(child: _mainContents[_selectedIndex]),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileWidget extends StatefulWidget {
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  int count = 0;
+  @override
+  Widget build(BuildContext context) {
+    // VNavigationGuard allows you to react to navigation events locally
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextButton(
+              onPressed: () {
+                VRouter.of(context).to(
+                  context.vRouter.url,
+                  isReplacement: true,
+                  historyState: {'count': '${count + 1}'},
+                );
+                setState(() => count++);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.blueAccent,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                child: Text(
+                  'Your pressed this button $count times',
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'This number is saved in the history state so if you are on the web leave this page and hit the back button to see this number restored!',
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
