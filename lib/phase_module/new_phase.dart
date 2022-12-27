@@ -474,16 +474,16 @@ class _NewPhaseState extends State<NewPhase> {
                       if (value.isEmpty) {
                         return 'Please enter phase title';
                       } else {
-                        setState(() {
+                        dialogSetState(() {
                           // print(value);
                           phaseDetails.title = value;
-                          //savePhaseValidate = false;
+                          savePhaseValidate = false;
                         });
                       }
 
                       return null;
                     },
-                    onChange: (text) => setState(() => name_ = text),
+                    onChange: (text) => dialogSetState(() => name_ = text),
                   ),
                   CustomFormField(
                     controller: controller_phase_type,
@@ -497,15 +497,15 @@ class _NewPhaseState extends State<NewPhase> {
                       if (value.isEmpty) {
                         return 'Please enter phase type';
                       } else {
-                        setState(() {
+                        dialogSetState(() {
                           // print(value);
                           phaseDetails.phase_type = value;
-                          //savePhaseValidate = false;
+                          savePhaseValidate = false;
                         });
                       }
                       return null;
                     },
-                    onChange: (text) => setState(() => name_ = text),
+                    onChange: (text) => dialogSetState(() => name_ = text),
                   ),
                   CustomDatePicker(
                     hint: 'dd/mm/yyyy',
@@ -536,19 +536,11 @@ class _NewPhaseState extends State<NewPhase> {
                   CustomDatePicker(
                     hint: 'dd/mm/yyyy',
                     label: "End date",
-                    initialDate:
-                        // widget.type == 0
-                        //     ? null
-                        //     : AppUtil.stringToDateValidate(
-                        //         phaseDetails.start_date.toString()),
-                        phaseDetails.start_date == null ||
-                                phaseDetails.start_date!.isEmpty
-                            ? null
-                            : AppUtil.stringToDateValidate(
-                                phaseDetails.start_date.toString()),
+                    initialDate: phaseDetails.start_date != null
+                        ? AppUtil.stringToDateValidate(phaseDetails.start_date!)
+                        : null,
                     onChange: (date) {
                       dialogSetState(() {
-                        print("78999");
                         print(phaseDetails.start_date);
                         phaseDetails.end_date = date.toString();
                         print(phaseDetails.end_date);
@@ -936,9 +928,9 @@ class _NewPhaseState extends State<NewPhase> {
                               )
                             ],
                           )
-                        : clickAddMileStone(),
+                        : clickAddMileStone(dialogSetState),
                     onTap: () {
-                      setState(() {
+                      dialogSetState(() {
                         milestoneValidate = true;
                         addMilestoneBtnClick = true;
                         createButtonClick = true;
@@ -947,7 +939,7 @@ class _NewPhaseState extends State<NewPhase> {
                       Future.delayed(const Duration(microseconds: 500), () {
                         if (_formKey.currentState!.validate()) {
                           if (allValidate && selectedSource.isNotEmpty) {
-                            setState(() {
+                            dialogSetState(() {
                               clickedAddMileStone = true;
                               // saveButtonClickForMileStone = true;
                             });
@@ -991,7 +983,7 @@ class _NewPhaseState extends State<NewPhase> {
                         context,
                         phaseDetails,
                         callback: (values, index, action) {
-                          dialogSetState(() {
+                          setState(() {
                             if (action == "Delete") {
                               onDeleteMileStone(index);
                             } else if (action == "Edit") {
@@ -1010,31 +1002,71 @@ class _NewPhaseState extends State<NewPhase> {
                         left: 29.5.sp, right: 30.5.sp, top: 0.sp),
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
-                      label: 'Milestone Date',
-                      initialDate:
-                          //  widget.type == 0 ? null : milestoneStartDate,
-                          milestoneStartDate != null
-                              ? milestoneStartDate
-                              : DateTime.now(),
-                      endDate:
-                          milestoneEndDate != null ? milestoneEndDate : null,
+                      label: "End date",
+                      initialDate: phaseDetails.start_date != null
+                          ? AppUtil.stringToDateValidate(
+                              phaseDetails.start_date!)
+                          : null,
+                      // widget.type == 0
+                      //     ? null
+                      //     : AppUtil.stringToDateValidate(subTaskEndDate!),
+                      endDate: phaseDetails.end_date != null
+                          ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
+                          : null,
+                      // milestoneEndDate,
                       onChange: (date) {
                         dialogSetState(() {
-                          mileStoneDate = date;
-                          print("Date---------------------");
+                          subTaskEndDate = date.toString();
+                          print("end date-----------------$subTaskEndDate");
 
-                          print(mileStoneDate);
+                          errorTextForSubtask(subTaskStartDate, subTaskEndDate);
                         });
                       },
+
                       onCancel: () {
                         dialogSetState(() {
-                          mileStoneDate = null;
+                          subTaskEndDate = null;
                         });
                       },
+                      // errorText: (saveButtonClickForSubtask1 &&
+                      //         subTaskEndDate!.isEmpty)
+                      //     ? 'Please enter end date'
+                      //     : "",
                       errorText:
-                          errorText(mileStoneDate, phaseDetails.end_date),
+                          errorTextForSubtask(subTaskStartDate, subTaskEndDate),
                       validator: (value) {},
                     ),
+                    // child: CustomDatePicker(
+                    //   hint: 'dd/mm/yyyy',
+                    //   label: 'Milestone Date',
+                    //   initialDate: phaseDetails.start_date != null
+                    //       ? AppUtil.stringToDateValidate(
+                    //           phaseDetails.start_date!)
+                    //       : null,
+                    //   //  widget.type == 0 ? null : milestoneStartDate,
+                    //   // milestoneStartDate != null
+                    //   //     ? milestoneStartDate
+                    //   //     : DateTime.now(),
+                    //   endDate: phaseDetails.end_date != null
+                    //       ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
+                    //       : null,
+                    //   onChange: (date) {
+                    //     setState(() {
+                    //       mileStoneDate = date;
+                    //       print("Date---------------------");
+
+                    //       print(mileStoneDate);
+                    //     });
+                    //   },
+                    //   onCancel: () {
+                    //     setState(() {
+                    //       mileStoneDate = null;
+                    //     });
+                    //   },
+                    //   errorText:
+                    //       errorText(mileStoneDate, phaseDetails.end_date),
+                    //   validator: (value) {},
+                    // ),
                   ),
             milestoneValidate && phaseDetails.milestone!.isEmpty
                 ? Container(
@@ -1078,7 +1110,7 @@ class _NewPhaseState extends State<NewPhase> {
     clickedAddMileStone = true;
     controllerMilestoneTitle.text = values.title ?? "";
     mileStoneTitle = values.title ?? "";
-    mileStoneDate = AppUtil.stringToDate(values.m_date!) ??
+    mileStoneDate = AppUtil.stringToDateValidate(values.m_date!) ??
         AppUtil.dateToString(DateTime.now());
   }
 
@@ -1122,7 +1154,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   )
                                 ],
                               )
-                            : clickAddSubtask()),
+                            : clickAddSubtask(dialogSetState)),
                     onTap: () {
                       dialogSetState(() {
                         savePhaseClick = true;
@@ -1157,12 +1189,19 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
-                          initialDate:
-                              widget.type == 0 ? null : milestoneStartDate,
+                          initialDate: phaseDetails.start_date != null
+                              ? AppUtil.stringToDateValidate(
+                                  phaseDetails.start_date!)
+                              : null,
+                          // widget.type == 0 ? null : milestoneStartDate,
                           // widget.type == 0
                           //     ? null
                           //     : AppUtil.stringToDateValidate(subTaskStartDate!),
-                          endDate: milestoneEndDate,
+                          endDate: phaseDetails.end_date != null
+                              ? AppUtil.stringToDateValidate(
+                                  phaseDetails.end_date!)
+                              : null,
+                          // milestoneEndDate,
                           onChange: (dates) {
                             print("------------Start date----------------");
 
@@ -1192,10 +1231,18 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "End date",
-                          initialDate: widget.type == 0
-                              ? null
-                              : AppUtil.stringToDateValidate(subTaskEndDate!),
-                          endDate: milestoneEndDate,
+                          initialDate: phaseDetails.start_date != null
+                              ? AppUtil.stringToDateValidate(
+                                  phaseDetails.start_date!)
+                              : null,
+                          // widget.type == 0
+                          //     ? null
+                          //     : AppUtil.stringToDateValidate(subTaskEndDate!),
+                          endDate: phaseDetails.end_date != null
+                              ? AppUtil.stringToDateValidate(
+                                  phaseDetails.end_date!)
+                              : null,
+                          // milestoneEndDate,
                           onChange: (date) {
                             dialogSetState(() {
                               subTaskEndDate = date.toString();
@@ -1270,7 +1317,7 @@ class _NewPhaseState extends State<NewPhase> {
                             } else if (subTaskAction == 'Edit') {
                               onEditSubtask(index, values);
                             } else {
-                              setState(() {
+                              dialogSetState(() {
                                 mileStoneTitle =
                                     values.resource?.resource_name ?? '';
                               });
@@ -1579,7 +1626,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
   }
 
-  clickAddMileStone() {
+  clickAddMileStone(StateSetter dialogSetState) {
     return Padding(
       padding: EdgeInsets.only(top: 2.5.sp),
       child: Row(
@@ -1596,7 +1643,7 @@ class _NewPhaseState extends State<NewPhase> {
                   fontWeight: FontWeight.w300),
             ),
             onTap: () {
-              setState(() {
+              dialogSetState(() {
                 // mileStoneDate = null;
 
                 mileStoneTitle = "";
@@ -1620,7 +1667,7 @@ class _NewPhaseState extends State<NewPhase> {
               ),
             ),
             onTap: () {
-              setState(() {
+              dialogSetState(() {
                 saveButtonClickForMileStone = true;
               });
 
@@ -1631,7 +1678,7 @@ class _NewPhaseState extends State<NewPhase> {
                     ) {
                   if (mileStoneTitle.isNotEmpty && mileStoneDate != null) {
                     try {
-                      setState(() {
+                      dialogSetState(() {
                         if (mileStoneAction.isEmpty) {
                           phaseDetails.milestone!.add(Milestones(
                               title: mileStoneTitle,
@@ -1674,7 +1721,7 @@ class _NewPhaseState extends State<NewPhase> {
     );
   }
 
-  clickAddSubtask() {
+  clickAddSubtask(StateSetter dialogSetState) {
     return Padding(
       padding: EdgeInsets.only(top: 2.5.sp),
       child: Row(
@@ -1691,7 +1738,7 @@ class _NewPhaseState extends State<NewPhase> {
                   fontWeight: FontWeight.w300),
             ),
             onTap: () {
-              setState(() {
+              dialogSetState(() {
                 selectedSubTaskSource.clear();
                 subTaskStartDate = "";
                 subTaskEndDate = "";
@@ -1713,7 +1760,7 @@ class _NewPhaseState extends State<NewPhase> {
               ),
             ),
             onTap: () {
-              setState(() {
+              dialogSetState(() {
                 saveButtonClickForSubtask1 = true;
               });
 
@@ -1724,7 +1771,7 @@ class _NewPhaseState extends State<NewPhase> {
                 if (selectedSubTaskSource.isNotEmpty &&
                     subTaskStartDate!.isNotEmpty &&
                     subTaskEndDate!.isNotEmpty) {
-                  setState(() {
+                  dialogSetState(() {
                     try {
                       if (subtaskActionType.isEmpty) {
                         phaseDetails.sub_tasks!.add(SubTasksModel(
@@ -2032,11 +2079,12 @@ class _NewPhaseState extends State<NewPhase> {
 
       if (end.isBefore(start)) {
         return 'Milestone date must be less then the phase end date';
-      } else {
-        setState(() {
-          mileStoneDateCheck = false;
-        });
       }
+      // else {
+      //   setState(() {
+      //     mileStoneDateCheck = false;
+      //   });
+      // }
     }
 
     return '';
