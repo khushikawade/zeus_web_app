@@ -673,7 +673,6 @@ class _NewPhaseState extends State<NewPhase> {
                                   cursorColor: Colors.white,
                                   autofocus: true,
                                   decoration: InputDecoration(
-                                    // border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(
                                         top: 15.0.sp,
                                         left: 10.sp,
@@ -681,7 +680,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     prefixIconConstraints: BoxConstraints(),
                                     prefixIcon: Padding(
                                         padding: EdgeInsets.only(
-                                            top: 8.sp,
+                                            top: 9.5.sp,
                                             left: 15.sp,
                                             right: 9.sp),
                                         child: Icon(
@@ -1409,14 +1408,16 @@ class _NewPhaseState extends State<NewPhase> {
             ],
           ),
         ),
+        SizedBox(
+          height: 8.h,
+        ),
         Padding(
           padding: EdgeInsets.only(left: 30.sp),
           child: Container(
-            height: 50.h,
-            width: MediaQuery.of(context).size.width * 0.24,
-            margin: EdgeInsets.only(top: 16.sp),
+            height: 48.h,
+            width: MediaQuery.of(context).size.width * 0.15.w,
             decoration: BoxDecoration(
-              color: Color(0xff1E293B),
+              color: const Color(0xff1E293B),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                     color: Colors.black38,
@@ -1424,7 +1425,7 @@ class _NewPhaseState extends State<NewPhase> {
                     offset: Offset(0.0, 0.75))
               ],
               borderRadius: BorderRadius.circular(
-                6.r,
+                6.0.r,
               ),
             ),
             child: Column(
