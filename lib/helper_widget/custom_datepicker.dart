@@ -18,6 +18,7 @@ class CustomDatePicker extends StatefulWidget {
   double? fontSizeForLabel;
   bool? obsecqureText;
   DateTime? initialDate;
+  DateTime? endDate;
 
   CustomDatePicker(
       {this.initialDate,
@@ -32,7 +33,8 @@ class CustomDatePicker extends StatefulWidget {
       this.maxline,
       this.fontSizeForLabel,
       this.obsecqureText,
-      this.errorText});
+      this.errorText,
+      this.endDate});
 
   @override
   State<StatefulWidget> createState() {
@@ -177,19 +179,21 @@ class CustomDatePickerState extends State<CustomDatePicker> {
               ),
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.w, top: 4.h),
-                child: Text(widget.errorText ?? '',
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        //height: 0.20.h,
-                        color: Colors.red)),
-              )
-            ],
-          )
+          widget.errorText != null && widget.errorText!.isNotEmpty
+              ? Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w, top: 4.h),
+                      child: Text(widget.errorText ?? '',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              //height: 0.20.h,
+                              color: Colors.red)),
+                    )
+                  ],
+                )
+              : SizedBox.shrink()
         ],
       ),
     );
@@ -236,7 +240,8 @@ class CustomDatePickerState extends State<CustomDatePicker> {
         //   );
         // },
         initialDate: selectedDate!,
-        lastDate: DateTime(5000),
+        // lastDate: widget.endDate ?? DateTime(5000),
+        lastDate: widget.endDate ?? DateTime(5000),
         firstDate: selectedDate ?? DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {

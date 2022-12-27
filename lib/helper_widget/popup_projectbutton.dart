@@ -163,7 +163,7 @@ class _ProjectEditState extends State<ProjectEdit>
                               Container(
                                 margin: EdgeInsets.only(right: 20.0.r),
                                 child: Text(
-                                  "Do you want to delete this project_detail ?",
+                                  "Do you want to delete ${widget.response.data?.title} ?",
                                   style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
@@ -174,7 +174,7 @@ class _ProjectEditState extends State<ProjectEdit>
                               Container(
                                 margin: EdgeInsets.only(top: 15.0.h),
                                 child: Text(
-                                  "Once deleted, you will not find this project_detail in the list.",
+                                  "Once deleted, you will not find ${widget.response.data?.title} in the list.",
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,

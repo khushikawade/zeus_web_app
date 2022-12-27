@@ -2168,10 +2168,9 @@ class _NavigationRailState extends State<MyHomePage>
                         },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 16.sp),
-                          
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 12.0.sp, left: 15.sp, right: 20.sp),
+                                  top: 0.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),
@@ -2311,17 +2310,14 @@ class _NavigationRailState extends State<MyHomePage>
                                     circleTapIcon == false &&
                                     settingIcon == false &&
                                     bellTapIcon == false
-                                ? Padding(
-                                    padding: EdgeInsets.only(left: 22.sp),
-                                    child: Text("Profile",
-                                        style: TextStyle(
-                                            color: Color(0xffFFFFFF),
-                                            fontSize: 22.sp,
-                                            fontFamily: 'Inter-Medium',
-                                            letterSpacing: 0.1,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w700)),
-                                  )
+                                ? Text("Profile",
+                                    style: TextStyle(
+                                        color: Color(0xffFFFFFF),
+                                        fontSize: 22.sp,
+                                        fontFamily: 'Inter-Medium',
+                                        letterSpacing: 0.1,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700))
                                 : Container(),
                           ],
                         ),
@@ -2414,7 +2410,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           border: Border.all(
                                               color: const Color(0xff334155)),
                                           borderRadius: BorderRadius.circular(
-                                            18.0,
+                                            18.0.r,
                                           ),
                                         ),
                                         message: 'Projects',
@@ -2509,7 +2505,7 @@ class _NavigationRailState extends State<MyHomePage>
                                           border: Border.all(
                                               color: const Color(0xff334155)),
                                           borderRadius: BorderRadius.circular(
-                                            18.0,
+                                            18.0.r,
                                           ),
                                         ),
                                         message: 'People',

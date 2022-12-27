@@ -47,6 +47,6 @@ const String secretKey =
 
 // const String code = "60KM7W4679VITC6TGH0PWGSQM5JBYUUJ";
 
-const String redirectUrl = "localhost:50478";
+const String redirectUrl = "localhost:49399";
 
 //  "https://zeus-api.zehntech.net/api/v1/clickup/auth";

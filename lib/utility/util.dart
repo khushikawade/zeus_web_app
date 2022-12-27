@@ -66,6 +66,7 @@ class AppUtil {
 
   static DateTime stringToDate(String date) {
     try {
+      //date = AppUtil.dateToString(DateTime.parse(date));
       DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
       print("Parsed date ------------------------ ${parseDate}");
       return parseDate;
