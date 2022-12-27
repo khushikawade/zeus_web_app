@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg:
               'Error while saving code ${response.statusCode} ${response.body}',
           backgroundColor: Colors.grey,
@@ -613,7 +614,7 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) =>
             const DemoClass()));*/
 
-       //launchClickUpsUrl();
+        //launchClickUpsUrl();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
@@ -623,6 +624,7 @@ class _LoginScreenState extends State<LoginScreen> {
             (Route<dynamic> route) => route is MyHomePage);
       } else {
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg: 'Please check Email and Password',
           backgroundColor: Colors.grey,
         );

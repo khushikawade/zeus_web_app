@@ -193,8 +193,8 @@ class _ProjectEditState extends State<ProjectEdit>
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.only(right: 35.0.w),
+                                          // margin:
+                                          //     EdgeInsets.only(right: 35.0.w),
                                           child: Text(
                                             "Cancel",
                                             style: TextStyle(
@@ -204,6 +204,9 @@ class _ProjectEditState extends State<ProjectEdit>
                                                 color: ColorSelect.delete_text),
                                           ),
                                         ),
+                                      ),
+                                      SizedBox(
+                                        width: 35.w,
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -296,6 +299,7 @@ class _ProjectEditState extends State<ProjectEdit>
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

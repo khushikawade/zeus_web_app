@@ -464,24 +464,27 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                               ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(
-                                  top: 30.0.sp, right: 30.0.sp, bottom: 0),
-                              height: 35.0.sp,
-                              width: 35.0.sp,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xff334155), width: 0.6),
-                                  shape: BoxShape.circle),
-                              child: SvgPicture.asset(
-                                'images/cross.svg',
-                                width: 13.r,
-                                height: 13.r,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30, right: 30),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: 0.0.sp, right: 0.0.sp, bottom: 0),
+                                height: 35.0.sp,
+                                width: 35.0.sp,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color(0xff334155), width: 0.6),
+                                    shape: BoxShape.circle),
+                                child: SvgPicture.asset(
+                                  'images/cross.svg',
+                                  width: 13.r,
+                                  height: 13.r,
+                                ),
                               ),
                             ),
                           ),
@@ -792,8 +795,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                   offset: Offset(35, 48),
                                   color: Color(0xFF0F172A),
                                   child: Container(
-                                      width: 45.0.h,
-                                      height: 45.0.h,
+                                      width: 40.0.w,
+                                      height: 40.0.h,
                                       margin: EdgeInsets.only(
                                           left: abc.length < 2 ? 0 : 15.0.sp,
                                           top: 0),
@@ -807,7 +810,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                             child: SvgPicture.asset(
                                               'images/tag_new.svg',
                                               height: 5.h,
-                                              width: 5.h,
+                                              width: 5.w,
                                             )),
                                       )),
                                   itemBuilder: (context) => [
@@ -935,7 +938,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                       MaterialTapTargetSize.shrinkWrap,
                                   label: Text(
                                     abc[index] ?? '',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14.sp),
                                   ),
                                   onSelected: (bool selected) {
                                     setState(() {
@@ -1637,9 +1641,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
   //Edit project_detail api
   Future<void> saveTagApi(String projectId, String tagName) async {
     var token = 'Bearer ' + storage.read("token");
+    print(projectId);
     try {
       var response = await http.post(
-        Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
+        // Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
+        Uri.parse('${AppUrl.baseUrl}/project/tags'),
         body: jsonEncode({
           "project_id": projectId,
           "name": tagName,
@@ -1651,6 +1657,9 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
       );
       // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
+        print(
+            "----------------------Save Tag API---------------------------------");
+        print(response.body);
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
@@ -1811,6 +1820,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         var responseJson =
             jsonDecode(apiResponse.body.toString()) as Map<String, dynamic>;
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           toastLength: Toast.LENGTH_SHORT,
           msg: responseJson['message'],
           backgroundColor: Colors.grey,

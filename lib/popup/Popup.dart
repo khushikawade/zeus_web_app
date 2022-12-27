@@ -215,6 +215,7 @@ showDailog(
         var responseJson =
             jsonDecode(apiResponse.body.toString()) as Map<String, dynamic>;
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           toastLength: Toast.LENGTH_SHORT,
           msg: responseJson['message'],
           backgroundColor: Colors.grey,
@@ -932,7 +933,7 @@ showDailog(
                                       child: Container(
                                         alignment: Alignment.center,
                                         margin: const EdgeInsets.only(
-                                            top: 35.0, right: 30.0, bottom: 0),
+                                            top: 0.0, right: 0.0, bottom: 0),
                                         height: 40.0,
                                         width: 40.0,
                                         decoration: BoxDecoration(

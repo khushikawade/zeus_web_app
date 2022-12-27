@@ -90,7 +90,7 @@ class AppUtil {
         return parseDate;
       }
     } catch (e) {
-      print(e);
+      print("this error-------------$e");
       return DateTime.now();
     }
   }
@@ -116,6 +116,7 @@ class AppUtil {
       String formatted = formatter.format(date);
       return formatted;
     } catch (e) {
+      print("----------------------------------------$e");
       return date.toString();
     }
   }
