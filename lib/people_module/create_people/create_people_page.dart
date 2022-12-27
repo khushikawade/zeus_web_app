@@ -2041,6 +2041,7 @@ class _EditPageState extends State<CreatePeoplePage> {
       SmartDialog.dismiss();
 
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

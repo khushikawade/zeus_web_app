@@ -190,11 +190,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                         top: 0,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(100),
+                                              BorderRadius.circular(100.r),
                                           child: Image.network(
                                             'https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
                                             width: 32.w,
-                                            height: 32.w,
+                                            height: 32.h,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -203,11 +203,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                         left: 22.sp,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(100),
+                                              BorderRadius.circular(100.r),
                                           child: Image.network(
                                             'https://media.istockphoto.com/photos/side-view-of-one-young-woman-picture-id1134378235?k=20&m=1134378235&s=612x612&w=0&h=0yIqc847atslcQvC3sdYE6bRByfjNTfOkyJc5e34kgU=',
                                             width: 32.w,
-                                            height: 32.w,
+                                            height: 32.h,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -219,12 +219,12 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                               BorderRadius.circular(100.r),
                                           child: Container(
                                             width: 32.w,
-                                            height: 32.w,
+                                            height: 32.h,
                                             color: Color(0xff334155),
                                             child: Image.network(
                                               'data:image/jpeg;base64,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',
                                               width: 32.w,
-                                              height: 32.w,
+                                              height: 32.h,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -237,12 +237,12 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                               BorderRadius.circular(100.r),
                                           child: Container(
                                             width: 32.w,
-                                            height: 32.w,
+                                            height: 32.h,
                                             color: Color(0xff334155),
                                             child: Image.network(
                                               'data:image/jpeg;base64,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',
                                               width: 32.w,
-                                              height: 32.w,
+                                              height: 32.h,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -464,24 +464,27 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                               ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(
-                                  top: 30.0.sp, right: 30.0.sp, bottom: 0),
-                              height: 35.0.sp,
-                              width: 35.0.sp,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xff334155), width: 0.6),
-                                  shape: BoxShape.circle),
-                              child: SvgPicture.asset(
-                                'images/cross.svg',
-                                width: 13.r,
-                                height: 13.r,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30, right: 30),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: 0.0.sp, right: 0.0.sp, bottom: 0),
+                                height: 35.0.sp,
+                                width: 35.0.sp,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color(0xff334155), width: 0.6),
+                                    shape: BoxShape.circle),
+                                child: SvgPicture.asset(
+                                  'images/cross.svg',
+                                  width: 13.r,
+                                  height: 13.r,
+                                ),
                               ),
                             ),
                           ),
@@ -792,8 +795,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                   offset: Offset(35, 48),
                                   color: Color(0xFF0F172A),
                                   child: Container(
-                                      width: 45.0.h,
-                                      height: 45.0.h,
+                                      width: 40.0.w,
+                                      height: 40.0.h,
                                       margin: EdgeInsets.only(
                                           left: abc.length < 2 ? 0 : 15.0.sp,
                                           top: 0),
@@ -807,7 +810,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                             child: SvgPicture.asset(
                                               'images/tag_new.svg',
                                               height: 5.h,
-                                              width: 5.h,
+                                              width: 5.w,
                                             )),
                                       )),
                                   itemBuilder: (context) => [
@@ -935,7 +938,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                       MaterialTapTargetSize.shrinkWrap,
                                   label: Text(
                                     abc[index] ?? '',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14.sp),
                                   ),
                                   onSelected: (bool selected) {
                                     setState(() {
@@ -964,16 +968,38 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
               ],
             ),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 10.sp,
+          Padding(
+            padding: EdgeInsets.only(top: 16.sp),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: 10.sp,
+                  ),
+                  child: Container(
+                    child: Text(
+                      'Work folder',
+                      style: TextStyle(
+                          color: ColorSelect.cermany_color,
+                          fontSize: 14.0.sp,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
                 ),
-                child: Container(
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 10.0.sp,
+                    right: 35.0.sp,
+                  ),
+                  child: SvgPicture.asset(
+                    'images/cermony.svg',
+                  ),
+                ),
+                Container(
                   child: Text(
-                    'Work folder',
+                    'CRM',
                     style: TextStyle(
                         color: ColorSelect.cermany_color,
                         fontSize: 14.0.sp,
@@ -981,36 +1007,17 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         fontWeight: FontWeight.w400),
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: 10.0.sp,
-                  right: 35.0.sp,
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 10.0.sp,
+                    right: 16.0.sp,
+                  ),
+                  child: SvgPicture.asset(
+                    'images/cermony.svg',
+                  ),
                 ),
-                child: SvgPicture.asset(
-                  'images/cermony.svg',
-                ),
-              ),
-              Container(
-                child: Text(
-                  'CRM',
-                  style: TextStyle(
-                      color: ColorSelect.cermany_color,
-                      fontSize: 14.0.sp,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: 10.0.sp,
-                  right: 16.0.sp,
-                ),
-                child: SvgPicture.asset(
-                  'images/cermony.svg',
-                ),
-              ),
-            ],
+              ],
+            ),
           )
         ],
       ),
@@ -1612,7 +1619,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.delete(
-        Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
+        // Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
+        Uri.parse('${AppUrl.baseUrl}/project/tags/${tagId}'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": token,
@@ -1634,9 +1642,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
   //Edit project_detail api
   Future<void> saveTagApi(String projectId, String tagName) async {
     var token = 'Bearer ' + storage.read("token");
+    print(projectId);
     try {
       var response = await http.post(
-        Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
+        // Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
+        Uri.parse('${AppUrl.baseUrl}/project/tags'),
         body: jsonEncode({
           "project_id": projectId,
           "name": tagName,
@@ -1648,6 +1658,9 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
       );
       // ignore: unrelated_type_equality_checks
       if (response.statusCode == 200) {
+        print(
+            "----------------------Save Tag API---------------------------------");
+        print(response.body);
         var responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
@@ -1808,6 +1821,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         var responseJson =
             jsonDecode(apiResponse.body.toString()) as Map<String, dynamic>;
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           toastLength: Toast.LENGTH_SHORT,
           msg: responseJson['message'],
           backgroundColor: Colors.grey,

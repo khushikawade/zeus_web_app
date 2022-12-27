@@ -2252,7 +2252,7 @@ class _NavigationRailState extends State<MyHomePage>
                             projectListTapIcon
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                        top: 12.sp, left: 12.sp),
+                                        top: 12.sp, left: 30.sp),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -2314,7 +2314,8 @@ class _NavigationRailState extends State<MyHomePage>
                                     settingIcon == false &&
                                     bellTapIcon == false
                                 ? Padding(
-                                    padding: EdgeInsets.only(left: 22.sp),
+                                    padding: EdgeInsets.only(
+                                        top: 12.sp, left: 20.sp),
                                     child: Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),

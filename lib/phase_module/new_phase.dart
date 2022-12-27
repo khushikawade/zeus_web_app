@@ -462,7 +462,7 @@ class _NewPhaseState extends State<NewPhase> {
                         return 'Please enter phase title';
                       } else {
                         setState(() {
-                          print(value);
+                          // print(value);
                           phaseDetails.title = value;
                           //savePhaseValidate = false;
                         });
@@ -485,7 +485,7 @@ class _NewPhaseState extends State<NewPhase> {
                         return 'Please enter phase type';
                       } else {
                         setState(() {
-                          print(value);
+                          // print(value);
                           phaseDetails.phase_type = value;
                           //savePhaseValidate = false;
                         });
@@ -1035,15 +1035,13 @@ class _NewPhaseState extends State<NewPhase> {
   }
 
   onEditMileStone(int index, Milestones values) {
-    setState(() {
-      mileStoneEditIndex = index;
-      mileStoneAction = "Edit";
-      clickedAddMileStone = true;
-      controllerMilestoneTitle.text = values.title ?? "";
-      mileStoneTitle = values.title ?? "";
-      mileStoneDate = AppUtil.stringToDate(values.m_date!) ??
-          AppUtil.dateToString(DateTime.now());
-    });
+    mileStoneEditIndex = index;
+    mileStoneAction = "Edit";
+    clickedAddMileStone = true;
+    controllerMilestoneTitle.text = values.title ?? "";
+    mileStoneTitle = values.title ?? "";
+    mileStoneDate = AppUtil.stringToDate(values.m_date!) ??
+        AppUtil.dateToString(DateTime.now());
   }
 
   Widget subtaskView() {
@@ -1454,6 +1452,7 @@ class _NewPhaseState extends State<NewPhase> {
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),
+                            size: 20.sp,
                           )),
                       hintText: 'Search',
                       hintStyle: TextStyle(
@@ -1859,6 +1858,7 @@ class _NewPhaseState extends State<NewPhase> {
     } catch (e) {
       SmartDialog.dismiss();
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: e.toString(),
         backgroundColor: Colors.grey,
       );
@@ -1923,6 +1923,7 @@ class _NewPhaseState extends State<NewPhase> {
     } catch (e) {
       SmartDialog.dismiss();
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: e.toString(),
         backgroundColor: Colors.grey,
       );
@@ -2041,10 +2042,12 @@ class _NewPhaseState extends State<NewPhase> {
 
         if (end.isBefore(start)) {
           return 'End date must be greater then the start date';
-        } else if (AppUtil.stringToDateValidate(enddate)
-            .isAtSameMomentAs((AppUtil.stringToDateValidate(subtask)))) {
-          return 'End date should not be same as start date';
-        } else if (endphase.isBefore(AppUtil.stringToDateValidate(enddate))) {
+        }
+        // else if (AppUtil.stringToDateValidate(enddate)
+        //     .isAtSameMomentAs((AppUtil.stringToDateValidate(subtask)))) {
+        //   return 'End date should not be same as start date';
+        // }
+        else if (endphase.isBefore(AppUtil.stringToDateValidate(enddate))) {
           return 'End date must be less then the phase end date';
         } else {
           setState(() {
