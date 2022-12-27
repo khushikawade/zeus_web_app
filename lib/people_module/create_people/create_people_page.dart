@@ -1536,10 +1536,10 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       child: searchTextField =
                                           TypeAheadFormField(
                                         keepSuggestionsOnLoading: false,
-                                        suggestionsBoxVerticalOffset: 16.0.w,
+                                        suggestionsBoxVerticalOffset: 9.0.w,
                                         suggestionsBoxDecoration:
                                             SuggestionsBoxDecoration(
-                                                offsetX: 57.w,
+                                                offsetX: 55.w,
                                                 constraints:
                                                     BoxConstraints.expand(
                                                         width: 313.w,
