@@ -9,14 +9,15 @@ import 'dart:typed_data';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:time_range/time_range.dart';
+
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
+import 'package:zeus/people_module/create_people/create_people_page.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
-import 'package:zeus/project_module/project_detail/project_home_view_model.dart';
-import 'package:zeus/project_module/project_detail/project_home_view.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+import 'package:zeus/project_module/project_home/project_home_view.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/logout_module/logout_view.dart';
 import 'package:zeus/utility/debouncer.dart';
@@ -97,6 +98,7 @@ class _NavigationRailState extends State<MyHomePage>
   bool saveButtonClick = false;
   bool createProjectValidate = true;
   String name_ = '';
+
   getformattedTime(TimeOfDay time) {
     DateTime tempDate = DateFormat("hh:mm")
         .parse(time.hour.toString() + ":" + time.minute.toString());
@@ -179,96 +181,6 @@ class _NavigationRailState extends State<MyHomePage>
           context, 'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
-    }
-  }
-
-  //Add people Api
-  createPeople(BuildContext context, StateSetter setStateView) async {
-    String commaSepratedString = selectedDaysList.join(", ");
-
-    print("add People---------------------------------------------------");
-    var token = 'Bearer ' + storage.read("token");
-
-    var request =
-        http.MultipartRequest('POST', Uri.parse('${AppUrl.baseUrl}/resource'));
-    request.headers.addAll({
-      "Content-Type": "application/json",
-      "Authorization": token,
-    });
-    request.fields['name'] = _name.text.toString();
-    request.fields['nickname'] = _nickName.text.toString();
-    request.fields['email'] = _emailAddress.text.toString();
-    request.fields['phone_number'] = _phoneNumber.text.toString();
-    request.fields['password'] = 'Nirmaljeet@123';
-    request.fields['bio'] = _bio.text.toString();
-    request.fields['designation'] = _designation.text.toString();
-    request.fields['department_id'] = _depat!;
-    request.fields['associate'] = _association.text;
-    request.fields['salary'] = _salary.text;
-    request.fields['salary_currency'] = _curren!;
-    request.fields['availibilty_day'] = commaSepratedString;
-    request.fields['availibilty_time'] = '${startTime1}-${endTime2}';
-    request.fields['country'] = _country.text;
-    request.fields['city'] = _enterCity.text;
-    request.fields['time_zone'] = _time!;
-
-    for (int i = 0; i < abc.length; i++) {
-      request.fields['skills[$i]'] = '${abc[i]}';
-    }
-
-    _selectedFile = webImage;
-    print(_selectedFile);
-
-    request.files.add(await http.MultipartFile.fromBytes(
-        'image', _selectedFile!,
-        contentType: new MediaType('application', 'octet-stream'),
-        filename: "file_up"));
-
-    print("requestData ----------------------------------------- ${request}");
-
-    var response = await request.send();
-    print("------------------response.statusCode---------------------");
-    print(response.statusCode);
-
-    var responseString = await response.stream.bytesToString();
-    print("Response Data ------------------------------- ${responseString}");
-    if (response.statusCode == 200) {
-      SmartDialog.dismiss();
-      Navigator.pop(
-        context,
-      );
-      setStateView(() {
-        _selectedIndex = 2;
-        clearContoller();
-        selectDays = false;
-        selectSkill = false;
-        selectTime = false;
-        selectTimeZone = false;
-        selectDepartment = false;
-        selectSalary = false;
-        selectImage = false;
-        commaSepratedString = '';
-        imageavail = false;
-
-        _selectedFile = [];
-        request.files.clear();
-      });
-
-      print("add people created");
-    } else if (response.statusCode == 401) {
-      SmartDialog.dismiss();
-      AppUtil.showErrorDialog(
-          context, 'Your Session has been expired, Please try again!');
-    } else {
-      Map<String, dynamic> responseJson = json.decode(responseString);
-      print("Error response ------------------------ ${responseJson}");
-
-      SmartDialog.dismiss();
-
-      Fluttertoast.showToast(
-        msg: responseJson['message'] ?? 'Something Went Wrong',
-        backgroundColor: Colors.grey,
-      );
     }
   }
 
@@ -419,1752 +331,1785 @@ class _NavigationRailState extends State<MyHomePage>
                   key: _addFormKey,
                   child: CreateProjectPage(
                     formKey: _addFormKey,
+                    response: null,
                   )),
             ),
           );
         });
   }
 
-  //Add people popup
-  showAddPeople(BuildContext context) {
-    showDialog(
+  //Create project_detail popup
+  void showAlertDialogPeople(BuildContext context) async {
+    bool result = await showDialog(
         context: context,
         builder: (context) {
-          abc.clear();
-          //---------------sayyam
-          selectDaysList = [];
-          items1.forEach((element) {
-            selectDaysList!.add(DropdownModel('', element));
-          });
-          imageavail = false;
-
-          createButtonClick = false;
-
-          _day = '';
-
-          selectedDaysList.clear();
           return StatefulBuilder(
-            builder: (context, setStateView) => AlertDialog(
+            builder: (context, setState) => AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
               contentPadding: EdgeInsets.zero,
               backgroundColor: const Color(0xff1E293B),
               content: Form(
-                key: _formKey,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.99,
-                  height: MediaQuery.of(context).size.height * 0.99,
-                  child: RawScrollbar(
-                    controller: verticalScroll,
-                    thumbColor: const Color(0xff4b5563),
-                    crossAxisMargin: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    thickness: 8,
-                    child: ListView(
-                      controller: verticalScroll,
-                      shrinkWrap: true,
-                      children: [
-                        Container(
-                            height: 87,
-                            decoration: const BoxDecoration(
-                              color: Color(0xff283345),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(16.0),
-                                topLeft: Radius.circular(16.0),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x26000000),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
-                                  ),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 30.0, top: 10.0, bottom: 10.0),
-                                  child: const Text(
-                                    "Add People",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 22.0,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                                Spacer(),
-                                Container(
-                                  width: 97.0,
-                                  margin: const EdgeInsets.only(
-                                      top: 10.0, bottom: 10.0),
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    borderRadius: BorderRadius.circular(
-                                      40.0,
-                                    ),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      _name.clear();
-                                      _nickName.clear();
-                                      _bio.clear();
-                                      _password.clear();
-                                      _designation.clear();
-                                      _association.clear();
-                                      _salary.clear();
-                                      _salaryCurrency.clear();
-                                      _availableDay.clear();
-                                      _availableTime.clear();
-                                      _search.clear();
-                                      _country.clear();
-                                      _enterCity.clear();
-                                      _phoneNumber.clear();
-                                      _emailAddress.clear();
-                                      _depat = null;
-                                      _curren = null;
-                                      _time = null;
-                                      startTime1 = null;
-                                      endTime2 = null;
-                                      webImage = null;
-                                      webImage = null;
-                                      selectImage = false;
-                                      selectTimeZone = false;
-                                      selectSalary = false;
-                                      selectSkill = false;
-                                      selectDepartment = false;
-                                      selectDays = false;
-                                      selectTime = false;
-
-                                      if (selectDepartment == false ||
-                                          selectSalary == false ||
-                                          selectSkill == false ||
-                                          selectTimeZone == false ||
-                                          selectImage == false ||
-                                          selectDays == false ||
-                                          selectTime == false) {
-                                        saveButtonClick = false;
-                                      }
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: Color(0xffFFFFFF),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10.0, right: 30.0, bottom: 10.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      setStateView(() {
-                                        createProjectValidate = true;
-                                        createButtonClick = true;
-                                      });
-
-                                      if (_formKey.currentState!.validate()) {
-                                        Future.delayed(
-                                            const Duration(microseconds: 500),
-                                            () {
-                                          if (createProjectValidate) {
-                                            if (selectImage == true &&
-                                                selectDepartment == true &&
-                                                selectDays == true &&
-                                                selectSalary == true &&
-                                                selectSkill == true &&
-                                                selectTime == true &&
-                                                selectTimeZone == true) {
-                                              SmartDialog.showLoading(
-                                                msg:
-                                                    "Your request is in progress please wait for a while...",
-                                              );
-
-                                              createPeople(
-                                                  context, setStateView);
-                                            }
-                                          }
-                                        });
-                                      }
-                                      setStateView(() {
-                                        saveButtonClick = true;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: 97,
-                                      margin: const EdgeInsets.only(),
-                                      height: 40.0,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff7DD3FC),
-                                        borderRadius: BorderRadius.circular(
-                                          40.0,
-                                        ),
-                                      ),
-                                      child: const Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Save",
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Color(0xff000000),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                          width: 120.0.sp,
-                                          height: 120.0.sp,
-                                          margin: EdgeInsets.only(
-                                              left: 27.0, top: 28),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff334155),
-                                            borderRadius:
-                                                BorderRadius.circular(200.0.r),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(200.0.r),
-                                            child: imageavail
-                                                ? Image.memory(
-                                                    webImage!,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                : Padding(
-                                                    padding:
-                                                        EdgeInsets.all(46.0),
-                                                    child: SvgPicture.asset(
-                                                      'images/photo.svg',
-                                                      height: 36.0.h,
-                                                      width: 36.0.w,
-                                                    )),
-                                          )),
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 48.0.sp, top: 57.0.sp),
-                                            child: InkWell(
-                                              onTap: () async {
-                                                final image =
-                                                    await ImagePickerWeb
-                                                        .getImageAsBytes();
-                                                setStateView(() {
-                                                  webImage = image!;
-                                                  imageavail = true;
-                                                  selectImage = true;
-                                                });
-                                              },
-                                              child: Container(
-                                                height: 35.0.h,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.11.w,
-                                                // margin: const EdgeInsets.only(
-                                                //     left: 48.0, top: 57.0),
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xff334155),
-                                                  //color: Colors.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    40.0.r,
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              left: 16.0),
-                                                      child: const Icon(
-                                                          Icons.camera_alt,
-                                                          size: 18,
-                                                          color: Color(
-                                                              0xffFFFFFF)),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 11.0.sp),
-                                                      child: Flexible(
-                                                        child: Text(
-                                                          "Upload new",
-                                                          overflow:
-                                                              TextOverflow.fade,
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xffFFFFFF),
-                                                              fontSize: 14.0.sp,
-                                                              fontFamily:
-                                                                  'Inter',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(width: 10),
-                                              saveButtonClick
-                                                  ? selectImage
-                                                      ? const Text(
-                                                          " ",
-                                                        )
-                                                      : Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            top: 8,
-                                                            left: 0,
-                                                          ),
-                                                          child: errorWidget())
-                                                  : Text(''),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 30.0, top: 30.0),
-                                    child: const Text(
-                                      "About you",
-                                      style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 18.0,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'Inter-Bold',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 16.0,
-                                  ),
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 25,
-                                      left: 30.0,
-                                      bottom: 0,
-                                    ),
-                                    child: CustomFormField(
-                                      controller: _name,
-                                      hint: 'Enter name',
-                                      label: 'Name',
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        RegExp regex = RegExp(r'^[a-z A-Z]+$',
-                                            caseSensitive: false);
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter';
-                                        } else if (!regex.hasMatch(value)) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-                                          return 'Please enter valid name';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  //  const SizedBox(
-                                  //   height: 16.0,
-                                  // ),
-
-                                  // Stack(
-                                  //   children: [
-                                  //     Column(
-                                  //       crossAxisAlignment:
-                                  //           CrossAxisAlignment.start,
-                                  //       children: [
-                                  //         Container(
-                                  //           width: MediaQuery.of(context)
-                                  //                   .size
-                                  //                   .width *
-                                  //               0.99,
-                                  //           margin: const EdgeInsets.only(
-                                  //               left: 30.0,
-                                  //               top: 5.0,
-                                  //               right: 25.0,
-                                  //               bottom: 10),
-                                  //           height: 56.0,
-                                  //           decoration: BoxDecoration(
-                                  //             color: const Color(0xff334155),
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(
-                                  //               8.0,
-                                  //             ),
-                                  //             boxShadow: const [
-                                  //               BoxShadow(
-                                  //                 color: Color(0xff475569),
-                                  //                 offset: Offset(
-                                  //                   0.0,
-                                  //                   2.0,
-                                  //                 ),
-                                  //                 blurRadius: 0.0,
-                                  //                 spreadRadius: 0.0,
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 14.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "Nickname",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       controller: _nickName,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       maxLength: 30,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 16.0,
-                                  //             top: 45.0,
-                                  //             right: 10,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter nickname',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w400)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 25, left: 30.0, bottom: 0),
-                                    child: CustomFormField(
-                                      controller: _nickName,
-                                      hint: 'Enter nickname',
-                                      label: 'Nickname',
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 25,
-                                      left: 30.0,
-                                    ),
-                                    child: CustomFormField(
-                                      controller: _bio,
-                                      maxline: 4,
-                                      fontSizeForLabel: 14,
-                                      hint: 'Enter your bio',
-                                      label: 'Your bio',
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  // Stack(
-                                  //   children: [
-                                  //     Container(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.99,
-                                  //       margin: const EdgeInsets.only(
-                                  //           left: 30.0, top: 16.0, right: 25.0),
-                                  //       height: 110.0,
-                                  //       decoration: const BoxDecoration(
-                                  //         color: Color(0xff334155),
-                                  //         borderRadius: BorderRadius.only(
-                                  //           topRight: Radius.circular(8.0),
-                                  //           topLeft: Radius.circular(8.0),
-                                  //         ),
-                                  //         boxShadow: [
-                                  //           BoxShadow(
-                                  //             color: Color(0xff475569),
-                                  //             offset: Offset(
-                                  //               0.0,
-                                  //               2.0,
-                                  //             ),
-                                  //             blurRadius: 0.0,
-                                  //             spreadRadius: 0.0,
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //     Container(
-                                  //         margin: const EdgeInsets.only(
-                                  //             top: 22.0, left: 45.0),
-                                  //         child: const Text(
-                                  //           "Your bio",
-                                  //           style: TextStyle(
-                                  //               fontSize: 11.0,
-                                  //               color: Color(0xff64748B),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w500),
-                                  //         )),
-                                  //     TextFormField(
-                                  //       maxLines: 5,
-                                  //       controller: _bio,
-                                  //       cursorColor: const Color(0xffFFFFFF),
-                                  //       style: const TextStyle(
-                                  //           color: Color(0xffFFFFFF)),
-                                  //       textAlignVertical:
-                                  //           TextAlignVertical.bottom,
-                                  //       keyboardType: TextInputType.text,
-                                  //       decoration: const InputDecoration(
-                                  //           counterText: "",
-                                  //           errorStyle: TextStyle(
-                                  //               fontSize: 14, height: 0.20),
-                                  //           contentPadding: EdgeInsets.only(
-                                  //             bottom: 10.0,
-                                  //             top: 47.0,
-                                  //             right: 40,
-                                  //             left: 45.0,
-                                  //           ),
-                                  //           border: InputBorder.none,
-                                  //           hintText: 'Enter your bio',
-                                  //           hintStyle: TextStyle(
-                                  //               fontSize: 14.0,
-                                  //               color: Color(0xffFFFFFF),
-                                  //               fontFamily: 'Inter',
-                                  //               fontWeight: FontWeight.w400)),
-                                  //       autovalidateMode: _addSubmitted
-                                  //           ? AutovalidateMode.onUserInteraction
-                                  //           : AutovalidateMode.disabled,
-                                  //       validator: (value) {
-                                  //         if (value!.isEmpty) {
-                                  //           return 'Please enter';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       onChanged: (text) =>
-                                  //           setStateView(() => name1 = text),
-                                  //     ),
-                                  //   ],
-                                  // ),
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              right: 16.0,
-                                              left: 30.0,
-                                            ),
-                                            child: CustomFormField(
-                                              controller: _designation,
-                                              maxLength: 20,
-                                              fontSizeForLabel: 14,
-                                              hint: 'Enter ',
-                                              label: 'Designation',
-                                              contentpadding: EdgeInsets.only(
-                                                  left: 16,
-                                                  bottom: 10,
-                                                  right: 10,
-                                                  top: 10),
-                                              hintTextHeight: 1.7,
-                                              validator: (value) {
-                                                if (value.isEmpty) {
-                                                  setState(() {
-                                                    createProjectValidate =
-                                                        false;
-                                                  });
-
-                                                  return 'Please enter';
-                                                }
-                                                return null;
-                                              },
-                                              onChange: (text) =>
-                                                  setState(() => name_ = text),
-                                            ),
-                                          ),
-                                        ),
-                                        // Expanded(
-                                        //   child: Stack(
-                                        //     children: [
-                                        //       Container(
-                                        // width: MediaQuery.of(context)
-                                        //         .size
-                                        //         .width *
-                                        //     0.12,
-                                        //         margin: const EdgeInsets.only(
-                                        //             left: 30.0, right: 16.0),
-                                        //         height: 56.0,
-                                        //         decoration: BoxDecoration(
-                                        //           color:
-                                        //               const Color(0xff334155),
-                                        //           borderRadius:
-                                        //               BorderRadius.circular(
-                                        //             8.0,
-                                        //           ),
-                                        //           boxShadow: const [
-                                        //             BoxShadow(
-                                        //               color: Color(0xff475569),
-                                        //               offset: Offset(
-                                        //                 0.0,
-                                        //                 2.0,
-                                        //               ),
-                                        //               blurRadius: 0.0,
-                                        //               spreadRadius: 0.0,
-                                        //             ),
-                                        //           ],
-                                        //         ),
-                                        //       ),
-                                        //       Container(
-                                        //           margin: const EdgeInsets.only(
-                                        //               top: 23.0, left: 45.0),
-                                        //           child: const Text(
-                                        //             "Designation",
-                                        //             style: TextStyle(
-                                        //                 fontSize: 11.0,
-                                        //                 color:
-                                        //                     Color(0xff64748B),
-                                        //                 fontFamily: 'Inter',
-                                        //                 fontWeight:
-                                        //                     FontWeight.w500),
-                                        //           )),
-                                        //       TextFormField(
-                                        //         controller: _designation,
-                                        //         // inputFormatters: [
-                                        //         //   UpperCaseTextFormatter()
-                                        //         // ],
-                                        //         maxLength: 20,
-                                        //         cursorColor:
-                                        //             const Color(0xffFFFFFF),
-                                        //         style: const TextStyle(
-                                        //             color: Color(0xffFFFFFF)),
-                                        //         textAlignVertical:
-                                        //             TextAlignVertical.bottom,
-                                        //         keyboardType:
-                                        //             TextInputType.text,
-                                        //         decoration:
-                                        //             const InputDecoration(
-                                        //                 counterText: "",
-                                        //                 errorStyle: TextStyle(
-                                        //                     fontSize: 14,
-                                        //                     height: 0.20),
-                                        //                 contentPadding:
-                                        //                     EdgeInsets.only(
-                                        //                   bottom: 16.0,
-                                        //                   top: 53.0,
-                                        //                   right: 10,
-                                        //                   left: 45.0,
-                                        //                 ),
-                                        //                 border:
-                                        //                     InputBorder.none,
-                                        //                 hintText: 'Enter',
-                                        //                 hintStyle: TextStyle(
-                                        //                     fontSize: 14.0,
-                                        //                     color: Color(
-                                        //                         0xffFFFFFF),
-                                        //                     fontFamily: 'Inter',
-                                        //                     fontWeight:
-                                        //                         FontWeight
-                                        //                             .w500)),
-                                        //         autovalidateMode: _addSubmitted
-                                        //             ? AutovalidateMode
-                                        //                 .onUserInteraction
-                                        //             : AutovalidateMode.disabled,
-                                        //         validator: (value) {
-                                        //           if (value!.isEmpty) {
-                                        //             return 'Please enter';
-                                        //           }
-                                        //           return null;
-                                        //         },
-                                        //         onChanged: (text) =>
-                                        //             setStateView(
-                                        //                 () => name1 = text),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        // ),
-
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 30.sp),
-                                            child: CustomSearchDropdown(
-                                              hint: 'Select',
-                                              label: "Department",
-                                              errorText: createButtonClick ==
-                                                          true &&
-                                                      (_depat == null ||
-                                                          _depat!.isEmpty)
-                                                  ? 'Please Select this field'
-                                                  : '',
-                                              items: departmentlist!,
-                                              onChange: ((value) {
-                                                // _curren = value.id;
-                                                _depat = value.id;
-                                                setStateView(() {
-                                                  selectDepartment = true;
-                                                });
-                                              }),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 25, left: 30.0, bottom: 0),
-                                    child: CustomFormField(
-                                      controller: _association,
-                                      maxLength: 30,
-                                      hint: 'Enter team name',
-                                      label: "Associated with",
-                                      fontSizeForLabel: 14,
-                                      contentpadding: EdgeInsets.only(
-                                          left: 16,
-                                          bottom: 10,
-                                          right: 10,
-                                          top: 10),
-                                      hintTextHeight: 1.7,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          setState(() {
-                                            createProjectValidate = false;
-                                          });
-
-                                          return 'Please enter';
-                                        }
-                                        return null;
-                                      },
-                                      onChange: (text) =>
-                                          setState(() => name_ = text),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 30.0, top: 0.0),
-                                    child: const Text(
-                                      "Salary",
-                                      style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 18.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 14.sp,
-                                              left: 26.0.sp,
-                                              bottom: 0),
-                                          child: CustomSearchDropdown(
-                                            hint: 'Select',
-                                            label: "A",
-                                            errorText: createButtonClick &&
-                                                    (_curren == null ||
-                                                        _curren!.isEmpty)
-                                                ? 'Please Select this field'
-                                                : '',
-                                            items: currencyList!,
-                                            onChange: ((value) {
-                                              _curren = value.id;
-                                              setStateView(() {
-                                                selectSalary = true;
-                                              });
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 8.w,
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 14, right: 50, bottom: 0),
-                                          child: CustomFormField(
-                                            controller: _salary,
-                                            maxLength: 15,
-                                            hint: '0.00',
-                                            label: "Monthly Salary",
-                                            fontSizeForLabel: 14,
-                                            contentpadding: EdgeInsets.only(
-                                                left: 16,
-                                                bottom: 10,
-                                                right: 10,
-                                                top: 10),
-                                            hintTextHeight: 1.7,
-                                            validator: (value) {
-                                              RegExp regex = RegExp(
-                                                  r'^\D+|(?<=\d),(?=\d)');
-                                              if (value.isEmpty) {
-                                                setState(() {
-                                                  createProjectValidate = false;
-                                                });
-
-                                                return 'Please enter';
-                                              } else if (regex
-                                                  .hasMatch(value)) {
-                                                setState(() {
-                                                  createProjectValidate = false;
-                                                });
-                                                return 'Please enter valid salary';
-                                              }
-                                              return null;
-                                            },
-                                            onChange: (text) =>
-                                                setState(() => name_ = text),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 11.w,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          height: 56,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 1.2,
-                                child: const VerticalDivider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
-                                )),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 30.0, top: 27.0),
-                                    child: const Text(
-                                      "Availabilty",
-                                      style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 18.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  Stack(
-                                    children: [
-                                      // Column(
-                                      //   crossAxisAlignment:
-                                      //       CrossAxisAlignment.start,
-                                      //   mainAxisAlignment:
-                                      //       MainAxisAlignment.start,
-                                      //   children: [
-                                      //     Container(
-                                      //       width: MediaQuery.of(context)
-                                      //               .size
-                                      //               .width *
-                                      //           0.26,
-                                      //       margin: const EdgeInsets.only(
-                                      //           left: 30.0, right: 29.6),
-                                      //       height: 56.0,
-                                      //       decoration: BoxDecoration(
-                                      //         color: const Color(0xff334155),
-                                      //         borderRadius:
-                                      //             BorderRadius.circular(
-                                      //           8.0,
-                                      //         ),
-                                      //         boxShadow: const [
-                                      //           BoxShadow(
-                                      //             color: Color(0xff475569),
-                                      //             offset: Offset(
-                                      //               0.0,
-                                      //               2.0,
-                                      //             ),
-                                      //             blurRadius: 0.0,
-                                      //             spreadRadius: 0.0,
-                                      //           )
-                                      //         ],
-                                      //       ),
-                                      //     ),
-                                      //     handleAllerrorWidget(selectDays)
-                                      //   ],
-                                      // ),
-                                      // Container(
-                                      //     margin: const EdgeInsets.only(
-                                      //         top: 6.0, left: 45.0),
-                                      //     child: const Text(
-                                      //       "Select days",
-                                      //       style: TextStyle(
-                                      //           fontSize: 11.0,
-                                      //           color: Color(0xff64748B),
-                                      //           fontFamily: 'Inter',
-                                      //           fontWeight: FontWeight.w500),
-                                      //     )),
-                                      // Container(
-                                      //   margin: const EdgeInsets.only(
-                                      //       left: 30.0,
-                                      //       right: 55,
-                                      //       top: 26,
-                                      //       bottom: 10),
-                                      //   height: 20.0,
-                                      //   child: Container(
-                                      //       margin: const EdgeInsets.only(
-                                      //           left: 16.0, right: 20.0),
-                                      //       child: StatefulBuilder(
-                                      //         builder: (BuildContext context,
-                                      //             StateSettersetState) {
-                                      //           return DropdownButtonHideUnderline(
-                                      //             child: CustomDropdownButton(
-                                      //               dropdownColor:
-                                      //                   ColorSelect.class_color,
-                                      //               underline: Container(),
-                                      //               hint: const Text(
-                                      //                 "Select",
-                                      //                 style: TextStyle(
-                                      //                     fontSize: 14.0,
-                                      //                     color:
-                                      //                         Color(0xffFFFFFF),
-                                      //                     fontFamily: 'Inter',
-                                      //                     fontWeight:
-                                      //                         FontWeight.w500),
-                                      //               ),
-                                      //               // isExpanded: true,
-                                      //               icon: const Icon(
-                                      //                 Icons.arrow_drop_down,
-                                      //                 color: Color(0xff64748B),
-                                      //               ),
-                                      //               items: items1
-                                      //                   .map((String items1) {
-                                      //                 return DropdownMenuItem(
-                                      //                   value: items1,
-                                      //                   child: Text(items1,
-                                      //                       style: (const TextStyle(
-                                      //                           color: Colors
-                                      //                               .white))),
-                                      //                 );
-                                      //               }).toList(),
-                                      //               onChanged:
-                                      //                   (String? newValue) {
-                                      //                 setStateView(() {
-                                      //                   _day = newValue;
-                                      //                   _shortday = _day!
-                                      //                       .substring(0, 3);
-                                      //                   if (selectedDaysList
-                                      //                       .isNotEmpty) {
-                                      //                     if (selectedDaysList
-                                      //                         .contains(
-                                      //                             _shortday)) {
-                                      //                     } else {
-                                      //                       selectedDaysList
-                                      //                           .add(_shortday!
-                                      //                               .toString());
-                                      //                       selectDays = true;
-                                      //                     }
-                                      //                   } else {
-                                      //                     selectedDaysList.add(
-                                      //                         _shortday!
-                                      //                             .toString());
-                                      //                     selectDays = true;
-                                      //                   }
-                                      //                 });
-                                      //               },
-                                      //             ),
-                                      //           );
-                                      //         },
-                                      //       )),
-                                      // ),
-
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              right: 29.6.sp,
-                                              left: 25.0.sp,
-                                              bottom: 0),
-                                          child: CustomSearchDropdown(
-                                            hint: 'Select days',
-                                            label: "Select",
-                                            errorText: createButtonClick &&
-                                                    (_day == null ||
-                                                        _day!.isEmpty)
-                                                ? 'Please Select this field'
-                                                : '',
-                                            items: selectDaysList!,
-                                            onChange: ((value) {
-                                              setStateView(() {
-                                                _day = value.item;
-                                                _shortday =
-                                                    _day!.substring(0, 3);
-                                                if (selectedDaysList
-                                                    .isNotEmpty) {
-                                                  if (selectedDaysList
-                                                      .contains(_shortday)) {
-                                                  } else {
-                                                    selectedDaysList.add(
-                                                        _shortday!.toString());
-                                                    selectDays = true;
-                                                  }
-                                                } else {
-                                                  selectedDaysList.add(
-                                                      _shortday!.toString());
-                                                  selectDays = true;
-                                                }
-                                              });
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  selectedDaysList.isNotEmpty
-                                      ? SizedBox(
-                                          height: 30,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(left: 26),
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount:
-                                                  selectedDaysList.length,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 12.0),
-                                                  child: InputChip(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    8))),
-                                                    deleteIcon: Icon(
-                                                      Icons.close,
-                                                      color: Colors.white,
-                                                      size: 20,
-                                                    ),
-                                                    backgroundColor:
-                                                        Color(0xff334155),
-                                                    visualDensity:
-                                                        VisualDensity.compact,
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    label: Text(
-                                                      selectedDaysList[index],
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    selected: _isSelected!,
-                                                    onSelected:
-                                                        (bool selected) {
-                                                      setStateView(() {
-                                                        _isSelected = selected;
-                                                        print(
-                                                            "_isSelected--------------------------${_isSelected}");
-                                                      });
-                                                    },
-                                                    onDeleted: () {
-                                                      setStateView(() {
-                                                        selectedDaysList
-                                                            .removeAt(index);
-                                                      });
-                                                    },
-                                                    showCheckmark: false,
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
-                                  selectedDaysList.isNotEmpty
-                                      ? const SizedBox(
-                                          height: 15,
-                                        )
-                                      : Container(),
-                                  Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                right: 29.6.sp,
-                                                left: 25.0.sp,
-                                                bottom: 0),
-                                            child: Container(
-                                              height: 57.h,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xff334155),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  8.0,
-                                                ),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Color(0xff475569),
-                                                    offset: Offset(
-                                                      0.0,
-                                                      2.0,
-                                                    ),
-                                                    blurRadius: 0.0,
-                                                    spreadRadius: 0.0,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          handleAllerrorWidget(selectTime)
-                                        ],
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                            top: 11.0,
-                                            left: 45.0,
-                                          ),
-                                          child: Text(
-                                            "Select time",
-                                            style: TextStyle(
-                                                fontSize: 11.sp,
-                                                color: Color(0xff64748B),
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                            bottom: 16.0,
-                                            top: 28.0,
-                                            right: 10,
-                                            left: 45.0,
-                                          ),
-                                          child: Text(
-                                            startTime1 != null &&
-                                                    startTime1.isNotEmpty &&
-                                                    endTime2 != null &&
-                                                    endTime2.isNotEmpty
-                                                ? "$startTime1 - $endTime2"
-                                                : '',
-                                            style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: Colors.white,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w500),
-                                          )),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 16, right: 16),
-                                    child: TimeRange(
-                                        fromTitle: const Text(
-                                          'From',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white),
-                                        ),
-                                        toTitle: const Text(
-                                          'To',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white),
-                                        ),
-                                        titlePadding: 16,
-                                        textStyle: const TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: Colors.white),
-                                        activeTextStyle: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                        borderColor: Colors.white,
-                                        backgroundColor: Colors.transparent,
-                                        activeBackgroundColor: Colors.green,
-                                        firstTime:
-                                            TimeOfDay(hour: 8, minute: 30),
-                                        lastTime:
-                                            TimeOfDay(hour: 20, minute: 00),
-                                        timeStep: 10,
-                                        timeBlock: 30,
-                                        onRangeCompleted: (range) {
-                                          setStateView(() {
-                                            startTime = range!.start;
-                                            endTime = range.end;
-                                            startTime1 =
-                                                getformattedTime(startTime);
-                                            endTime2 =
-                                                getformattedTime(endTime);
-                                            selectTime = true;
-                                          });
-                                        }),
-                                  ),
-                                  const SizedBox(
-                                    height: 20.0,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 30.0, bottom: 12),
-                                        child: const Text(
-                                          "Skills",
-                                          style: TextStyle(
-                                              color: Color(0xffFFFFFF),
-                                              fontSize: 18.0,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                      Container(
-                                          width: 40.0,
-                                          height: 40.0,
-                                          margin: const EdgeInsets.only(
-                                            right: 60,
-                                          ),
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xff334155),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Container(
-                                            child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: SvgPicture.asset(
-                                                    'images/tag_new.svg')),
-                                          )),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                          left: 5,
-                                          right: 5,
-                                        ),
-                                        margin: EdgeInsets.only(
-                                            right: 30.5.sp,
-                                            left: 25.0.sp,
-                                            top: 20.sp),
-                                        height: 49.0.h,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          borderRadius: BorderRadius.circular(
-                                            48.0.r,
-                                          ),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            searchTextField =
-                                                TypeAheadFormField(
-                                              keepSuggestionsOnLoading: false,
-                                              suggestionsBoxVerticalOffset: 0.0,
-                                              suggestionsBoxDecoration:
-                                                  SuggestionsBoxDecoration(
-                                                      color: Color(0xff0F172A)),
-                                              hideOnLoading: true,
-                                              suggestionsCallback: (pattern) {
-                                                return getSuggestions(pattern);
-                                              },
-                                              textFieldConfiguration:
-                                                  TextFieldConfiguration(
-                                                controller:
-                                                    _typeAheadController,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14.0),
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                cursorColor: Colors.white,
-                                                autofocus: true,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  // border: InputBorder.none,
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 15.0, left: 10),
-                                                  prefixIcon: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 4.0),
-                                                      child: Icon(
-                                                        Icons.search,
-                                                        color:
-                                                            Color(0xff64748B),
-                                                      )),
-                                                  hintText: 'Search',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Colors.white,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  border: InputBorder.none,
-                                                ),
-                                              ),
-                                              itemBuilder: (context, item) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    item.title.toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: Colors.white),
-                                                  ),
-                                                );
-                                                // Text("khushi");
-                                                // rowResourceName(item);
-                                              },
-                                              transitionBuilder: (context,
-                                                  suggestionsBox, controller) {
-                                                return suggestionsBox;
-                                              },
-                                              onSuggestionSelected: (item) {
-                                                setStateView(() {
-                                                  searchTextField!
-                                                      .textFieldConfiguration
-                                                      .controller!
-                                                      .text = '';
-
-                                                  if (abc.isNotEmpty) {
-                                                    if (abc
-                                                        .contains(item.title)) {
-                                                    } else {
-                                                      abc.add(item.title!);
-                                                    }
-                                                  } else {
-                                                    abc.add(item.title!);
-                                                  }
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      handleAllerrorWidget(selectSkill),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 30),
-                                        child: Wrap(
-                                          spacing: 5,
-                                          runSpacing: 5,
-                                          children: List.generate(
-                                            abc.length,
-                                            (index) {
-                                              return Container(
-                                                height: 32,
-                                                margin: const EdgeInsets.only(
-                                                    left: 5.0, right: 5.0),
-                                                child: InputChip(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          8))),
-                                                  deleteIcon: const Icon(
-                                                    Icons.close,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  ),
-                                                  backgroundColor:
-                                                      Color(0xff334155),
-                                                  visualDensity:
-                                                      VisualDensity.compact,
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                  label: Text(
-                                                    abc[index],
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  onSelected: (bool selected) {
-                                                    setState(() {
-                                                      _isSelected = selected;
-                                                    });
-                                                  },
-                                                  onDeleted: () {
-                                                    setState(() {
-                                                      abc.removeAt(index);
-                                                    });
-                                                  },
-                                                  showCheckmark: false,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 1.2,
-                                child: const VerticalDivider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
-                                )),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 30.0, top: 27.0),
-                                    child: const Text(
-                                      "Contact info",
-                                      style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 18.0,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 30,
-                                      right: 30,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        CustomFormField(
-                                          maxLength: 20,
-                                          controller: _country,
-                                          hint: 'Enter country',
-                                          label: "Country",
-                                          fontSizeForLabel: 14,
-                                          contentpadding: EdgeInsets.only(
-                                              left: 16,
-                                              bottom: 10,
-                                              right: 10,
-                                              top: 10),
-                                          hintTextHeight: 1.7,
-                                          validator: (value) {
-                                            RegExp regex =
-                                                RegExp(r'^[a-z A-Z]+$');
-                                            if (value.isEmpty) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter';
-                                            } else if (!regex.hasMatch(value)) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter valid  country name';
-                                            }
-                                            return null;
-                                          },
-                                          onChange: (text) =>
-                                              setState(() => name_ = text),
-                                        ),
-                                        CustomFormField(
-                                          maxLength: 20,
-                                          controller: _enterCity,
-                                          hint: 'Enter city',
-                                          label: "City",
-                                          fontSizeForLabel: 14,
-                                          contentpadding: EdgeInsets.only(
-                                              left: 16,
-                                              bottom: 10,
-                                              right: 10,
-                                              top: 10),
-                                          hintTextHeight: 1.7,
-                                          validator: (value) {
-                                            RegExp regex =
-                                                RegExp(r'^[a-z A-Z]+$');
-                                            if (value.isEmpty) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter';
-                                            } else if (!regex.hasMatch(value)) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter valid  city name';
-                                            }
-                                            return null;
-                                          },
-                                          onChange: (text) =>
-                                              setState(() => name_ = text),
-                                        ),
-                                        CustomFormField(
-                                          maxLength: 10,
-                                          controller: _phoneNumber,
-                                          hint: 'Enter number',
-                                          label: "Phone number",
-                                          fontSizeForLabel: 14,
-                                          contentpadding: EdgeInsets.only(
-                                              left: 16,
-                                              bottom: 10,
-                                              right: 10,
-                                              top: 10),
-                                          hintTextHeight: 1.7,
-                                          validator: (value) {
-                                            String pattern =
-                                                r'(^(?:[+0]9)?[0-9]{10}$)';
-                                            RegExp regExp = new RegExp(pattern);
-                                            if (value.isEmpty) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter';
-                                            } else if (!regExp
-                                                .hasMatch(value)) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter valid mobile number';
-                                            }
-                                            return null;
-                                          },
-                                          onChange: (text) =>
-                                              setState(() => name_ = text),
-                                        ),
-                                        CustomFormField(
-                                          maxLength: 20,
-                                          controller: _emailAddress,
-                                          hint: 'Enter email address',
-                                          label: "Email address",
-                                          fontSizeForLabel: 14,
-                                          contentpadding: EdgeInsets.only(
-                                              left: 16,
-                                              bottom: 10,
-                                              right: 10,
-                                              top: 10),
-                                          hintTextHeight: 1.7,
-                                          validator: (value) {
-                                            RegExp regex = RegExp(
-                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                                            if (value.isEmpty) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Please enter email';
-                                            } else if (!regex.hasMatch(value)) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-
-                                              return 'Enter valid Email';
-                                            }
-                                            if (regex.hasMatch(values)) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-                                              return 'please enter valid email';
-                                            }
-                                            if (value.length > 50) {
-                                              setState(() {
-                                                createProjectValidate = false;
-                                              });
-                                              return 'No more length 50';
-                                            }
-                                            return null;
-                                          },
-                                          onChange: (text) =>
-                                              setState(() => name_ = text),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Stack(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              right: 29.6.sp,
-                                              left: 25.0.sp,
-                                              bottom: 0),
-                                          child: CustomSearchDropdown(
-                                            hint: "Select timezone",
-                                            label: "Select",
-                                            errorText: createButtonClick &&
-                                                    (_time == null ||
-                                                        _time!.isEmpty)
-                                                ? 'Please Select this field'
-                                                : '',
-                                            items: selecTimeZoneList!,
-                                            onChange: ((value) {
-                                              setStateView(() {
-                                                _time = value.item;
-                                                print("account:$_time");
-                                                selectTimeZone = true;
-                                              });
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                  key: _formKey,
+                  child: CreatePeoplePage(
+                    formKey: _formKey,
+                    response: null,
+                    isEdit: false,
+                  )),
             ),
           );
         });
+
+    if (result != null && result) {
+      Provider.of<PeopleHomeViewModel>(context, listen: false)
+          .getPeopleDataList(searchText: '');
+
+      setState(() {});
+    }
   }
+
+  //Add people popup
+  // showAddPeople(BuildContext context) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         abc.clear();
+  //         //---------------sayyam
+  //         selectDaysList = [];
+  //         items1.forEach((element) {
+  //           selectDaysList!.add(DropdownModel('', element));
+  //         });
+  //         imageavail = false;
+
+  //         createButtonClick = false;
+
+  //         _day = '';
+
+  //         selectedDaysList.clear();
+  //         return StatefulBuilder(
+  //           builder: (context, setStateView) => AlertDialog(
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(16),
+  //             ),
+  //             contentPadding: EdgeInsets.zero,
+  //             backgroundColor: const Color(0xff1E293B),
+  //             content: Form(
+  //               key: _formKey,
+  //               child: SizedBox(
+  //                 width: MediaQuery.of(context).size.width * 0.99,
+  //                 height: MediaQuery.of(context).size.height * 0.99,
+  //                 child: RawScrollbar(
+  //                   controller: verticalScroll,
+  //                   thumbColor: const Color(0xff4b5563),
+  //                   crossAxisMargin: 2,
+  //                   shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(20),
+  //                   ),
+  //                   thickness: 8,
+  //                   child: ListView(
+  //                     controller: verticalScroll,
+  //                     shrinkWrap: true,
+  //                     children: [
+  //                       Container(
+  //                           height: 87,
+  //                           decoration: const BoxDecoration(
+  //                             color: Color(0xff283345),
+  //                             borderRadius: BorderRadius.only(
+  //                               topRight: Radius.circular(16.0),
+  //                               topLeft: Radius.circular(16.0),
+  //                             ),
+  //                             boxShadow: [
+  //                               BoxShadow(
+  //                                 color: Color(0x26000000),
+  //                                 offset: Offset(
+  //                                   0.0,
+  //                                   1.0,
+  //                                 ),
+  //                                 blurRadius: 0.0,
+  //                                 spreadRadius: 0.0,
+  //                               ),
+  //                             ],
+  //                           ),
+  //                           child: Row(
+  //                             children: [
+  //                               Container(
+  //                                 margin: const EdgeInsets.only(
+  //                                     left: 30.0, top: 10.0, bottom: 10.0),
+  //                                 child: const Text(
+  //                                   "Add People",
+  //                                   style: TextStyle(
+  //                                       color: Color(0xffFFFFFF),
+  //                                       fontSize: 22.0,
+  //                                       fontFamily: 'Inter',
+  //                                       fontWeight: FontWeight.w700),
+  //                                 ),
+  //                               ),
+  //                               Spacer(),
+  //                               Container(
+  //                                 width: 97.0,
+  //                                 margin: const EdgeInsets.only(
+  //                                     top: 10.0, bottom: 10.0),
+  //                                 height: 40.0,
+  //                                 decoration: BoxDecoration(
+  //                                   color: const Color(0xff334155),
+  //                                   borderRadius: BorderRadius.circular(
+  //                                     40.0,
+  //                                   ),
+  //                                 ),
+  //                                 child: InkWell(
+  //                                   onTap: () {
+  //                                     _name.clear();
+  //                                     _nickName.clear();
+  //                                     _bio.clear();
+  //                                     _password.clear();
+  //                                     _designation.clear();
+  //                                     _association.clear();
+  //                                     _salary.clear();
+  //                                     _salaryCurrency.clear();
+  //                                     _availableDay.clear();
+  //                                     _availableTime.clear();
+  //                                     _search.clear();
+  //                                     _country.clear();
+  //                                     _enterCity.clear();
+  //                                     _phoneNumber.clear();
+  //                                     _emailAddress.clear();
+  //                                     _depat = null;
+  //                                     _curren = null;
+  //                                     _time = null;
+  //                                     startTime1 = null;
+  //                                     endTime2 = null;
+  //                                     webImage = null;
+  //                                     webImage = null;
+  //                                     selectImage = false;
+  //                                     selectTimeZone = false;
+  //                                     selectSalary = false;
+  //                                     selectSkill = false;
+  //                                     selectDepartment = false;
+  //                                     selectDays = false;
+  //                                     selectTime = false;
+
+  //                                     if (selectDepartment == false ||
+  //                                         selectSalary == false ||
+  //                                         selectSkill == false ||
+  //                                         selectTimeZone == false ||
+  //                                         selectImage == false ||
+  //                                         selectDays == false ||
+  //                                         selectTime == false) {
+  //                                       saveButtonClick = false;
+  //                                     }
+  //                                     Navigator.of(context).pop();
+  //                                   },
+  //                                   child: const Align(
+  //                                     alignment: Alignment.center,
+  //                                     child: Text(
+  //                                       "Cancel",
+  //                                       style: TextStyle(
+  //                                           fontSize: 14.0,
+  //                                           color: Color(0xffFFFFFF),
+  //                                           fontFamily: 'Inter',
+  //                                           fontWeight: FontWeight.w700),
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                               const SizedBox(
+  //                                 width: 16,
+  //                               ),
+  //                               Padding(
+  //                                 padding: const EdgeInsets.only(
+  //                                     top: 10.0, right: 30.0, bottom: 10.0),
+  //                                 child: InkWell(
+  //                                   onTap: () {
+  //                                     setStateView(() {
+  //                                       createProjectValidate = true;
+  //                                       createButtonClick = true;
+  //                                     });
+
+  //                                     if (_formKey.currentState!.validate()) {
+  //                                       Future.delayed(
+  //                                           const Duration(microseconds: 500),
+  //                                           () {
+  //                                         if (createProjectValidate) {
+  //                                           if (selectImage == true &&
+  //                                               selectDepartment == true &&
+  //                                               selectDays == true &&
+  //                                               selectSalary == true &&
+  //                                               selectSkill == true &&
+  //                                               selectTime == true &&
+  //                                               selectTimeZone == true) {
+  //                                             SmartDialog.showLoading(
+  //                                               msg:
+  //                                                   "Your request is in progress please wait for a while...",
+  //                                             );
+
+  //                                             createPeople(
+  //                                                 context, setStateView);
+  //                                           }
+  //                                         }
+  //                                       });
+  //                                     }
+  //                                     setStateView(() {
+  //                                       saveButtonClick = true;
+  //                                     });
+  //                                   },
+  //                                   child: Container(
+  //                                     width: 97,
+  //                                     margin: const EdgeInsets.only(),
+  //                                     height: 40.0,
+  //                                     decoration: BoxDecoration(
+  //                                       color: const Color(0xff7DD3FC),
+  //                                       borderRadius: BorderRadius.circular(
+  //                                         40.0,
+  //                                       ),
+  //                                     ),
+  //                                     child: const Align(
+  //                                       alignment: Alignment.center,
+  //                                       child: Text(
+  //                                         "Save",
+  //                                         style: TextStyle(
+  //                                             fontSize: 14.0,
+  //                                             color: Color(0xff000000),
+  //                                             fontFamily: 'Inter',
+  //                                             fontWeight: FontWeight.w700),
+  //                                       ),
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           )),
+  //                       Row(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         mainAxisAlignment: MainAxisAlignment.start,
+  //                         children: [
+  //                           Expanded(
+  //                             flex: 1,
+  //                             child: Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 Row(
+  //                                   children: [
+  //                                     Container(
+  //                                         width: 120.0.sp,
+  //                                         height: 120.0.sp,
+  //                                         margin: EdgeInsets.only(
+  //                                             left: 27.0, top: 28),
+  //                                         decoration: BoxDecoration(
+  //                                           color: const Color(0xff334155),
+  //                                           borderRadius:
+  //                                               BorderRadius.circular(200.0.r),
+  //                                         ),
+  //                                         child: ClipRRect(
+  //                                           borderRadius:
+  //                                               BorderRadius.circular(200.0.r),
+  //                                           child: imageavail
+  //                                               ? Image.memory(
+  //                                                   webImage!,
+  //                                                   fit: BoxFit.fill,
+  //                                                 )
+  //                                               : Padding(
+  //                                                   padding:
+  //                                                       EdgeInsets.all(46.0),
+  //                                                   child: SvgPicture.asset(
+  //                                                     'images/photo.svg',
+  //                                                     height: 36.0.h,
+  //                                                     width: 36.0.w,
+  //                                                   )),
+  //                                         )),
+  //                                     Column(
+  //                                       children: [
+  //                                         Padding(
+  //                                           padding: EdgeInsets.only(
+  //                                               left: 48.0.sp, top: 57.0.sp),
+  //                                           child: InkWell(
+  //                                             onTap: () async {
+  //                                               final image =
+  //                                                   await ImagePickerWeb
+  //                                                       .getImageAsBytes();
+  //                                               setStateView(() {
+  //                                                 webImage = image!;
+  //                                                 imageavail = true;
+  //                                                 selectImage = true;
+  //                                               });
+  //                                             },
+  //                                             child: Container(
+  //                                               height: 35.0.h,
+  //                                               width: MediaQuery.of(context)
+  //                                                       .size
+  //                                                       .width *
+  //                                                   0.11.w,
+  //                                               // margin: const EdgeInsets.only(
+  //                                               //     left: 48.0, top: 57.0),
+  //                                               decoration: BoxDecoration(
+  //                                                 color:
+  //                                                     const Color(0xff334155),
+  //                                                 //color: Colors.red,
+  //                                                 borderRadius:
+  //                                                     BorderRadius.circular(
+  //                                                   40.0.r,
+  //                                                 ),
+  //                                               ),
+  //                                               child: Row(
+  //                                                 children: [
+  //                                                   Container(
+  //                                                     margin:
+  //                                                         const EdgeInsets.only(
+  //                                                             left: 16.0),
+  //                                                     child: const Icon(
+  //                                                         Icons.camera_alt,
+  //                                                         size: 18,
+  //                                                         color: Color(
+  //                                                             0xffFFFFFF)),
+  //                                                   ),
+  //                                                   Container(
+  //                                                     margin: EdgeInsets.only(
+  //                                                         left: 11.0.sp),
+  //                                                     child: Flexible(
+  //                                                       child: Text(
+  //                                                         "Upload new",
+  //                                                         overflow:
+  //                                                             TextOverflow.fade,
+  //                                                         style: TextStyle(
+  //                                                             color: Color(
+  //                                                                 0xffFFFFFF),
+  //                                                             fontSize: 14.0.sp,
+  //                                                             fontFamily:
+  //                                                                 'Inter',
+  //                                                             fontWeight:
+  //                                                                 FontWeight
+  //                                                                     .w500),
+  //                                                       ),
+  //                                                     ),
+  //                                                   ),
+  //                                                 ],
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //                                         Row(
+  //                                           children: [
+  //                                             SizedBox(width: 10),
+  //                                             saveButtonClick
+  //                                                 ? selectImage
+  //                                                     ? const Text(
+  //                                                         " ",
+  //                                                       )
+  //                                                     : Padding(
+  //                                                         padding:
+  //                                                             const EdgeInsets
+  //                                                                 .only(
+  //                                                           top: 8,
+  //                                                           left: 0,
+  //                                                         ),
+  //                                                         child: errorWidget())
+  //                                                 : Text(''),
+  //                                           ],
+  //                                         )
+  //                                       ],
+  //                                     ),
+  //                                   ],
+  //                                 ),
+  //                                 Container(
+  //                                   margin: const EdgeInsets.only(
+  //                                       left: 30.0, top: 30.0),
+  //                                   child: const Text(
+  //                                     "About you",
+  //                                     style: TextStyle(
+  //                                         color: Color(0xffFFFFFF),
+  //                                         fontSize: 18.0,
+  //                                         fontStyle: FontStyle.normal,
+  //                                         fontFamily: 'Inter-Bold',
+  //                                         fontWeight: FontWeight.w700),
+  //                                   ),
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 16.0,
+  //                                 ),
+
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(
+  //                                     right: 25,
+  //                                     left: 30.0,
+  //                                     bottom: 0,
+  //                                   ),
+  //                                   child: CustomFormField(
+  //                                     controller: _name,
+  //                                     hint: 'Enter name',
+  //                                     label: 'Name',
+  //                                     fontSizeForLabel: 14,
+  //                                     contentpadding: EdgeInsets.only(
+  //                                         left: 16,
+  //                                         bottom: 10,
+  //                                         right: 10,
+  //                                         top: 10),
+  //                                     hintTextHeight: 1.7,
+  //                                     validator: (value) {
+  //                                       RegExp regex = RegExp(r'^[a-z A-Z]+$',
+  //                                           caseSensitive: false);
+  //                                       if (value.isEmpty) {
+  //                                         setState(() {
+  //                                           createProjectValidate = false;
+  //                                         });
+
+  //                                         return 'Please enter';
+  //                                       } else if (!regex.hasMatch(value)) {
+  //                                         setState(() {
+  //                                           createProjectValidate = false;
+  //                                         });
+  //                                         return 'Please enter valid name';
+  //                                       }
+  //                                       return null;
+  //                                     },
+  //                                     onChange: (text) =>
+  //                                         setState(() => name_ = text),
+  //                                   ),
+  //                                 ),
+  //                                 //  const SizedBox(
+  //                                 //   height: 16.0,
+  //                                 // ),
+
+  //                                 // Stack(
+  //                                 //   children: [
+  //                                 //     Column(
+  //                                 //       crossAxisAlignment:
+  //                                 //           CrossAxisAlignment.start,
+  //                                 //       children: [
+  //                                 //         Container(
+  //                                 //           width: MediaQuery.of(context)
+  //                                 //                   .size
+  //                                 //                   .width *
+  //                                 //               0.99,
+  //                                 //           margin: const EdgeInsets.only(
+  //                                 //               left: 30.0,
+  //                                 //               top: 5.0,
+  //                                 //               right: 25.0,
+  //                                 //               bottom: 10),
+  //                                 //           height: 56.0,
+  //                                 //           decoration: BoxDecoration(
+  //                                 //             color: const Color(0xff334155),
+  //                                 //             borderRadius:
+  //                                 //                 BorderRadius.circular(
+  //                                 //               8.0,
+  //                                 //             ),
+  //                                 //             boxShadow: const [
+  //                                 //               BoxShadow(
+  //                                 //                 color: Color(0xff475569),
+  //                                 //                 offset: Offset(
+  //                                 //                   0.0,
+  //                                 //                   2.0,
+  //                                 //                 ),
+  //                                 //                 blurRadius: 0.0,
+  //                                 //                 spreadRadius: 0.0,
+  //                                 //               ),
+  //                                 //             ],
+  //                                 //           ),
+  //                                 //         ),
+  //                                 //       ],
+  //                                 //     ),
+  //                                 //     Container(
+  //                                 //         margin: const EdgeInsets.only(
+  //                                 //             top: 14.0, left: 45.0),
+  //                                 //         child: const Text(
+  //                                 //           "Nickname",
+  //                                 //           style: TextStyle(
+  //                                 //               fontSize: 11.0,
+  //                                 //               color: Color(0xff64748B),
+  //                                 //               fontFamily: 'Inter',
+  //                                 //               fontWeight: FontWeight.w500),
+  //                                 //         )),
+  //                                 //     TextFormField(
+  //                                 //       controller: _nickName,
+  //                                 //       cursorColor: const Color(0xffFFFFFF),
+  //                                 //       style: const TextStyle(
+  //                                 //           color: Color(0xffFFFFFF)),
+  //                                 //       textAlignVertical:
+  //                                 //           TextAlignVertical.bottom,
+  //                                 //       keyboardType: TextInputType.text,
+  //                                 //       maxLength: 30,
+  //                                 //       decoration: const InputDecoration(
+  //                                 //           counterText: "",
+  //                                 //           contentPadding: EdgeInsets.only(
+  //                                 //             bottom: 16.0,
+  //                                 //             top: 45.0,
+  //                                 //             right: 10,
+  //                                 //             left: 45.0,
+  //                                 //           ),
+  //                                 //           errorStyle: TextStyle(
+  //                                 //               fontSize: 14, height: 0.20),
+  //                                 //           border: InputBorder.none,
+  //                                 //           hintText: 'Enter nickname',
+  //                                 //           hintStyle: TextStyle(
+  //                                 //               fontSize: 14.0,
+  //                                 //               color: Color(0xffFFFFFF),
+  //                                 //               fontFamily: 'Inter',
+  //                                 //               fontWeight: FontWeight.w400)),
+  //                                 //       autovalidateMode: _addSubmitted
+  //                                 //           ? AutovalidateMode.onUserInteraction
+  //                                 //           : AutovalidateMode.disabled,
+  //                                 //       validator: (value) {
+  //                                 //         if (value!.isEmpty) {
+  //                                 //           return 'Please enter';
+  //                                 //         }
+  //                                 //         return null;
+  //                                 //       },
+  //                                 //       onChanged: (text) =>
+  //                                 //           setStateView(() => name1 = text),
+  //                                 //     ),
+  //                                 //   ],
+  //                                 // ),
+
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(
+  //                                       right: 25, left: 30.0, bottom: 0),
+  //                                   child: CustomFormField(
+  //                                     controller: _nickName,
+  //                                     hint: 'Enter nickname',
+  //                                     label: 'Nickname',
+  //                                     fontSizeForLabel: 14,
+  //                                     contentpadding: EdgeInsets.only(
+  //                                         left: 16,
+  //                                         bottom: 10,
+  //                                         right: 10,
+  //                                         top: 10),
+  //                                     hintTextHeight: 1.7,
+  //                                     validator: (value) {
+  //                                       if (value.isEmpty) {
+  //                                         setState(() {
+  //                                           createProjectValidate = false;
+  //                                         });
+
+  //                                         return 'Please enter';
+  //                                       }
+  //                                       return null;
+  //                                     },
+  //                                     onChange: (text) =>
+  //                                         setState(() => name_ = text),
+  //                                   ),
+  //                                 ),
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(
+  //                                     right: 25,
+  //                                     left: 30.0,
+  //                                   ),
+  //                                   child: CustomFormField(
+  //                                     controller: _bio,
+  //                                     maxline: 4,
+  //                                     fontSizeForLabel: 14,
+  //                                     hint: 'Enter your bio',
+  //                                     label: 'Your bio',
+  //                                     contentpadding: EdgeInsets.only(
+  //                                         left: 16,
+  //                                         bottom: 10,
+  //                                         right: 10,
+  //                                         top: 10),
+  //                                     hintTextHeight: 1.7,
+  //                                     validator: (value) {
+  //                                       if (value.isEmpty) {
+  //                                         setState(() {
+  //                                           createProjectValidate = false;
+  //                                         });
+
+  //                                         return 'Please enter';
+  //                                       }
+  //                                       return null;
+  //                                     },
+  //                                     onChange: (text) =>
+  //                                         setState(() => name_ = text),
+  //                                   ),
+  //                                 ),
+  //                                 // Stack(
+  //                                 //   children: [
+  //                                 //     Container(
+  //                                 //       width:
+  //                                 //           MediaQuery.of(context).size.width *
+  //                                 //               0.99,
+  //                                 //       margin: const EdgeInsets.only(
+  //                                 //           left: 30.0, top: 16.0, right: 25.0),
+  //                                 //       height: 110.0,
+  //                                 //       decoration: const BoxDecoration(
+  //                                 //         color: Color(0xff334155),
+  //                                 //         borderRadius: BorderRadius.only(
+  //                                 //           topRight: Radius.circular(8.0),
+  //                                 //           topLeft: Radius.circular(8.0),
+  //                                 //         ),
+  //                                 //         boxShadow: [
+  //                                 //           BoxShadow(
+  //                                 //             color: Color(0xff475569),
+  //                                 //             offset: Offset(
+  //                                 //               0.0,
+  //                                 //               2.0,
+  //                                 //             ),
+  //                                 //             blurRadius: 0.0,
+  //                                 //             spreadRadius: 0.0,
+  //                                 //           ),
+  //                                 //         ],
+  //                                 //       ),
+  //                                 //     ),
+  //                                 //     Container(
+  //                                 //         margin: const EdgeInsets.only(
+  //                                 //             top: 22.0, left: 45.0),
+  //                                 //         child: const Text(
+  //                                 //           "Your bio",
+  //                                 //           style: TextStyle(
+  //                                 //               fontSize: 11.0,
+  //                                 //               color: Color(0xff64748B),
+  //                                 //               fontFamily: 'Inter',
+  //                                 //               fontWeight: FontWeight.w500),
+  //                                 //         )),
+  //                                 //     TextFormField(
+  //                                 //       maxLines: 5,
+  //                                 //       controller: _bio,
+  //                                 //       cursorColor: const Color(0xffFFFFFF),
+  //                                 //       style: const TextStyle(
+  //                                 //           color: Color(0xffFFFFFF)),
+  //                                 //       textAlignVertical:
+  //                                 //           TextAlignVertical.bottom,
+  //                                 //       keyboardType: TextInputType.text,
+  //                                 //       decoration: const InputDecoration(
+  //                                 //           counterText: "",
+  //                                 //           errorStyle: TextStyle(
+  //                                 //               fontSize: 14, height: 0.20),
+  //                                 //           contentPadding: EdgeInsets.only(
+  //                                 //             bottom: 10.0,
+  //                                 //             top: 47.0,
+  //                                 //             right: 40,
+  //                                 //             left: 45.0,
+  //                                 //           ),
+  //                                 //           border: InputBorder.none,
+  //                                 //           hintText: 'Enter your bio',
+  //                                 //           hintStyle: TextStyle(
+  //                                 //               fontSize: 14.0,
+  //                                 //               color: Color(0xffFFFFFF),
+  //                                 //               fontFamily: 'Inter',
+  //                                 //               fontWeight: FontWeight.w400)),
+  //                                 //       autovalidateMode: _addSubmitted
+  //                                 //           ? AutovalidateMode.onUserInteraction
+  //                                 //           : AutovalidateMode.disabled,
+  //                                 //       validator: (value) {
+  //                                 //         if (value!.isEmpty) {
+  //                                 //           return 'Please enter';
+  //                                 //         }
+  //                                 //         return null;
+  //                                 //       },
+  //                                 //       onChanged: (text) =>
+  //                                 //           setStateView(() => name1 = text),
+  //                                 //     ),
+  //                                 //   ],
+  //                                 // ),
+
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(top: 3.0),
+  //                                   child: Row(
+  //                                     mainAxisAlignment:
+  //                                         MainAxisAlignment.start,
+  //                                     mainAxisSize: MainAxisSize.max,
+  //                                     crossAxisAlignment:
+  //                                         CrossAxisAlignment.start,
+  //                                     children: [
+  //                                       Expanded(
+  //                                         child: Padding(
+  //                                           padding: const EdgeInsets.only(
+  //                                             right: 16.0,
+  //                                             left: 30.0,
+  //                                           ),
+  //                                           child: CustomFormField(
+  //                                             controller: _designation,
+  //                                             maxLength: 20,
+  //                                             fontSizeForLabel: 14,
+  //                                             hint: 'Enter ',
+  //                                             label: 'Designation',
+  //                                             contentpadding: EdgeInsets.only(
+  //                                                 left: 16,
+  //                                                 bottom: 10,
+  //                                                 right: 10,
+  //                                                 top: 10),
+  //                                             hintTextHeight: 1.7,
+  //                                             validator: (value) {
+  //                                               if (value.isEmpty) {
+  //                                                 setState(() {
+  //                                                   createProjectValidate =
+  //                                                       false;
+  //                                                 });
+
+  //                                                 return 'Please enter';
+  //                                               }
+  //                                               return null;
+  //                                             },
+  //                                             onChange: (text) =>
+  //                                                 setState(() => name_ = text),
+  //                                           ),
+  //                                         ),
+  //                                       ),
+  //                                       // Expanded(
+  //                                       //   child: Stack(
+  //                                       //     children: [
+  //                                       //       Container(
+  //                                       // width: MediaQuery.of(context)
+  //                                       //         .size
+  //                                       //         .width *
+  //                                       //     0.12,
+  //                                       //         margin: const EdgeInsets.only(
+  //                                       //             left: 30.0, right: 16.0),
+  //                                       //         height: 56.0,
+  //                                       //         decoration: BoxDecoration(
+  //                                       //           color:
+  //                                       //               const Color(0xff334155),
+  //                                       //           borderRadius:
+  //                                       //               BorderRadius.circular(
+  //                                       //             8.0,
+  //                                       //           ),
+  //                                       //           boxShadow: const [
+  //                                       //             BoxShadow(
+  //                                       //               color: Color(0xff475569),
+  //                                       //               offset: Offset(
+  //                                       //                 0.0,
+  //                                       //                 2.0,
+  //                                       //               ),
+  //                                       //               blurRadius: 0.0,
+  //                                       //               spreadRadius: 0.0,
+  //                                       //             ),
+  //                                       //           ],
+  //                                       //         ),
+  //                                       //       ),
+  //                                       //       Container(
+  //                                       //           margin: const EdgeInsets.only(
+  //                                       //               top: 23.0, left: 45.0),
+  //                                       //           child: const Text(
+  //                                       //             "Designation",
+  //                                       //             style: TextStyle(
+  //                                       //                 fontSize: 11.0,
+  //                                       //                 color:
+  //                                       //                     Color(0xff64748B),
+  //                                       //                 fontFamily: 'Inter',
+  //                                       //                 fontWeight:
+  //                                       //                     FontWeight.w500),
+  //                                       //           )),
+  //                                       //       TextFormField(
+  //                                       //         controller: _designation,
+  //                                       //         // inputFormatters: [
+  //                                       //         //   UpperCaseTextFormatter()
+  //                                       //         // ],
+  //                                       //         maxLength: 20,
+  //                                       //         cursorColor:
+  //                                       //             const Color(0xffFFFFFF),
+  //                                       //         style: const TextStyle(
+  //                                       //             color: Color(0xffFFFFFF)),
+  //                                       //         textAlignVertical:
+  //                                       //             TextAlignVertical.bottom,
+  //                                       //         keyboardType:
+  //                                       //             TextInputType.text,
+  //                                       //         decoration:
+  //                                       //             const InputDecoration(
+  //                                       //                 counterText: "",
+  //                                       //                 errorStyle: TextStyle(
+  //                                       //                     fontSize: 14,
+  //                                       //                     height: 0.20),
+  //                                       //                 contentPadding:
+  //                                       //                     EdgeInsets.only(
+  //                                       //                   bottom: 16.0,
+  //                                       //                   top: 53.0,
+  //                                       //                   right: 10,
+  //                                       //                   left: 45.0,
+  //                                       //                 ),
+  //                                       //                 border:
+  //                                       //                     InputBorder.none,
+  //                                       //                 hintText: 'Enter',
+  //                                       //                 hintStyle: TextStyle(
+  //                                       //                     fontSize: 14.0,
+  //                                       //                     color: Color(
+  //                                       //                         0xffFFFFFF),
+  //                                       //                     fontFamily: 'Inter',
+  //                                       //                     fontWeight:
+  //                                       //                         FontWeight
+  //                                       //                             .w500)),
+  //                                       //         autovalidateMode: _addSubmitted
+  //                                       //             ? AutovalidateMode
+  //                                       //                 .onUserInteraction
+  //                                       //             : AutovalidateMode.disabled,
+  //                                       //         validator: (value) {
+  //                                       //           if (value!.isEmpty) {
+  //                                       //             return 'Please enter';
+  //                                       //           }
+  //                                       //           return null;
+  //                                       //         },
+  //                                       //         onChanged: (text) =>
+  //                                       //             setStateView(
+  //                                       //                 () => name1 = text),
+  //                                       //       ),
+  //                                       //     ],
+  //                                       //   ),
+  //                                       // ),
+
+  //                                       SizedBox(
+  //                                         width: 8,
+  //                                       ),
+
+  //                                       Expanded(
+  //                                         child: Padding(
+  //                                           padding:
+  //                                               EdgeInsets.only(right: 30.sp),
+  //                                           child: CustomSearchDropdown(
+  //                                             hint: 'Select',
+  //                                             label: "Department",
+  //                                             errorText: createButtonClick ==
+  //                                                         true &&
+  //                                                     (_depat == null ||
+  //                                                         _depat!.isEmpty)
+  //                                                 ? 'Please Select this field'
+  //                                                 : '',
+  //                                             items: departmentlist!,
+  //                                             onChange: ((value) {
+  //                                               // _curren = value.id;
+  //                                               _depat = value.id;
+  //                                               setStateView(() {
+  //                                                 selectDepartment = true;
+  //                                               });
+  //                                             }),
+  //                                           ),
+  //                                         ),
+  //                                       )
+  //                                     ],
+  //                                   ),
+  //                                 ),
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(
+  //                                       right: 25, left: 30.0, bottom: 0),
+  //                                   child: CustomFormField(
+  //                                     controller: _association,
+  //                                     maxLength: 30,
+  //                                     hint: 'Enter team name',
+  //                                     label: "Associated with",
+  //                                     fontSizeForLabel: 14,
+  //                                     contentpadding: EdgeInsets.only(
+  //                                         left: 16,
+  //                                         bottom: 10,
+  //                                         right: 10,
+  //                                         top: 10),
+  //                                     hintTextHeight: 1.7,
+  //                                     validator: (value) {
+  //                                       if (value.isEmpty) {
+  //                                         setState(() {
+  //                                           createProjectValidate = false;
+  //                                         });
+
+  //                                         return 'Please enter';
+  //                                       }
+  //                                       return null;
+  //                                     },
+  //                                     onChange: (text) =>
+  //                                         setState(() => name_ = text),
+  //                                   ),
+  //                                 ),
+  //                                 Container(
+  //                                   margin: const EdgeInsets.only(
+  //                                       left: 30.0, top: 0.0),
+  //                                   child: const Text(
+  //                                     "Salary",
+  //                                     style: TextStyle(
+  //                                         color: Color(0xffFFFFFF),
+  //                                         fontSize: 18.0,
+  //                                         fontFamily: 'Inter',
+  //                                         fontWeight: FontWeight.w700),
+  //                                   ),
+  //                                 ),
+  //                                 Row(
+  //                                   children: [
+  //                                     Expanded(
+  //                                       child: Padding(
+  //                                         padding: EdgeInsets.only(
+  //                                             top: 14.sp,
+  //                                             left: 26.0.sp,
+  //                                             bottom: 0),
+  //                                         child: CustomSearchDropdown(
+  //                                           hint: 'Select',
+  //                                           label: "A",
+  //                                           errorText: createButtonClick &&
+  //                                                   (_curren == null ||
+  //                                                       _curren!.isEmpty)
+  //                                               ? 'Please Select this field'
+  //                                               : '',
+  //                                           items: currencyList!,
+  //                                           onChange: ((value) {
+  //                                             _curren = value.id;
+  //                                             setStateView(() {
+  //                                               selectSalary = true;
+  //                                             });
+  //                                           }),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                     SizedBox(
+  //                                       width: 8.w,
+  //                                     ),
+  //                                     Expanded(
+  //                                       flex: 2,
+  //                                       child: Padding(
+  //                                         padding: const EdgeInsets.only(
+  //                                             top: 14, right: 50, bottom: 0),
+  //                                         child: CustomFormField(
+  //                                           controller: _salary,
+  //                                           maxLength: 15,
+  //                                           hint: '0.00',
+  //                                           label: "Monthly Salary",
+  //                                           fontSizeForLabel: 14,
+  //                                           contentpadding: EdgeInsets.only(
+  //                                               left: 16,
+  //                                               bottom: 10,
+  //                                               right: 10,
+  //                                               top: 10),
+  //                                           hintTextHeight: 1.7,
+  //                                           validator: (value) {
+  //                                             RegExp regex = RegExp(
+  //                                                 r'^\D+|(?<=\d),(?=\d)');
+  //                                             if (value.isEmpty) {
+  //                                               setState(() {
+  //                                                 createProjectValidate = false;
+  //                                               });
+
+  //                                               return 'Please enter';
+  //                                             } else if (regex
+  //                                                 .hasMatch(value)) {
+  //                                               setState(() {
+  //                                                 createProjectValidate = false;
+  //                                               });
+  //                                               return 'Please enter valid salary';
+  //                                             }
+  //                                             return null;
+  //                                           },
+  //                                           onChange: (text) =>
+  //                                               setState(() => name_ = text),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                     SizedBox(
+  //                                       width: 11.w,
+  //                                     ),
+  //                                     Expanded(
+  //                                       child: Container(
+  //                                         height: 56,
+  //                                       ),
+  //                                     )
+  //                                   ],
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                           Container(
+  //                               height:
+  //                                   MediaQuery.of(context).size.height * 1.2,
+  //                               child: const VerticalDivider(
+  //                                 color: Color(0xff94A3B8),
+  //                                 thickness: 0.2,
+  //                               )),
+  //                           Expanded(
+  //                             flex: 1,
+  //                             child: Column(
+  //                               mainAxisAlignment: MainAxisAlignment.start,
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 Container(
+  //                                   margin: const EdgeInsets.only(
+  //                                       left: 30.0, top: 27.0),
+  //                                   child: const Text(
+  //                                     "Availabilty",
+  //                                     style: TextStyle(
+  //                                         color: Color(0xffFFFFFF),
+  //                                         fontSize: 18.0,
+  //                                         fontFamily: 'Inter',
+  //                                         fontWeight: FontWeight.w700),
+  //                                   ),
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 8.0,
+  //                                 ),
+  //                                 Stack(
+  //                                   children: [
+  //                                     // Column(
+  //                                     //   crossAxisAlignment:
+  //                                     //       CrossAxisAlignment.start,
+  //                                     //   mainAxisAlignment:
+  //                                     //       MainAxisAlignment.start,
+  //                                     //   children: [
+  //                                     //     Container(
+  //                                     //       width: MediaQuery.of(context)
+  //                                     //               .size
+  //                                     //               .width *
+  //                                     //           0.26,
+  //                                     //       margin: const EdgeInsets.only(
+  //                                     //           left: 30.0, right: 29.6),
+  //                                     //       height: 56.0,
+  //                                     //       decoration: BoxDecoration(
+  //                                     //         color: const Color(0xff334155),
+  //                                     //         borderRadius:
+  //                                     //             BorderRadius.circular(
+  //                                     //           8.0,
+  //                                     //         ),
+  //                                     //         boxShadow: const [
+  //                                     //           BoxShadow(
+  //                                     //             color: Color(0xff475569),
+  //                                     //             offset: Offset(
+  //                                     //               0.0,
+  //                                     //               2.0,
+  //                                     //             ),
+  //                                     //             blurRadius: 0.0,
+  //                                     //             spreadRadius: 0.0,
+  //                                     //           )
+  //                                     //         ],
+  //                                     //       ),
+  //                                     //     ),
+  //                                     //     handleAllerrorWidget(selectDays)
+  //                                     //   ],
+  //                                     // ),
+  //                                     // Container(
+  //                                     //     margin: const EdgeInsets.only(
+  //                                     //         top: 6.0, left: 45.0),
+  //                                     //     child: const Text(
+  //                                     //       "Select days",
+  //                                     //       style: TextStyle(
+  //                                     //           fontSize: 11.0,
+  //                                     //           color: Color(0xff64748B),
+  //                                     //           fontFamily: 'Inter',
+  //                                     //           fontWeight: FontWeight.w500),
+  //                                     //     )),
+  //                                     // Container(
+  //                                     //   margin: const EdgeInsets.only(
+  //                                     //       left: 30.0,
+  //                                     //       right: 55,
+  //                                     //       top: 26,
+  //                                     //       bottom: 10),
+  //                                     //   height: 20.0,
+  //                                     //   child: Container(
+  //                                     //       margin: const EdgeInsets.only(
+  //                                     //           left: 16.0, right: 20.0),
+  //                                     //       child: StatefulBuilder(
+  //                                     //         builder: (BuildContext context,
+  //                                     //             StateSettersetState) {
+  //                                     //           return DropdownButtonHideUnderline(
+  //                                     //             child: CustomDropdownButton(
+  //                                     //               dropdownColor:
+  //                                     //                   ColorSelect.class_color,
+  //                                     //               underline: Container(),
+  //                                     //               hint: const Text(
+  //                                     //                 "Select",
+  //                                     //                 style: TextStyle(
+  //                                     //                     fontSize: 14.0,
+  //                                     //                     color:
+  //                                     //                         Color(0xffFFFFFF),
+  //                                     //                     fontFamily: 'Inter',
+  //                                     //                     fontWeight:
+  //                                     //                         FontWeight.w500),
+  //                                     //               ),
+  //                                     //               // isExpanded: true,
+  //                                     //               icon: const Icon(
+  //                                     //                 Icons.arrow_drop_down,
+  //                                     //                 color: Color(0xff64748B),
+  //                                     //               ),
+  //                                     //               items: items1
+  //                                     //                   .map((String items1) {
+  //                                     //                 return DropdownMenuItem(
+  //                                     //                   value: items1,
+  //                                     //                   child: Text(items1,
+  //                                     //                       style: (const TextStyle(
+  //                                     //                           color: Colors
+  //                                     //                               .white))),
+  //                                     //                 );
+  //                                     //               }).toList(),
+  //                                     //               onChanged:
+  //                                     //                   (String? newValue) {
+  //                                     //                 setStateView(() {
+  //                                     //                   _day = newValue;
+  //                                     //                   _shortday = _day!
+  //                                     //                       .substring(0, 3);
+  //                                     //                   if (selectedDaysList
+  //                                     //                       .isNotEmpty) {
+  //                                     //                     if (selectedDaysList
+  //                                     //                         .contains(
+  //                                     //                             _shortday)) {
+  //                                     //                     } else {
+  //                                     //                       selectedDaysList
+  //                                     //                           .add(_shortday!
+  //                                     //                               .toString());
+  //                                     //                       selectDays = true;
+  //                                     //                     }
+  //                                     //                   } else {
+  //                                     //                     selectedDaysList.add(
+  //                                     //                         _shortday!
+  //                                     //                             .toString());
+  //                                     //                     selectDays = true;
+  //                                     //                   }
+  //                                     //                 });
+  //                                     //               },
+  //                                     //             ),
+  //                                     //           );
+  //                                     //         },
+  //                                     //       )),
+  //                                     // ),
+
+  //                                     Expanded(
+  //                                       child: Padding(
+  //                                         padding: EdgeInsets.only(
+  //                                             right: 29.6.sp,
+  //                                             left: 25.0.sp,
+  //                                             bottom: 0),
+  //                                         child: CustomSearchDropdown(
+  //                                           hint: 'Select days',
+  //                                           label: "Select",
+  //                                           errorText: createButtonClick &&
+  //                                                   (_day == null ||
+  //                                                       _day!.isEmpty)
+  //                                               ? 'Please Select this field'
+  //                                               : '',
+  //                                           items: selectDaysList!,
+  //                                           onChange: ((value) {
+  //                                             setStateView(() {
+  //                                               _day = value.item;
+  //                                               _shortday =
+  //                                                   _day!.substring(0, 3);
+  //                                               if (selectedDaysList
+  //                                                   .isNotEmpty) {
+  //                                                 if (selectedDaysList
+  //                                                     .contains(_shortday)) {
+  //                                                 } else {
+  //                                                   selectedDaysList.add(
+  //                                                       _shortday!.toString());
+  //                                                   selectDays = true;
+  //                                                 }
+  //                                               } else {
+  //                                                 selectedDaysList.add(
+  //                                                     _shortday!.toString());
+  //                                                 selectDays = true;
+  //                                               }
+  //                                             });
+  //                                           }),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                   ],
+  //                                 ),
+  //                                 selectedDaysList.isNotEmpty
+  //                                     ? SizedBox(
+  //                                         height: 30,
+  //                                         child: Padding(
+  //                                           padding: EdgeInsets.only(left: 26),
+  //                                           child: ListView.builder(
+  //                                             scrollDirection: Axis.horizontal,
+  //                                             itemCount:
+  //                                                 selectedDaysList.length,
+  //                                             itemBuilder: (context, index) {
+  //                                               return Container(
+  //                                                 margin: const EdgeInsets.only(
+  //                                                     left: 12.0),
+  //                                                 child: InputChip(
+  //                                                   shape: RoundedRectangleBorder(
+  //                                                       borderRadius:
+  //                                                           BorderRadius.all(
+  //                                                               Radius.circular(
+  //                                                                   8))),
+  //                                                   deleteIcon: Icon(
+  //                                                     Icons.close,
+  //                                                     color: Colors.white,
+  //                                                     size: 20,
+  //                                                   ),
+  //                                                   backgroundColor:
+  //                                                       Color(0xff334155),
+  //                                                   visualDensity:
+  //                                                       VisualDensity.compact,
+  //                                                   materialTapTargetSize:
+  //                                                       MaterialTapTargetSize
+  //                                                           .shrinkWrap,
+  //                                                   label: Text(
+  //                                                     selectedDaysList[index],
+  //                                                     style: TextStyle(
+  //                                                         color: Colors.white),
+  //                                                   ),
+  //                                                   selected: _isSelected!,
+  //                                                   onSelected:
+  //                                                       (bool selected) {
+  //                                                     setStateView(() {
+  //                                                       _isSelected = selected;
+  //                                                       print(
+  //                                                           "_isSelected--------------------------${_isSelected}");
+  //                                                     });
+  //                                                   },
+  //                                                   onDeleted: () {
+  //                                                     setStateView(() {
+  //                                                       selectedDaysList
+  //                                                           .removeAt(index);
+  //                                                     });
+  //                                                   },
+  //                                                   showCheckmark: false,
+  //                                                 ),
+  //                                               );
+  //                                             },
+  //                                           ),
+  //                                         ),
+  //                                       )
+  //                                     : Container(),
+  //                                 selectedDaysList.isNotEmpty
+  //                                     ? const SizedBox(
+  //                                         height: 15,
+  //                                       )
+  //                                     : Container(),
+  //                                 Stack(
+  //                                   children: [
+  //                                     Column(
+  //                                       crossAxisAlignment:
+  //                                           CrossAxisAlignment.start,
+  //                                       mainAxisAlignment:
+  //                                           MainAxisAlignment.start,
+  //                                       children: [
+  //                                         Padding(
+  //                                           padding: EdgeInsets.only(
+  //                                               right: 29.6.sp,
+  //                                               left: 25.0.sp,
+  //                                               bottom: 0),
+  //                                           child: Container(
+  //                                             height: 57.h,
+  //                                             decoration: BoxDecoration(
+  //                                               color: const Color(0xff334155),
+  //                                               borderRadius:
+  //                                                   BorderRadius.circular(
+  //                                                 8.0,
+  //                                               ),
+  //                                               boxShadow: const [
+  //                                                 BoxShadow(
+  //                                                   color: Color(0xff475569),
+  //                                                   offset: Offset(
+  //                                                     0.0,
+  //                                                     2.0,
+  //                                                   ),
+  //                                                   blurRadius: 0.0,
+  //                                                   spreadRadius: 0.0,
+  //                                                 ),
+  //                                               ],
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //                                         handleAllerrorWidget(selectTime)
+  //                                       ],
+  //                                     ),
+  //                                     Container(
+  //                                         margin: const EdgeInsets.only(
+  //                                           top: 11.0,
+  //                                           left: 45.0,
+  //                                         ),
+  //                                         child: Text(
+  //                                           "Select time",
+  //                                           style: TextStyle(
+  //                                               fontSize: 11.sp,
+  //                                               color: Color(0xff64748B),
+  //                                               fontFamily: 'Inter',
+  //                                               fontWeight: FontWeight.w500),
+  //                                         )),
+  //                                     Container(
+  //                                         margin: const EdgeInsets.only(
+  //                                           bottom: 16.0,
+  //                                           top: 28.0,
+  //                                           right: 10,
+  //                                           left: 45.0,
+  //                                         ),
+  //                                         child: Text(
+  //                                           startTime1 != null &&
+  //                                                   startTime1.isNotEmpty &&
+  //                                                   endTime2 != null &&
+  //                                                   endTime2.isNotEmpty
+  //                                               ? "$startTime1 - $endTime2"
+  //                                               : '',
+  //                                           style: TextStyle(
+  //                                               fontSize: 14.sp,
+  //                                               color: Colors.white,
+  //                                               fontFamily: 'Inter',
+  //                                               fontWeight: FontWeight.w500),
+  //                                         )),
+  //                                   ],
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 20,
+  //                                 ),
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(
+  //                                       left: 16, right: 16),
+  //                                   child: TimeRange(
+  //                                       fromTitle: const Text(
+  //                                         'From',
+  //                                         style: TextStyle(
+  //                                             fontSize: 14,
+  //                                             color: Colors.white),
+  //                                       ),
+  //                                       toTitle: const Text(
+  //                                         'To',
+  //                                         style: TextStyle(
+  //                                             fontSize: 14,
+  //                                             color: Colors.white),
+  //                                       ),
+  //                                       titlePadding: 16,
+  //                                       textStyle: const TextStyle(
+  //                                           fontWeight: FontWeight.normal,
+  //                                           color: Colors.white),
+  //                                       activeTextStyle: const TextStyle(
+  //                                           fontWeight: FontWeight.bold,
+  //                                           color: Colors.white),
+  //                                       borderColor: Colors.white,
+  //                                       backgroundColor: Colors.transparent,
+  //                                       activeBackgroundColor: Colors.green,
+  //                                       firstTime:
+  //                                           TimeOfDay(hour: 8, minute: 30),
+  //                                       lastTime:
+  //                                           TimeOfDay(hour: 20, minute: 00),
+  //                                       timeStep: 10,
+  //                                       timeBlock: 30,
+  //                                       onRangeCompleted: (range) {
+  //                                         setStateView(() {
+  //                                           startTime = range!.start;
+  //                                           endTime = range.end;
+  //                                           startTime1 =
+  //                                               getformattedTime(startTime);
+  //                                           endTime2 =
+  //                                               getformattedTime(endTime);
+  //                                           selectTime = true;
+  //                                         });
+  //                                       }),
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 20.0,
+  //                                 ),
+  //                                 Row(
+  //                                   mainAxisAlignment:
+  //                                       MainAxisAlignment.spaceBetween,
+  //                                   children: [
+  //                                     Container(
+  //                                       margin: const EdgeInsets.only(
+  //                                           left: 30.0, bottom: 12),
+  //                                       child: const Text(
+  //                                         "Skills",
+  //                                         style: TextStyle(
+  //                                             color: Color(0xffFFFFFF),
+  //                                             fontSize: 18.0,
+  //                                             fontFamily: 'Inter',
+  //                                             fontWeight: FontWeight.w700),
+  //                                       ),
+  //                                     ),
+  //                                     Container(
+  //                                         width: 40.0,
+  //                                         height: 40.0,
+  //                                         margin: const EdgeInsets.only(
+  //                                           right: 60,
+  //                                         ),
+  //                                         decoration: const BoxDecoration(
+  //                                           color: Color(0xff334155),
+  //                                           shape: BoxShape.circle,
+  //                                         ),
+  //                                         child: Container(
+  //                                           child: Padding(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(10.0),
+  //                                               child: SvgPicture.asset(
+  //                                                   'images/tag_new.svg')),
+  //                                         )),
+  //                                   ],
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 2,
+  //                                 ),
+  //                                 Column(
+  //                                   mainAxisAlignment: MainAxisAlignment.start,
+  //                                   crossAxisAlignment:
+  //                                       CrossAxisAlignment.start,
+  //                                   mainAxisSize: MainAxisSize.min,
+  //                                   children: [
+  //                                     Container(
+  //                                       padding: EdgeInsets.only(
+  //                                         left: 5,
+  //                                         right: 5,
+  //                                       ),
+  //                                       margin: EdgeInsets.only(
+  //                                           right: 30.5.sp,
+  //                                           left: 25.0.sp,
+  //                                           top: 20.sp),
+  //                                       height: 49.0.h,
+  //                                       decoration: BoxDecoration(
+  //                                         color: const Color(0xff334155),
+  //                                         borderRadius: BorderRadius.circular(
+  //                                           48.0.r,
+  //                                         ),
+  //                                       ),
+  //                                       child: Column(
+  //                                         children: [
+  //                                           searchTextField =
+  //                                               TypeAheadFormField(
+  //                                             keepSuggestionsOnLoading: false,
+  //                                             suggestionsBoxVerticalOffset: 0.0,
+  //                                             suggestionsBoxDecoration:
+  //                                                 SuggestionsBoxDecoration(
+  //                                                     color: Color(0xff0F172A)),
+  //                                             hideOnLoading: true,
+  //                                             suggestionsCallback: (pattern) {
+  //                                               return getSuggestions(pattern);
+  //                                             },
+  //                                             textFieldConfiguration:
+  //                                                 TextFieldConfiguration(
+  //                                               controller:
+  //                                                   _typeAheadController,
+  //                                               style: const TextStyle(
+  //                                                   color: Colors.white,
+  //                                                   fontSize: 14.0),
+  //                                               keyboardType:
+  //                                                   TextInputType.text,
+  //                                               cursorColor: Colors.white,
+  //                                               autofocus: true,
+  //                                               decoration:
+  //                                                   const InputDecoration(
+  //                                                 // border: InputBorder.none,
+  //                                                 contentPadding:
+  //                                                     EdgeInsets.only(
+  //                                                         top: 15.0, left: 10),
+  //                                                 prefixIcon: Padding(
+  //                                                     padding: EdgeInsets.only(
+  //                                                         top: 4.0),
+  //                                                     child: Icon(
+  //                                                       Icons.search,
+  //                                                       color:
+  //                                                           Color(0xff64748B),
+  //                                                     )),
+  //                                                 hintText: 'Search',
+  //                                                 hintStyle: TextStyle(
+  //                                                     fontSize: 14.0,
+  //                                                     color: Colors.white,
+  //                                                     fontFamily: 'Inter',
+  //                                                     fontWeight:
+  //                                                         FontWeight.w400),
+  //                                                 border: InputBorder.none,
+  //                                               ),
+  //                                             ),
+  //                                             itemBuilder: (context, item) {
+  //                                               return Padding(
+  //                                                 padding:
+  //                                                     const EdgeInsets.all(8.0),
+  //                                                 child: Text(
+  //                                                   item.title.toString(),
+  //                                                   style: const TextStyle(
+  //                                                       fontSize: 16.0,
+  //                                                       color: Colors.white),
+  //                                                 ),
+  //                                               );
+  //                                               // Text("khushi");
+  //                                               // rowResourceName(item);
+  //                                             },
+  //                                             transitionBuilder: (context,
+  //                                                 suggestionsBox, controller) {
+  //                                               return suggestionsBox;
+  //                                             },
+  //                                             onSuggestionSelected: (item) {
+  //                                               setStateView(() {
+  //                                                 searchTextField!
+  //                                                     .textFieldConfiguration
+  //                                                     .controller!
+  //                                                     .text = '';
+
+  //                                                 if (abc.isNotEmpty) {
+  //                                                   if (abc
+  //                                                       .contains(item.title)) {
+  //                                                   } else {
+  //                                                     abc.add(item.title!);
+  //                                                   }
+  //                                                 } else {
+  //                                                   abc.add(item.title!);
+  //                                                 }
+  //                                               });
+  //                                             },
+  //                                           ),
+  //                                         ],
+  //                                       ),
+  //                                     ),
+  //                                     handleAllerrorWidget(selectSkill),
+  //                                     Padding(
+  //                                       padding: EdgeInsets.only(left: 30),
+  //                                       child: Wrap(
+  //                                         spacing: 5,
+  //                                         runSpacing: 5,
+  //                                         children: List.generate(
+  //                                           abc.length,
+  //                                           (index) {
+  //                                             return Container(
+  //                                               height: 32,
+  //                                               margin: const EdgeInsets.only(
+  //                                                   left: 5.0, right: 5.0),
+  //                                               child: InputChip(
+  //                                                 shape:
+  //                                                     const RoundedRectangleBorder(
+  //                                                         borderRadius:
+  //                                                             BorderRadius.all(
+  //                                                                 Radius
+  //                                                                     .circular(
+  //                                                                         8))),
+  //                                                 deleteIcon: const Icon(
+  //                                                   Icons.close,
+  //                                                   color: Colors.white,
+  //                                                   size: 20,
+  //                                                 ),
+  //                                                 backgroundColor:
+  //                                                     Color(0xff334155),
+  //                                                 visualDensity:
+  //                                                     VisualDensity.compact,
+  //                                                 materialTapTargetSize:
+  //                                                     MaterialTapTargetSize
+  //                                                         .shrinkWrap,
+  //                                                 label: Text(
+  //                                                   abc[index],
+  //                                                   style: TextStyle(
+  //                                                       color: Colors.white),
+  //                                                 ),
+  //                                                 onSelected: (bool selected) {
+  //                                                   setState(() {
+  //                                                     _isSelected = selected;
+  //                                                   });
+  //                                                 },
+  //                                                 onDeleted: () {
+  //                                                   setState(() {
+  //                                                     abc.removeAt(index);
+  //                                                   });
+  //                                                 },
+  //                                                 showCheckmark: false,
+  //                                               ),
+  //                                             );
+  //                                           },
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                   ],
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                           Container(
+  //                               height:
+  //                                   MediaQuery.of(context).size.height * 1.2,
+  //                               child: const VerticalDivider(
+  //                                 color: Color(0xff94A3B8),
+  //                                 thickness: 0.2,
+  //                               )),
+  //                           Expanded(
+  //                             flex: 1,
+  //                             child: Column(
+  //                               mainAxisAlignment: MainAxisAlignment.start,
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 Container(
+  //                                   margin: const EdgeInsets.only(
+  //                                       left: 30.0, top: 27.0),
+  //                                   child: const Text(
+  //                                     "Contact info",
+  //                                     style: TextStyle(
+  //                                         color: Color(0xffFFFFFF),
+  //                                         fontSize: 18.0,
+  //                                         fontFamily: 'Inter',
+  //                                         fontWeight: FontWeight.w700),
+  //                                   ),
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 8.0,
+  //                                 ),
+  //                                 Padding(
+  //                                   padding: EdgeInsets.only(
+  //                                     left: 30,
+  //                                     right: 30,
+  //                                   ),
+  //                                   child: Column(
+  //                                     children: [
+  //                                       CustomFormField(
+  //                                         maxLength: 20,
+  //                                         controller: _country,
+  //                                         hint: 'Enter country',
+  //                                         label: "Country",
+  //                                         fontSizeForLabel: 14,
+  //                                         contentpadding: EdgeInsets.only(
+  //                                             left: 16,
+  //                                             bottom: 10,
+  //                                             right: 10,
+  //                                             top: 10),
+  //                                         hintTextHeight: 1.7,
+  //                                         validator: (value) {
+  //                                           RegExp regex =
+  //                                               RegExp(r'^[a-z A-Z]+$');
+  //                                           if (value.isEmpty) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter';
+  //                                           } else if (!regex.hasMatch(value)) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter valid  country name';
+  //                                           }
+  //                                           return null;
+  //                                         },
+  //                                         onChange: (text) =>
+  //                                             setState(() => name_ = text),
+  //                                       ),
+  //                                       CustomFormField(
+  //                                         maxLength: 20,
+  //                                         controller: _enterCity,
+  //                                         hint: 'Enter city',
+  //                                         label: "City",
+  //                                         fontSizeForLabel: 14,
+  //                                         contentpadding: EdgeInsets.only(
+  //                                             left: 16,
+  //                                             bottom: 10,
+  //                                             right: 10,
+  //                                             top: 10),
+  //                                         hintTextHeight: 1.7,
+  //                                         validator: (value) {
+  //                                           RegExp regex =
+  //                                               RegExp(r'^[a-z A-Z]+$');
+  //                                           if (value.isEmpty) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter';
+  //                                           } else if (!regex.hasMatch(value)) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter valid  city name';
+  //                                           }
+  //                                           return null;
+  //                                         },
+  //                                         onChange: (text) =>
+  //                                             setState(() => name_ = text),
+  //                                       ),
+  //                                       CustomFormField(
+  //                                         maxLength: 10,
+  //                                         controller: _phoneNumber,
+  //                                         hint: 'Enter number',
+  //                                         label: "Phone number",
+  //                                         fontSizeForLabel: 14,
+  //                                         contentpadding: EdgeInsets.only(
+  //                                             left: 16,
+  //                                             bottom: 10,
+  //                                             right: 10,
+  //                                             top: 10),
+  //                                         hintTextHeight: 1.7,
+  //                                         validator: (value) {
+  //                                           String pattern =
+  //                                               r'(^(?:[+0]9)?[0-9]{10}$)';
+  //                                           RegExp regExp = new RegExp(pattern);
+  //                                           if (value.isEmpty) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter';
+  //                                           } else if (!regExp
+  //                                               .hasMatch(value)) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter valid mobile number';
+  //                                           }
+  //                                           return null;
+  //                                         },
+  //                                         onChange: (text) =>
+  //                                             setState(() => name_ = text),
+  //                                       ),
+  //                                       CustomFormField(
+  //                                         maxLength: 20,
+  //                                         controller: _emailAddress,
+  //                                         hint: 'Enter email address',
+  //                                         label: "Email address",
+  //                                         fontSizeForLabel: 14,
+  //                                         contentpadding: EdgeInsets.only(
+  //                                             left: 16,
+  //                                             bottom: 10,
+  //                                             right: 10,
+  //                                             top: 10),
+  //                                         hintTextHeight: 1.7,
+  //                                         validator: (value) {
+  //                                           RegExp regex = RegExp(
+  //                                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  //                                           if (value.isEmpty) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Please enter email';
+  //                                           } else if (!regex.hasMatch(value)) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+
+  //                                             return 'Enter valid Email';
+  //                                           }
+  //                                           if (regex.hasMatch(values)) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+  //                                             return 'please enter valid email';
+  //                                           }
+  //                                           if (value.length > 50) {
+  //                                             setState(() {
+  //                                               createProjectValidate = false;
+  //                                             });
+  //                                             return 'No more length 50';
+  //                                           }
+  //                                           return null;
+  //                                         },
+  //                                         onChange: (text) =>
+  //                                             setState(() => name_ = text),
+  //                                       ),
+  //                                     ],
+  //                                   ),
+  //                                 ),
+  //                                 Stack(
+  //                                   children: [
+  //                                     Expanded(
+  //                                       child: Padding(
+  //                                         padding: EdgeInsets.only(
+  //                                             right: 29.6.sp,
+  //                                             left: 25.0.sp,
+  //                                             bottom: 0),
+  //                                         child: CustomSearchDropdown(
+  //                                           hint: "Select timezone",
+  //                                           label: "Select",
+  //                                           errorText: createButtonClick &&
+  //                                                   (_time == null ||
+  //                                                       _time!.isEmpty)
+  //                                               ? 'Please Select this field'
+  //                                               : '',
+  //                                           items: selecTimeZoneList!,
+  //                                           onChange: ((value) {
+  //                                             setStateView(() {
+  //                                               _time = value.item;
+  //                                               print("account:$_time");
+  //                                               selectTimeZone = true;
+  //                                             });
+  //                                           }),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                   ],
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -2227,7 +2172,7 @@ class _NavigationRailState extends State<MyHomePage>
                           contentPadding: EdgeInsets.only(top: 16.sp),
                           prefixIcon: Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.sp, left: 15.sp, right: 20.sp),
+                                  top: 12.0.sp, left: 15.sp, right: 20.sp),
                               child: Icon(
                                 Icons.search,
                                 color: Color(0xff64748B),
@@ -2420,7 +2365,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     ? showAlertDialog(context)
                                     : Container();
                                 peopleListTapIcon
-                                    ? showAddPeople(context)
+                                    ? showAlertDialogPeople(context)
                                     : Container();
                               });
                             },
@@ -2705,13 +2650,13 @@ class _NavigationRailState extends State<MyHomePage>
                     ),
                   ),
                 ),
-                Column(
-                  children: [
-                    SizedBox(
-                      width: 25.w,
-                    ),
-                  ],
-                ),
+                // Column(
+                //   children: [
+                //     SizedBox(
+                //       width: 25.w,
+                //     ),
+                //   ],
+                // ),
                 Expanded(
                     child: _mainContents[projectListTapIcon
                         ? 1

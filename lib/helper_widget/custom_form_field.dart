@@ -74,7 +74,7 @@ class CustomFormFieldState extends State<CustomFormField> {
                   ),
                 ],
               ),
-              padding: EdgeInsets.only(bottom: 3.sp),
+              padding: EdgeInsets.only(bottom: 3.sp, top: 4.sp),
               child: TextFormField(
                 maxLines: widget.maxline ?? 1,
                 maxLength: widget.maxLength ?? null,
@@ -98,14 +98,16 @@ class CustomFormFieldState extends State<CustomFormField> {
                   counterText: "",
                   border: InputBorder.none,
                   labelText: widget.label ?? '',
+                  hintText: widget.hint ?? '',
                   labelStyle: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: 15.sp,
                     overflow: TextOverflow.fade,
                     color: Color(0xff64748B),
-                    fontFamily: 'Inter',
+                    fontFamily: 'Inter-Medium',
+                    letterSpacing: 0.5,
+                    fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500,
                   ),
-                  hintText: widget.hint ?? '',
                   hintStyle: TextStyle(
                       fontSize: 14.sp,
                       letterSpacing: 0.25,

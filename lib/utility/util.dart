@@ -68,15 +68,34 @@ class AppUtil {
   static DateTime stringToDate(String date) {
     try {
       DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
+      print("Parsed date ------------------------ ${parseDate}");
       return parseDate;
     } catch (e) {
+      print("Error--------------------$e");
+
+      return DateTime.now();
+    }
+  }
+
+  static DateTime stringToDateValidate(String date) {
+    DateTime parseDate;
+    try {
+      try {
+        date = AppUtil.dateToString(DateTime.parse(date));
+        parseDate = DateFormat("dd/MM/yyyy").parse(date);
+        return parseDate;
+      } catch (e) {
+        parseDate = DateFormat("dd/MM/yyyy").parse(date);
+        return parseDate;
+      }
+    } catch (e) {
+      print(e);
       return DateTime.now();
     }
   }
 
   static String stringToDate1(String date) {
     try {
-      print("jfdkffff");
       DateTime dateTime = DateTime.parse(date);
       DateFormat dateFormat = DateFormat('d MMM yyyy');
       print(dateFormat.format(dateTime).toString());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:zeus/utility/constant.dart';
@@ -10,8 +11,6 @@ import 'dart:convert';
 import '../../helper_widget/custom_popups.dart';
 import '../../utility/app_url.dart';
 import '../../popup/Popup.dart';
-
-import 'project_home_view_model.dart';
 import '../../services/response_model/project_idel_response.dart';
 import 'package:zeus/services/response_model/project_idel_response.dart';
 

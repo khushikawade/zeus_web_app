@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomDatePicker extends StatefulWidget {
   TextEditingController? controller;
@@ -16,9 +17,11 @@ class CustomDatePicker extends StatefulWidget {
   int? maxline;
   double? fontSizeForLabel;
   bool? obsecqureText;
+  DateTime? initialDate;
 
   CustomDatePicker(
-      {this.controller,
+      {this.initialDate,
+      this.controller,
       this.label,
       this.hint,
       this.validator,
@@ -47,6 +50,14 @@ class CustomDatePickerState extends State<CustomDatePicker> {
         errorText = widget.validator!(val);
       });
     });
+  }
+
+  @override
+  void initState() {
+    if (widget.initialDate != null) {
+      selectedDate = widget.initialDate;
+    }
+    super.initState();
   }
 
   @override
@@ -139,7 +150,7 @@ class CustomDatePickerState extends State<CustomDatePicker> {
                   ),
                   const Spacer(),
                   Padding(
-                    padding: EdgeInsets.only(right: 8.w),
+                    padding: EdgeInsets.only(right: 16.w),
                     child: InkWell(
                       onTap: () {
                         setState(() {
@@ -149,10 +160,16 @@ class CustomDatePickerState extends State<CustomDatePicker> {
                           }
                         });
                       },
-                      child: Icon(
-                        Icons.close,
-                        size: 13.sp,
-                        color: Colors.white,
+                      // child: Icon(
+                      //   Icons.close,
+                      //   size: 13.sp,
+                      //   color: Colors.white,
+                      // ),
+
+                      child: SvgPicture.asset(
+                        'images/cross.svg',
+                        height: 13.18.sp,
+                        width: 13.18.sp,
                       ),
                     ),
                   ),
@@ -179,12 +196,48 @@ class CustomDatePickerState extends State<CustomDatePicker> {
   }
 
   Future<void> _selectDate() async {
-    selectedDate = DateTime.now();
+    selectedDate = widget.initialDate ?? DateTime.now();
     final DateTime? picked = await showDatePicker(
         context: context,
+        // builder: (context, child) {
+        //   return Theme(
+        //     data: Theme.of(context).copyWith(
+        //       dialogBackgroundColor: Color(0xff1E293B),
+        //       textTheme: TextTheme(
+        //           // days
+        //           ),
+        //       colorScheme: Theme.of(context).colorScheme.copyWith(
+        //             // Title, selected date and day selection background (dark and light mode)
+        //             surface: Color(0xff1E293B),
+        //             primary: Color(0xff1E293B),
+        //             // Title, selected date and month/year picker color (dark and light mode)
+        //             onSurface: Colors.white,
+        //             onPrimary: Colors.white,
+        //           ),
+        //       // Buttons
+        //       textButtonTheme: TextButtonThemeData(
+        //         style: TextButton.styleFrom(
+        //             textStyle: TextStyle(color: Colors.white),
+        //             primary: Colors.white),
+        //       ),
+        //       // Input
+        //       inputDecorationTheme: InputDecorationTheme(
+        //         floatingLabelStyle: TextStyle(color: Colors.white),
+        //         hintStyle: TextStyle(color: Colors.white),
+        //         errorStyle: TextStyle(color: Colors.white),
+        //         labelStyle: TextStyle(color: Colors.white),
+        //         helperStyle: TextStyle(color: Colors.white),
+        //         suffixStyle: TextStyle(color: Colors.white),
+        //         counterStyle: TextStyle(color: Colors.white),
+        //         prefixStyle: TextStyle(color: Colors.white),
+        //       ),
+        //     ),
+        //     child: child!,
+        //   );
+        // },
         initialDate: selectedDate!,
         lastDate: DateTime(5000),
-        firstDate: DateTime.now());
+        firstDate: selectedDate ?? DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
