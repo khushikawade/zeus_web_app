@@ -655,103 +655,91 @@ class _NewPhaseState extends State<NewPhase> {
                                   6.0.r,
                                 ),
                               ),
-                              child: Column(
-                                children: [
-                                  searchTextField = TypeAheadFormField(
-                                    keepSuggestionsOnLoading: false,
-                                    suggestionsBoxVerticalOffset: 0.0,
-                                    suggestionsBoxDecoration:
-                                        SuggestionsBoxDecoration(
-                                            color: Color(0xff0F172A)),
-                                    hideOnLoading: true,
-                                    suggestionsCallback: (pattern) {
-                                      return getSuggestions(pattern);
-                                    },
-                                    textFieldConfiguration:
-                                        TextFieldConfiguration(
-                                      controller: _typeAheadController,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.0.sp),
-                                      keyboardType: TextInputType.text,
-                                      cursorColor: Colors.white,
-                                      autofocus: true,
-                                      decoration: InputDecoration(
-                                        // border: InputBorder.none,
-                                        contentPadding: EdgeInsets.only(
-                                            top: 15.0.sp,
-                                            left: 10.sp,
-                                            bottom: 5.sp),
-                                        prefixIcon: Padding(
-                                            padding:
-                                                EdgeInsets.only(top: 0.0.sp),
-                                            child: Icon(
-                                              Icons.search,
-                                              color: Color(0xff64748B),
-                                            )),
-                                        hintText: 'Search',
-                                        hintStyle: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.white,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400),
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                    itemBuilder: (context, item) {
-                                      print(item);
-                                      return rowResourceName(item);
-                                    },
-                                    transitionBuilder:
-                                        (context, suggestionsBox, controller) {
-                                      return suggestionsBox;
-                                    },
-                                    onSuggestionSelected: (item) {
-                                      setState(() {
-                                        searchTextField!.textFieldConfiguration
-                                            .controller!.text = '';
-
-                                        if (selectedSource.isNotEmpty) {
-                                          if (selectedSource
-                                              .contains(item.name)) {
-                                          } else {
-                                            phaseDetails.resource!.add(
-                                                ResourceData(
-                                                    resource_name: item.name,
-                                                    resource_id: item.userId,
-                                                    department_name:
-                                                        item.departmentName,
-                                                    department_id:
-                                                        item.departmentId ??
-                                                            0));
-                                            listResource.add(
-                                                PhasesSortedResources(
-                                                    department:
-                                                        _depat, //_depat['name'],
-                                                    details: item));
-
-                                            selectedSource.add(item.name!);
-                                          }
-                                        } else {
-                                          listResource.add(
-                                              PhasesSortedResources(
-                                                  department: _depat,
-                                                  details: item));
-                                          phaseDetails.resource!.add(
-                                              ResourceData(
-                                                  resource_name: item.name,
-                                                  resource_id: item.userId,
-                                                  department_name:
-                                                      item.departmentName,
-                                                  department_id:
-                                                      item.departmentId ?? 0,
-                                                  profileImage: item.image));
-                                          selectedSource.add(item.name!);
-                                        }
-                                      });
-                                    },
+                              child: searchTextField = TypeAheadFormField(
+                                keepSuggestionsOnLoading: false,
+                                suggestionsBoxVerticalOffset: 0.0,
+                                suggestionsBoxDecoration:
+                                    SuggestionsBoxDecoration(
+                                        color: Color(0xff0F172A)),
+                                hideOnLoading: true,
+                                suggestionsCallback: (pattern) {
+                                  return getSuggestions(pattern);
+                                },
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller: _typeAheadController,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14.0.sp),
+                                  keyboardType: TextInputType.text,
+                                  cursorColor: Colors.white,
+                                  autofocus: true,
+                                  decoration: InputDecoration(
+                                    // border: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(
+                                        top: 15.0.sp,
+                                        left: 10.sp,
+                                        bottom: 5.sp),
+                                    prefixIconConstraints: BoxConstraints(),
+                                    prefixIcon: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 8.sp,
+                                            left: 15.sp,
+                                            right: 9.sp),
+                                        child: Icon(
+                                          Icons.search,
+                                          color: Color(0xff64748B),
+                                        )),
+                                    hintText: 'Search',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Colors.white,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w400),
+                                    border: InputBorder.none,
                                   ),
-                                ],
+                                ),
+                                itemBuilder: (context, item) {
+                                  print(item);
+                                  return rowResourceName(item);
+                                },
+                                transitionBuilder:
+                                    (context, suggestionsBox, controller) {
+                                  return suggestionsBox;
+                                },
+                                onSuggestionSelected: (item) {
+                                  setState(() {
+                                    searchTextField!.textFieldConfiguration
+                                        .controller!.text = '';
+
+                                    if (selectedSource.isNotEmpty) {
+                                      if (selectedSource.contains(item.name)) {
+                                      } else {
+                                        phaseDetails.resource!.add(ResourceData(
+                                            resource_name: item.name,
+                                            resource_id: item.userId,
+                                            department_name:
+                                                item.departmentName,
+                                            department_id:
+                                                item.departmentId ?? 0));
+                                        listResource.add(PhasesSortedResources(
+                                            department:
+                                                _depat, //_depat['name'],
+                                            details: item));
+
+                                        selectedSource.add(item.name!);
+                                      }
+                                    } else {
+                                      listResource.add(PhasesSortedResources(
+                                          department: _depat, details: item));
+                                      phaseDetails.resource!.add(ResourceData(
+                                          resource_name: item.name,
+                                          resource_id: item.userId,
+                                          department_name: item.departmentName,
+                                          department_id: item.departmentId ?? 0,
+                                          profileImage: item.image));
+                                      selectedSource.add(item.name!);
+                                    }
+                                  });
+                                },
                               ),
                             )
                       : Container(),
@@ -1457,9 +1445,12 @@ class _NewPhaseState extends State<NewPhase> {
                     cursorColor: Colors.white,
                     autofocus: true,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 15.sp),
+                      contentPadding: EdgeInsets.only(
+                          top: 15.0.sp, left: 10.sp, bottom: 5.sp),
+                      prefixIconConstraints: BoxConstraints(),
                       prefixIcon: Padding(
-                          padding: EdgeInsets.only(top: 0.sp),
+                          padding: EdgeInsets.only(
+                              top: 8.sp, left: 15.sp, right: 9.sp),
                           child: Icon(
                             Icons.search,
                             color: Color(0xff64748B),

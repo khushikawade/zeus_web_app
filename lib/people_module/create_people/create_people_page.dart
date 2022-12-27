@@ -1517,110 +1517,111 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Container(
                                       padding: EdgeInsets.only(
-                                        left: 5.sp,
-                                        right: 5.sp,
+                                        left: 15.sp,
+                                        right: 20.sp,
                                       ),
                                       margin: EdgeInsets.only(top: 16.sp),
-                                      height: 49.h,
+                                      // width: 400.w,
+                                      //  height: 49.h,
                                       decoration: BoxDecoration(
                                         color: const Color(0xff334155),
                                         borderRadius: BorderRadius.circular(
                                           48.r,
                                         ),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          searchTextField = TypeAheadFormField(
-                                            keepSuggestionsOnLoading: false,
-                                            suggestionsBoxVerticalOffset:
-                                                16.0.w,
-                                            suggestionsBoxDecoration:
-                                                SuggestionsBoxDecoration(
-                                                    offsetX: 57.w,
-                                                    constraints:
-                                                        BoxConstraints.expand(
-                                                            width: 313.w,
-                                                            height: 262.h),
-                                                    color: Color(0xff0F172A)),
-                                            hideOnLoading: true,
-                                            suggestionsCallback: (pattern) {
-                                              return getSuggestions(pattern);
-                                            },
-                                            textFieldConfiguration:
-                                                TextFieldConfiguration(
-                                              controller: _typeAheadController,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14.sp),
-                                              keyboardType: TextInputType.text,
-                                              cursorColor: Colors.white,
-                                              autofocus: false,
-                                              decoration: InputDecoration(
-                                                // border: InputBorder.none,
-                                                contentPadding: EdgeInsets.only(
-                                                    top: 14.sp, left: 10.sp),
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: Color(0xff64748B),
-                                                ),
-                                                hintText: 'Search',
-
-                                                hintStyle: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: Color(0xff64748B),
-                                                    fontFamily: 'Inter-Medium',
-                                                    letterSpacing: 0.1,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                                border: InputBorder.none,
+                                      child: searchTextField =
+                                          TypeAheadFormField(
+                                        keepSuggestionsOnLoading: false,
+                                        suggestionsBoxVerticalOffset: 16.0.w,
+                                        suggestionsBoxDecoration:
+                                            SuggestionsBoxDecoration(
+                                                offsetX: 57.w,
+                                                constraints:
+                                                    BoxConstraints.expand(
+                                                        width: 313.w,
+                                                        height: 262.h),
+                                                color: Color(0xff0F172A)),
+                                        hideOnLoading: true,
+                                        suggestionsCallback: (pattern) {
+                                          return getSuggestions(pattern);
+                                        },
+                                        textFieldConfiguration:
+                                            TextFieldConfiguration(
+                                          controller: _typeAheadController,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14.sp),
+                                          keyboardType: TextInputType.text,
+                                          cursorColor: Colors.white,
+                                          autofocus: false,
+                                          decoration: InputDecoration(
+                                            // border: InputBorder.none,
+                                            // contentPadding: EdgeInsets.only(
+                                            //     top: 0.0.sp, right: 20.sp),
+                                            prefixIcon: Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 9.sp),
+                                              child: Icon(
+                                                Icons.search,
+                                                color: Color(0xff64748B),
                                               ),
                                             ),
-                                            itemBuilder: (context, item) {
-                                              return Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: 12.sp,
-                                                    left: 16.sp,
-                                                    bottom: 15.sp),
-                                                child: Text(
-                                                  item.title.toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      color: Colors.white),
-                                                ),
-                                              );
-                                              // Text("khushi");
-                                              // rowResourceName(item);
-                                            },
-                                            transitionBuilder: (context,
-                                                suggestionsBox, controller) {
-                                              return suggestionsBox;
-                                            },
-                                            onSuggestionSelected: (item) {
-                                              setState(() {
-                                                searchTextField!
-                                                    .textFieldConfiguration
-                                                    .controller!
-                                                    .text = '';
+                                            prefixIconConstraints:
+                                                BoxConstraints(),
+                                            hintText: 'Search',
 
-                                                if (abc.isNotEmpty) {
-                                                  if (abc
-                                                      .contains(item.title)) {
-                                                  } else {
-                                                    abc.add(item.title!);
-                                                  }
-                                                } else {
-                                                  abc.add(item.title!);
-                                                }
-                                                selectSkill = false;
-                                              });
-                                            },
+                                            hintStyle: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Color(0xff64748B),
+                                                fontFamily: 'Inter-Medium',
+                                                letterSpacing: 0.1,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w400),
+                                            border: InputBorder.none,
                                           ),
-                                        ],
+                                        ),
+                                        itemBuilder: (context, item) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 12.sp,
+                                                left: 16.sp,
+                                                bottom: 15.sp),
+                                            child: Text(
+                                              item.title.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.white),
+                                            ),
+                                          );
+                                          // Text("khushi");
+                                          // rowResourceName(item);
+                                        },
+                                        transitionBuilder: (context,
+                                            suggestionsBox, controller) {
+                                          return suggestionsBox;
+                                        },
+                                        onSuggestionSelected: (item) {
+                                          setState(() {
+                                            searchTextField!
+                                                .textFieldConfiguration
+                                                .controller!
+                                                .text = '';
+
+                                            if (abc.isNotEmpty) {
+                                              if (abc.contains(item.title)) {
+                                              } else {
+                                                abc.add(item.title!);
+                                              }
+                                            } else {
+                                              abc.add(item.title!);
+                                            }
+                                            selectSkill = false;
+                                          });
+                                        },
                                       ),
                                     ),
                                     selectSkill
