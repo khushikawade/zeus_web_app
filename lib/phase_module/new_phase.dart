@@ -99,6 +99,8 @@ class _NewPhaseState extends State<NewPhase> {
 
   bool addMilestoneBtnClick = false;
   bool addSubtaskBtnClick = false;
+  bool editMileStone = false;
+  bool editSubTask = false;
 
   bool savePhaseValidate = true;
   String name_ = '';
@@ -988,9 +990,9 @@ class _NewPhaseState extends State<NewPhase> {
                         callback: (values, index, action) {
                           setState(() {
                             if (action == "Delete") {
-                              onDeleteMileStone(index);
+                              onDeleteMileStone(index, dialogSetState);
                             } else if (action == "Edit") {
-                              onEditMileStone(index, values);
+                              onEditMileStone(index, values, dialogSetState);
                             } else {
                               mileStoneTitle = values.title ?? '';
                             }
@@ -1006,7 +1008,7 @@ class _NewPhaseState extends State<NewPhase> {
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
                       label: 'Milestone Date',
-                      initialDate: widget.type == 1
+                      initialDate: widget.type == 1 || editMileStone
                           ? mileStoneDate
                           : widget.type == 0
                               ? AppUtil.stringToDateValidate(
@@ -1063,24 +1065,27 @@ class _NewPhaseState extends State<NewPhase> {
     );
   }
 
-  onDeleteMileStone(int index) {
+  onDeleteMileStone(int index, StateSetter dialogSetState) {
     try {
       if (phaseDetails.milestone!.length >= index) {
-        setState(() {
+        dialogSetState(() {
           phaseDetails.milestone!.removeAt(index);
         });
       }
     } catch (e) {}
   }
 
-  onEditMileStone(int index, Milestones values) {
-    mileStoneEditIndex = index;
-    mileStoneAction = "Edit";
-    clickedAddMileStone = true;
-    controllerMilestoneTitle.text = values.title ?? "";
-    mileStoneTitle = values.title ?? "";
-    mileStoneDate = AppUtil.stringToDateValidate(values.m_date!) ??
-        AppUtil.dateToString(DateTime.now());
+  onEditMileStone(int index, Milestones values, StateSetter dialogSetState) {
+    dialogSetState(() {
+      mileStoneEditIndex = index;
+      mileStoneAction = "Edit";
+      clickedAddMileStone = true;
+      controllerMilestoneTitle.text = values.title ?? "";
+      mileStoneTitle = values.title ?? "";
+      mileStoneDate = AppUtil.stringToDateValidate(values.m_date!) ??
+          AppUtil.dateToString(DateTime.now());
+      editMileStone = true;
+    });
   }
 
   Widget subtaskView(StateSetter dialogSetState) {
@@ -1158,7 +1163,7 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
-                          initialDate: widget.type == 1
+                          initialDate: widget.type == 1 || editSubTask
                               ? AppUtil.stringToDateValidate(subTaskStartDate!)
                               : phaseDetails.start_date != null
                                   ? AppUtil.stringToDateValidate(
@@ -1202,7 +1207,7 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "End date",
-                          initialDate: widget.type == 1
+                          initialDate: widget.type == 1 || editSubTask
                               ? AppUtil.stringToDateValidate(subTaskEndDate!)
                               : phaseDetails.start_date != null
                                   ? AppUtil.stringToDateValidate(
@@ -1286,7 +1291,7 @@ class _NewPhaseState extends State<NewPhase> {
                           phaseDetails,
                           callback: (values, index, subTaskAction) {
                             if (subTaskAction == 'Delete') {
-                              onDeleteSubtask(index);
+                              onDeleteSubtask(index, dialogSetState);
                             } else if (subTaskAction == 'Edit') {
                               onEditSubtask(index, values, dialogSetState);
                             } else {
@@ -1325,10 +1330,10 @@ class _NewPhaseState extends State<NewPhase> {
     );
   }
 
-  onDeleteSubtask(int index) {
+  onDeleteSubtask(int index, StateSetter dialogSetState) {
     try {
       if (phaseDetails.sub_tasks!.length >= index) {
-        setState(() {
+        dialogSetState(() {
           phaseDetails.sub_tasks!.removeAt(index);
           subTaskStartDate = AppUtil.dateToString(DateTime.now());
           subTaskEndDate = AppUtil.dateToString(DateTime.now());
@@ -1349,6 +1354,7 @@ class _NewPhaseState extends State<NewPhase> {
       selectedSubTaskSource.add(values.resource!);
       subTaskStartDate = values.start_date!;
       subTaskEndDate = values.end_date!;
+      editSubTask = true;
     });
   }
 
@@ -1959,11 +1965,20 @@ class _NewPhaseState extends State<NewPhase> {
         if (phaseDetails.milestone != null &&
             phaseDetails.milestone!.isNotEmpty) {
           phaseDetails.milestone!.forEach((element) {
-            element.m_date =
-                AppUtil.dateToString(DateTime.parse(element.m_date!));
+            try {
+              element.m_date =
+                  AppUtil.dateToString(DateTime.parse(element.m_date!));
+            } catch (e) {
+              element.m_date = element.m_date!;
+            }
+
+            print("here-----------------------");
+            print(element.m_date);
           });
         }
       } catch (e) {
+        //
+        print("milestone ------------------------error");
         print(e);
       }
 
@@ -1971,11 +1986,18 @@ class _NewPhaseState extends State<NewPhase> {
         if (phaseDetails.sub_tasks != null &&
             phaseDetails.sub_tasks!.isNotEmpty) {
           phaseDetails.sub_tasks!.forEach((element) {
-            element.start_date =
-                AppUtil.dateToString(DateTime.parse(element.start_date!));
-
-            element.end_date =
-                AppUtil.dateToString(DateTime.parse(element.end_date!));
+            try {
+              element.start_date =
+                  AppUtil.dateToString(DateTime.parse(element.start_date!));
+            } catch (e) {
+              element.start_date = element.start_date!;
+            }
+            try {
+              element.end_date =
+                  AppUtil.dateToString(DateTime.parse(element.end_date!));
+            } catch (e) {
+              element.end_date = element.end_date!;
+            }
           });
         }
       } catch (e) {
