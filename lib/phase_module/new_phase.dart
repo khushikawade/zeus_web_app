@@ -792,7 +792,7 @@ class _NewPhaseState extends State<NewPhase> {
                                               18.0.r,
                                             ),
                                           ),
-                                          message: 'delete',
+                                          message: 'Delete',
                                           child: Padding(
                                             padding:
                                                 EdgeInsets.only(left: 8.0.sp),
@@ -1624,7 +1624,7 @@ class _NewPhaseState extends State<NewPhase> {
                                           18.0.r,
                                         ),
                                       ),
-                                      message: 'delete',
+                                      message: 'Delete',
                                       child: Padding(
                                         padding: EdgeInsets.only(left: 8.0.sp),
                                         child: Icon(
