@@ -477,7 +477,7 @@ class _NewPhaseState extends State<NewPhase> {
                         dialogSetState(() {
                           // print(value);
                           phaseDetails.title = value;
-                          savePhaseValidate = false;
+                          createButtonClick = true;
                         });
                       }
 
@@ -500,7 +500,7 @@ class _NewPhaseState extends State<NewPhase> {
                         dialogSetState(() {
                           // print(value);
                           phaseDetails.phase_type = value;
-                          savePhaseValidate = false;
+                          createButtonClick = true;
                         });
                       }
                       return null;
@@ -1002,71 +1002,35 @@ class _NewPhaseState extends State<NewPhase> {
                         left: 29.5.sp, right: 30.5.sp, top: 0.sp),
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
-                      label: "End date",
+                      label: 'Milestone Date',
                       initialDate: phaseDetails.start_date != null
                           ? AppUtil.stringToDateValidate(
                               phaseDetails.start_date!)
                           : null,
-                      // widget.type == 0
-                      //     ? null
-                      //     : AppUtil.stringToDateValidate(subTaskEndDate!),
+                      //  widget.type == 0 ? null : milestoneStartDate,
+                      // milestoneStartDate != null
+                      //     ? milestoneStartDate
+                      //     : DateTime.now(),
                       endDate: phaseDetails.end_date != null
                           ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
                           : null,
-                      // milestoneEndDate,
                       onChange: (date) {
                         dialogSetState(() {
-                          subTaskEndDate = date.toString();
-                          print("end date-----------------$subTaskEndDate");
+                          mileStoneDate = date;
+                          print("Date---------------------");
 
-                          errorTextForSubtask(subTaskStartDate, subTaskEndDate);
+                          print(mileStoneDate);
                         });
                       },
-
                       onCancel: () {
                         dialogSetState(() {
-                          subTaskEndDate = null;
+                          mileStoneDate = null;
                         });
                       },
-                      // errorText: (saveButtonClickForSubtask1 &&
-                      //         subTaskEndDate!.isEmpty)
-                      //     ? 'Please enter end date'
-                      //     : "",
                       errorText:
-                          errorTextForSubtask(subTaskStartDate, subTaskEndDate),
+                          errorText(mileStoneDate, phaseDetails.end_date),
                       validator: (value) {},
                     ),
-                    // child: CustomDatePicker(
-                    //   hint: 'dd/mm/yyyy',
-                    //   label: 'Milestone Date',
-                    //   initialDate: phaseDetails.start_date != null
-                    //       ? AppUtil.stringToDateValidate(
-                    //           phaseDetails.start_date!)
-                    //       : null,
-                    //   //  widget.type == 0 ? null : milestoneStartDate,
-                    //   // milestoneStartDate != null
-                    //   //     ? milestoneStartDate
-                    //   //     : DateTime.now(),
-                    //   endDate: phaseDetails.end_date != null
-                    //       ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
-                    //       : null,
-                    //   onChange: (date) {
-                    //     setState(() {
-                    //       mileStoneDate = date;
-                    //       print("Date---------------------");
-
-                    //       print(mileStoneDate);
-                    //     });
-                    //   },
-                    //   onCancel: () {
-                    //     setState(() {
-                    //       mileStoneDate = null;
-                    //     });
-                    //   },
-                    //   errorText:
-                    //       errorText(mileStoneDate, phaseDetails.end_date),
-                    //   validator: (value) {},
-                    // ),
                   ),
             milestoneValidate && phaseDetails.milestone!.isEmpty
                 ? Container(
