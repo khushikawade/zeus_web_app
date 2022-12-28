@@ -447,6 +447,7 @@ class _MenuPhaseState extends State<MenuPhase>
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

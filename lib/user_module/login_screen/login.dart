@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg:
               'Error while saving code ${response.statusCode} ${response.body}',
           backgroundColor: Colors.grey,
@@ -587,11 +588,11 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        //sharedPreferences.setBool('isLogin', true);
+        sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        //storage.write(isLogin, true);
+        storage.write(isLogin, true);
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
         // await sharedPreferences.setString('user',responseJson['name']);
@@ -618,6 +619,7 @@ class _LoginScreenState extends State<LoginScreen> {
             (Route<dynamic> route) => route is MyHomePage);
       } else {
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg: 'Please check Email and Password',
           backgroundColor: Colors.grey,
         );
