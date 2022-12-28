@@ -269,7 +269,11 @@ class _NewPhaseState extends State<NewPhase> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      titleHeadlineWidget("New Phase", 22.0.sp),
+                                      titleHeadlineWidget(
+                                          widget.type == 0
+                                              ? "New Phase"
+                                              : "Edit Phase",
+                                          22.0.sp),
                                       Expanded(
                                         child: Row(
                                           mainAxisAlignment:
@@ -642,9 +646,10 @@ class _NewPhaseState extends State<NewPhase> {
                                   onChange: ((value) {
                                     // _curren = value.id;
                                     _depat = value.item;
-                                    setState(() {
+                                    dialogSetState(() {
                                       startloading = true;
-                                      getResourcesNeeded(value.id.toString());
+                                      getResourcesNeeded(
+                                          value.id.toString(), dialogSetState);
                                     });
                                   }),
                                 ),
@@ -729,7 +734,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       return suggestionsBox;
                                     },
                                     onSuggestionSelected: (item) {
-                                      setState(() {
+                                      dialogSetState(() {
                                         searchTextField!.textFieldConfiguration
                                             .controller!.text = '';
 
@@ -825,10 +830,10 @@ class _NewPhaseState extends State<NewPhase> {
                                           style: TextStyle(color: Colors.white),
                                         ),
                                         onSelected: (bool selected) {
-                                          setState(() {});
+                                          dialogSetState(() {});
                                         },
                                         onDeleted: () {
-                                          setState(() {
+                                          dialogSetState(() {
                                             removeDuplicate();
                                             selectedSubTaskSource.removeWhere(
                                                 (element) =>
@@ -972,7 +977,7 @@ class _NewPhaseState extends State<NewPhase> {
                         if (value.isEmpty) {
                           return 'Please enter milestone title';
                         } else {
-                          setState(() {
+                          dialogSetState(() {
                             // print(value);
                             mileStoneTitle = value;
                             //savePhaseValidate = false;
@@ -980,7 +985,7 @@ class _NewPhaseState extends State<NewPhase> {
                         }
                         return null;
                       },
-                      onChange: (text) => setState(() => name_ = text),
+                      onChange: (text) => dialogSetState(() => name_ = text),
                     ),
                   )
                 : saveButtonClick
@@ -988,7 +993,7 @@ class _NewPhaseState extends State<NewPhase> {
                         context,
                         phaseDetails,
                         callback: (values, index, action) {
-                          setState(() {
+                          dialogSetState(() {
                             if (action == "Delete") {
                               onDeleteMileStone(index, dialogSetState);
                             } else if (action == "Edit") {
@@ -1282,7 +1287,7 @@ class _NewPhaseState extends State<NewPhase> {
                   )
                 : const SizedBox.shrink(),
             clickAddSubTask
-                ? subTaskResourcesView()
+                ? subTaskResourcesView(dialogSetState)
                 : saveButtonClickForSubtask
                     ? Padding(
                         padding: EdgeInsets.only(right: 6.sp),
@@ -1358,7 +1363,7 @@ class _NewPhaseState extends State<NewPhase> {
     });
   }
 
-  Widget subTaskResourcesView() {
+  Widget subTaskResourcesView(StateSetter dialogSetState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -1443,11 +1448,11 @@ class _NewPhaseState extends State<NewPhase> {
                                 : '',
                             items: removeDuplicate(),
                             onChange: ((value) {
-                              setState(() {
+                              dialogSetState(() {
                                 selectedSubTaskSource.clear();
                               });
 
-                              setState(() {
+                              dialogSetState(() {
                                 resourceSuggestions.clear();
 
                                 for (var element in listResource) {
@@ -1534,7 +1539,7 @@ class _NewPhaseState extends State<NewPhase> {
                     return suggestionsBox;
                   },
                   onSuggestionSelected: (item) {
-                    setState(() {
+                    dialogSetState(() {
                       subTaskResourceName = item.name!;
                       _subTaskResourcesController.text = '';
 
@@ -1589,10 +1594,10 @@ class _NewPhaseState extends State<NewPhase> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onSelected: (bool selected) {
-                                setState(() {});
+                                dialogSetState(() {});
                               },
                               onDeleted: () {
-                                setState(() {
+                                dialogSetState(() {
                                   selectedSubTaskSource.removeAt(index);
                                 });
                               },
@@ -2021,8 +2026,8 @@ class _NewPhaseState extends State<NewPhase> {
     }
   }
 
-  getResourcesNeeded(String newValue) async {
-    setState(() {
+  getResourcesNeeded(String newValue, StateSetter dialogSetState) async {
+    dialogSetState(() {
       loading = true;
     });
     resourceNeededModel = await api.getResourceNeeded(newValue, context);
@@ -2031,7 +2036,7 @@ class _NewPhaseState extends State<NewPhase> {
         users = resourceNeededModel!.data!;
       } else {}
     }
-    setState(() {
+    dialogSetState(() {
       loading = false;
     });
   }
@@ -2141,9 +2146,9 @@ class _NewPhaseState extends State<NewPhase> {
         else if (endphase.isBefore(AppUtil.stringToDateValidate(enddate))) {
           return 'End date must be less then the phase end date';
         } else {
-          setState(() {
-            subtaskdateCheck = false;
-          });
+          // setState(() {
+          //   subtaskdateCheck = false;
+          // });
         }
 
         // if (endphase.isBefore(start)) {

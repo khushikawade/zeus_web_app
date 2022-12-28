@@ -1203,6 +1203,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 var phaseType = phase.phaseType;
                 String name = title!.substring(0, 2).toUpperCase();
                 var date = phase.startDate;
+
                 var endDate = phase.endDate;
                 var _date = date.toString();
                 var date1 = AppUtil.getFormatedDate(_date);
