@@ -101,6 +101,16 @@ class _NavigationRailState extends State<MyHomePage1>
   ];
 
   @override
+  void initState() {
+    print(widget.currentIndex);
+    _selectedIndex = widget.currentIndex;
+    print(_selectedIndex);
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
     return MediaQuery(
@@ -672,9 +682,10 @@ class _NavigationRailState extends State<MyHomePage1>
                     : Container(
                         color: const Color(0xff0F172A),
                         alignment: Alignment.center,
-                        child:  Text(
+                        child: Text(
                           'Coming Soon',
-                          style: TextStyle(fontSize: 40.sp, color: Colors.white),
+                          style:
+                              TextStyle(fontSize: 40.sp, color: Colors.white),
                         ),
                       ),
             // sayyamm

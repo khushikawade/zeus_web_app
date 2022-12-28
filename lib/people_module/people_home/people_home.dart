@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vrouter/vrouter.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/routers/routers_class.dart';
@@ -77,75 +78,75 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-      child: 
-      // Scaffold(
-      //   backgroundColor: ColorSelect.class_color,
-      //   body: 
-        Container(
-          // width: MediaQuery.of(context).size.width < 950
-          //     ? MediaQuery.of(context).size.width * 2
-          //     : MediaQuery.of(context).size.width - 160,
-          height: 969,
-          margin: EdgeInsets.only(
-              left: 40.sp, right: 30.sp, bottom: 10.sp, top: 40.sp),
-          decoration: BoxDecoration(
-            color: const Color(0xff1E293B),
-            border: Border.all(color: const Color(0xff1E293B)),
-            borderRadius: BorderRadius.circular(
-              12.r,
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Consumer<PeopleHomeViewModel>(builder: (context, data, _) {
-                return data.loading
-                    ? const Expanded(
-                        child: Center(child: CircularProgressIndicator()))
-                    : data.peopleList == null ||
-                            data.peopleList == null ||
-                            data.peopleList!.data!.isEmpty
-                        ? Expanded(
-                            child: Center(
-                                child: Text(
-                              "No Records Found!",
-                              style: TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontSize: 22.sp,
-                                  fontFamily: 'Inter-Medium',
-                                  letterSpacing: 0.1,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                          )
-                        : Expanded(
-                            child: RawScrollbar(
-                              controller: _scrollController,
-                              thumbColor: const Color(0xff4b5563),
-                              crossAxisMargin: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              thickness: 8,
-                              child: ScrollConfiguration(
-                                behavior: ScrollConfiguration.of(context)
-                                    .copyWith(scrollbars: false),
-                                child: ListView(
-                                  controller: verticalScroll,
-                                  shrinkWrap: true,
-                                  children: [
-                                    makePeopleList(data),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-              }),
-            ],
+      child:
+          // Scaffold(
+          //   backgroundColor: ColorSelect.class_color,
+          //   body:
+          Container(
+        width: MediaQuery.of(context).size.width < 950
+            ? MediaQuery.of(context).size.width * 2
+            : MediaQuery.of(context).size.width - 160,
+        height: 969,
+        margin: EdgeInsets.only(
+            left: 40.sp, right: 30.sp, bottom: 10.sp, top: 40.sp),
+        decoration: BoxDecoration(
+          color: const Color(0xff1E293B),
+          border: Border.all(color: const Color(0xff1E293B)),
+          borderRadius: BorderRadius.circular(
+            12.r,
           ),
         ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Consumer<PeopleHomeViewModel>(builder: (context, data, _) {
+              return data.loading
+                  ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
+                  : data.peopleList == null ||
+                          data.peopleList == null ||
+                          data.peopleList!.data!.isEmpty
+                      ? Expanded(
+                          child: Center(
+                              child: Text(
+                            "No Records Found!",
+                            style: TextStyle(
+                                color: Color(0xffFFFFFF),
+                                fontSize: 22.sp,
+                                fontFamily: 'Inter-Medium',
+                                letterSpacing: 0.1,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500),
+                          )),
+                        )
+                      : Expanded(
+                          child: RawScrollbar(
+                            controller: _scrollController,
+                            thumbColor: const Color(0xff4b5563),
+                            crossAxisMargin: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            thickness: 8,
+                            child: ScrollConfiguration(
+                              behavior: ScrollConfiguration.of(context)
+                                  .copyWith(scrollbars: false),
+                              child: ListView(
+                                controller: verticalScroll,
+                                shrinkWrap: true,
+                                children: [
+                                  makePeopleList(data),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+            }),
+          ],
+        ),
+      ),
       //),
     );
   }
@@ -255,6 +256,14 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 //   Provider.of<PeopleHomeViewModel>(context, listen: false)
                 //       .getPeopleDataList();
                 // }
+
+                
+
+                context.vRouter.to(MyRoutes.peopleDetailsRoute,
+                    isReplacement: false,
+                    queryParameters: {'profile_data': _peopleList.toString()},
+                    
+                    );
               },
               cells: [
                 DataCell(Row(

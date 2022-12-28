@@ -44,15 +44,17 @@ class ConnectedRoutes extends VRouteElementBuilder {
   static void toPeople(BuildContext context, String username) =>
       context.vRouter.to('$username/$people', isReplacement: true);
 
+  static final String profile_details = 'profile_details';
+
+  static void toProfileDetails(BuildContext context, String username) =>
+      context.vRouter.to('$username/$profile_details', isReplacement: false);
+
   @override
   List<VRouteElement> buildRoutes() {
-
-   
     return [
       VNester.builder(
         path: '/:username',
         widgetBuilder: (_, state, child) {
-          print("State name ----------------------------- ${state.names}");
           return MyHomePage1(
             child,
             currentIndex: state.names.contains(people)
@@ -72,16 +74,7 @@ class ConnectedRoutes extends VRouteElementBuilder {
               path: people,
               name: people,
               widget: PeopleHomeView(),
-              transitionDuration: Duration(seconds: 1)
-
-              // // Custom transition
-              // buildTransition: (animation, ___, child) {
-              //   return ScaleTransition(
-              //     scale: animation,
-              //     child: child,
-              //   );
-              // },
-              ),
+              transitionDuration: Duration(seconds: 1)),
         ],
       ),
     ];

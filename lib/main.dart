@@ -15,6 +15,7 @@ import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
 import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/routers/routers_class.dart';
+import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/user_module/people_profile/screen/people_detail_view.dart';
@@ -405,6 +406,105 @@ import 'project_module/project_home/project_home_view.dart';
 // final textStyle = TextStyle(color: Colors.black, fontSize: 16);
 // final buttonTextStyle = textStyle.copyWith(color: Colors.white);
 
+// import 'package:flutter/material.dart';
+// import 'package:vrouter/vrouter.dart';
+
+// void main() {
+//   runApp(BooksApp());
+// }
+
+// class Book {
+//   final String title;
+//   final String author;
+
+//   Book(this.title, this.author);
+// }
+
+// class BooksApp extends StatelessWidget {
+//   final List<Book> books = [
+//     Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
+//     Book('Foundation', 'Isaac Asimov'),
+//     Book('Fahrenheit 451', 'Ray Bradbury'),
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return VRouter(
+//       routes: [
+//         VWidget(
+//           path: '/',
+//           widget: BooksListScreen(books: books),
+//           stackedRoutes: [
+//             VWidget(
+//               path: r'book/:id(\d+)',
+//               widget: Builder(
+//                 builder: (context) => BookDetailsScreen(
+//                   book: books[int.parse(context.vRouter.pathParameters['id']!)],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//         VRouteRedirector(path: ':_(.+)', redirectTo: '/'),
+//       ],
+//     );
+//   }
+// }
+
+// class BooksListScreen extends StatefulWidget {
+//   final List<Book> books;
+
+//   BooksListScreen({required this.books});
+
+//   @override
+//   _BooksListScreenState createState() => _BooksListScreenState();
+// }
+
+// class _BooksListScreenState extends State<BooksListScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(),
+//       body: ListView(
+//         children: [
+//           for (var book in widget.books)
+//             ListTile(
+//               title: Text(book.title),
+//               subtitle: Text(book.author),
+//               onTap: () =>
+//                   context.vRouter.push('/book/${widget.books.indexOf(book)}'),
+//             )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class BookDetailsScreen extends StatelessWidget {
+//   final Book book;
+
+//   BookDetailsScreen({
+//     required this.book,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(),
+//       body: Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(book.title, style: Theme.of(context).textTheme.headline6),
+//             Text(book.author, style: Theme.of(context).textTheme.subtitle1),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 void main() async {
   await GetStorage.init();
   // setPathUrlStrategy();
@@ -448,8 +548,18 @@ class MyApp extends StatelessWidget {
                 ),
                 VWidget(
                     path: MyRoutes.homeRoute,
-                
-                    widget: MyHomePage1( ProjectHome(), currentIndex: 1)),
+                    widget: MyHomePage1(ProjectHome(), currentIndex: 1)),
+                VWidget(
+                    path: MyRoutes.peopleDetailsRoute,
+                    name: MyRoutes.peopleDetailsRoute,
+                    widget: Builder(builder: (context) {
+                      PeopleData peopleData = context.vRouter
+                          .queryParameters['profile_data']! as PeopleData;
+                      print("Response ------------------ ${peopleData}");
+                      return ProfileDetail(
+                        list: peopleData,
+                      );
+                    })),
                 VRouteRedirector(
                   redirectTo: MyRoutes.loginRoute,
                   path: r'*',

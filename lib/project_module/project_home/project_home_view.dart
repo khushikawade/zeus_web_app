@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vrouter/vrouter.dart';
 import 'package:zeus/project_module/project_details_screen/project_details_view.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/colors.dart';
@@ -96,6 +98,7 @@ class ProjectHomeState extends State<ProjectHome> {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
     getAllData();
+
     super.initState();
   }
 
@@ -638,70 +641,69 @@ class ProjectHomeState extends State<ProjectHome> {
     // );
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-      child: 
-      // Scaffold(
-      //   backgroundColor: ColorSelect.class_color,
-      //   body: 
-        Container(
-          //width: 100,
-          width: MediaQuery.of(context).size.width < 950
-              ? MediaQuery.of(context).size.width * 2
-              : MediaQuery.of(context).size.width - 160,
-          height: 969,
-          margin: const EdgeInsets.only(
-              left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
-          decoration: BoxDecoration(
-            color: const Color(0xff1E293B),
-            border: Border.all(color: const Color(0xff1E293B)),
-            borderRadius: BorderRadius.circular(
-              12.0,
-            ),
+      child:
+          // Scaffold(
+          //   backgroundColor: ColorSelect.class_color,
+          //   body:
+          Container(
+        //width: 100,
+        width: MediaQuery.of(context).size.width < 950
+            ? MediaQuery.of(context).size.width * 2
+            : MediaQuery.of(context).size.width - 160,
+        height: 969,
+        margin: const EdgeInsets.only(
+            left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+        decoration: BoxDecoration(
+          color: const Color(0xff1E293B),
+          border: Border.all(color: const Color(0xff1E293B)),
+          borderRadius: BorderRadius.circular(
+            12.0,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Consumer<ProjectHomeViewModel?>(builder: (context, data, _) {
-                return data!.loading
-                    ? const Expanded(
-                        child: Center(child: CircularProgressIndicator()))
-                    : data.projectDetailsResponse == null ||
-                            data.projectDetailsResponse!.data!.isEmpty
-                        ? Expanded(
-                            child: const Center(
-                                child: Text(
-                              "No Records Found!",
-                              style: TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontSize: 22.0,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500),
-                            )),
-                          )
-                        : Expanded(
-                            child: RawScrollbar(
-                            controller: _scrollController,
-                            thumbColor: const Color(0xff4b5563),
-                            crossAxisMargin: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Consumer<ProjectHomeViewModel?>(builder: (context, data, _) {
+              return data!.loading
+                  ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
+                  : data.projectDetailsResponse == null ||
+                          data.projectDetailsResponse!.data!.isEmpty
+                      ? Expanded(
+                          child: const Center(
+                              child: Text(
+                            "No Records Found!",
+                            style: TextStyle(
+                                color: Color(0xffFFFFFF),
+                                fontSize: 22.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500),
+                          )),
+                        )
+                      : Expanded(
+                          child: RawScrollbar(
+                          controller: _scrollController,
+                          thumbColor: const Color(0xff4b5563),
+                          crossAxisMargin: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          thickness: 8,
+                          child: ScrollConfiguration(
+                            behavior: ScrollConfiguration.of(context)
+                                .copyWith(scrollbars: false),
+                            child: ListView(
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              children: [makeProjectList(data)],
                             ),
-                            thickness: 8,
-                            child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context)
-                                  .copyWith(scrollbars: false),
-                              child: ListView(
-                                controller: _scrollController,
-                                shrinkWrap: true,
-                                children: [makeProjectList(data)],
-                              ),
-                            ),
-                          ));
-              }
-             ),
-            ],
-          ),
+                          ),
+                        ));
+            }),
+          ],
+        ),
         //),
       ),
     );
