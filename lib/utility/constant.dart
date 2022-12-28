@@ -43,10 +43,10 @@ const String clientId = "VVNV2YGS2DRFKMYIO4S09ZIDFDX8ID8Z";
 //"OQN1HAG1PV3X3SEYRU48H9KBMXEFT77I";
 
 const String secretKey =
-    "C49T3G6WF1G01MBSSQI1UD062J5GHHYZEBZ4XF1YPJYYX4HFC71ND2ZWFRI56CCT";
+    "S8SO1OSM8Y384NKRTYBQVA6QASUP0ELNYVFNBNGW98FSM71OX2UQD3IILZW40IMA";
 
 // const String code = "60KM7W4679VITC6TGH0PWGSQM5JBYUUJ";
 
-const String redirectUrl = "localhost:49399";
+const String redirectUrl = "localhost:60260";
 
 //  "https://zeus-api.zehntech.net/api/v1/clickup/auth";

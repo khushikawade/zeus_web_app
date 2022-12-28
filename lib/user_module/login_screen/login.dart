@@ -87,11 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  launchClickUpsUrl() async {
-    final html.WindowBase windowBase =
-        html.window.open(AppUrl.clickUpsUrl, "_self");
-  }
-
   @override
   void initState() {
     if (html.window.location.toString().contains("?code=")) {
@@ -592,11 +587,11 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        sharedPreferences.setBool('isLogin', true);
+        //sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        storage.write(isLogin, true);
+        //storage.write(isLogin, true);
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
         // await sharedPreferences.setString('user',responseJson['name']);
@@ -613,7 +608,7 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) =>
             const DemoClass()));*/
 
-       //launchClickUpsUrl();
+        //launchClickUpsUrl();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
@@ -633,5 +628,10 @@ class _LoginScreenState extends State<LoginScreen> {
       SmartDialog.dismiss();
       _submit();
     }
+  }
+
+  launchClickUpsUrl() async {
+    final html.WindowBase windowBase =
+        html.window.open(AppUrl.clickUpsUrl, "_self");
   }
 }
