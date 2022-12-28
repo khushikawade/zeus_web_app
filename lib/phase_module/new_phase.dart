@@ -80,7 +80,7 @@ class _NewPhaseState extends State<NewPhase> {
   int mileStoneEditIndex = 0;
 
   String subtaskActionType = '';
-  int subTaskEditIndex = 0;
+  int subTaskEditIndex = 1;
 
   String mileStoneTitle = "";
   // String mileStoneDate = AppUtil.dateToString(DateTime.now());
@@ -536,9 +536,12 @@ class _NewPhaseState extends State<NewPhase> {
                   CustomDatePicker(
                     hint: 'dd/mm/yyyy',
                     label: "End date",
-                    initialDate: phaseDetails.start_date != null
-                        ? AppUtil.stringToDateValidate(phaseDetails.start_date!)
-                        : null,
+                    initialDate: widget.type == 1
+                        ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
+                        : phaseDetails.start_date != null
+                            ? AppUtil.stringToDateValidate(
+                                phaseDetails.start_date!)
+                            : null,
                     onChange: (date) {
                       dialogSetState(() {
                         print(phaseDetails.start_date);
@@ -1003,10 +1006,12 @@ class _NewPhaseState extends State<NewPhase> {
                     child: CustomDatePicker(
                       hint: 'dd/mm/yyyy',
                       label: 'Milestone Date',
-                      initialDate: phaseDetails.start_date != null
-                          ? AppUtil.stringToDateValidate(
-                              phaseDetails.start_date!)
-                          : null,
+                      initialDate: widget.type == 1
+                          ? mileStoneDate
+                          : phaseDetails.start_date != null
+                              ? AppUtil.stringToDateValidate(
+                                  phaseDetails.start_date!)
+                              : null,
                       //  widget.type == 0 ? null : milestoneStartDate,
                       // milestoneStartDate != null
                       //     ? milestoneStartDate
@@ -1153,10 +1158,12 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
-                          initialDate: phaseDetails.start_date != null
-                              ? AppUtil.stringToDateValidate(
-                                  phaseDetails.start_date!)
-                              : null,
+                          initialDate: widget.type == 1
+                              ? AppUtil.stringToDateValidate(subTaskStartDate!)
+                              : phaseDetails.start_date != null
+                                  ? AppUtil.stringToDateValidate(
+                                      phaseDetails.start_date!)
+                                  : null,
                           // widget.type == 0 ? null : milestoneStartDate,
                           // widget.type == 0
                           //     ? null
@@ -1195,10 +1202,12 @@ class _NewPhaseState extends State<NewPhase> {
                         CustomDatePicker(
                           hint: 'dd/mm/yyyy',
                           label: "End date",
-                          initialDate: phaseDetails.start_date != null
-                              ? AppUtil.stringToDateValidate(
-                                  phaseDetails.start_date!)
-                              : null,
+                          initialDate: widget.type == 1
+                              ? AppUtil.stringToDateValidate(subTaskEndDate!)
+                              : phaseDetails.start_date != null
+                                  ? AppUtil.stringToDateValidate(
+                                      phaseDetails.start_date!)
+                                  : null,
                           // widget.type == 0
                           //     ? null
                           //     : AppUtil.stringToDateValidate(subTaskEndDate!),
@@ -1279,7 +1288,7 @@ class _NewPhaseState extends State<NewPhase> {
                             if (subTaskAction == 'Delete') {
                               onDeleteSubtask(index);
                             } else if (subTaskAction == 'Edit') {
-                              onEditSubtask(index, values);
+                              onEditSubtask(index, values, dialogSetState);
                             } else {
                               dialogSetState(() {
                                 mileStoneTitle =
@@ -1331,8 +1340,9 @@ class _NewPhaseState extends State<NewPhase> {
   onEditSubtask(
     int index,
     SubTasksModel values,
+    StateSetter dialogSetState,
   ) {
-    setState(() {
+    dialogSetState(() {
       subTaskEditIndex = index;
       subtaskActionType = "Edit";
       clickAddSubTask = true;
@@ -1738,8 +1748,15 @@ class _NewPhaseState extends State<NewPhase> {
                   dialogSetState(() {
                     try {
                       if (subtaskActionType.isEmpty) {
+                        // selectedSubTaskSource.forEach((element) {
+                        //   phaseDetails.sub_tasks.add(SubTasksModel(
+
+                        //       start_date: element.department_name,
+                        //       end_date: subTaskEndDate,
+                        //       resource: selectedSubTaskSource ));
+                        // });
                         phaseDetails.sub_tasks!.add(SubTasksModel(
-                            resource: selectedSubTaskSource[0],
+                            resource: selectedSubTaskSource[subTaskEditIndex],
                             end_date: subTaskEndDate,
                             start_date: subTaskStartDate
                             // end_date: AppUtil.dateToString(
@@ -1751,7 +1768,8 @@ class _NewPhaseState extends State<NewPhase> {
                       } else {
                         phaseDetails.sub_tasks![subTaskEditIndex] =
                             SubTasksModel(
-                                resource: selectedSubTaskSource[0],
+                                resource:
+                                    selectedSubTaskSource[subTaskEditIndex],
                                 end_date: subTaskEndDate,
                                 start_date: subTaskStartDate);
                         subtaskActionType = '';
@@ -1814,6 +1832,8 @@ class _NewPhaseState extends State<NewPhase> {
     if (_formKey.currentState!.validate()) {
       if (allValidate && phaseDetails.milestone!.isNotEmpty) {
         if (phaseDetails.milestone!.isNotEmpty &&
+            phaseDetails.title!.isNotEmpty &&
+            phaseDetails.phase_type!.isNotEmpty &&
             phaseDetails.sub_tasks!.isNotEmpty) {
           if (widget.type == 1) {
             updatePhaseApi();
