@@ -642,6 +642,7 @@ class _NewPhaseState extends State<NewPhase> {
                           ? Center(child: const CircularProgressIndicator())
                           : Container(
                               height: 48.h,
+                              alignment: Alignment.center,
                               width: MediaQuery.of(context).size.width * 0.15.w,
                               decoration: BoxDecoration(
                                 color: const Color(0xff1E293B),
@@ -673,20 +674,18 @@ class _NewPhaseState extends State<NewPhase> {
                                   cursorColor: Colors.white,
                                   autofocus: true,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(
-                                        top: 15.0.sp,
-                                        left: 10.sp,
-                                        bottom: 5.sp),
+                                    // contentPadding: EdgeInsets.only(
+                                    //     left: 10.sp, bottom: 5.sp),
                                     prefixIconConstraints: BoxConstraints(),
                                     prefixIcon: Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 9.5.sp,
-                                            left: 15.sp,
-                                            right: 9.sp),
-                                        child: Icon(
-                                          Icons.search,
-                                          color: Color(0xff64748B),
-                                        )),
+                                      padding: EdgeInsets.only(
+                                          left: 15.0.sp, right: 15.sp),
+                                      child: Icon(
+                                        Icons.search,
+                                        size: 22.sp,
+                                        color: Color(0xff334155),
+                                      ),
+                                    ),
                                     hintText: 'Search',
                                     hintStyle: TextStyle(
                                         fontSize: 14.sp,
@@ -739,65 +738,68 @@ class _NewPhaseState extends State<NewPhase> {
                                     }
                                   });
                                 },
-                              ),
-                            )
+                              ))
                       : Container(),
                 ],
               ),
             ),
             selectedSource.isNotEmpty
-                ? SizedBox(
-                    height: 30.h,
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 28.0.sp),
-                        child:
-                            //  ListView.builder(
-                            //   scrollDirection: Axis.horizontal,
-                            //   itemCount: selectedSource.length,
-                            //   itemBuilder: (context, index) {
-                            //     return
-                            Wrap(
-                                spacing: 8.sp,
-                                children: List.generate(selectedSource.length,
-                                    (index) {
-                                  return Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 16.sp, bottom: 2.sp, left: 5.sp),
-                                      child: InputChip(
-                                        elevation: 1,
-                                        disabledColor: Color(0xff334155),
-                                        labelPadding: EdgeInsets.only(
-                                            left: 10.sp,
-                                            top: 7.sp,
-                                            bottom: 7.sp),
-                                        shadowColor: Color(0xff334155),
-                                        shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: Color(0xff334155)),
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                13.r,
-                                              ),
-                                            )),
-                                        side: BorderSide(
-                                            color: Color(0xff334155)),
-                                        deleteIcon: Icon(
-                                          Icons.close,
-                                          color: Colors.white,
-                                          size: 20.sp,
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 28.0.sp, top: 8.sp, bottom: 10.sp),
+                        child: Wrap(
+                          spacing: 8.sp,
+                          runSpacing: 8.sp,
+                          children: List.generate(
+                            selectedSource.length,
+                            (index) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  borderRadius: BorderRadius.circular(
+                                    8.r,
+                                  ),
+                                ),
+                                // color: Colors.red,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0.sp),
+                                  child: Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      Text(
+                                        selectedSource[index],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: ColorSelect.white_color,
+                                            fontSize: 14.sp,
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'Inter-Regular',
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      InkWell(
+                                        child: Tooltip(
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            border: Border.all(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.0.r,
+                                            ),
+                                          ),
+                                          message: 'delete',
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                            size: 18.sp,
+                                          ),
                                         ),
-                                        backgroundColor: Color(0xff334155),
-                                        visualDensity: VisualDensity.compact,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        label: Text(
-                                          selectedSource[index],
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        onSelected: (bool selected) {
-                                          setState(() {});
-                                        },
-                                        onDeleted: () {
+                                        onTap: () {
                                           setState(() {
                                             removeDuplicate();
                                             selectedSubTaskSource.removeWhere(
@@ -809,13 +811,88 @@ class _NewPhaseState extends State<NewPhase> {
                                             selectedSource.removeAt(index);
                                           });
                                         },
-                                        showCheckmark: false,
-                                      ));
-                                }))
-                        //   },
-                        // ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
+                      ),
+                    ],
                   )
+
+                // ,
+
+                // SizedBox(
+                //     height: 30.h,
+                //     child: Padding(
+                //         padding: EdgeInsets.only(left: 28.0.sp),
+                //         child:
+                //             //  ListView.builder(
+                //             //   scrollDirection: Axis.horizontal,
+                //             //   itemCount: selectedSource.length,
+                //             //   itemBuilder: (context, index) {
+                //             //     return
+                //             Wrap(
+                //                 // spacing: 8.sp,
+                //                 children: List.generate(selectedSource.length,
+                //                     (index) {
+                //           return Padding(
+                //               padding: EdgeInsets.only(
+                //                   top: 16.sp, bottom: 2.sp, left: 5.sp),
+                //               child: InputChip(
+                //                 // elevation: 20,
+
+                //                 avatarBorder: RoundedRectangleBorder(
+                //                     borderRadius: BorderRadius.all(
+                //                         Radius.circular(13.r))),
+                //                 disabledColor: Color(0xff334155),
+                //                 labelPadding: EdgeInsets.only(
+                //                     left: 10.sp, top: 7.sp, bottom: 7.sp),
+                //                 shadowColor: Color(0xff334155),
+                //                 shape: RoundedRectangleBorder(
+                //                     side: BorderSide(color: Color(0xff334155)),
+                //                     borderRadius: BorderRadius.all(
+                //                         Radius.circular(13.r))),
+                //                 side: BorderSide(color: Color(0xff334155)),
+                //                 deleteIcon: Icon(
+                //                   Icons.close,
+                //                   color: Colors.white,
+                //                   size: 20.sp,
+                //                 ),
+                //                 backgroundColor: Color(0xff334155),
+                //                 // surfaceTintColor: Colors.red,
+                //                 visualDensity: VisualDensity.compact,
+                //                 materialTapTargetSize:
+                //                     MaterialTapTargetSize.shrinkWrap,
+                //                 label: Text(
+                //                   selectedSource[index],
+                //                   style: TextStyle(color: Colors.white),
+                //                 ),
+                //                 onSelected: (bool selected) {
+                //                   setState(() {});
+                //                 },
+                //                 onDeleted: () {
+                //                   setState(() {
+                //                     removeDuplicate();
+                //                     selectedSubTaskSource.removeWhere(
+                //                         (element) =>
+                //                             element == selectedSource[index]);
+                //                     listResource.removeAt(index);
+
+                //                     selectedSource.removeAt(index);
+                //                   });
+                //                 },
+                //                 showCheckmark: false,
+                //               ));
+                //         }))
+                //         //   },
+                //         // ),
+                //         ),
+                //   )
+
                 : Container(),
           ],
         ),
@@ -1431,120 +1508,193 @@ class _NewPhaseState extends State<NewPhase> {
                 6.0.r,
               ),
             ),
-            child: Column(
-              children: [
-                subTaskResourcesSearchTextField = TypeAheadFormField(
-                  keepSuggestionsOnLoading: false,
-                  suggestionsBoxVerticalOffset: 0.0,
-                  suggestionsBoxDecoration:
-                      SuggestionsBoxDecoration(color: const Color(0xff0F172A)),
-                  hideOnLoading: true,
-                  suggestionsCallback: (pattern) {
-                    return getSuggestionsForSubTask(pattern);
-                  },
-                  textFieldConfiguration: TextFieldConfiguration(
-                    controller: _subTaskResourcesController,
-                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                    keyboardType: TextInputType.text,
-                    cursorColor: Colors.white,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                          top: 15.0.sp, left: 10.sp, bottom: 5.sp),
-                      prefixIconConstraints: BoxConstraints(),
-                      prefixIcon: Padding(
-                          padding: EdgeInsets.only(
-                              top: 8.sp, left: 15.sp, right: 9.sp),
-                          child: Icon(
-                            Icons.search,
-                            color: Color(0xff64748B),
-                            size: 20.sp,
-                          )),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.white,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
+            child: Center(
+              child: subTaskResourcesSearchTextField = TypeAheadFormField(
+                keepSuggestionsOnLoading: false,
+                suggestionsBoxVerticalOffset: 0.0,
+                suggestionsBoxDecoration:
+                    SuggestionsBoxDecoration(color: const Color(0xff0F172A)),
+                hideOnLoading: true,
+                suggestionsCallback: (pattern) {
+                  return getSuggestionsForSubTask(pattern);
+                },
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: _subTaskResourcesController,
+                  style: TextStyle(color: Colors.white, fontSize: 14.0.sp),
+                  keyboardType: TextInputType.text,
+                  cursorColor: Colors.white,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    // contentPadding: EdgeInsets.only(
+                    //     left: 10.sp, bottom: 5.sp),
+                    prefixIconConstraints: BoxConstraints(),
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 15.0.sp, right: 15.sp),
+                      child: Icon(
+                        Icons.search,
+                        size: 22.sp,
+                        color: Color(0xff334155),
+                      ),
                     ),
+                    hintText: 'Search',
+                    hintStyle: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.white,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400),
+                    border: InputBorder.none,
                   ),
-                  itemBuilder: (context, item) {
-                    return rowResourceName(item);
-                  },
-                  transitionBuilder: (context, suggestionsBox, controller) {
-                    return suggestionsBox;
-                  },
-                  onSuggestionSelected: (item) {
-                    setState(() {
-                      subTaskResourceName = item.name!;
-                      _subTaskResourcesController.text = '';
-
-                      selectedSubTaskSource.clear();
-                      selectedSubTaskSource.add(ResourceData(
-                          department_id: item.departmentId,
-                          resource_id: item.userId,
-                          resource_name: item.name,
-                          profileImage: item.image,
-                          department_name: item.departmentName));
-                    });
-                  },
                 ),
-              ],
+                itemBuilder: (context, item) {
+                  return rowResourceName(item);
+                },
+                transitionBuilder: (context, suggestionsBox, controller) {
+                  return suggestionsBox;
+                },
+                onSuggestionSelected: (item) {
+                  setState(() {
+                    subTaskResourceName = item.name!;
+                    _subTaskResourcesController.text = '';
+
+                    selectedSubTaskSource.clear();
+                    selectedSubTaskSource.add(ResourceData(
+                        department_id: item.departmentId,
+                        resource_id: item.userId,
+                        resource_name: item.name,
+                        profileImage: item.image,
+                        department_name: item.departmentName));
+                  });
+                },
+              ),
             ),
           ),
         ),
         selectedSubTaskSource.isNotEmpty
-            ? SizedBox(
-                height: 65.h,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 28.sp),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: selectedSubTaskSource.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                          padding: EdgeInsets.only(
-                              top: 16.sp, bottom: 2.sp, left: 5.sp),
-                          child: InputChip(
-                              labelPadding: EdgeInsets.only(
-                                  left: 10.sp, top: 5.sp, bottom: 7.sp),
-                              shadowColor: Color(0xff334155),
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: Color(0xff334155)),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      13.r,
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 28.0.sp, top: 8.sp, bottom: 10.sp),
+                    child: Wrap(
+                      runSpacing: 8.sp,
+                      spacing: 8.sp,
+                      children: List.generate(
+                        selectedSubTaskSource.length,
+                        (index) {
+                          return Container(
+                            // padding: EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff334155),
+                              borderRadius: BorderRadius.circular(
+                                8.r,
+                              ),
+                            ),
+                            // color: Colors.red,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0.sp),
+                              child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text(
+                                    selectedSubTaskSource[index]
+                                            .resource_name ??
+                                        '',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: ColorSelect.white_color,
+                                        fontSize: 14.sp,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: 'Inter-Regular',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  InkWell(
+                                    child: Tooltip(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff334155),
+                                        border: Border.all(
+                                            color: const Color(0xff334155)),
+                                        borderRadius: BorderRadius.circular(
+                                          18.0.r,
+                                        ),
+                                      ),
+                                      message: 'delete',
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 18.sp,
+                                      ),
                                     ),
-                                  )),
-                              side: BorderSide(color: Color(0xff334155)),
-                              deleteIcon: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 20.sp,
+                                    onTap: () {
+                                      setState(() {
+                                        selectedSubTaskSource.removeAt(index);
+                                      });
+                                    },
+                                  )
+                                ],
                               ),
-                              backgroundColor: Color(0xff334155),
-                              visualDensity: VisualDensity.compact,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              label: Text(
-                                selectedSubTaskSource[index].resource_name ??
-                                    '',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onSelected: (bool selected) {
-                                setState(() {});
-                              },
-                              onDeleted: () {
-                                setState(() {
-                                  selectedSubTaskSource.removeAt(index);
-                                });
-                              },
-                              showCheckmark: false));
-                    },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
+                ],
               )
+
+            // SizedBox(
+            //     height: 65.h,
+            //     child: Padding(
+            //       padding: EdgeInsets.only(left: 28.sp),
+            //       child: ListView.builder(
+            //         scrollDirection: Axis.horizontal,
+            //         itemCount: selectedSubTaskSource.length,
+            //         itemBuilder: (context, index) {
+            //           return Padding(
+            //               padding: EdgeInsets.only(
+            //                   top: 16.sp, bottom: 2.sp, left: 5.sp),
+            //               child: InputChip(
+            //                   labelPadding: EdgeInsets.only(
+            //                       left: 10.sp, top: 5.sp, bottom: 7.sp),
+            //                   shadowColor: Color(0xff334155),
+            //                   shape: RoundedRectangleBorder(
+            //                       side: BorderSide(color: Color(0xff334155)),
+            //                       borderRadius: BorderRadius.all(
+            //                         Radius.circular(
+            //                           13.r,
+            //                         ),
+            //                       )),
+            //                   side: BorderSide(color: Color(0xff334155)),
+            //                   deleteIcon: Icon(
+            //                     Icons.close,
+            //                     color: Colors.white,
+            //                     size: 20.sp,
+            //                   ),
+            //                   backgroundColor: Color(0xff334155),
+            //                   visualDensity: VisualDensity.compact,
+            //                   materialTapTargetSize:
+            //                       MaterialTapTargetSize.shrinkWrap,
+            //                   label: Text(
+            //                     selectedSubTaskSource[index].resource_name ??
+            //                         '',
+            //                     style: TextStyle(color: Colors.white),
+            //                   ),
+            //                   onSelected: (bool selected) {
+            //                     setState(() {});
+            //                   },
+            //                   onDeleted: () {
+            //                     setState(() {
+            //                       selectedSubTaskSource.removeAt(index);
+            //                     });
+            //                   },
+            //                   showCheckmark: false));
+            //         },
+            //       ),
+            //     ),
+            //   )
+
             : Container()
       ],
     );

@@ -107,7 +107,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 Container(
                   color: Color(0xff424D5F),
                   width: double.infinity,
-                  height: 2,
+                  height: 0.8.h,
                 ),
                 phaseView()
               ],
@@ -273,7 +273,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 ),
                 Container(
                   height: 135.h,
-                  width: 2,
+                  width: 0.8.w,
                   color: Color(0xff424D5F),
                 ),
                 Expanded(
@@ -501,7 +501,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           Container(
             color: Color(0xff424D5F),
             width: double.infinity,
-            height: 2,
+            height: 0.8.h,
           ),
         ],
       ),
@@ -1364,7 +1364,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         width: MediaQuery.of(context).size.width,
                         child: Container(
                           color: Color(0xff94A3B8),
-                          height: .5.sp,
+                          height: 0.2.sp,
                         )),
                   ],
                 );
