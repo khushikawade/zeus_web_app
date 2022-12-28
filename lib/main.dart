@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_web/webview_flutter_web.dart';
@@ -507,7 +508,7 @@ import 'project_module/project_home/project_home_view.dart';
 
 void main() async {
   await GetStorage.init();
-  // setPathUrlStrategy();
+  setPathUrlStrategy();
   runApp(MyApp());
 }
 

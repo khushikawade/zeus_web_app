@@ -55,16 +55,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    // if (html.window.location.toString().contains("?code=")) {
-    //   String url = html.window.location.href;
-    //   Uri stringUri = Uri.parse(url);
-    //   String authenticationCode = stringUri.queryParameters["code"]!;
-    //   print("Contains code --------------------------------------- ");
-    //   print("Code value --------------------- ${authenticationCode}");
-    //   callSaveCodeAPI(authenticationCode);
-    // } else {
-    //   print("Not contained --------------------------------------");
-    // }
+    if (html.window.location.toString().contains("?code=")) {
+      String url = html.window.location.href;
+      Uri stringUri = Uri.parse(url);
+      String authenticationCode = stringUri.queryParameters["code"]!;
+      print("Contains code --------------------------------------- ");
+      print("Code value --------------------- ${authenticationCode}");
+      callSaveCodeAPI(authenticationCode);
+    } else {
+      print("Not contained --------------------------------------");
+    }
     super.initState();
   }
 
@@ -554,7 +554,7 @@ class _LoginScreenState extends State<LoginScreen> {
         sharedPreferences.setBool('isLogin', true);
         storage.write(isLogin, true);
 
-        //context.vxNav.clearAndPushAll([Uri.parse(MyRoutes.homeRoute)]);
+        context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
       } else {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
@@ -607,9 +607,9 @@ class _LoginScreenState extends State<LoginScreen> {
         storage.write("user_id", responseJson['data']['user']['id'].toString());
 
         SmartDialog.dismiss();
-        context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
+        //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
 
-        //launchClickUpsUrl();
+        launchClickUpsUrl();
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(
         //         builder: (context) => MyHomePage(
