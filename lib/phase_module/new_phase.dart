@@ -793,10 +793,14 @@ class _NewPhaseState extends State<NewPhase> {
                                             ),
                                           ),
                                           message: 'delete',
-                                          child: Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                            size: 18.sp,
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 8.0.sp),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 18.sp,
+                                            ),
                                           ),
                                         ),
                                         onTap: () {
@@ -1621,10 +1625,13 @@ class _NewPhaseState extends State<NewPhase> {
                                         ),
                                       ),
                                       message: 'delete',
-                                      child: Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                        size: 18.sp,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 8.0.sp),
+                                        child: Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                          size: 18.sp,
+                                        ),
                                       ),
                                     ),
                                     onTap: () {
