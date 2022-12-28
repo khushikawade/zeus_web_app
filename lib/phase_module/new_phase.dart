@@ -80,7 +80,7 @@ class _NewPhaseState extends State<NewPhase> {
   int mileStoneEditIndex = 0;
 
   String subtaskActionType = '';
-  int subTaskEditIndex = 1;
+  int subTaskEditIndex = 0;
 
   String mileStoneTitle = "";
   // String mileStoneDate = AppUtil.dateToString(DateTime.now());
@@ -477,7 +477,7 @@ class _NewPhaseState extends State<NewPhase> {
                         dialogSetState(() {
                           // print(value);
                           phaseDetails.title = value;
-                          createButtonClick = true;
+                          // createButtonClick = true;
                         });
                       }
 
@@ -500,7 +500,7 @@ class _NewPhaseState extends State<NewPhase> {
                         dialogSetState(() {
                           // print(value);
                           phaseDetails.phase_type = value;
-                          createButtonClick = true;
+                          // createButtonClick = true;
                         });
                       }
                       return null;
@@ -1008,7 +1008,7 @@ class _NewPhaseState extends State<NewPhase> {
                       label: 'Milestone Date',
                       initialDate: widget.type == 1
                           ? mileStoneDate
-                          : phaseDetails.start_date != null
+                          : widget.type == 0
                               ? AppUtil.stringToDateValidate(
                                   phaseDetails.start_date!)
                               : null,
@@ -1832,8 +1832,8 @@ class _NewPhaseState extends State<NewPhase> {
     if (_formKey.currentState!.validate()) {
       if (allValidate && phaseDetails.milestone!.isNotEmpty) {
         if (phaseDetails.milestone!.isNotEmpty &&
-            phaseDetails.title!.isNotEmpty &&
-            phaseDetails.phase_type!.isNotEmpty &&
+            // phaseDetails.title!.isNotEmpty &&
+            // phaseDetails.phase_type!.isNotEmpty &&
             phaseDetails.sub_tasks!.isNotEmpty) {
           if (widget.type == 1) {
             updatePhaseApi();
