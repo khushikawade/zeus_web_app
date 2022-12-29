@@ -296,7 +296,7 @@ class _EditPageState extends State<CreateProjectPage> {
                     ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: ListView(
                   controller: verticalScroll,
-                  padding: EdgeInsets.all(widget.response == null ? 20 : 0),
+                  padding: EdgeInsets.all(widget.response == null ? 20 : 20),
                   shrinkWrap: true,
                   children: [
                     Row(
