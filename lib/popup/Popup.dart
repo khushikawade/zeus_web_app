@@ -1010,15 +1010,21 @@ showDailog(
                                                                 left: 10,
                                                                 top: 7,
                                                                 bottom: 7),
+                                                        shadowColor:
+                                                            Color(0xff334155),
                                                         shape:
-                                                            const RoundedRectangleBorder(
+                                                            RoundedRectangleBorder(
+                                                                side: BorderSide(
+                                                                    color: Color(
+                                                                        0xff334155)),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .all(
-                                                          Radius.circular(
-                                                            13,
-                                                          ),
-                                                        )),
+                                                                  Radius
+                                                                      .circular(
+                                                                    13,
+                                                                  ),
+                                                                )),
                                                         side: BorderSide(
                                                             color: Color(
                                                                 0xff334155)),

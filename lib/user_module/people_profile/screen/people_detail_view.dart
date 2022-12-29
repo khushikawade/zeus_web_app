@@ -733,6 +733,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                   ],
                 ),
               )
+         
+         
             : Text('N/A',
                 style: TextStyle(
                     color: ColorSelect.white_color,

@@ -107,7 +107,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 Container(
                   color: Color(0xff424D5F),
                   width: double.infinity,
-                  height: 2,
+                  height: 0.8.h,
                 ),
                 phaseView()
               ],
@@ -273,7 +273,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 ),
                 Container(
                   height: 135.h,
-                  width: 2,
+                  width: 0.8.w,
                   color: Color(0xff424D5F),
                 ),
                 Expanded(
@@ -501,7 +501,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           Container(
             color: Color(0xff424D5F),
             width: double.infinity,
-            height: 2,
+            height: 0.8.h,
           ),
         ],
       ),
@@ -920,12 +920,15 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 child: InputChip(
                                   labelPadding: EdgeInsets.only(
                                       left: 10.sp, top: 7.sp, bottom: 7.sp),
+                                  shadowColor: Color(0xff334155),
                                   shape: RoundedRectangleBorder(
+                                      side:
+                                          BorderSide(color: Color(0xff334155)),
                                       borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      13.r,
-                                    ),
-                                  )),
+                                        Radius.circular(
+                                          13.r,
+                                        ),
+                                      )),
                                   side: BorderSide(color: Color(0xff334155)),
                                   deleteIcon: Icon(
                                     Icons.close,
@@ -1065,6 +1068,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         style: TextStyle(
                             color: Color(0xff93C5FD),
                             fontSize: 12.0.sp,
+                            
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w700),
                       ),
@@ -1234,7 +1238,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                               children: [
                                 Container(
                                   margin:
-                                      EdgeInsets.only(left: 15.0.sp, top: 0.0),
+                                      EdgeInsets.only(left: 30.0.sp, top: 0.0),
                                   child: Container(
                                     height: 38.0.sp,
                                     width: 38.0.sp,
@@ -1362,7 +1366,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         width: MediaQuery.of(context).size.width,
                         child: Container(
                           color: Color(0xff94A3B8),
-                          height: .5.sp,
+                          height: 0.2.sp,
                         )),
                   ],
                 );
