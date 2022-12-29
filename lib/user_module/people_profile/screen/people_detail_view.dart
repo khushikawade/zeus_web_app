@@ -348,7 +348,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                   margin:
                                       EdgeInsets.only(left: 0.0, top: 25.sp),
                                   child: Text(
-                                    "@nicknameeeee$userName",
+                                    "@$nickname",
                                     style: TextStyle(
                                         color: ColorSelect.white_color,
                                         fontSize: 22.sp,
@@ -733,8 +733,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
                   ],
                 ),
               )
-         
-         
             : Text('N/A',
                 style: TextStyle(
                     color: ColorSelect.white_color,

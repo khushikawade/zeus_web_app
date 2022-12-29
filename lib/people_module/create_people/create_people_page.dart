@@ -1451,6 +1451,13 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             : null,
                                     fromTitle: Text(
                                       'From',
+                                      strutStyle: StrutStyle(
+                                        fontFamily: 'Inter-Medium',
+                                        fontSize: 14,
+                                        // height: 1.7,
+
+                                        leading: 1,
+                                      ),
                                       style: TextStyle(
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Inter-Medium',
@@ -1469,7 +1476,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           fontSize: 14.sp,
                                           color: Colors.white),
                                     ),
-                                    titlePadding: 16.sp,
+                                    // titlePadding: 5.sp,
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         color: Colors.white),

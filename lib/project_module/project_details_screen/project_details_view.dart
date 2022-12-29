@@ -1068,14 +1068,13 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         style: TextStyle(
                             color: Color(0xff93C5FD),
                             fontSize: 12.0.sp,
-                            
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w700),
                       ),
                     ),
                   ],
                 ),
-                GestureDetector(
+                InkWell(
                   child: Row(
                     children: [
                       Container(
@@ -1088,7 +1087,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
+                        // margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
                         child: Text(
                           "New phase",
                           style: TextStyle(
@@ -1118,6 +1117,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     }
                   },
                 ),
+                SizedBox(width: 80.w)
               ],
             ),
           ),

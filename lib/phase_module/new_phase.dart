@@ -989,47 +989,56 @@ class _NewPhaseState extends State<NewPhase> {
                   clickedAddMileStone == false
                       ? titleHeadlineWidget("Milestones", 18.0.sp)
                       : titleHeadlineWidget("Add Milestones", 18.0.sp),
-                  GestureDetector(
-                    child: clickedAddMileStone == false
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Icon(
-                                Icons.add,
-                                size: 15.sp,
-                                color: Color(0xff93C5FD),
+                  clickedAddMileStone == false
+                      ? Row(
+                          children: [
+                            InkWell(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    size: 15.sp,
+                                    color: Color(0xff93C5FD),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 11.75.sp,
+                                      right: 0.sp,
+                                    ),
+                                    child: titleSubHeadlineWidget(
+                                        "Add Milestone", 14.0.sp),
+                                  )
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: 11.75.sp,
-                                  right: 26.sp,
-                                ),
-                                child: titleSubHeadlineWidget(
-                                    "Add Milestone", 14.0.sp),
-                              )
-                            ],
-                          )
-                        : clickAddMileStone(dialogSetState),
-                    onTap: () {
-                      dialogSetState(() {
-                        milestoneValidate = true;
-                        addMilestoneBtnClick = true;
-                        createButtonClick = true;
-                        saveButtonClickForMileStone = false;
-                      });
-                      Future.delayed(const Duration(microseconds: 500), () {
-                        if (_formKey.currentState!.validate()) {
-                          if (allValidate && selectedSource.isNotEmpty) {
-                            dialogSetState(() {
-                              clickedAddMileStone = true;
-                              // saveButtonClickForMileStone = true;
-                            });
-                          }
-                        }
-                      });
-                    },
-                  )
+                              onTap: () {
+                                dialogSetState(() {
+                                  milestoneValidate = true;
+                                  addMilestoneBtnClick = true;
+                                  createButtonClick = true;
+                                  saveButtonClickForMileStone = false;
+                                });
+                                Future.delayed(
+                                    const Duration(microseconds: 500), () {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (allValidate &&
+                                        selectedSource.isNotEmpty) {
+                                      dialogSetState(() {
+                                        clickedAddMileStone = true;
+                                        // saveButtonClickForMileStone = true;
+                                      });
+                                    }
+                                  }
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            )
+                          ],
+                        )
+                      : clickAddMileStone(dialogSetState),
                 ],
               ),
             ),
@@ -1183,46 +1192,53 @@ class _NewPhaseState extends State<NewPhase> {
                   clickAddSubTask == false
                       ? titleHeadlineWidget("Subtasks", 18.0.sp)
                       : titleHeadlineWidget("Add Subtasks", 18.0.sp),
-                  GestureDetector(
-                    child: Container(
-                        child: clickAddSubTask == false
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    size: 20.sp,
-                                    color: Color(0xff93C5FD),
+                  Container(
+                      child: clickAddSubTask == false
+                          ? Row(
+                              children: [
+                                InkWell(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        size: 20.sp,
+                                        color: Color(0xff93C5FD),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      titleSubHeadlineWidget(
+                                          "Add Subtasks", 14.0.sp)
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 28.5.sp),
-                                    child: titleSubHeadlineWidget(
-                                        "Add Subtasks", 14.0.sp),
-                                  )
-                                ],
-                              )
-                            : clickAddSubtask(dialogSetState)),
-                    onTap: () {
-                      dialogSetState(() {
-                        savePhaseClick = true;
-                        createButtonClick = true;
-                        milestoneValidate = true;
-                        Future.delayed(const Duration(microseconds: 500), () {
-                          if (_formKey.currentState!.validate()) {
-                            if (allValidate && selectedSource.isNotEmpty) {
-                              dialogSetState(() {
-                                clickAddSubTask = true;
-                              });
-                            }
-                          }
-                        });
-                      });
-                    },
-                  )
+                                  onTap: () {
+                                    dialogSetState(() {
+                                      savePhaseClick = true;
+                                      createButtonClick = true;
+                                      milestoneValidate = true;
+                                      Future.delayed(
+                                          const Duration(microseconds: 500),
+                                          () {
+                                        if (_formKey.currentState!.validate()) {
+                                          if (allValidate &&
+                                              selectedSource.isNotEmpty) {
+                                            dialogSetState(() {
+                                              clickAddSubTask = true;
+                                            });
+                                          }
+                                        }
+                                      });
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                )
+                              ],
+                            )
+                          : clickAddSubtask(dialogSetState))
                 ],
               ),
             ),

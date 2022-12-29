@@ -240,7 +240,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                     MaterialPageRoute(
                         builder: (context) => ProfileDetail(
                               list: _peopleList,
-                              index: index = 5,
+                              index: 6,
                             )));
 
                 if (result) {
