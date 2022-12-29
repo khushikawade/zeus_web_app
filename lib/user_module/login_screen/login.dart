@@ -88,11 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  launchClickUpsUrl() async {
-    final html.WindowBase windowBase =
-        html.window.open(AppUrl.clickUpsUrl, "_self");
-  }
-
   @override
   void initState() {
     if (html.window.location.toString().contains("?code=")) {
@@ -635,5 +630,10 @@ class _LoginScreenState extends State<LoginScreen> {
       SmartDialog.dismiss();
       _submit();
     }
+  }
+
+  launchClickUpsUrl() async {
+    final html.WindowBase windowBase =
+        html.window.open(AppUrl.clickUpsUrl, "_self");
   }
 }
