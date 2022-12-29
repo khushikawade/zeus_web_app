@@ -792,7 +792,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 ),
                                 child: PopupMenuButton<int>(
                                   tooltip: '',
-                                  offset: Offset(33.5, 55),
+                                  offset: Offset(34, 50),
                                   color: Color(0xFF0F172A),
                                   child: Container(
                                       width: 40.0.w,
@@ -834,6 +834,20 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                                     color: Color(0xff0F172A)),
                                             suggestionsCallback: (pattern) {
                                               return getSuggestions(pattern);
+                                            },
+                                            noItemsFoundBuilder: (context) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                child: Text(
+                                                  'No Items Found!',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14.sp),
+                                                ),
+                                              );
                                             },
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
@@ -1117,7 +1131,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     ),
                   ],
                 ),
-                GestureDetector(
+                InkWell(
                   child: Row(
                     children: [
                       Container(
@@ -1130,7 +1144,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
+                        // margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
                         child: Text(
                           "New phase",
                           style: TextStyle(
@@ -1160,6 +1174,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     }
                   },
                 ),
+                SizedBox(width: 80.w)
               ],
             ),
           ),
@@ -1249,6 +1264,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 var phaseType = phase.phaseType;
                 String name = title!.substring(0, 2).toUpperCase();
                 var date = phase.startDate;
+
                 var endDate = phase.endDate;
                 var _date = date.toString();
                 var date1 = AppUtil.getFormatedDate(_date);
@@ -1665,7 +1681,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.delete(
-        // Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
         Uri.parse('${AppUrl.baseUrl}/project/tags/${tagId}'),
         headers: {
           "Content-Type": "application/json",

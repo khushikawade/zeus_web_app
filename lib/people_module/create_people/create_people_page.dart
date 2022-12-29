@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
@@ -24,6 +25,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:intl/intl.dart';
 import 'package:http_parser/http_parser.dart';
+
+import '../../user_module/people_profile/screen/people_detail_view.dart';
+import '../people_home/people_home_view_model.dart';
 
 class CreatePeoplePage extends StatefulWidget {
   PeopleData? response;
@@ -1456,6 +1460,13 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             : null,
                                     fromTitle: Text(
                                       'From',
+                                      strutStyle: StrutStyle(
+                                        fontFamily: 'Inter-Medium',
+                                        fontSize: 14,
+                                        // height: 1.7,
+
+                                        leading: 1,
+                                      ),
                                       style: TextStyle(
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Inter-Medium',
@@ -1474,7 +1485,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           fontSize: 14.sp,
                                           color: Colors.white),
                                     ),
-                                    titlePadding: 16.sp,
+                                    // titlePadding: 5.sp,
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         color: Colors.white),
@@ -1616,6 +1627,19 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           );
                                           // Text("khushi");
                                           // rowResourceName(item);
+                                        },
+                                        noItemsFoundBuilder: (context) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              'No Items Found!',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp),
+                                            ),
+                                          );
                                         },
                                         transitionBuilder: (context,
                                             suggestionsBox, controller) {
@@ -2091,10 +2115,9 @@ class _EditPageState extends State<CreatePeoplePage> {
     var responseString = await response.stream.bytesToString();
     print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
-      SmartDialog.dismiss();
+      print(widget.response);
 
       //setState(() {
-
       //clearContoller();
       selectDays = false;
       selectSkill = false;
@@ -2109,8 +2132,29 @@ class _EditPageState extends State<CreatePeoplePage> {
       _selectedFile = [];
       request.files.clear();
       // });
-
       Navigator.pop(context, true);
+
+      // Navigator.pop(context);
+
+      SmartDialog.dismiss();
+
+      // widget.returnValue!();
+
+      // widget.response = PeopleData.fromJson(jsonDecode(responseString));
+      // print(widget.response);
+
+      // bool result = await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => ProfileDetail(
+      //               list: widget.response!,
+      //               index: 6,
+      //             )));
+
+      // if (result) {
+      //   Provider.of<PeopleHomeViewModel>(context, listen: false)
+      //       .getPeopleDataList();
+      // }
 
       print("add people created");
     } else if (response.statusCode == 401) {

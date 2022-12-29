@@ -21,6 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
+import '../../../people_module/people_home/people_home_view_model.dart';
+
 class ProfileDetail extends StatefulWidget {
   PeopleData list;
   int index;
@@ -34,6 +36,7 @@ class ProfileDetail extends StatefulWidget {
 class _ProfileDetailState extends State<ProfileDetail> {
   _ProfileDetailState(this.list);
   PeopleData list;
+  String userName = "TBD";
 
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
@@ -245,6 +248,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
     }
 
     if (list.resource != null) {
+      userName = list.resource!.nickname!;
       nickname = list.resource!.nickname!;
     } else {
       nickname = 'TBD';
@@ -600,8 +604,22 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     title: 'Menu at bottom',
                                     alignment: Alignment.topRight,
                                     buildContext: context,
+                                    onUpdateData: () {
+                                      setState(() {
+                                        nickname = "Vishal";
+                                        userName = "Vishal";
+                                      });
+                                      print(
+                                          "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<HIIIIIIIIIIIIIIIIIIIIII>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $userName");
+                                      setState(() {});
+                                    },
                                     returnValue: () {
                                       Navigator.pop(context, true);
+
+                                      // Provider.of<PeopleHomeViewModel>(context,
+                                      //         listen: false)
+                                      //     .getPeopleDataList();
+                                      // setState(() {});
                                     }),
                               ),
                             ),
@@ -715,8 +733,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
                   ],
                 ),
               )
-         
-         
             : Text('N/A',
                 style: TextStyle(
                     color: ColorSelect.white_color,

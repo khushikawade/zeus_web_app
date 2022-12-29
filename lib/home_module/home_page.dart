@@ -2314,11 +2314,10 @@ class _NavigationRailState extends State<MyHomePage>
                                     cameraTapIcon == false &&
                                     circleTapIcon == false &&
                                     settingIcon == false &&
-                                    bellTapIcon == false
+                                    bellTapIcon == false 
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                      top: 12.sp, //left: 20.sp
-                                    ),
+                                        top: 12.sp, left: 20.sp),
                                     child: Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),
