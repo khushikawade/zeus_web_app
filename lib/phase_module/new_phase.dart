@@ -6,6 +6,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
+import 'package:zeus/helper_widget/custom_list.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/helper_widget/custom_search_for_subtask.dart';
 import 'package:zeus/helper_widget/search_view.dart';
@@ -783,6 +784,7 @@ class _NewPhaseState extends State<NewPhase> {
                                             fontWeight: FontWeight.w500),
                                       ),
                                       InkWell(
+<<<<<<< HEAD
                                         child: Tooltip(
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
@@ -801,6 +803,15 @@ class _NewPhaseState extends State<NewPhase> {
                                               color: Colors.white,
                                               size: 18.sp,
                                             ),
+=======
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.only(left: 8.0.sp),
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                            size: 18.sp,
+>>>>>>> bug_improvement_sayyam
                                           ),
                                         ),
                                         onTap: () {
@@ -827,7 +838,7 @@ class _NewPhaseState extends State<NewPhase> {
                     ],
                   )
 
-                // ,
+                // // // ,
 
                 // SizedBox(
                 //     height: 30.h,
@@ -1615,23 +1626,12 @@ class _NewPhaseState extends State<NewPhase> {
                                         fontWeight: FontWeight.w500),
                                   ),
                                   InkWell(
-                                    child: Tooltip(
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        border: Border.all(
-                                            color: const Color(0xff334155)),
-                                        borderRadius: BorderRadius.circular(
-                                          18.0.r,
-                                        ),
-                                      ),
-                                      message: 'Delete',
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 8.0.sp),
-                                        child: Icon(
-                                          Icons.close,
-                                          color: Colors.white,
-                                          size: 18.sp,
-                                        ),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 8.0.sp),
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 18.sp,
                                       ),
                                     ),
                                     onTap: () {
@@ -1647,6 +1647,8 @@ class _NewPhaseState extends State<NewPhase> {
                         },
                       ),
                     ),
+               
+               
                   ),
                 ],
               )

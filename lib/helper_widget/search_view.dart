@@ -136,8 +136,8 @@ Widget row(Datum user) {
 
 Widget rowProject(SkillsData user) {
   return Container(
-    width: 400,
-    padding: const EdgeInsets.all(11.0),
+    width: 400.w,
+    padding: EdgeInsets.all(11.0.r),
     decoration: const BoxDecoration(
       color: Color(0xff0F172A),
     ),
