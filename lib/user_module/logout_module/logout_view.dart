@@ -140,6 +140,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       SmartDialog.dismiss();
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

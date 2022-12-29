@@ -53,7 +53,6 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                 child: Container(
                     height: 56.0,
                     width: double.infinity,
-
                     decoration: BoxDecoration(
                       color: const Color(0xff334155),
                       borderRadius: BorderRadius.circular(
@@ -81,8 +80,8 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                 // padding:
                 //     const EdgeInsets.only(left: 30.0, right: 18),
                 constraints: BoxConstraints.tightForFinite(
-                    width: double.infinity,
-                    ),
+                  width: double.infinity,
+                ),
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     padding: const EdgeInsets.all(0),
@@ -91,7 +90,11 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                       children: [
                         Row(
                           children: [
-                            Expanded(child  : Text('--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',overflow:TextOverflow.ellipsis ,)),
+                            Expanded(
+                                child: Text(
+                              '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
+                              overflow: TextOverflow.ellipsis,
+                            )),
                           ],
                         ),
                         Row(
@@ -99,7 +102,6 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                           children: [
                             Expanded(
                               child: Container(
-
                                 color: const Color(0xff334155),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,10 +125,12 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                                             "H"
                                           ];
                                         },
-                                        textFieldConfiguration: TextFieldConfiguration(
+                                        textFieldConfiguration:
+                                            TextFieldConfiguration(
                                           controller: TextEditingController(),
                                           style: const TextStyle(
-                                              color: Colors.white, fontSize: 14.0),
+                                              color: Colors.white,
+                                              fontSize: 14.0),
                                           keyboardType: TextInputType.text,
                                           cursorColor: Colors.white,
                                           autofocus: true,
@@ -135,7 +139,8 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                                               top: 15.0,
                                             ),
                                             prefixIcon: Padding(
-                                                padding: EdgeInsets.only(top: 4.0),
+                                                padding:
+                                                    EdgeInsets.only(top: 4.0),
                                                 child: Icon(
                                                   Icons.search,
                                                   color: Color(0xff64748B),
@@ -154,7 +159,8 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                                             width: double.infinity,
                                             color: Color(0xFF0F172A),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(11.0),
+                                              padding:
+                                                  const EdgeInsets.all(11.0),
                                               child: Text(
                                                 item.toString(),
                                                 style: const TextStyle(
@@ -165,8 +171,8 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                                           );
                                           ;
                                         },
-                                        transitionBuilder:
-                                            (context, suggestionsBox, controller) {
+                                        transitionBuilder: (context,
+                                            suggestionsBox, controller) {
                                           return suggestionsBox;
                                         },
                                         onSuggestionSelected: (item) {})

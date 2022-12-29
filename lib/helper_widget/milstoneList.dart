@@ -70,12 +70,12 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
                               ),
                               Row(
                                 children: [
-                                  Text(
-                                      AppUtil.dateToString(
+                                  Text("${AppUtil.dateToString(
                                               AppUtil.stringToDateValidate(
                                                   phaseDetails.milestone![index]
                                                       .m_date!)) ??
-                                          '',
+                                          ''}",
+                                      
                                       style: TextStyle(
                                           fontSize: 14.0.sp,
                                           color: Color(0xff8897ac),

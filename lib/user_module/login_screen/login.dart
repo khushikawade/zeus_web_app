@@ -598,18 +598,23 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        //sharedPreferences.setBool('isLogin', true);
+        sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        //storage.write(isLogin, true);
+        storage.write(isLogin, true);
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
 
         SmartDialog.dismiss();
         //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
 
-        launchClickUpsUrl();
+        //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
+
+        final username = VRouter.of(context).path;
+        ConnectedRoutes.toHome(context, username);
+
+        //launchClickUpsUrl();
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(
         //         builder: (context) => MyHomePage(
@@ -619,6 +624,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //     (Route<dynamic> route) => route is MyHomePage);
       } else {
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg: 'Please check Email and Password',
           backgroundColor: Colors.grey,
         );

@@ -4,6 +4,7 @@ import 'package:zeus/home_module/home_module_1.dart';
 import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/project_module/project_home/project_home_view.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
+import 'package:zeus/user_module/people_profile/screen/people_detail_view1.dart';
 import '../home_module/home_page.dart';
 
 // Route<dynamic> generateRoute(RouteSettings settings) {
@@ -39,44 +40,123 @@ class ConnectedRoutes extends VRouteElementBuilder {
   static void toProject(BuildContext context, String username) =>
       context.vRouter.to('/$username/$project', isReplacement: false);
 
+  static final String home = 'home';
+
+  static void toHome(BuildContext context, String username) =>
+      context.vRouter.to('/$username/$home', isReplacement: false);
+
   static final String people = 'people';
 
   static void toPeople(BuildContext context, String username) =>
       context.vRouter.to('$username/$people', isReplacement: true);
 
-  static final String profile_details = 'profile_details';
+  static final String people_detail = 'people_detail';
 
-  static void toProfileDetails(BuildContext context, String username) =>
-      context.vRouter.to('$username/$profile_details', isReplacement: false);
+  static void toProfileDetails(
+          BuildContext context, String username, String peopleId) =>
+      context.vRouter.to('$username/$people_detail',
+          isReplacement: false, queryParameters: {"id": peopleId});
 
   @override
   List<VRouteElement> buildRoutes() {
     return [
       VNester.builder(
         path: '/:username',
-        widgetBuilder: (_, state, child) {
-          return MyHomePage1(
-            child,
-            currentIndex: state.names.contains(people)
-                ? 3
-                : state.names.contains(project)
-                    ? 1
-                    : 2,
-          );
-        },
+        widgetBuilder: (_, state, child) => MyHomePage1(
+          child,
+          currentIndex: state.names.contains(people)
+              ? 3
+              : state.names.contains(project)
+                  ? 1
+                  : 2,
+        ),
         nestedRoutes: [
           VWidget(
-              path: project,
-              name: project,
-              widget: ProjectHome(),
-              transitionDuration: Duration(seconds: 1)),
+            path: project,
+            name: project,
+            widget: ProjectHome(),
+          ),
           VWidget(
               path: people,
               name: people,
+              // stackedRoutes: [
+              //   ConnectedRoutes(),
+              // ],
               widget: PeopleHomeView(),
               transitionDuration: Duration(seconds: 1)),
         ],
       ),
+      VNester.builder(
+        path: '/:username',
+        widgetBuilder: (_, state, child) => Builder(builder: (context) {
+          String peopleId = context.vRouter.queryParameters['id']!;
+          print("Response ------------------ ${peopleId}");
+          return ProfileDetail1(
+            peopleId: peopleId,
+          );
+        }),
+        nestedRoutes: [
+          VWidget(
+              path: people_detail,
+              name: people_detail,
+              widget: Builder(builder: (context) {
+                String peopleId = context.vRouter.queryParameters['id']!;
+                print("Response ------------------ ${peopleId}");
+                return ProfileDetail1(
+                  peopleId: peopleId,
+                );
+              })),
+        ],
+      ),
+      // VNester.builder(
+      //   path: '/:username',
+      //   widgetBuilder: (_, state, child) {
+      //     // if (state.names.contains(people_detail)) {
+      //     //   return Builder(builder: (context) {
+      //     //     String peopleId = context.vRouter.queryParameters['id']!;
+      //     //     print("Response ------------------ ${peopleId}");
+      //     //     return ProfileDetail1(
+      //     //       peopleId: peopleId,
+      //     //     );
+      //     //   });
+      //     // } else {
+      //     return MyHomePage1(
+      //       child,
+      //       currentIndex: state.names.contains(people)
+      //           ? 3
+      //           : state.names.contains(project)
+      //               ? 1
+      //               : 2,
+      //     );
+      //     //}
+      //   },
+      //   nestedRoutes: [
+      //     VWidget(
+      //         path: project,
+      //         name: project,
+      //         widget: ProjectHome(),
+      //         transitionDuration: Duration(seconds: 1)),
+      //     VWidget(
+      //         path: people,
+      //         name: people,
+      //         // stackedRoutes: [
+      //         //   ConnectedRoutes(),
+      //         // ],
+      //         widget: PeopleHomeView(),
+      //         transitionDuration: Duration(seconds: 1)),
+      //     // VWidget(
+      //     //     path: people_detail,
+      //     //     name: people_detail,
+      //     //     widget: Builder(builder: (context) {
+      //     //       String peopleId = context.vRouter.queryParameters['id']!;
+      //     //       print("Response ------------------ ${peopleId}");
+      //     //       return ProfileDetail1(
+      //     //         peopleId: peopleId,
+      //     //       );
+      //     //     }),
+      //     //     transitionDuration: Duration(seconds: 1)),
+      //   ],
+      // ),
     ];
   }
 }

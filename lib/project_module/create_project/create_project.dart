@@ -240,7 +240,9 @@ class _EditPageState extends State<CreateProjectPage> {
     if (widget.response!.data != null &&
         widget.response!.data!.deliveryDate != null &&
         widget.response!.data!.deliveryDate!.isNotEmpty) {
-      selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
+      // selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
+      selectedDate =
+          AppUtil.stringToDateValidate(widget.response!.data!.deliveryDate!);
     }
   }
 
@@ -716,6 +718,7 @@ class _EditPageState extends State<CreateProjectPage> {
             .pushNamedAndRemoveUntil("/home", (route) => false);
 
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg: 'Something Went Wrong',
           backgroundColor: Colors.grey,
         );

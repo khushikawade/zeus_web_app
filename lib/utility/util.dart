@@ -66,6 +66,7 @@ class AppUtil {
   }
 
   static DateTime stringToDate(String date) {
+    print(date);
     try {
       //date = AppUtil.dateToString(DateTime.parse(date));
       DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
@@ -90,7 +91,7 @@ class AppUtil {
         return parseDate;
       }
     } catch (e) {
-      print(e);
+      print("this error-------------$e");
       return DateTime.now();
     }
   }
@@ -116,6 +117,7 @@ class AppUtil {
       String formatted = formatter.format(date);
       return formatted;
     } catch (e) {
+      print("----------------------------------------$e");
       return date.toString();
     }
   }

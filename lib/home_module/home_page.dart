@@ -2140,65 +2140,68 @@ class _NavigationRailState extends State<MyHomePage>
                       decoration: BoxDecoration(
                         color: const Color(0xff1e293b),
                         borderRadius: BorderRadius.circular(
-                          42.r,
+                          48.r,
                         ),
                       ),
-                      child: TextField(
-                        controller: searchController,
-                        onChanged: (val) {
-                          try {
-                            _debouncer.run(() async {
-                              if (projectListTapIcon) {
-                                if (val != null && val.isNotEmpty) {
-                                  await Provider.of<ProjectHomeViewModel>(
-                                          context,
+                      child: Center(
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: (val) {
+                            try {
+                              _debouncer.run(() async {
+                                if (projectListTapIcon) {
+                                  if (val != null && val.isNotEmpty) {
+                                    await Provider.of<ProjectHomeViewModel>(
+                                            context,
+                                            listen: false)
+                                        .getPeopleIdel(searchText: val);
+                                  }
+                                } else if (_selectedIndex == 2) {
+                                  print(_selectedIndex);
+                                } else if (peopleListTapIcon) {
+                                  Provider.of<PeopleHomeViewModel>(context,
                                           listen: false)
-                                      .getPeopleIdel(searchText: val);
+                                      .getPeopleDataList(searchText: val);
                                 }
-                              } else if (_selectedIndex == 2) {
-                                print(_selectedIndex);
-                              } else if (peopleListTapIcon) {
-                                Provider.of<PeopleHomeViewModel>(context,
-                                        listen: false)
-                                    .getPeopleDataList(searchText: val);
-                              }
-                            });
-                          } catch (e) {
-                            print(e);
-                            print(val);
-                          }
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 16.sp),
-                          prefixIcon: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 0.0.sp, left: 15.sp, right: 20.sp),
-                              child: Icon(
-                                Icons.search,
+                              });
+                            } catch (e) {
+                              print(e);
+                              print(val);
+                            }
+                          },
+                          decoration: InputDecoration(
+                            // contentPadding: EdgeInsets.only(top: 16.sp),
+                            prefixIconConstraints: BoxConstraints(),
+                            prefixIcon: Padding(
+                                padding:
+                                    EdgeInsets.only(left: 15.sp, right: 20.sp),
+                                child: Icon(
+                                  Icons.search,
+                                  color: Color(0xff64748B),
+                                )),
+                            hintText: projectListTapIcon
+                                ? 'Search project'
+                                : peopleListTapIcon
+                                    ? 'Search people'
+                                    : 'Search',
+                            hintStyle: TextStyle(
+                                fontSize: 14.sp,
                                 color: Color(0xff64748B),
-                              )),
-                          hintText: projectListTapIcon
-                              ? 'Search project'
-                              : peopleListTapIcon
-                                  ? 'Search people'
-                                  : 'Search',
-                          hintStyle: TextStyle(
+                                fontFamily: 'Inter-Recgular',
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.1,
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                              color: Colors.white,
                               fontSize: 14.sp,
-                              color: Color(0xff64748B),
-                              fontFamily: 'Inter-Recgular',
+                              fontFamily: 'Inter-Medium',
                               fontStyle: FontStyle.normal,
                               letterSpacing: 0.1,
                               fontWeight: FontWeight.w400),
-                          border: InputBorder.none,
                         ),
-                        keyboardType: TextInputType.text,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontFamily: 'Inter-Medium',
-                            fontStyle: FontStyle.normal,
-                            letterSpacing: 0.1,
-                            fontWeight: FontWeight.w400),
                       ),
                     ),
                     SizedBox(
@@ -2251,7 +2254,7 @@ class _NavigationRailState extends State<MyHomePage>
                             projectListTapIcon
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                        top: 12.sp, left: 12.sp),
+                                        top: 12.sp, left: 30.sp),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -2312,14 +2315,19 @@ class _NavigationRailState extends State<MyHomePage>
                                     circleTapIcon == false &&
                                     settingIcon == false &&
                                     bellTapIcon == false
-                                ? Text("Profile",
-                                    style: TextStyle(
-                                        color: Color(0xffFFFFFF),
-                                        fontSize: 22.sp,
-                                        fontFamily: 'Inter-Medium',
-                                        letterSpacing: 0.1,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700))
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 12.sp, //left: 20.sp
+                                    ),
+                                    child: Text("Profile",
+                                        style: TextStyle(
+                                            color: Color(0xffFFFFFF),
+                                            fontSize: 22.sp,
+                                            fontFamily: 'Inter-Medium',
+                                            letterSpacing: 0.1,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700)),
+                                  )
                                 : Container(),
                           ],
                         ),
