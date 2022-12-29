@@ -1303,65 +1303,74 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 ),
                                 selectedDaysList != null &&
                                         selectedDaysList.isNotEmpty
-                                    ? SizedBox(
-                                        height: 30.h,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: selectedDaysList.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8),
-                                              child: InputChip(
-                                                shadowColor: Color(0xff334155),
-                                                shape: RoundedRectangleBorder(
-                                                    side: BorderSide(
-                                                        color:
-                                                            Color(0xff334155)),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(
-                                                        8.r,
+                                    ? Padding(
+                                        padding: EdgeInsets.only(right: 8.sp),
+                                        child: Wrap(
+                                          runSpacing: 8.sp,
+                                          spacing: 8.sp,
+                                          children: List.generate(
+                                            selectedDaysList.length,
+                                            (index) {
+                                              return Container(
+                                                // padding: EdgeInsets.only(top: 10),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.r,
+                                                  ),
+                                                ),
+                                                // color: Colors.red,
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.all(8.0.sp),
+                                                  child: Wrap(
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        selectedDaysList[index],
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: ColorSelect
+                                                                .white_color,
+                                                            fontSize: 14.sp,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontFamily:
+                                                                'Inter-Regular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
-                                                    )),
-                                                side: BorderSide(
-                                                    color: Color(0xff334155)),
-                                                deleteIcon: Icon(
-                                                  Icons.close,
-                                                  color: Colors.white,
-                                                  size: 20.sp,
+                                                      InkWell(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 8.0.sp),
+                                                          child: Icon(
+                                                            Icons.close,
+                                                            color: Colors.white,
+                                                            size: 18.sp,
+                                                          ),
+                                                        ),
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedDaysList
+                                                                .removeAt(
+                                                                    index);
+                                                          });
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                                backgroundColor:
-                                                    Color(0xff334155),
-                                                visualDensity:
-                                                    VisualDensity.compact,
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
-                                                label: Text(
-                                                  selectedDaysList[index],
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                selected: _isSelected!,
-                                                onSelected: (bool selected) {
-                                                  setState(() {
-                                                    _isSelected = selected;
-                                                    print(
-                                                        "_isSelected--------------------------${_isSelected}");
-                                                  });
-                                                },
-                                                onDeleted: () {
-                                                  setState(() {
-                                                    selectedDaysList
-                                                        .removeAt(index);
-                                                  });
-                                                },
-                                                showCheckmark: false,
-                                              ),
-                                            );
-                                          },
+                                              );
+                                            },
+                                          ),
                                         ),
                                       )
                                     : Container(),
@@ -1561,7 +1570,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                 offsetX: 55.w,
                                                 constraints:
                                                     BoxConstraints.expand(
-                                                        width: 313.w,
+                                                        width: 291.w,
                                                         height: 262.h),
                                                 color: Color(0xff0F172A)),
                                         hideOnLoading: true,
@@ -1653,59 +1662,118 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       height: 8.h,
                                     ),
                                     Wrap(
-                                      spacing: 5.sp,
-                                      runSpacing: 5.sp,
+                                      spacing: 8.sp,
+                                      runSpacing: 8.sp,
                                       children: List.generate(
                                         abc.length,
                                         (index) {
                                           return Container(
-                                            height: 32.h,
-                                            child: InputChip(
-                                              shadowColor: Color(0xff334155),
-                                              shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: Color(0xff334155)),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(
-                                                      8.r,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.r,
+                                              ),
+                                            ),
+                                            // color: Colors.red,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0.sp),
+                                              child: Wrap(
+                                                crossAxisAlignment:
+                                                    WrapCrossAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    abc[index],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: ColorSelect
+                                                            .white_color,
+                                                        fontSize: 14.sp,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontFamily:
+                                                            'Inter-Regular',
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  InkWell(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 8.0.sp),
+                                                      child: Icon(
+                                                        Icons.close,
+                                                        color: Colors.white,
+                                                        size: 18.sp,
+                                                      ),
                                                     ),
-                                                  )),
-                                              side: BorderSide(
-                                                  color: Color(0xff334155)),
-                                              deleteIcon: Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 20.sp,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        abc.removeAt(index);
+                                                      });
+                                                    },
+                                                  )
+                                                ],
                                               ),
-                                              backgroundColor:
-                                                  Color(0xff334155),
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              label: Text(
-                                                abc[index],
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  _isSelected = selected;
-                                                });
-                                              },
-                                              onDeleted: () {
-                                                setState(() {
-                                                  abc.removeAt(index);
-                                                });
-                                              },
-                                              showCheckmark: false,
                                             ),
                                           );
                                         },
                                       ),
-                                    ),
+                                    )
+
+                                    // Wrap(
+                                    //   spacing: 5.sp,
+                                    //   runSpacing: 5.sp,
+                                    //   children: List.generate(
+                                    //     abc.length,
+                                    //     (index) {
+                                    //       return Container(
+                                    //         height: 32.h,
+                                    //         child: InputChip(
+                                    //           shadowColor: Color(0xff334155),
+                                    //           shape: RoundedRectangleBorder(
+                                    //               side: BorderSide(
+                                    //                   color: Color(0xff334155)),
+                                    //               borderRadius:
+                                    //                   BorderRadius.all(
+                                    //                 Radius.circular(
+                                    //                   8.r,
+                                    //                 ),
+                                    //               )),
+                                    //           side: BorderSide(
+                                    //               color: Color(0xff334155)),
+                                    //           deleteIcon: Icon(
+                                    //             Icons.close,
+                                    //             color: Colors.white,
+                                    //             size: 20.sp,
+                                    //           ),
+                                    //           backgroundColor:
+                                    //               Color(0xff334155),
+                                    //           visualDensity:
+                                    //               VisualDensity.compact,
+                                    //           materialTapTargetSize:
+                                    //               MaterialTapTargetSize
+                                    //                   .shrinkWrap,
+                                    //           label: Text(
+                                    //             abc[index],
+                                    //             style: TextStyle(
+                                    //                 color: Colors.white),
+                                    //           ),
+                                    //           onSelected: (bool selected) {
+                                    //             setState(() {
+                                    //               _isSelected = selected;
+                                    //             });
+                                    //           },
+                                    //           onDeleted: () {
+                                    //             setState(() {
+                                    //               abc.removeAt(index);
+                                    //             });
+                                    //           },
+                                    //           showCheckmark: false,
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ],

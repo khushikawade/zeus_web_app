@@ -66,7 +66,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           value: 1,
           height: 30.h,
           child: InkWell(
-            hoverColor: Color(0xff1e293b),
+            // hoverColor: Color(0xff1e293b),
             onTap: () {
               SmartDialog.showLoading(
                 msg: "Your request is in progress please wait for a while...",
