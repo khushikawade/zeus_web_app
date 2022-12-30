@@ -257,15 +257,15 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 //       .getPeopleDataList();
                 // }
 
-                context.vRouter.to(
-                  MyRoutes.peopleDetailsRoute,
-                  isReplacement: false,
-                  queryParameters: {'id': _peopleList.id.toString()},
-                );
+                // context.vRouter.to(
+                //   MyRoutes.peopleDetailsRoute,
+                //   isReplacement: false,
+                //   queryParameters: {'id': _peopleList.id.toString()},
+                // );
 
-                // final username = VRouter.of(context).path;
-                // ConnectedRoutes.toProfileDetails(
-                //     context, username, _peopleList.id.toString());
+                final username = VRouter.of(context).path;
+                ConnectedRoutes.toProfileDetails(
+                    context, username, _peopleList.id.toString());
               },
               cells: [
                 DataCell(Row(

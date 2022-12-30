@@ -612,7 +612,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
 
         final username = VRouter.of(context).path;
-        ConnectedRoutes.toHome(context, username);
+        ConnectedRoutes.toProject(context, "/home");
 
         //launchClickUpsUrl();
         // Navigator.of(context).pushAndRemoveUntil(

@@ -60,36 +60,12 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             builder: FlutterSmartDialog.init(),
             home: VRouter(
-              onSystemPop: (vRedirector) async {
-                if (vRedirector.historyCanBack()) {
-                  vRedirector.historyBack();
-                } else {
-                  print("History not found -----------------------------");
-                }
-              },
-              onPop: ((vRedirector) async {
-                vRedirector.pop();
-              }),
               debugShowCheckedModeBanner: false,
               mode: VRouterMode.history,
               initialUrl: storage.read("isLogin") == null
                   ? MyRoutes.loginRoute
                   : MyRoutes.homeRoute,
               routes: [
-                VPopHandler(
-                  onSystemPop: (vRedirector) async {
-                    vRedirector.to(MyRoutes.homeRoute);
-                  },
-                  onPop: (vRedirector) async {
-                    vRedirector.pop();
-                  },
-                  stackedRoutes: [
-                    VWidget(
-                      path: MyRoutes.homeRoute,
-                      widget: MyHomePage1(ProjectHome(), currentIndex: 1),
-                    ),
-                  ],
-                ),
                 VWidget(
                   path: MyRoutes.loginRoute,
                   widget: LoginScreen(
@@ -99,19 +75,19 @@ class MyApp extends StatelessWidget {
                     ConnectedRoutes(),
                   ],
                 ),
-                VWidget(
-                    path: MyRoutes.homeRoute,
-                    widget: MyHomePage1(ProjectHome(), currentIndex: 1)),
-                VWidget(
-                    path: MyRoutes.peopleDetailsRoute,
-                    name: MyRoutes.peopleDetailsRoute,
-                    widget: Builder(builder: (context) {
-                      String peopleId = context.vRouter.queryParameters['id']!;
-                      print("Response ------------------ ${peopleId}");
-                      return ProfileDetail1(
-                        peopleId: peopleId,
-                      );
-                    })),
+                // VWidget(
+                //     path: MyRoutes.homeRoute,
+                //     widget: MyHomePage1(ProjectHome(), currentIndex: 1)),
+                // VWidget(
+                //     path: MyRoutes.peopleDetailsRoute,
+                //     name: MyRoutes.peopleDetailsRoute,
+                //     widget: Builder(builder: (context) {
+                //       String peopleId = context.vRouter.queryParameters['id']!;
+                //       print("Response ------------------ ${peopleId}");
+                //       return ProfileDetail1(
+                //         peopleId: peopleId,
+                //       );
+                //     })),
                 VRouteRedirector(
                   redirectTo: MyRoutes.loginRoute,
                   path: r'*',

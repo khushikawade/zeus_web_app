@@ -256,8 +256,6 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
     } else {
       nickname = 'TBD';
     }
-
-    setState(() {});
   }
 
   @override
