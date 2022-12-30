@@ -836,11 +836,34 @@ class _NewPhaseState extends State<NewPhase> {
                                             removeDuplicate();
                                             selectedSubTaskSource.removeWhere(
                                                 (element) =>
-                                                    element ==
+                                                    element.resource_name ==
                                                     selectedSource[index]);
                                             listResource.removeAt(index);
 
-                                            selectedSource.removeAt(index);
+                                            if (widget.type == 1) {
+                                              phaseDetails.resource!
+                                                  .removeWhere((element) =>
+                                                      element.resource_name ==
+                                                      selectedSource[index]);
+                                              selectedSource.removeAt(index);
+                                              // listResource.removeWhere(
+                                              //     (element) =>
+                                              //         element.details!
+                                              //             .departmentName ==
+                                              //         selectedSource
+                                              //             .removeAt(index));
+
+                                              //    listResource.a
+
+                                              // getIntialValueForSubTask(
+                                              //     listResource,
+                                              //     selectedSource[index]);
+                                            } else {
+                                              selectedSource.removeAt(index);
+                                              // getIntialValueForSubTask(
+                                              //     removeDuplicate(),
+                                              //     selectedSource[index]);
+                                            }
                                           });
                                         },
                                       )
@@ -960,12 +983,20 @@ class _NewPhaseState extends State<NewPhase> {
               o.details!.departmentId.toString() == id ||
               o.details!.departmentId.toString() == id,
           orElse: () => PhasesSortedResources(department: null, details: null));
-      if (result.details == null) {
-        return null;
-      } else {
-        return result;
+
+      try {
+        if (result.details == null) {
+          return null;
+        } else {
+          return result;
+        }
+      } catch (e) {
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
       }
     } catch (e) {
+      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
       return null;
     }
     // } else {
@@ -1558,7 +1589,7 @@ class _NewPhaseState extends State<NewPhase> {
                             left: 16.sp,
                           ),
                           child: CustomSearchDropdownSubTask(
-                            hint: "Type",
+                            hint: "Typessss",
                             label: "",
                             margin: EdgeInsets.all(0),
                             initialValue: getIntialValueForSubTask(
@@ -1761,58 +1792,6 @@ class _NewPhaseState extends State<NewPhase> {
                   ),
                 ],
               )
-
-            // SizedBox(
-            //     height: 65.h,
-            //     child: Padding(
-            //       padding: EdgeInsets.only(left: 28.sp),
-            //       child: ListView.builder(
-            //         scrollDirection: Axis.horizontal,
-            //         itemCount: selectedSubTaskSource.length,
-            //         itemBuilder: (context, index) {
-            //           return Padding(
-            //               padding: EdgeInsets.only(
-            //                   top: 16.sp, bottom: 2.sp, left: 5.sp),
-            //               child: InputChip(
-            //                   labelPadding: EdgeInsets.only(
-            //                       left: 10.sp, top: 5.sp, bottom: 7.sp),
-            //                   shadowColor: Color(0xff334155),
-            //                   shape: RoundedRectangleBorder(
-            //                       side: BorderSide(color: Color(0xff334155)),
-            //                       borderRadius: BorderRadius.all(
-            //                         Radius.circular(
-            //                           13.r,
-            //                         ),
-            //                       )),
-            //                   side: BorderSide(color: Color(0xff334155)),
-            //                   deleteIcon: Icon(
-            //                     Icons.close,
-            //                     color: Colors.white,
-            //                     size: 20.sp,
-            //                   ),
-            //                   backgroundColor: Color(0xff334155),
-            //                   visualDensity: VisualDensity.compact,
-            //                   materialTapTargetSize:
-            //                       MaterialTapTargetSize.shrinkWrap,
-            //                   label: Text(
-            //                     selectedSubTaskSource[index].resource_name ??
-            //                         '',
-            //                     style: TextStyle(color: Colors.white),
-            //                   ),
-            //                   onSelected: (bool selected) {
-            //                     setState(() {});
-            //                   },
-            //                   onDeleted: () {
-            //                     setState(() {
-            //                       selectedSubTaskSource.removeAt(index);
-            //                     });
-            //                   },
-            //                   showCheckmark: false));
-            //         },
-            //       ),
-            //     ),
-            //   )
-
             : Container()
       ],
     );

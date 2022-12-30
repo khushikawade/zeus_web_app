@@ -1629,15 +1629,18 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           // rowResourceName(item);
                                         },
                                         noItemsFoundBuilder: (context) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0),
-                                            child: Text(
-                                              'No Items Found!',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14.sp),
+                                          return Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Text(
+                                                'No Items Found!',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14.sp),
+                                              ),
                                             ),
                                           );
                                         },

@@ -197,8 +197,10 @@ Widget rowResourceName(Details? item) {
 
       fullName = firstName.substring(0, 1).toUpperCase() +
           lastName.substring(0, 1).toUpperCase();
+      print(fullName);
     } else {
       fullName = item.name!.substring(0, 1).toUpperCase();
+      print(fullName);
     }
   }
   return Padding(
