@@ -730,6 +730,18 @@ class _NewPhaseState extends State<NewPhase> {
                                     (context, suggestionsBox, controller) {
                                   return suggestionsBox;
                                 },
+                                noItemsFoundBuilder: (context) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text(
+                                      'No Items Found!',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14.sp),
+                                    ),
+                                  );
+                                },
                                 onSuggestionSelected: (item) {
                                   setState(() {
                                     searchTextField!.textFieldConfiguration
@@ -1619,6 +1631,16 @@ class _NewPhaseState extends State<NewPhase> {
                 },
                 transitionBuilder: (context, suggestionsBox, controller) {
                   return suggestionsBox;
+                },
+                noItemsFoundBuilder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      'No Items Found!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    ),
+                  );
                 },
                 onSuggestionSelected: (item) {
                   setState(() {

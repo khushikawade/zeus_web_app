@@ -1628,6 +1628,19 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           // Text("khushi");
                                           // rowResourceName(item);
                                         },
+                                        noItemsFoundBuilder: (context) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              'No Items Found!',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp),
+                                            ),
+                                          );
+                                        },
                                         transitionBuilder: (context,
                                             suggestionsBox, controller) {
                                           return suggestionsBox;

@@ -13,7 +13,7 @@ import 'package:zeus/helper_widget/popup_projectbutton.dart';
 import 'package:zeus/popup/popup_phasebutton.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_home/project_home_view_model.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/skills_model/skills_response_project.dart';
 import 'package:zeus/utility/app_url.dart';
@@ -1196,6 +1196,26 @@ showDailog(
                                                                     suggestionsBox,
                                                                     controller) {
                                                               return suggestionsBox;
+                                                            },
+                                                            noItemsFoundBuilder:
+                                                                (context) {
+                                                              return Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        8.0),
+                                                                child: Text(
+                                                                  'No Items Found!',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          14.sp),
+                                                                ),
+                                                              );
                                                             },
                                                             onSuggestionSelected:
                                                                 (item) {

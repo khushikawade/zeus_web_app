@@ -260,8 +260,6 @@ class _MenuPhaseState extends State<MenuPhase>
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.only(right: 35.0.sp),
                                           child: Text(
                                             "Cancel",
                                             style: TextStyle(
@@ -272,6 +270,7 @@ class _MenuPhaseState extends State<MenuPhase>
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 35.w),
                                       InkWell(
                                         onTap: () {
                                           Navigator.pop(context);

@@ -792,7 +792,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 ),
                                 child: PopupMenuButton<int>(
                                   tooltip: '',
-                                  offset: Offset(33.5, 55),
+                                  offset: Offset(34, 50),
                                   color: Color(0xFF0F172A),
                                   child: Container(
                                       width: 40.0.w,
@@ -834,6 +834,20 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                                     color: Color(0xff0F172A)),
                                             suggestionsCallback: (pattern) {
                                               return getSuggestions(pattern);
+                                            },
+                                            noItemsFoundBuilder: (context) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                child: Text(
+                                                  'No Items Found!',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14.sp),
+                                                ),
+                                              );
                                             },
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
