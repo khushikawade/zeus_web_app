@@ -225,7 +225,11 @@ class Api {
           '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
       var res = response.body;
 
-      if (response!.statusCode == 200) {
+      print(res);
+      print(res);
+      print(res);
+
+      if (response.statusCode == 200) {
         try {
           if (response.body.contains('error')) {
             var jsonResponse = json.decode(response.body);
