@@ -743,7 +743,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   );
                                 },
                                 onSuggestionSelected: (item) {
-                                  setState(() {
+                                  dialogSetState(() {
                                     searchTextField!.textFieldConfiguration
                                         .controller!.text = '';
 
@@ -832,7 +832,7 @@ class _NewPhaseState extends State<NewPhase> {
                                           ),
                                         ),
                                         onTap: () {
-                                          setState(() {
+                                          dialogSetState(() {
                                             removeDuplicate();
                                             selectedSubTaskSource.removeWhere(
                                                 (element) =>
@@ -1015,24 +1015,54 @@ class _NewPhaseState extends State<NewPhase> {
                                 ],
                               ),
                               onTap: () {
-                                dialogSetState(() {
+                                dialogSetState((() {
                                   milestoneValidate = true;
+
                                   addMilestoneBtnClick = true;
+
                                   createButtonClick = true;
+
                                   saveButtonClickForMileStone = false;
-                                });
+                                }));
+
                                 Future.delayed(
                                     const Duration(microseconds: 500), () {
                                   if (_formKey.currentState!.validate()) {
                                     if (allValidate &&
                                         selectedSource.isNotEmpty) {
                                       dialogSetState(() {
-                                        clickedAddMileStone = true;
+                                        phaseDetails.start_date!.isNotEmpty &&
+                                                phaseDetails
+                                                    .end_date!.isNotEmpty
+                                            ? clickedAddMileStone = true
+                                            : clickedAddMileStone;
+
                                         // saveButtonClickForMileStone = true;
                                       });
                                     }
+                                  } else {
+                                    print("fdghjdkfgh");
                                   }
                                 });
+                                // dialogSetState(() {
+                                //   milestoneValidate = true;
+                                //   addMilestoneBtnClick = true;
+                                //   createButtonClick = true;
+                                //   saveButtonClickForMileStone = false;
+
+                                // });
+                                // Future.delayed(
+                                //     const Duration(microseconds: 500), () {
+                                //   if (_formKey.currentState!.validate()) {
+                                //     if (allValidate &&
+                                //         selectedSource.isNotEmpty) {
+                                //       dialogSetState(() {
+                                //         clickedAddMileStone = true;
+                                //         // saveButtonClickForMileStone = true;
+                                //       });
+                                //     }
+                                //   }
+                                // });
                               },
                             ),
                             SizedBox(
@@ -1227,7 +1257,12 @@ class _NewPhaseState extends State<NewPhase> {
                                           if (allValidate &&
                                               selectedSource.isNotEmpty) {
                                             dialogSetState(() {
-                                              clickAddSubTask = true;
+                                              phaseDetails.start_date!
+                                                          .isNotEmpty &&
+                                                      phaseDetails
+                                                          .end_date!.isNotEmpty
+                                                  ? clickAddSubTask = true
+                                                  : clickAddSubTask;
                                             });
                                           }
                                         }
@@ -1643,7 +1678,7 @@ class _NewPhaseState extends State<NewPhase> {
                   );
                 },
                 onSuggestionSelected: (item) {
-                  setState(() {
+                  dialogSetState(() {
                     subTaskResourceName = item.name!;
                     _subTaskResourcesController.text = '';
 
@@ -1711,7 +1746,7 @@ class _NewPhaseState extends State<NewPhase> {
                                       ),
                                     ),
                                     onTap: () {
-                                      setState(() {
+                                      dialogSetState(() {
                                         selectedSubTaskSource.removeAt(index);
                                       });
                                     },
@@ -1870,8 +1905,6 @@ class _NewPhaseState extends State<NewPhase> {
               } catch (e) {
                 print("Erorr ----------------------- $e");
               }
-              print(
-                "here11111-------------------");
             },
           )
         ],
