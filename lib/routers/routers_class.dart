@@ -43,7 +43,7 @@ class ConnectedRoutes extends VRouteElementBuilder {
   static final String home = 'home';
 
   static void toHome(BuildContext context, String username) =>
-      context.vRouter.to('/$username/$home', isReplacement: false);
+      context.vRouter.to('/$username/$home');
 
   static final String people = 'people';
 
@@ -51,7 +51,7 @@ class ConnectedRoutes extends VRouteElementBuilder {
     if (username.contains("/$project")) {
       username = username.replaceAll("/$project", "");
     }
-    context.vRouter.to('$username/$people', isReplacement: true);
+    context.vRouter.to('$username/$people');
   }
 
   static final String people_detail = 'people_detail';
@@ -61,8 +61,8 @@ class ConnectedRoutes extends VRouteElementBuilder {
     if (username.contains("/$people")) {
       username = username.replaceAll("/$people", "");
     }
-    context.vRouter.to('$username/$people_detail',
-        isReplacement: false, queryParameters: {"id": peopleId});
+    context.vRouter
+        .to('$username/$people_detail', queryParameters: {"id": peopleId});
   }
 
   @override
