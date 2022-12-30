@@ -40,10 +40,10 @@ class ConnectedRoutes extends VRouteElementBuilder {
   static void toProject(BuildContext context, String username) =>
       context.vRouter.to('$username/$project');
 
-  static final String home = 'home';
+  // static final String home = 'home';
 
-  static void toHome(BuildContext context, String username) =>
-      context.vRouter.to('/$username/$home');
+  // static void toHome(BuildContext context, String username) =>
+  //     context.vRouter.to('/$username/$home');
 
   static final String people = 'people';
 

@@ -554,7 +554,9 @@ class _LoginScreenState extends State<LoginScreen> {
         sharedPreferences.setBool('isLogin', true);
         storage.write(isLogin, true);
 
-        context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
+        //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
+        final username = VRouter.of(context).path;
+        ConnectedRoutes.toProject(context, "/home");
       } else {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
