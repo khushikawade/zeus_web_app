@@ -138,9 +138,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     return matches;
   }
 
- 
-
-
   Future<String?> getCustomer() async {
     String? value;
     if (value == null) {
@@ -920,7 +917,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     Expanded(
                                       child: CustomFormField(
                                         controller: _designation,
-                                        maxLength: 20,
+                                        maxLength: 30,
                                         fontSizeForLabel: 14.sp,
                                         hint: 'Enter ',
                                         label: 'Designation',
