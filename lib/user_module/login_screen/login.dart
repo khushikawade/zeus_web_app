@@ -32,10 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _formKey = GlobalKey<FormState>();
 
-  // TextEditingController emailController =
-  //     TextEditingController(text: 'omkar@omkar.com');
-  // TextEditingController passwordController =
-  //     TextEditingController(text: 'Password@123');
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();

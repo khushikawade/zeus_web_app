@@ -27,7 +27,7 @@ class PeopleHomeView extends StatefulWidget {
 }
 
 class _PeopleHomeViewState extends State<PeopleHomeView> {
-  String token = "";
+  // String token = "";
   var dataPeople = 'people_data';
   bool imageavail = false;
 
@@ -47,6 +47,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
   void change() async {
     var prefs = await SharedPreferences.getInstance();
+
     prefs.setString('val', 'y');
   }
 
@@ -55,19 +56,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
     Provider.of<PeopleHomeViewModel>(context, listen: false)
         .getPeopleDataList();
     change();
-    getToken();
     super.initState();
-  }
-
-  void getToken() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {
-        token = sharedPreferences.getString('login')!;
-        print(token);
-      });
-      return;
-    }
   }
 
   @override
@@ -119,7 +108,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                           )
                         : Expanded(
                             child: RawScrollbar(
-                              controller: _scrollController,
+                              controller: verticalScroll,
                               thumbColor: const Color(0xff4b5563),
                               crossAxisMargin: 2,
                               shape: RoundedRectangleBorder(
@@ -240,7 +229,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                     MaterialPageRoute(
                         builder: (context) => ProfileDetail(
                               list: _peopleList,
-                              index: 6,
+                              index: 5,
                             )));
 
                 if (result) {

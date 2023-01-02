@@ -1589,7 +1589,7 @@ class _NewPhaseState extends State<NewPhase> {
                             left: 16.sp,
                           ),
                           child: CustomSearchDropdownSubTask(
-                            hint: "Typessss",
+                            hint: "Type",
                             label: "",
                             margin: EdgeInsets.all(0),
                             initialValue: getIntialValueForSubTask(

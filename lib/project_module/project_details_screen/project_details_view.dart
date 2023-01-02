@@ -92,6 +92,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
       height: MediaQuery.of(context).size.height * 0.99,
       child: Form(
         child: RawScrollbar(
+          controller: _ScrollController,
           thumbColor: Color(0xff4b5563),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
