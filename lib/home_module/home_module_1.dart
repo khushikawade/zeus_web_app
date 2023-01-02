@@ -55,63 +55,17 @@ class _NavigationRailState extends State<MyHomePage1>
 
   int _selectedIndex = 1;
 
-  final List<Widget> _mainContents = [
-    Container(
-      color: const Color(0xff0F172A),
-      alignment: Alignment.center,
-      child: const Text(
-        'Home',
-        style: TextStyle(fontSize: 40),
-      ),
-    ),
-    ProjectHome(),
-    Container(
-      color: const Color(0xff0F172A),
-      alignment: Alignment.center,
-      child: const Text(
-        'Coming Soon',
-        style: TextStyle(fontSize: 40, color: Colors.white),
-      ),
-    ),
-    PeopleHomeView(),
-    Container(
-      color: const Color(0xff0F172A),
-      alignment: Alignment.center,
-      child: const Text(
-        'Coming Soon',
-        style: TextStyle(fontSize: 40, color: Colors.white),
-      ),
-    ),
-    Container(
-      color: const Color(0xff0F172A),
-      alignment: Alignment.center,
-      child: const Text(
-        'Coming Soon',
-        style: TextStyle(fontSize: 40, color: Colors.white),
-      ),
-    ),
-    Container(
-      color: const Color(0xff0F172A),
-      alignment: Alignment.center,
-      child: const Text(
-        'Coming Soon',
-        style: TextStyle(fontSize: 40, color: Colors.white),
-      ),
-    ),
-  ];
-
   @override
   void initState() {
-    print(widget.currentIndex);
-    _selectedIndex = widget.currentIndex;
-    print(_selectedIndex);
-
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("hghg ----------------------------------------------- ");
+    print(widget.currentIndex);
+    _selectedIndex = widget.currentIndex;
+    print(_selectedIndex);
     final mediaQueryData = MediaQuery.of(context);
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
@@ -340,7 +294,7 @@ class _NavigationRailState extends State<MyHomePage1>
                           final username = VRouter.of(context).path;
                           print("User name ----------------- ${username}");
                           if (_selectedIndex == 1) {
-                            ConnectedRoutes.toProject(context, username);
+                            ConnectedRoutes.toProject(context, username, false);
                           } else if (_selectedIndex == 3) {
                             ConnectedRoutes.toPeople(context, username);
                           } else {}
@@ -673,21 +627,28 @@ class _NavigationRailState extends State<MyHomePage1>
                 ),
               );
             }),
-            _selectedIndex == 1
-                ?
-                //ProfileWidget()
-                ProjectHome()
-                : _selectedIndex == 3
-                    ? PeopleHomeView()
-                    : Container(
-                        color: const Color(0xff0F172A),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Coming Soon',
-                          style:
-                              TextStyle(fontSize: 40.sp, color: Colors.white),
-                        ),
-                      ),
+            Container(
+                width: MediaQuery.of(context).size.width < 950
+                    ? MediaQuery.of(context).size.width * 2
+                    : MediaQuery.of(context).size.width - 160,
+                height: 969,
+                // color: Colors.blue,
+                child: widget.child),
+            // _selectedIndex == 1
+            //     ?
+            //     //ProfileWidget()
+            //     ProjectHome()
+            //     : _selectedIndex == 3
+            //         ? PeopleHomeView()
+            //         : Container(
+            //             color: const Color(0xff0F172A),
+            //             alignment: Alignment.center,
+            //             child: Text(
+            //               'Coming Soon',
+            //               style:
+            //                   TextStyle(fontSize: 40.sp, color: Colors.white),
+            //             ),
+            //           ),
             // sayyamm
             // Expanded(child: _mainContents[_selectedIndex]),
           ],

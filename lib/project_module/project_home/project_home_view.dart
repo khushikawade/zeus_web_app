@@ -875,3 +875,415 @@ class ProjectHomeState extends State<ProjectHome> {
     return null;
   }
 }
+
+// import 'package:flutter/material.dart';
+
+// class ProjectHome extends StatefulWidget {
+//   const ProjectHome({Key? key}) : super(key: key);
+
+//   @override
+//   State<ProjectHome> createState() => ProjectHomeState();
+// }
+
+// class ProjectHomeState extends State<ProjectHome> {
+//   GlobalKey key1 = new GlobalKey();
+//   GlobalKey key2 = new GlobalKey();
+//   GlobalKey key = new GlobalKey();
+//   GlobalKey key3 = new GlobalKey();
+//   GlobalKey key4 = new GlobalKey();
+//   GlobalKey key5 = new GlobalKey();
+//   GlobalKey key6 = new GlobalKey();
+//   GlobalKey key7 = new GlobalKey();
+//   GlobalKey key8 = new GlobalKey();
+//   GlobalKey key9 = new GlobalKey();
+//   GlobalKey key10 = new GlobalKey();
+//   List _statusList = [];
+//   List _currencyName = [];
+//   List _accountableId = [];
+//   List _customerName = [];
+
+//   bool? amIHovering;
+//   bool? amIHovering1;
+
+//   Offset exitFrom = const Offset(0, 0);
+//   bool hovered = false;
+
+//   Future? _getProjectDetail;
+//   String? spiValue, roadblocks1;
+//   bool _isDownArrow = true;
+//   List<String> roadblock = [];
+//   final ScrollController horizontalScroll = ScrollController();
+//   final double width = 18;
+
+//   final ScrollController verticalScrollcontroller = ScrollController();
+
+//   final ScrollController _scrollController =
+//       ScrollController(initialScrollOffset: 50.0);
+//   double? _scrollPosition = 0;
+//   double? _opacity = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final mediaQueryData = MediaQuery.of(context);
+//     // return Container(
+//     //   width: 950,
+//     //   height: 969,
+//     //   color: Colors.red,
+//     // );
+//     return MediaQuery(
+//       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
+//       child:
+//           // Scaffold(
+//           //   backgroundColor: ColorSelect.class_color,
+//           //   body:
+//           Container(
+//         //width: 100,
+//         width: MediaQuery.of(context).size.width < 950
+//             ? MediaQuery.of(context).size.width * 2
+//             : MediaQuery.of(context).size.width - 160,
+//         height: 969,
+//         margin: const EdgeInsets.only(
+//             left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
+//         decoration: BoxDecoration(
+//           color: const Color(0xff1E293B),
+//           border: Border.all(color: const Color(0xff1E293B)),
+//           borderRadius: BorderRadius.circular(
+//             12.0,
+//           ),
+//         ),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.max,
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           mainAxisAlignment: MainAxisAlignment.start,
+//           children: [
+//             makeProjectList(),
+//           ],
+//         ),
+//         //),
+//       ),
+//     );
+//   }
+
+//   Widget makeProjectList() {
+//     List<DataRow> rows = [];
+
+//     rows.add(DataRow(onSelectChanged: (newValue) {}, cells: [
+//       DataCell(Container(
+//         width: 32,
+//         height: 50,
+//         alignment: Alignment.center,
+//         decoration: const BoxDecoration(
+//             shape: BoxShape.circle, color: Color(0xff334155)),
+//         child: Text(
+//           'AP',
+//           style: const TextStyle(
+//               fontFamily: 'Inter-Medium',
+//               fontSize: 14,
+//               fontStyle: FontStyle.normal,
+//               fontWeight: FontWeight.w500,
+//               letterSpacing: -0.33,
+//               color: Colors.white),
+//         ),
+//       )),
+//       DataCell(
+//         ConstrainedBox(
+//           constraints: new BoxConstraints(
+//             maxWidth: MediaQuery.of(context).size.width * .18,
+//           ),
+//           child: Text(
+//             "Project 1",
+//             maxLines: 1,
+//             overflow: TextOverflow.ellipsis,
+//             style: const TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 14.0,
+//                 fontFamily: 'Inter',
+//                 fontWeight: FontWeight.w500),
+//           ),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           "Phase 2",
+//           style: const TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       DataCell(
+//         Container(
+//           padding:
+//               const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+//           decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(8), color: Colors.blue),
+//           child: Text(
+//             "Running",
+//             style: const TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 14.0,
+//                 fontFamily: 'Inter',
+//                 fontWeight: FontWeight.w500),
+//           ),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           "0.5",
+//           style: TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           "N/A",
+//           style: TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           "12 May",
+//           style: const TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           'N/A',
+//           style: const TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           "26 Jan",
+//           style: const TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       DataCell(
+//         Text(
+//           "30 Mar",
+//           style: const TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//       const DataCell(
+//         Text(
+//           "TBD",
+//           style: TextStyle(
+//               color: Colors.white,
+//               fontSize: 14.0,
+//               fontFamily: 'Inter',
+//               fontWeight: FontWeight.w500),
+//         ),
+//       ),
+//     ]));
+
+//     return Row(
+//       key: Key("show_more_ink_well"),
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       mainAxisSize: MainAxisSize.max,
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: [
+//         Expanded(
+//           child: FittedBox(
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.vertical,
+//               child: RawScrollbar(
+//                 controller: horizontalScroll,
+//                 isAlwaysShown: true,
+//                 thumbColor: const Color(0xff4b5563),
+//                 radius: Radius.circular(20),
+//                 thickness: 10,
+//                 child: SingleChildScrollView(
+//                   controller: horizontalScroll,
+//                   scrollDirection: Axis.horizontal,
+//                   child: Padding(
+//                     padding: const EdgeInsets.only(left: 16, right: 16),
+//                     child: Theme(
+//                       data: Theme.of(context)
+//                           .copyWith(dividerColor: Color(0xff525f72)),
+//                       child: DataTable(
+//                           horizontalMargin: 10,
+//                           showCheckboxColumn: false,
+//                           dataRowHeight: 60,
+//                           dividerThickness: 0.7,
+//                           columns: [
+//                             DataColumn(
+//                               label: MouseRegion(
+//                                 onEnter: (event) {},
+//                                 child: Text(
+//                                   "AP",
+//                                   key: key7,
+//                                   style: const TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: Text(
+//                                 "Project name",
+//                                 key: key6,
+//                                 style: TextStyle(
+//                                     color: Colors.white,
+//                                     fontSize: 14.0,
+//                                     fontFamily: 'Inter',
+//                                     fontWeight: FontWeight.w500),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Current phase",
+//                                   key: key5,
+//                                   style: const TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Status",
+//                                   key: key4,
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "SPI",
+//                                   key: key3,
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Potential roadblocks",
+//                                   key: key8,
+//                                   style: const TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Last\nupdate",
+//                                   key: key9,
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Next\nmilestone",
+//                                   key: key,
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Delivery\ndate",
+//                                   key: key2,
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Deadline",
+//                                   key: key1,
+//                                   style: const TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                             DataColumn(
+//                               label: InkWell(
+//                                 child: Text(
+//                                   "Resources",
+//                                   key: key10,
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 14.0,
+//                                       fontFamily: 'Inter',
+//                                       fontWeight: FontWeight.w500),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                           rows: rows),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+  
+  
+//   }
+// }

@@ -35,9 +35,79 @@ import 'project_module/project_home/project_home_view.dart';
 import 'user_module/people_profile/screen/people_detail_view1.dart';
 
 void main() async {
-  await GetStorage.init();
-  setPathUrlStrategy();
-  runApp(MyApp());
+  // await GetStorage.init();
+  // setPathUrlStrategy();
+  runApp(
+      //MyApp()
+      ScreenUtilInit(
+    designSize: const Size(1366, 758),
+    minTextAdapt: true,
+    splitScreenMode: true,
+    builder: (context, widget) {
+      // return VRouter(
+      //   debugShowCheckedModeBanner: false,
+      //   mode: VRouterMode.history,
+      //   routes: [
+      //     VWidget(
+      //       path: '/login',
+      //       widget: LoginWidget(),
+      //       stackedRoutes: [
+      //         ConnectedRoutes(),
+      //       ],
+      //     ),
+      //     VRouteRedirector(
+      //       redirectTo: '/login',
+      //       path: r'*',
+      //     ),
+      //   ],
+      // );
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
+          ChangeNotifierProvider(create: (_) => PeopleHomeViewModel()),
+          ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
+          ChangeNotifierProvider(create: (_) => TagDetail()),
+          ChangeNotifierProvider(create: (_) => CreateProjectModel())
+        ],
+        child: VRouter(
+          builder: FlutterSmartDialog.init(),
+          debugShowCheckedModeBanner: false,
+          mode: VRouterMode.history,
+          initialUrl: storage.read("isLogin") == null
+              ? MyRoutes.loginRoute
+              : MyRoutes.homeRoute,
+          routes: [
+            VWidget(
+              path: MyRoutes.loginRoute,
+              widget: LoginScreen(
+                onSubmit: (value) {},
+              ),
+              stackedRoutes: [
+                ConnectedRoutes(),
+              ],
+            ),
+            // VWidget(
+            //     path: MyRoutes.homeRoute,
+            //     widget: MyHomePage1(ProjectHome(), currentIndex: 1)),
+            // VWidget(
+            //     path: MyRoutes.peopleDetailsRoute,
+            //     name: MyRoutes.peopleDetailsRoute,
+            //     widget: Builder(builder: (context) {
+            //       String peopleId = context.vRouter.queryParameters['id']!;
+            //       print("Response ------------------ ${peopleId}");
+            //       return ProfileDetail1(
+            //         peopleId: peopleId,
+            //       );
+            //     })),
+            VRouteRedirector(
+              redirectTo: MyRoutes.loginRoute,
+              path: r'*',
+            ),
+          ],
+        ),
+      );
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -98,6 +168,29 @@ class MyApp extends StatelessWidget {
         );
       },
     );
+
+    // return VRouter(
+    //   initialUrl: storage.read("isLogin") == null
+    //       ? MyRoutes.loginRoute
+    //       : MyRoutes.homeRoute,
+    //   debugShowCheckedModeBanner: false, // VRouter acts as a MaterialApp
+    //   mode: VRouterMode.history, // Remove the '#' from the url
+    //   // logs: [VLogLevel.info], // Defines which logs to show, info is the default
+    //   routes: [
+    //     VWidget(
+    //       path: '/login',
+    //       widget: LoginScreen(
+    //         onSubmit: (value) {},
+    //       ),
+    //       stackedRoutes: [ConnectedRoutes()],
+    //     ),
+    //     // This redirect every unknown routes to /login
+    //     VRouteRedirector(
+    //       redirectTo: '/login',
+    //       path: r'*',
+    //     ),
+    //   ],
+    // );
   }
 }
 

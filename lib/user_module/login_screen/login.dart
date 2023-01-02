@@ -556,7 +556,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
         final username = VRouter.of(context).path;
-        ConnectedRoutes.toProject(context, "/home");
+        ConnectedRoutes.toProject(context, "/home", true);
       } else {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
@@ -614,7 +614,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
 
         final username = VRouter.of(context).path;
-        ConnectedRoutes.toProject(context, "/home");
+        ConnectedRoutes.toProject(context, "/home", true);
 
         //launchClickUpsUrl();
         // Navigator.of(context).pushAndRemoveUntil(

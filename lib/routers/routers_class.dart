@@ -37,8 +37,8 @@ class MyRoutes {
 class ConnectedRoutes extends VRouteElementBuilder {
   static final String project = 'project';
 
-  static void toProject(BuildContext context, String username) =>
-      context.vRouter.to('$username/$project');
+  static void toProject(BuildContext context, String username, bool isFromLogin) =>
+      context.vRouter.to('$username/$project',isReplacement: isFromLogin != null && isFromLogin ? isFromLogin : false);
 
   // static final String home = 'home';
 
@@ -90,32 +90,37 @@ class ConnectedRoutes extends VRouteElementBuilder {
               // stackedRoutes: [
               //   ConnectedRoutes(),
               // ],
+              stackedRoutes: [
+                VNester.builder(
+                  path: '/:username',
+                  widgetBuilder: (_, state, child) =>
+                      Builder(builder: (context) {
+                    String peopleId = context.vRouter.queryParameters['id']!;
+                    print("Response ------------------ ${peopleId}");
+                    return ProfileDetail1(
+                      peopleId: peopleId,
+                    );
+                  }),
+                  nestedRoutes: [
+                    VWidget(
+                        path: people_detail,
+                        name: people_detail,
+                        widget: Builder(builder: (context) {
+                          String peopleId =
+                              context.vRouter.queryParameters['id']!;
+                          print("Response ------------------ ${peopleId}");
+                          return ProfileDetail1(
+                            peopleId: peopleId,
+                          );
+                        })),
+                  ],
+                ),
+              ],
               widget: PeopleHomeView(),
               transitionDuration: Duration(seconds: 1)),
         ],
       ),
-      VNester.builder(
-        path: '/:username',
-        widgetBuilder: (_, state, child) => Builder(builder: (context) {
-          String peopleId = context.vRouter.queryParameters['id']!;
-          print("Response ------------------ ${peopleId}");
-          return ProfileDetail1(
-            peopleId: peopleId,
-          );
-        }),
-        nestedRoutes: [
-          VWidget(
-              path: people_detail,
-              name: people_detail,
-              widget: Builder(builder: (context) {
-                String peopleId = context.vRouter.queryParameters['id']!;
-                print("Response ------------------ ${peopleId}");
-                return ProfileDetail1(
-                  peopleId: peopleId,
-                );
-              })),
-        ],
-      ),
+
       // VNester.builder(
       //   path: '/:username',
       //   widgetBuilder: (_, state, child) {
