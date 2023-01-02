@@ -785,7 +785,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     children: List.generate(
                       abc.length,
                       (index) {
-                        return abc[index]!.isEmpty
+                        return abc[index].isEmpty
                             ? Padding(
                                 padding: EdgeInsets.only(
                                   top: 2.sp,
@@ -1581,6 +1581,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           widget.response!.data!.tags != null &&
           widget.response!.data!.tags!.isNotEmpty) {
         widget.response!.data!.tags!.forEach((element) {
+          print("Tag-----------------------------------");
+          print(element.name);
           if (!abc.contains(element.name)) {
             abc.add(element.name!);
           }

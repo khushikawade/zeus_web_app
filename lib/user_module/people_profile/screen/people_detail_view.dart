@@ -59,8 +59,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
   List<int> daysCountList = [1, 2, 3, 4, 5, 6, 7];
 
- 
-
   Future<void> getUpdatePeople() async {
     var token = 'Bearer ' + storage.read("token");
     var userId = storage.read("user_id");
@@ -183,7 +181,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
   @override
   void initState() {
+    print(
+        "--------------------------------------------------------------------");
     _getTag = getProject();
+    print(
+        "--------------------------9999999999999999999999------------------------------------------");
     change();
     _isSelected = false;
 

@@ -1,10 +1,9 @@
-
 import 'package:flutter/cupertino.dart' show ChangeNotifier;
 import 'package:zeus/services/response_model/tag_model/tagresponse.dart';
 import 'package:zeus/services/service_class.dart';
 
 class TagDetail extends ChangeNotifier {
-  Service service=Service();
+  Service service = Service();
   TagResponse? tagResponse;
   bool loading = false;
 
@@ -13,11 +12,12 @@ class TagDetail extends ChangeNotifier {
     tagResponse = (await service.getTag());
     print("addtags");
     // print(peopleIdelResponse);
+    print(tagResponse);
     loading = false;
     notifyListeners();
   }
 
- /* ProjectDetailResponse productData(){
+  /* ProjectDetailResponse productData(){
     return projectDetailResponse!;
   }*/
 }
