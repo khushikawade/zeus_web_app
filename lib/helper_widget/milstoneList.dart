@@ -4,7 +4,7 @@ import 'package:zeus/services/model/phase_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/util.dart';
 
-Widget milestoneList(context, PhaseDetails phaseDetails,
+Widget milestoneList(context, PhaseDetails phaseDetails, 
         {required Null Function(Milestones values, int index, String action)
             callback}) =>
     Container(
@@ -13,6 +13,7 @@ Widget milestoneList(context, PhaseDetails phaseDetails,
         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
         child: ListView.builder(
             shrinkWrap: true,
+           
             // physics: BouncingScrollPhysics,
             itemCount: phaseDetails.milestone?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {

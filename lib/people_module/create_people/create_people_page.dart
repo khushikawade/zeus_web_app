@@ -1051,15 +1051,14 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               top: 10.sp),
                                           hintTextHeight: 1.7.h,
                                           validator: (value) {
-                                            RegExp regex =
-                                                RegExp(r'^\D+|(?<=\d),(?=\d)');
+                                            RegExp regex = RegExp(r'^[0-9]+$');
+
                                             if (value.isEmpty) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
-
                                               return 'Please enter';
-                                            } else if (regex.hasMatch(value)) {
+                                            } else if (!regex.hasMatch(value)) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
@@ -1755,8 +1754,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           top: 10.sp),
                                       hintTextHeight: 1.7.h,
                                       validator: (value) {
-                                        String pattern = r"([0-9])\w+";
-                                        RegExp regExp = new RegExp(pattern);
+                                        RegExp regExp = new RegExp(r'^[0-9]+$');
                                         if (value.isEmpty) {
                                           setState(() {
                                             createPeopleValidate = false;

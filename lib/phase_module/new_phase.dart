@@ -117,6 +117,7 @@ class _NewPhaseState extends State<NewPhase> {
       TextEditingController();
   final TextEditingController _phaseLangugaeController =
       TextEditingController();
+  final ScrollController verticalScroll = ScrollController();
 
   phaseInitialData() {
     if (getPhaseDetails != null &&
@@ -226,6 +227,7 @@ class _NewPhaseState extends State<NewPhase> {
               width: MediaQuery.of(context).size.width * 0.99.w,
               height: double.infinity,
               child: RawScrollbar(
+                controller: verticalScroll,
                 thumbColor: const Color(0xff4b5563),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
