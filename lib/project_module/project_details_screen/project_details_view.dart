@@ -792,7 +792,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 ),
                                 child: PopupMenuButton<int>(
                                   tooltip: '',
-                                  offset: Offset(35, 48),
+                                  offset: Offset(34, 50),
                                   color: Color(0xFF0F172A),
                                   child: Container(
                                       width: 40.0.w,
@@ -824,88 +824,89 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                         child: Container(
                                           width: 400.w,
                                           color: const Color(0xff1E293B),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              searchTextField =
-                                                  TypeAheadFormField(
-                                                keepSuggestionsOnLoading: false,
-                                                hideOnLoading: true,
-                                                suggestionsBoxVerticalOffset:
-                                                    0.0,
-                                                suggestionsBoxDecoration:
-                                                    SuggestionsBoxDecoration(
-                                                        color:
-                                                            Color(0xff0F172A)),
-                                                suggestionsCallback: (pattern) {
-                                                  return getSuggestions(
-                                                      pattern);
-                                                },
-                                                textFieldConfiguration:
-                                                    TextFieldConfiguration(
-                                                  controller:
-                                                      _typeAheadController,
+                                          child: searchTextField =
+                                              TypeAheadFormField(
+                                            keepSuggestionsOnLoading: false,
+                                            hideOnLoading: true,
+                                            suggestionsBoxVerticalOffset: 0.0,
+                                            suggestionsBoxDecoration:
+                                                SuggestionsBoxDecoration(
+                                                    color: Color(0xff0F172A)),
+                                            suggestionsCallback: (pattern) {
+                                              return getSuggestions(pattern);
+                                            },
+                                            noItemsFoundBuilder: (context) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                child: Text(
+                                                  'No Items Found!',
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 14.0.sp),
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  cursorColor: Colors.white,
-                                                  autofocus: true,
-                                                  decoration: InputDecoration(
-                                                    contentPadding:
-                                                        EdgeInsets.only(
-                                                      top: 15.0.sp,
-                                                    ),
-                                                    prefixIcon: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 0.0.sp),
-                                                        child: Icon(
-                                                          Icons.search,
-                                                          color:
-                                                              Color(0xff64748B),
-                                                        )),
-                                                    hintText: 'Search',
-                                                    hintStyle: TextStyle(
-                                                        fontSize: 14.0.sp,
-                                                        color: Colors.white,
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                    border: InputBorder.none,
+                                                      fontSize: 14.sp),
+                                                ),
+                                              );
+                                            },
+                                            textFieldConfiguration:
+                                                TextFieldConfiguration(
+                                              controller: _typeAheadController,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.0.sp),
+                                              keyboardType: TextInputType.text,
+                                              cursorColor: Colors.white,
+                                              autofocus: true,
+                                              decoration: InputDecoration(
+                                                // contentPadding: EdgeInsets.only(
+                                                //     left: 10.sp, bottom: 5.sp),
+
+                                                prefixIconConstraints:
+                                                    BoxConstraints(),
+                                                prefixIcon: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 3.5.sp,
+                                                      right: 8.sp),
+                                                  child: Icon(
+                                                    Icons.search,
+                                                    size: 22.sp,
+                                                    color: Color(0xff334155),
                                                   ),
                                                 ),
-                                                itemBuilder: (context, item) {
-                                                  return rowProject(item);
-                                                },
-                                                transitionBuilder: (context,
-                                                    suggestionsBox,
-                                                    controller) {
-                                                  return suggestionsBox;
-                                                },
-                                                onSuggestionSelected: (item) {
-                                                  _typeAheadController.text =
-                                                      '';
-                                                  if (!abc
-                                                      .contains(item.name)) {
-                                                    abc.removeWhere((element) =>
-                                                        element.isEmpty);
-                                                    abc.add(item.name!);
-                                                    abc.add("");
-                                                    saveTagApi(
-                                                        widget
-                                                            .response!.data!.id
-                                                            .toString(),
-                                                        item.name!);
-                                                  }
-                                                  setState(() {
-                                                    Navigator.of(context).pop();
-                                                  });
-                                                },
+                                                hintText: 'Search',
+                                                hintStyle: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: Colors.white,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                                border: InputBorder.none,
                                               ),
-                                            ],
+                                            ),
+                                            itemBuilder: (context, item) {
+                                              return rowProject(item);
+                                            },
+                                            transitionBuilder: (context,
+                                                suggestionsBox, controller) {
+                                              return suggestionsBox;
+                                            },
+                                            onSuggestionSelected: (item) {
+                                              _typeAheadController.text = '';
+                                              if (!abc.contains(item.name)) {
+                                                abc.removeWhere((element) =>
+                                                    element.isEmpty);
+                                                abc.add(item.name!);
+                                                abc.add("");
+                                                saveTagApi(
+                                                    widget.response!.data!.id
+                                                        .toString(),
+                                                    item.name!);
+                                              }
+                                              setState(() {
+                                                Navigator.of(context).pop();
+                                              });
+                                            },
                                           ),
                                         ),
                                       ),
@@ -917,53 +918,109 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                             : Padding(
                                 padding: EdgeInsets.only(
                                     top: 2.sp, bottom: 2.sp, left: 5.sp),
-                                child: InputChip(
-                                  labelPadding: EdgeInsets.only(
-                                      left: 10.sp, top: 7.sp, bottom: 7.sp),
-                                  shadowColor: Color(0xff334155),
-                                  shape: RoundedRectangleBorder(
-                                      side:
-                                          BorderSide(color: Color(0xff334155)),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          13.r,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff334155),
+                                    borderRadius: BorderRadius.circular(
+                                      8.r,
+                                    ),
+                                  ),
+                                  // color: Colors.red,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0.sp),
+                                    child: Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      children: [
+                                        Text(
+                                          abc[index],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: ColorSelect.white_color,
+                                              fontSize: 14.sp,
+                                              fontStyle: FontStyle.normal,
+                                              fontFamily: 'Inter-Regular',
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                      )),
-                                  side: BorderSide(color: Color(0xff334155)),
-                                  deleteIcon: Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 20.sp,
+                                        InkWell(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 8.0.sp),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 18.sp,
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            widget.response!.data!.tags!
+                                                .forEach(
+                                              (element) {
+                                                if (element.name ==
+                                                    abc[index]) {
+                                                  removeTagAPI(
+                                                      element.id.toString());
+                                                }
+                                              },
+                                            );
+                                            setState(() {
+                                              abc.removeAt(index);
+                                            });
+                                          },
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  backgroundColor: Color(0xff334155),
-                                  visualDensity: VisualDensity.compact,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  label: Text(
-                                    abc[index] ?? '',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14.sp),
-                                  ),
-                                  onSelected: (bool selected) {
-                                    setState(() {
-                                      _isSelected = selected;
-                                    });
-                                  },
-                                  onDeleted: () {
-                                    widget.response!.data!.tags!.forEach(
-                                      (element) {
-                                        if (element.name == abc[index]) {
-                                          removeTagAPI(element.id.toString());
-                                        }
-                                      },
-                                    );
-                                    setState(() {
-                                      abc.removeAt(index);
-                                    });
-                                  },
-                                  showCheckmark: false,
-                                ),
-                              );
+                                )
+
+                                //  InputChip(
+                                //   labelPadding: EdgeInsets.only(
+                                //       left: 10.sp, top: 7.sp, bottom: 7.sp),
+                                //   shadowColor: Color(0xff334155),
+                                //   shape: RoundedRectangleBorder(
+                                //       side:
+                                //           BorderSide(color: Color(0xff334155)),
+                                //       borderRadius: BorderRadius.all(
+                                //         Radius.circular(
+                                //           13.r,
+                                //         ),
+                                //       )),
+                                //   side: BorderSide(color: Color(0xff334155)),
+                                //   deleteIcon: Icon(
+                                //     Icons.close,
+                                //     color: Colors.white,
+                                //     size: 20.sp,
+                                //   ),
+                                //   backgroundColor: Color(0xff334155),
+                                //   visualDensity: VisualDensity.compact,
+                                //   materialTapTargetSize:
+                                //       MaterialTapTargetSize.shrinkWrap,
+                                //   label: Text(
+                                //     abc[index] ?? '',
+                                //     style: TextStyle(
+                                //         color: Colors.white, fontSize: 14.sp),
+                                //   ),
+                                //   onSelected: (bool selected) {
+                                //     setState(() {
+                                //       _isSelected = selected;
+                                //     });
+                                //   },
+                                //   onDeleted: () {
+                                //     widget.response!.data!.tags!.forEach(
+                                //       (element) {
+                                //         if (element.name == abc[index]) {
+                                //           removeTagAPI(element.id.toString());
+                                //         }
+                                //       },
+                                //     );
+                                //     setState(() {
+                                //       abc.removeAt(index);
+                                //     });
+                                //   },
+                                //   showCheckmark: false,
+                                // ),
+
+                                );
                       },
                     ),
                   ),
@@ -1074,7 +1131,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     ),
                   ],
                 ),
-                GestureDetector(
+                InkWell(
                   child: Row(
                     children: [
                       Container(
@@ -1087,7 +1144,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
+                        // margin: EdgeInsets.only(right: 80.0.sp, top: 0.0),
                         child: Text(
                           "New phase",
                           style: TextStyle(
@@ -1117,6 +1174,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     }
                   },
                 ),
+                SizedBox(width: 80.w)
               ],
             ),
           ),
@@ -1206,6 +1264,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 var phaseType = phase.phaseType;
                 String name = title!.substring(0, 2).toUpperCase();
                 var date = phase.startDate;
+
                 var endDate = phase.endDate;
                 var _date = date.toString();
                 var date1 = AppUtil.getFormatedDate(_date);
@@ -1363,8 +1422,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         ),
                         width: MediaQuery.of(context).size.width,
                         child: Container(
-                          color: Color(0xff94A3B8),
-                          height: 0.2.sp,
+                          color: Color(0xff424D5F),
+                          height: 0.8.sp,
                         )),
                   ],
                 );
@@ -1622,7 +1681,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.delete(
-        // Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
         Uri.parse('${AppUrl.baseUrl}/project/tags/${tagId}'),
         headers: {
           "Content-Type": "application/json",

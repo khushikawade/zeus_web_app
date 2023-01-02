@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/people_module/create_people/create_people_page.dart';
 import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
@@ -54,6 +55,9 @@ class _NavigationRailState extends State<MyHomePage1>
   Future? getList;
 
   int _selectedIndex = 1;
+
+  GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -289,17 +293,26 @@ class _NavigationRailState extends State<MyHomePage1>
                       child: NavigationRail(
                         selectedIndex: _selectedIndex,
                         onDestinationSelected: (int index) {
-                          _selectedIndex = index;
+                          if (index == 0) {
+                            if (widget.currentIndex == 1) {
+                              showAlertDialog(context);
+                            } else {
+                              showAlertDialogPeople(context);
+                            }
+                          } else {
+                            _selectedIndex = index;
 
-                          final username = VRouter.of(context).path;
-                          print("User name ----------------- ${username}");
-                          if (_selectedIndex == 1) {
-                            ConnectedRoutes.toProject(context, username, false);
-                          } else if (_selectedIndex == 3) {
-                            ConnectedRoutes.toPeople(context, username);
-                          } else {}
+                            final username = VRouter.of(context).path;
+                            print("User name ----------------- ${username}");
+                            if (_selectedIndex == 1) {
+                              ConnectedRoutes.toProject(
+                                  context, username, false);
+                            } else if (_selectedIndex == 3) {
+                              ConnectedRoutes.toPeople(context, username);
+                            } else {}
 
-                          setState(() {});
+                            setState(() {});
+                          }
                         },
                         labelType: NavigationRailLabelType.selected,
                         backgroundColor: const Color(0xff0F172A),
@@ -655,5 +668,59 @@ class _NavigationRailState extends State<MyHomePage1>
         ),
       ),
     );
+  }
+
+  //Create project_detail popup
+  void showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              contentPadding: EdgeInsets.zero,
+              backgroundColor: const Color(0xff1E293B),
+              content: Form(
+                  key: _addFormKey,
+                  child: CreateProjectPage(
+                    formKey: _addFormKey,
+                    response: null,
+                  )),
+            ),
+          );
+        });
+  }
+
+  //Create project_detail popup
+  void showAlertDialogPeople(BuildContext context) async {
+    bool result = await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              contentPadding: EdgeInsets.zero,
+              backgroundColor: const Color(0xff1E293B),
+              content: Form(
+                  key: _formKey,
+                  child: CreatePeoplePage(
+                    formKey: _formKey,
+                    response: null,
+                    isEdit: false,
+                  )),
+            ),
+          );
+        });
+
+    if (result != null && result) {
+      Provider.of<PeopleHomeViewModel>(context, listen: false)
+          .getPeopleDataList(searchText: '');
+
+      setState(() {});
+    }
   }
 }

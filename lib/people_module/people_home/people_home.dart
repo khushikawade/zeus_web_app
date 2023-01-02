@@ -29,7 +29,7 @@ class PeopleHomeView extends StatefulWidget {
 }
 
 class _PeopleHomeViewState extends State<PeopleHomeView> {
-  String token = "";
+  // String token = "";
   var dataPeople = 'people_data';
   bool imageavail = false;
 
@@ -47,29 +47,12 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
         .changeProfile();
   }
 
-  void change() async {
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setString('val', 'y');
-  }
-
   @override
   void initState() {
     Provider.of<PeopleHomeViewModel>(context, listen: false)
         .getPeopleDataList();
-    change();
-    getToken();
-    super.initState();
-  }
 
-  void getToken() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {
-        token = sharedPreferences.getString('login')!;
-        print(token);
-      });
-      return;
-    }
+    super.initState();
   }
 
   @override

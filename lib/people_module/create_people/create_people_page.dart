@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
@@ -24,6 +25,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:intl/intl.dart';
 import 'package:http_parser/http_parser.dart';
+
+import '../../user_module/people_profile/screen/people_detail_view.dart';
+import '../people_home/people_home_view_model.dart';
 
 class CreatePeoplePage extends StatefulWidget {
   PeopleData? response;
@@ -258,73 +262,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     }
     return null;
   }
-
-  // // update Controller Value
-  // updateControllerValue() {
-  //   _projecttitle.text = widget.response!.data != null &&
-  //           widget.response!.data!.title != null &&
-  //           widget.response!.data!.title!.isNotEmpty
-  //       ? widget.response!.data!.title!
-  //       : '';
-
-  //   _crmtask.text = widget.response!.data != null &&
-  //           widget.response!.data!.crmTaskId != null &&
-  //           widget.response!.data!.crmTaskId!.isNotEmpty
-  //       ? widget.response!.data!.crmTaskId!
-  //       : '';
-
-  //   _warkfolderId.text = widget.response!.data != null &&
-  //           widget.response!.data!.workFolderId != null &&
-  //           widget.response!.data!.workFolderId!.isNotEmpty
-  //       ? widget.response!.data!.workFolderId!
-  //       : '';
-
-  //   _budget.text =
-  //       widget.response!.data != null && widget.response!.data!.budget != null
-  //           ? widget.response!.data!.budget!.toString()
-  //           : '';
-
-  //   _estimatehours.text = widget.response!.data != null &&
-  //           widget.response!.data!.estimationHours != null &&
-  //           widget.response!.data!.estimationHours!.isNotEmpty
-  //       ? widget.response!.data!.estimationHours!.toString()
-  //       : '';
-
-  //   _custome = widget.response!.data != null &&
-  //           widget.response!.data!.customerId != null
-  //       ? widget.response!.data!.customerId.toString()
-  //       : '';
-
-  //   _account = widget.response!.data != null &&
-  //           widget.response!.data!.accountablePersonId != null
-  //       ? widget.response!.data!.accountablePersonId.toString()
-  //       : '';
-
-  //   _status =
-  //       widget.response!.data != null && widget.response!.data!.status != null
-  //           ? widget.response!.data!.status.toString()
-  //           : '';
-
-  //   _curren =
-  //       widget.response!.data != null && widget.response!.data!.currency != null
-  //           ? widget.response!.data!.currency.toString()
-  //           : '';
-
-  //   try {
-  //     DropdownModel? result = getAllInitialValue(projectStatusList, _status);
-  //     if (result != null) {
-  //       _status = result.id;
-  //     } else {
-  //       _status = null;
-  //     }
-  //   } catch (e) {}
-
-  //   if (widget.response!.data != null &&
-  //       widget.response!.data!.deliveryDate != null &&
-  //       widget.response!.data!.deliveryDate!.isNotEmpty) {
-  //     selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
-  //   }
-  // }
 
   @override
   void initState() {
@@ -1305,65 +1242,74 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 ),
                                 selectedDaysList != null &&
                                         selectedDaysList.isNotEmpty
-                                    ? SizedBox(
-                                        height: 30.h,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: selectedDaysList.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8),
-                                              child: InputChip(
-                                                shadowColor: Color(0xff334155),
-                                                shape: RoundedRectangleBorder(
-                                                    side: BorderSide(
-                                                        color:
-                                                            Color(0xff334155)),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(
-                                                        8.r,
+                                    ? Padding(
+                                        padding: EdgeInsets.only(right: 8.sp),
+                                        child: Wrap(
+                                          runSpacing: 8.sp,
+                                          spacing: 8.sp,
+                                          children: List.generate(
+                                            selectedDaysList.length,
+                                            (index) {
+                                              return Container(
+                                                // padding: EdgeInsets.only(top: 10),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.r,
+                                                  ),
+                                                ),
+                                                // color: Colors.red,
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.all(8.0.sp),
+                                                  child: Wrap(
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        selectedDaysList[index],
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: ColorSelect
+                                                                .white_color,
+                                                            fontSize: 14.sp,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontFamily:
+                                                                'Inter-Regular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
-                                                    )),
-                                                side: BorderSide(
-                                                    color: Color(0xff334155)),
-                                                deleteIcon: Icon(
-                                                  Icons.close,
-                                                  color: Colors.white,
-                                                  size: 20.sp,
+                                                      InkWell(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 8.0.sp),
+                                                          child: Icon(
+                                                            Icons.close,
+                                                            color: Colors.white,
+                                                            size: 18.sp,
+                                                          ),
+                                                        ),
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedDaysList
+                                                                .removeAt(
+                                                                    index);
+                                                          });
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                                backgroundColor:
-                                                    Color(0xff334155),
-                                                visualDensity:
-                                                    VisualDensity.compact,
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
-                                                label: Text(
-                                                  selectedDaysList[index],
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                selected: _isSelected!,
-                                                onSelected: (bool selected) {
-                                                  setState(() {
-                                                    _isSelected = selected;
-                                                    print(
-                                                        "_isSelected--------------------------${_isSelected}");
-                                                  });
-                                                },
-                                                onDeleted: () {
-                                                  setState(() {
-                                                    selectedDaysList
-                                                        .removeAt(index);
-                                                  });
-                                                },
-                                                showCheckmark: false,
-                                              ),
-                                            );
-                                          },
+                                              );
+                                            },
+                                          ),
                                         ),
                                       )
                                     : Container(),
@@ -1453,6 +1399,13 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             : null,
                                     fromTitle: Text(
                                       'From',
+                                      strutStyle: StrutStyle(
+                                        fontFamily: 'Inter-Medium',
+                                        fontSize: 14,
+                                        // height: 1.7,
+
+                                        leading: 1,
+                                      ),
                                       style: TextStyle(
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Inter-Medium',
@@ -1471,7 +1424,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           fontSize: 14.sp,
                                           color: Colors.white),
                                     ),
-                                    titlePadding: 16.sp,
+                                    // titlePadding: 5.sp,
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         color: Colors.white),
@@ -1556,7 +1509,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                 offsetX: 55.w,
                                                 constraints:
                                                     BoxConstraints.expand(
-                                                        width: 313.w,
+                                                        width: 291.w,
                                                         height: 262.h),
                                                 color: Color(0xff0F172A)),
                                         hideOnLoading: true,
@@ -1614,6 +1567,22 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           // Text("khushi");
                                           // rowResourceName(item);
                                         },
+                                        noItemsFoundBuilder: (context) {
+                                          return Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Text(
+                                                'No Items Found!',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14.sp),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                         transitionBuilder: (context,
                                             suggestionsBox, controller) {
                                           return suggestionsBox;
@@ -1648,59 +1617,118 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       height: 8.h,
                                     ),
                                     Wrap(
-                                      spacing: 5.sp,
-                                      runSpacing: 5.sp,
+                                      spacing: 8.sp,
+                                      runSpacing: 8.sp,
                                       children: List.generate(
                                         abc.length,
                                         (index) {
                                           return Container(
-                                            height: 32.h,
-                                            child: InputChip(
-                                              shadowColor: Color(0xff334155),
-                                              shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: Color(0xff334155)),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(
-                                                      8.r,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.r,
+                                              ),
+                                            ),
+                                            // color: Colors.red,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0.sp),
+                                              child: Wrap(
+                                                crossAxisAlignment:
+                                                    WrapCrossAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    abc[index],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: ColorSelect
+                                                            .white_color,
+                                                        fontSize: 14.sp,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontFamily:
+                                                            'Inter-Regular',
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  InkWell(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 8.0.sp),
+                                                      child: Icon(
+                                                        Icons.close,
+                                                        color: Colors.white,
+                                                        size: 18.sp,
+                                                      ),
                                                     ),
-                                                  )),
-                                              side: BorderSide(
-                                                  color: Color(0xff334155)),
-                                              deleteIcon: Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 20.sp,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        abc.removeAt(index);
+                                                      });
+                                                    },
+                                                  )
+                                                ],
                                               ),
-                                              backgroundColor:
-                                                  Color(0xff334155),
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              label: Text(
-                                                abc[index],
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  _isSelected = selected;
-                                                });
-                                              },
-                                              onDeleted: () {
-                                                setState(() {
-                                                  abc.removeAt(index);
-                                                });
-                                              },
-                                              showCheckmark: false,
                                             ),
                                           );
                                         },
                                       ),
-                                    ),
+                                    )
+
+                                    // Wrap(
+                                    //   spacing: 5.sp,
+                                    //   runSpacing: 5.sp,
+                                    //   children: List.generate(
+                                    //     abc.length,
+                                    //     (index) {
+                                    //       return Container(
+                                    //         height: 32.h,
+                                    //         child: InputChip(
+                                    //           shadowColor: Color(0xff334155),
+                                    //           shape: RoundedRectangleBorder(
+                                    //               side: BorderSide(
+                                    //                   color: Color(0xff334155)),
+                                    //               borderRadius:
+                                    //                   BorderRadius.all(
+                                    //                 Radius.circular(
+                                    //                   8.r,
+                                    //                 ),
+                                    //               )),
+                                    //           side: BorderSide(
+                                    //               color: Color(0xff334155)),
+                                    //           deleteIcon: Icon(
+                                    //             Icons.close,
+                                    //             color: Colors.white,
+                                    //             size: 20.sp,
+                                    //           ),
+                                    //           backgroundColor:
+                                    //               Color(0xff334155),
+                                    //           visualDensity:
+                                    //               VisualDensity.compact,
+                                    //           materialTapTargetSize:
+                                    //               MaterialTapTargetSize
+                                    //                   .shrinkWrap,
+                                    //           label: Text(
+                                    //             abc[index],
+                                    //             style: TextStyle(
+                                    //                 color: Colors.white),
+                                    //           ),
+                                    //           onSelected: (bool selected) {
+                                    //             setState(() {
+                                    //               _isSelected = selected;
+                                    //             });
+                                    //           },
+                                    //           onDeleted: () {
+                                    //             setState(() {
+                                    //               abc.removeAt(index);
+                                    //             });
+                                    //           },
+                                    //           showCheckmark: false,
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ],
@@ -2029,10 +2057,9 @@ class _EditPageState extends State<CreatePeoplePage> {
     var responseString = await response.stream.bytesToString();
     print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
-      SmartDialog.dismiss();
+      print(widget.response);
 
       //setState(() {
-
       //clearContoller();
       selectDays = false;
       selectSkill = false;
@@ -2047,8 +2074,29 @@ class _EditPageState extends State<CreatePeoplePage> {
       _selectedFile = [];
       request.files.clear();
       // });
-
       Navigator.pop(context, true);
+
+      // Navigator.pop(context);
+
+      SmartDialog.dismiss();
+
+      // widget.returnValue!();
+
+      // widget.response = PeopleData.fromJson(jsonDecode(responseString));
+      // print(widget.response);
+
+      // bool result = await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => ProfileDetail(
+      //               list: widget.response!,
+      //               index: 6,
+      //             )));
+
+      // if (result) {
+      //   Provider.of<PeopleHomeViewModel>(context, listen: false)
+      //       .getPeopleDataList();
+      // }
 
       print("add people created");
     } else if (response.statusCode == 401) {
