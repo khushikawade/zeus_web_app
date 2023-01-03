@@ -38,7 +38,7 @@ class _SearchTextClassState extends State<SearchTextClass> {
       },
     );
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
       var user = userFromJson(response.body);
 
       users = user.data!;

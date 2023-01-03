@@ -401,7 +401,7 @@ class _MenuPhaseState extends State<MenuPhase>
     );
 
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
 
       var user = userFromJson(response.body);
 

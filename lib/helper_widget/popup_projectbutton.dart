@@ -296,7 +296,7 @@ class _ProjectEditState extends State<ProjectEdit>
     );
 
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
 
       SmartDialog.dismiss();
 

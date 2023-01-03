@@ -453,7 +453,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     );
 
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
 
       var user = userFromJson(response.body);
 
@@ -479,7 +479,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
     );
 
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
 
       SmartDialog.dismiss();
 

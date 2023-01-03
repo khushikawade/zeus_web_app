@@ -169,7 +169,7 @@ class _NavigationRailState extends State<MyHomePage>
       },
     );
     if (response.statusCode == 200) {
-      print("skills sucess");
+      print("skills success");
       var user = userFromJson(response.body);
       users = user.data!;
 
@@ -2314,7 +2314,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     cameraTapIcon == false &&
                                     circleTapIcon == false &&
                                     settingIcon == false &&
-                                    bellTapIcon == false 
+                                    bellTapIcon == false
                                 ? Padding(
                                     padding: EdgeInsets.only(
                                         top: 12.sp, left: 20.sp),
