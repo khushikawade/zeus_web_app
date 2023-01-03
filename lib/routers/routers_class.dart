@@ -26,13 +26,7 @@ import '../home_module/home_page.dart';
 //   }
 // }
 
-class MyRoutes {
-  static String loginRoute = "/login";
-  static String homeRoute = "/home";
-  static String peopleDetailsRoute = "/people_detail";
-  static const String peopleRoute = "/people";
-  static const String clickUpWebView = "/webview";
-}
+class MyRoutes {}
 
 class ConnectedRoutes extends VRouteElementBuilder {
   static final String project = 'project';
@@ -61,8 +55,7 @@ class ConnectedRoutes extends VRouteElementBuilder {
     if (username.contains("/$people")) {
       username = username.replaceAll("/$people", "");
     }
-    context.vRouter
-        .to('$username/$people_detail', queryParameters: {"id": peopleId});
+    context.vRouter.to('$username/$people_detail', queryParameters: {"id": peopleId});
   }
 
   @override
@@ -71,7 +64,7 @@ class ConnectedRoutes extends VRouteElementBuilder {
       VNester.builder(
         path: '/:username',
         widgetBuilder: (_, state, child) => MyHomePage1(
-          child,
+          child: child,
           currentIndex: state.names.contains(people)
               ? 3
               : state.names.contains(project)

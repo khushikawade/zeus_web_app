@@ -12,6 +12,7 @@ import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/responsive.dart';
 import 'package:zeus/helper_widget/textformfield.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
@@ -43,8 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // TextEditingController passwordController =
   //     TextEditingController(text: 'Password@123');
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController =
+      TextEditingController(text: 'vishal.zt@mailinator.com');
+  TextEditingController passwordController =
+      TextEditingController(text: "Password@123");
 
   void _submit() {
     setState(() => _submitted = true);
@@ -554,7 +557,7 @@ class _LoginScreenState extends State<LoginScreen> {
         sharedPreferences.setBool('isLogin', true);
         storage.write(isLogin, true);
 
-        context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
+        context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
       } else {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
@@ -610,9 +613,20 @@ class _LoginScreenState extends State<LoginScreen> {
         //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
 
         //context.vRouter.to(MyRoutes.homeRoute, isReplacement: true);
+        try {
+          //context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
 
-        final username = VRouter.of(context).path;
-        ConnectedRoutes.toProject(context, "/home");
+          context.vRouter.toSegments([
+            "home",
+            RouteConstants.projectRoute,
+          ], isReplacement: true);
+        } catch (e) {
+          print(e);
+          print("e");
+        }
+
+        /// final username = VRouter.of(context).path;
+        //ConnectedRoutes.toProject(context, "/home");
 
         //launchClickUpsUrl();
         // Navigator.of(context).pushAndRemoveUntil(

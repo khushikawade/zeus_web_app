@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:zeus/helper_widget/pop_resource_button.dart' as pop;
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/services/model/model_class.dart';
@@ -263,9 +264,17 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 //   queryParameters: {'id': _peopleList.id.toString()},
                 // );
 
-                final username = VRouter.of(context).path;
-                ConnectedRoutes.toProfileDetails(
-                    context, username, _peopleList.id.toString());
+                // final username = VRouter.of(context).path;
+                // //ConnectedRoutes.toProfileDetails(context, username, _peopleList.id.toString());
+                // context.vRouter.to(RouteConstants.peopleDetails,
+                //     queryParameters: {"id": _peopleList.id.toString()});
+
+                context.vRouter.toSegments([
+                  "people",
+                  RouteConstants.peopleDetails
+                ], queryParameters: {
+                  "id": _peopleList.id.toString()
+                }); // Push the url '/home/settings'
               },
               cells: [
                 DataCell(Row(

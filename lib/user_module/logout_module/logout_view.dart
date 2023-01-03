@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:vrouter/vrouter.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/colors.dart';
@@ -131,7 +132,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
       //             )),
       //     (Route<dynamic> route) => route is LoginScreen);
       //context.vxNav.popToRoot();
-      context.vRouter.to(MyRoutes.loginRoute, isReplacement: true);
+      context.vRouter.to(RouteConstants.loginRoute, isReplacement: true);
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
       AppUtil.showErrorDialog(

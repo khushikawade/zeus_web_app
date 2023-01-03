@@ -9,12 +9,14 @@ import 'package:webview_flutter_web/webview_flutter_web.dart';
 import 'package:zeus/clickup_login/webview_page.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_module_1.dart';
+import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
 import 'package:zeus/helper_widget/scroll_behaviour.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project_model.dart';
 import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/services/model/model_class.dart';
 import 'package:zeus/services/response_model/tag_model/tag_user.dart';
@@ -56,44 +58,68 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => TagDetail()),
             ChangeNotifierProvider(create: (_) => CreateProjectModel())
           ],
-          child: MaterialApp(
+          child: VRouter(
             debugShowCheckedModeBanner: false,
             builder: FlutterSmartDialog.init(),
-            home: VRouter(
-              debugShowCheckedModeBanner: false,
-              mode: VRouterMode.history,
-              initialUrl: storage.read("isLogin") == null
-                  ? MyRoutes.loginRoute
-                  : MyRoutes.homeRoute,
-              routes: [
-                VWidget(
-                  path: MyRoutes.loginRoute,
-                  widget: LoginScreen(
-                    onSubmit: (value) {},
+            mode: VRouterMode.history,
+            initialUrl: storage.read("isLogin") == null
+                ? RouteConstants.loginRoute
+                : RouteConstants.homeRoute,
+            routes: [
+              VWidget(
+                path: RouteConstants.loginRoute,
+                widget: LoginScreen(
+                  onSubmit: (value) {},
+                ),
+              ),
+              VNester(
+                path: RouteConstants.homeRoute,
+                widgetBuilder: (child) => MyHomePage1(
+                    child: child,
+                    currentIndex: 1), // Child is the widget from nestedRoutes
+                nestedRoutes: [
+                  VWidget(
+                      path: RouteConstants.projectRoute,
+                      widget: ProjectHome()), //l
+                  VWidget(path: RouteConstants.second, widget: SecondView()),
+                  VWidget(
+                    path: RouteConstants.peopleRoute,
+                    widget: PeopleHomeView(),
                   ),
-                  stackedRoutes: [
-                    ConnectedRoutes(),
-                  ],
-                ),
-                // VWidget(
-                //     path: MyRoutes.homeRoute,
-                //     widget: MyHomePage1(ProjectHome(), currentIndex: 1)),
-                // VWidget(
-                //     path: MyRoutes.peopleDetailsRoute,
-                //     name: MyRoutes.peopleDetailsRoute,
-                //     widget: Builder(builder: (context) {
-                //       String peopleId = context.vRouter.queryParameters['id']!;
-                //       print("Response ------------------ ${peopleId}");
-                //       return ProfileDetail1(
-                //         peopleId: peopleId,
-                //       );
-                //     })),
-                VRouteRedirector(
-                  redirectTo: MyRoutes.loginRoute,
-                  path: r'*',
-                ),
-              ],
-            ),
+                  VWidget(path: RouteConstants.four, widget: FourthView()),
+                  VWidget(path: RouteConstants.five, widget: FifthView()),
+                  VWidget(
+                      path: RouteConstants.six,
+                      widget: ProfileDetail1(
+                        peopleId: "65",
+                      )),
+
+                  //           VNester.builder(
+                  //   path: RouteConstants.peopleRoute,
+                  //   widgetBuilder: (_, state, child) => Builder(builder: (context) {
+                  //     return PeopleHomeView();
+                  //   }),
+                  //   nestedRoutes: [
+                  //     VWidget(
+                  //         path: RouteConstants.peopleDetails,
+                  //         name: RouteConstants.peopleDetails,
+                  //         widget: Builder(builder: (context) {
+                  //           String peopleId =
+                  //               context.vRouter.queryParameters['id']!;
+                  //           print("Response ------------------ ${peopleId}");
+                  //           return ProfileDetail1(
+                  //             peopleId: peopleId,
+                  //           );
+                  //         })),
+                  //   ],
+                  // ),
+                ],
+              ),
+              VRouteRedirector(
+                redirectTo: RouteConstants.homeRoute,
+                path: r'*',
+              ),
+            ],
           ),
         );
       },
