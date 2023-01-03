@@ -88,33 +88,29 @@ class MyApp extends StatelessWidget {
                   ),
                   VWidget(path: RouteConstants.four, widget: FourthView()),
                   VWidget(path: RouteConstants.five, widget: FifthView()),
+                  VWidget(path: RouteConstants.six, widget: SixView()),
+                        VNester.builder(
+                path: RouteConstants.peopleRoute,
+                widgetBuilder: (_, state, child) => Builder(builder: (context) {
+                  return PeopleHomeView();
+                }),
+                nestedRoutes: [
                   VWidget(
-                      path: RouteConstants.six,
-                      widget: ProfileDetail1(
-                        peopleId: "65",
-                      )),
-
-                  //           VNester.builder(
-                  //   path: RouteConstants.peopleRoute,
-                  //   widgetBuilder: (_, state, child) => Builder(builder: (context) {
-                  //     return PeopleHomeView();
-                  //   }),
-                  //   nestedRoutes: [
-                  //     VWidget(
-                  //         path: RouteConstants.peopleDetails,
-                  //         name: RouteConstants.peopleDetails,
-                  //         widget: Builder(builder: (context) {
-                  //           String peopleId =
-                  //               context.vRouter.queryParameters['id']!;
-                  //           print("Response ------------------ ${peopleId}");
-                  //           return ProfileDetail1(
-                  //             peopleId: peopleId,
-                  //           );
-                  //         })),
-                  //   ],
-                  // ),
+                      path: RouteConstants.peopleDetails,
+                      name: RouteConstants.peopleDetails,
+                      widget: Builder(builder: (context) {
+                        String peopleId =
+                            context.vRouter.queryParameters['id']!;
+                        print("Response ------------------ ${peopleId}");
+                        return ProfileDetail1(
+                          peopleId: peopleId,
+                        );
+                      })),
                 ],
               ),
+                ],
+              ),
+        
               VRouteRedirector(
                 redirectTo: RouteConstants.homeRoute,
                 path: r'*',

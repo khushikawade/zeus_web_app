@@ -152,7 +152,7 @@ class _NavigationRailState extends State<MyHomePage1>
 
     } else if (index == 6) {
       context.vRouter.toSegments(
-          ["people", RouteConstants.six]); // Push the url '/home/settings'
+          ["home", RouteConstants.six]); // Push the url '/home/settings'
 
     }
   }

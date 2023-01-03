@@ -264,17 +264,17 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                 //   queryParameters: {'id': _peopleList.id.toString()},
                 // );
 
-                // final username = VRouter.of(context).path;
-                // //ConnectedRoutes.toProfileDetails(context, username, _peopleList.id.toString());
-                // context.vRouter.to(RouteConstants.peopleDetails,
-                //     queryParameters: {"id": _peopleList.id.toString()});
+                final username = VRouter.of(context).path;
+                //ConnectedRoutes.toProfileDetails(context, username, _peopleList.id.toString());
+                context.vRouter.to(RouteConstants.peopleDetails,
+                    queryParameters: {"id": _peopleList.id.toString()});
 
-                context.vRouter.toSegments([
-                  "people",
-                  RouteConstants.peopleDetails
-                ], queryParameters: {
-                  "id": _peopleList.id.toString()
-                }); // Push the url '/home/settings'
+                // context.vRouter.toSegments([
+                //   "people",
+                //   RouteConstants.peopleDetails
+                // ], queryParameters: {
+                //   "id": _peopleList.id.toString()
+                // }); // Push the url '/home/settings'
               },
               cells: [
                 DataCell(Row(
