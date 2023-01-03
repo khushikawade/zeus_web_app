@@ -1138,6 +1138,7 @@ class _NewPhaseState extends State<NewPhase> {
                     ? milestoneList(
                         context,
                         phaseDetails,
+                        verticalScroll,
                         callback: (values, index, action) {
                           dialogSetState(() {
                             if (action == "Delete") {
@@ -1452,6 +1453,7 @@ class _NewPhaseState extends State<NewPhase> {
                         child: subTaskList(
                           context,
                           phaseDetails,
+                          verticalScroll,
                           callback: (values, index, subTaskAction) {
                             if (subTaskAction == 'Delete') {
                               onDeleteSubtask(index, dialogSetState);
