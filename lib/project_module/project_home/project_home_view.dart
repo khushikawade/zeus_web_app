@@ -239,7 +239,7 @@ class ProjectHomeState extends State<ProjectHome> {
               onSelectChanged: (newValue) {
                 Provider.of<ProjectHomeViewModel>(context, listen: false)
                     .getProjectDetail(_projectData.id!.toString())
-                    .then((val) {
+                    .then((val) async {
                   showProjectDetailsDialog(
                       Provider.of<ProjectHomeViewModel>(context, listen: false)
                           .productData(),
@@ -622,10 +622,10 @@ class ProjectHomeState extends State<ProjectHome> {
           //   body:
           Container(
         //width: 100,
-        width: MediaQuery.of(context).size.width < 950
-            ? MediaQuery.of(context).size.width * 2
-            : MediaQuery.of(context).size.width - 160,
-        height: 969,
+        // width: MediaQuery.of(context).size.width < 950
+        //     ? MediaQuery.of(context).size.width * 2
+        //     : MediaQuery.of(context).size.width - 160,
+        // height: 969,
         margin: const EdgeInsets.only(
             left: 40.0, right: 30.0, bottom: 10.0, top: 40.0),
         decoration: BoxDecoration(

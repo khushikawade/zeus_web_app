@@ -641,13 +641,7 @@ class _NavigationRailState extends State<MyHomePage1>
                 ),
               );
             }),
-            Container(
-                width: MediaQuery.of(context).size.width < 950
-                    ? MediaQuery.of(context).size.width * 2
-                    : MediaQuery.of(context).size.width - 160,
-                height: 969,
-                // color: Colors.blue,
-                child: widget.child),
+            Expanded(child: widget.child),
             // _selectedIndex == 1
             //     ?
             //     //ProfileWidget()
@@ -694,8 +688,8 @@ class _NavigationRailState extends State<MyHomePage1>
         });
 
     if (result != null && result) {
-      // await Provider.of<ProjectHomeViewModel>(context, listen: false)
-      //     .getPeopleIdel(searchText: '');
+      await Provider.of<ProjectHomeViewModel>(context, listen: false)
+          .getPeopleIdel(searchText: '');
 
       setState(() {});
     }

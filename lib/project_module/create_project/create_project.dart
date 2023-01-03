@@ -16,9 +16,9 @@ import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:zeus/utility/constant.dart';
+import 'package:provider/provider.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 class CreateProjectPage extends StatefulWidget {
   ProjectDetailResponse? response;
@@ -707,15 +707,15 @@ class _EditPageState extends State<CreateProjectPage> {
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
 
-        // await Provider.of<ProjectHomeViewModel>(context, listen: false)
-        //     .getPeopleIdel(searchText: '');
-
         SmartDialog.dismiss();
 
-        //Navigator.pop(context, true);
+        Navigator.pop(context, true);
 
-        final username = VRouter.of(context).path;
-        ConnectedRoutes.toProject(context, "/home", true);
+        Provider.of<ProjectHomeViewModel>(context, listen: false)
+          .getPeopleIdel(searchText: '');
+
+        //ConnectedRoutes.toProject(context, "/home", true);
+
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(
         //         builder: (context) => MyHomePage(

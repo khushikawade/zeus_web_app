@@ -37,8 +37,17 @@ class MyRoutes {
 class ConnectedRoutes extends VRouteElementBuilder {
   static final String project = 'project';
 
-  static void toProject(BuildContext context, String username, bool isFromLogin) =>
-      context.vRouter.to('$username/$project',isReplacement: isFromLogin != null && isFromLogin ? isFromLogin : false);
+  static void toProject(
+      BuildContext context, String username, bool isFromLogin) {
+    if (username.contains("${MyRoutes.peopleDetailsRoute}")) {
+      username = username.replaceAll("${MyRoutes.peopleDetailsRoute}", "");
+    } else if (username.contains("/$people")) {
+      username = username.replaceAll("/$people", "");
+    }
+    context.vRouter.to('$username/$project',
+        isReplacement:
+            isFromLogin != null && isFromLogin ? isFromLogin : false);
+  }
 
   // static final String home = 'home';
 
