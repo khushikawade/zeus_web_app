@@ -93,6 +93,7 @@ class ProjectHomeState extends State<ProjectHome> {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
     change();
+    getUsers();
 
     super.initState();
   }
@@ -702,27 +703,27 @@ class ProjectHomeState extends State<ProjectHome> {
     } catch (e) {}
   }
 
-  // void getUsers() async {
-  //   skillsData.clear();
-  //   var token = 'Bearer ' + storage.read("token");
-  //   var response = await http.get(
-  //     Uri.parse(AppUrl.searchLanguage),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Authorization": token,
-  //     },
-  //   );
-  //   if (response.statusCode == 200) {
-  //     print("skills sucess");
-  //     var skills = skillProjectFromJson(response.body);
-  //     print(skills);
-  //     print('Users: ${skills.data}');
-  //     skillsData.addAll(skills.data!);
-  //     print(skillsData);
-  //   } else if (response.statusCode == 401) {
-  //     AppUtil.showErrorDialog(context);
-  //   } else {
-  //     print("Error getting users.");
-  //   }
-  // }
+  void getUsers() async {
+    skillsData.clear();
+    var token = 'Bearer ' + storage.read("token");
+    var response = await http.get(
+      Uri.parse(AppUrl.searchLanguage),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token,
+      },
+    );
+    if (response.statusCode == 200) {
+      print("skills sucess");
+      var skills = skillProjectFromJson(response.body);
+      print(skills);
+      print('Users: ${skills.data}');
+      skillsData.addAll(skills.data!);
+      print(skillsData);
+    } else if (response.statusCode == 401) {
+      AppUtil.showErrorDialog(context);
+    } else {
+      print("Error getting users.");
+    }
+  }
 }
