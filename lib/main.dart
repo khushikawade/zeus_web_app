@@ -82,32 +82,69 @@ class MyApp extends StatelessWidget {
                       path: RouteConstants.projectRoute,
                       widget: ProjectHome()), //l
                   VWidget(path: RouteConstants.second, widget: SecondView()),
+                  // VWidget(
+                  //   path: RouteConstants.peopleRoute,
+                  //   widget: PeopleHomeView(),
+                  // ),
                   VWidget(
-                    path: RouteConstants.peopleRoute,
-                    widget: PeopleHomeView(),
-                  ),
+                      path: RouteConstants.peopleRoute,
+                      name: RouteConstants.peopleRoute,
+                      stackedRoutes: [
+                        VNester.builder(
+                          path: '/:username',
+                          widgetBuilder: (_, state, child) =>
+                              Builder(builder: (context) {
+                            String peopleId =
+                                context.vRouter.queryParameters['id']!;
+
+                            print("Response ------------------ ${peopleId}");
+
+                            return ProfileDetail1(
+                              peopleId: peopleId,
+                            );
+                          }),
+                          nestedRoutes: [
+                            VWidget(
+                                path: RouteConstants.peopleDetails,
+                                name: RouteConstants.peopleDetails,
+                                widget: Builder(builder: (context) {
+                                  String peopleId =
+                                      context.vRouter.queryParameters['id']!;
+
+                                  print(
+                                      "Response ------------------ ${peopleId}");
+
+                                  return ProfileDetail1(
+                                    peopleId: peopleId,
+                                  );
+                                })),
+                          ],
+                        ),
+                      ],
+                      widget: PeopleHomeView(),
+                      transitionDuration: Duration(seconds: 1)),
                   VWidget(path: RouteConstants.four, widget: FourthView()),
                   VWidget(path: RouteConstants.five, widget: FifthView()),
                   VWidget(path: RouteConstants.six, widget: SixView()),
-                        VNester.builder(
-                path: RouteConstants.peopleRoute,
-                widgetBuilder: (_, state, child) => Builder(builder: (context) {
-                  return PeopleHomeView();
-                }),
-                nestedRoutes: [
-                  VWidget(
-                      path: RouteConstants.peopleDetails,
-                      name: RouteConstants.peopleDetails,
-                      widget: Builder(builder: (context) {
-                        String peopleId =
-                            context.vRouter.queryParameters['id']!;
-                        print("Response ------------------ ${peopleId}");
-                        return ProfileDetail1(
-                          peopleId: peopleId,
-                        );
-                      })),
-                ],
-              ),
+              //           VNester.builder(
+              //   path: RouteConstants.peopleRoute,
+              //   widgetBuilder: (_, state, child) => Builder(builder: (context) {
+              //     return PeopleHomeView();
+              //   }),
+              //   nestedRoutes: [
+              //     VWidget(
+              //         path: RouteConstants.peopleDetails,
+              //         name: RouteConstants.peopleDetails,
+              //         widget: Builder(builder: (context) {
+              //           String peopleId =
+              //               context.vRouter.queryParameters['id']!;
+              //           print("Response ------------------ ${peopleId}");
+              //           return ProfileDetail1(
+              //             peopleId: peopleId,
+              //           );
+              //         })),
+              //   ],
+              // ),
                 ],
               ),
         

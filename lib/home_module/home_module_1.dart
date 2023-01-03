@@ -165,231 +165,230 @@ class _NavigationRailState extends State<MyHomePage1>
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         backgroundColor: Color(0xff0F172A),
-        // appBar: AppBar(
-        //   centerTitle: false,
-        //   automaticallyImplyLeading: false,
-        //   toolbarHeight: 70.h,
-        //   backgroundColor: const Color(0xff0F172A),
-        //   elevation: 0,
-        //   actions: [
-        //     Padding(
-        //       padding: EdgeInsets.only(right: 16.sp),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.end,
-        //         mainAxisSize: MainAxisSize.min,
-        //         crossAxisAlignment: CrossAxisAlignment.center,
-        //         children: [
-        //           Container(
-        //             padding: EdgeInsets.only(left: 5.sp, right: 5.sp),
-        //             width: 475.w,
-        //             height: 48.h,
-        //             decoration: BoxDecoration(
-        //               color: const Color(0xff1e293b),
-        //               borderRadius: BorderRadius.circular(
-        //                 42.r,
-        //               ),
-        //             ),
-        //             child: TextField(
-        //               controller: searchController,
-        //               onChanged: (val) {},
-        //               decoration: InputDecoration(
-        //                 contentPadding: EdgeInsets.only(top: 16.sp),
-        //                 prefixIcon: Padding(
-        //                     padding: EdgeInsets.only(
-        //                         top: 4.0.sp, left: 15.sp, right: 20.sp),
-        //                     child: Icon(
-        //                       Icons.search,
-        //                       color: Color(0xff64748B),
-        //                     )),
-        //                 hintText: _selectedIndex == 1
-        //                     ? 'Search project'
-        //                     : _selectedIndex == 3
-        //                         ? 'Search people'
-        //                         : 'Search',
-        //                 hintStyle: TextStyle(
-        //                     fontSize: 14.sp,
-        //                     color: Color(0xff64748B),
-        //                     fontFamily: 'Inter-Recgular',
-        //                     fontStyle: FontStyle.normal,
-        //                     letterSpacing: 0.1,
-        //                     fontWeight: FontWeight.w400),
-        //                 border: InputBorder.none,
-        //               ),
-        //               keyboardType: TextInputType.text,
-        //               style: TextStyle(
-        //                   color: Colors.white,
-        //                   fontSize: 14.sp,
-        //                   fontFamily: 'Inter-Medium',
-        //                   fontStyle: FontStyle.normal,
-        //                   letterSpacing: 0.1,
-        //                   fontWeight: FontWeight.w400),
-        //             ),
-        //           ),
-        //           SizedBox(
-        //             width: 10.w,
-        //           ),
-        //           Container(
-        //               width: 40.w,
-        //               height: 40.h,
-        //               child: CircleAvatar(
-        //                 radius: 20.r,
-        //                 backgroundImage: AssetImage('images/images.jpeg'),
-        //               )),
-        //           SizedBox(
-        //             width: 10.w,
-        //           ),
-        //           LogOut(),
-        //           SizedBox(
-        //             width: 15.w,
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        //   title: Row(
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     mainAxisSize: MainAxisSize.min,
-        //     children: [
-        //       GestureDetector(
-        //         onTap: () {},
-        //         child: SvgPicture.asset(
-        //           'images/hamburger.svg',
-        //           width: 18.w,
-        //           height: 12.h,
-        //         ),
-        //       ),
-        //       SvgPicture.asset(
-        //         'images/logo.svg',
-        //       ),
-        //       // SizedBox(
-        //       //   width: 25,
-        //       // ),
-        //       FutureBuilder(
-        //           future: getList,
-        //           builder: (context, snapshot) {
-        //             return Visibility(
-        //               visible: snapshot.data != null && snapshot.data as bool,
-        //               child: Column(
-        //                 children: [
-        //                   _selectedIndex == 1
-        //                       ? Padding(
-        //                           padding:
-        //                               EdgeInsets.only(top: 12.sp, left: 12.sp),
-        //                           child: Row(
-        //                             crossAxisAlignment:
-        //                                 CrossAxisAlignment.start,
-        //                             mainAxisAlignment:
-        //                                 MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Column(
-        //                                 children: [
-        //                                   Text("List",
-        //                                       style: TextStyle(
-        //                                           color: Color(0xff93C5FD),
-        //                                           fontSize: 14.sp,
-        //                                           fontFamily: 'Inter-Medium',
-        //                                           fontStyle: FontStyle.normal,
-        //                                           letterSpacing: 0.1,
-        //                                           fontWeight: FontWeight.w500)),
-        //                                   SizedBox(
-        //                                     height: 12.h,
-        //                                   ),
-        //                                   Container(
-        //                                     width: 25.w,
-        //                                     height: 3.h,
-        //                                     decoration: BoxDecoration(
-        //                                         color: Color(0xff93C5FD),
-        //                                         borderRadius: BorderRadius.only(
-        //                                             topLeft:
-        //                                                 Radius.circular(3.r),
-        //                                             topRight:
-        //                                                 Radius.circular(3.r))),
-        //                                   )
-        //                                 ],
-        //                               ),
-        //                               SizedBox(
-        //                                 width: 30.w,
-        //                               ),
-        //                               _selectedIndex == 1
-        //                                   // _selectedIndex == 1
-        //                                   ? Text("Timeline",
-        //                                       style: TextStyle(
-        //                                           color: Color(0xffffffff),
-        //                                           fontSize: 14.sp,
-        //                                           letterSpacing: 0.1,
-        //                                           fontStyle: FontStyle.normal,
-        //                                           fontFamily: 'Inter-Medium',
-        //                                           fontWeight: FontWeight.w500))
-        //                                   : Container(),
-        //                             ],
-        //                           ),
-        //                         )
-        //                       : Container(),
-        //                   _selectedIndex == 2
-        //                       ? Padding(
-        //                           padding:
-        //                               EdgeInsets.only(top: 12.sp, left: 12.sp),
-        //                           child: Row(
-        //                             crossAxisAlignment:
-        //                                 CrossAxisAlignment.start,
-        //                             mainAxisAlignment:
-        //                                 MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Column(
-        //                                 children: [
-        //                                   Text(_selectedIndex.toString(),
-        //                                       style: TextStyle(
-        //                                           color: Color(0xff93C5FD),
-        //                                           fontSize: 14.sp,
-        //                                           fontFamily: 'Inter-Medium',
-        //                                           fontStyle: FontStyle.normal,
-        //                                           letterSpacing: 0.1,
-        //                                           fontWeight: FontWeight.w500)),
-        //                                   SizedBox(
-        //                                     height: 12.h,
-        //                                   ),
-        //                                   Container(
-        //                                     width: 25.w,
-        //                                     height: 3.h,
-        //                                     decoration: BoxDecoration(
-        //                                         color: Color(0xff93C5FD),
-        //                                         borderRadius: BorderRadius.only(
-        //                                             topLeft:
-        //                                                 Radius.circular(3.r),
-        //                                             topRight:
-        //                                                 Radius.circular(3.r))),
-        //                                   )
-        //                                 ],
-        //                               ),
-        //                               SizedBox(
-        //                                 width: 30.w,
-        //                               ),
-        //                             ],
-        //                           ),
-        //                         )
-        //                       : Container(),
-        //                   _selectedIndex == 3
-        //                       ? Padding(
-        //                           padding: EdgeInsets.only(left: 22.sp),
-        //                           child: Text("Profile",
-        //                               style: TextStyle(
-        //                                   color: Color(0xffFFFFFF),
-        //                                   fontSize: 22.sp,
-        //                                   fontFamily: 'Inter-Medium',
-        //                                   letterSpacing: 0.1,
-        //                                   fontStyle: FontStyle.normal,
-        //                                   fontWeight: FontWeight.w700)),
-        //                         )
-        //                       : Container(),
-        //                 ],
-        //               ),
-        //             );
-        //           }),
-        //     ],
-        //   ),
-        // ),
-
+        appBar: AppBar(
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          toolbarHeight: 70.h,
+          backgroundColor: const Color(0xff0F172A),
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 16.sp),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 5.sp, right: 5.sp),
+                    width: 475.w,
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff1e293b),
+                      borderRadius: BorderRadius.circular(
+                        42.r,
+                      ),
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (val) {},
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(top: 16.sp),
+                        prefixIcon: Padding(
+                            padding: EdgeInsets.only(
+                                top: 4.0.sp, left: 15.sp, right: 20.sp),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(0xff64748B),
+                            )),
+                        hintText: _selectedIndex == 1
+                            ? 'Search project'
+                            : _selectedIndex == 3
+                                ? 'Search people'
+                                : 'Search',
+                        hintStyle: TextStyle(
+                            fontSize: 14.sp,
+                            color: Color(0xff64748B),
+                            fontFamily: 'Inter-Recgular',
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: 0.1,
+                            fontWeight: FontWeight.w400),
+                        border: InputBorder.none,
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.sp,
+                          fontFamily: 'Inter-Medium',
+                          fontStyle: FontStyle.normal,
+                          letterSpacing: 0.1,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Container(
+                      width: 40.w,
+                      height: 40.h,
+                      child: CircleAvatar(
+                        radius: 20.r,
+                        backgroundImage: AssetImage('images/images.jpeg'),
+                      )),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  LogOut(),
+                  SizedBox(
+                    width: 15.w,
+                  ),
+                ],
+              ),
+            ),
+          ],
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: SvgPicture.asset(
+                  'images/hamburger.svg',
+                  width: 18.w,
+                  height: 12.h,
+                ),
+              ),
+              SvgPicture.asset(
+                'images/logo.svg',
+              ),
+              // SizedBox(
+              //   width: 25,
+              // ),
+              FutureBuilder(
+                  future: getList,
+                  builder: (context, snapshot) {
+                    return Visibility(
+                      visible: snapshot.data != null && snapshot.data as bool,
+                      child: Column(
+                        children: [
+                          _selectedIndex == 1
+                              ? Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 12.sp, left: 12.sp),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text("List",
+                                              style: TextStyle(
+                                                  color: Color(0xff93C5FD),
+                                                  fontSize: 14.sp,
+                                                  fontFamily: 'Inter-Medium',
+                                                  fontStyle: FontStyle.normal,
+                                                  letterSpacing: 0.1,
+                                                  fontWeight: FontWeight.w500)),
+                                          SizedBox(
+                                            height: 12.h,
+                                          ),
+                                          Container(
+                                            width: 25.w,
+                                            height: 3.h,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xff93C5FD),
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(3.r),
+                                                    topRight:
+                                                        Radius.circular(3.r))),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 30.w,
+                                      ),
+                                      _selectedIndex == 1
+                                          // _selectedIndex == 1
+                                          ? Text("Timeline",
+                                              style: TextStyle(
+                                                  color: Color(0xffffffff),
+                                                  fontSize: 14.sp,
+                                                  letterSpacing: 0.1,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontFamily: 'Inter-Medium',
+                                                  fontWeight: FontWeight.w500))
+                                          : Container(),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
+                          _selectedIndex == 2
+                              ? Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 12.sp, left: 12.sp),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(_selectedIndex.toString(),
+                                              style: TextStyle(
+                                                  color: Color(0xff93C5FD),
+                                                  fontSize: 14.sp,
+                                                  fontFamily: 'Inter-Medium',
+                                                  fontStyle: FontStyle.normal,
+                                                  letterSpacing: 0.1,
+                                                  fontWeight: FontWeight.w500)),
+                                          SizedBox(
+                                            height: 12.h,
+                                          ),
+                                          Container(
+                                            width: 25.w,
+                                            height: 3.h,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xff93C5FD),
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(3.r),
+                                                    topRight:
+                                                        Radius.circular(3.r))),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 30.w,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
+                          _selectedIndex == 3
+                              ? Padding(
+                                  padding: EdgeInsets.only(left: 22.sp),
+                                  child: Text("Profile",
+                                      style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontSize: 22.sp,
+                                          fontFamily: 'Inter-Medium',
+                                          letterSpacing: 0.1,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w700)),
+                                )
+                              : Container(),
+                        ],
+                      ),
+                    );
+                  }),
+            ],
+          ),
+        ),
         body: Row(
           children: <Widget>[
             LayoutBuilder(builder: (context, constraint) {
