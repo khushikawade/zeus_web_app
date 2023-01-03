@@ -101,7 +101,7 @@ class ProjectHomeState extends State<ProjectHome> {
     change();
 
     getUsers();
-    //await getData();
+    await getData();
   }
 
   // get provider data
