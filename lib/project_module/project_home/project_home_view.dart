@@ -92,10 +92,15 @@ class ProjectHomeState extends State<ProjectHome> {
   initState() {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
-    change();
-    getUsers();
-
+    getAllData();
     super.initState();
+  }
+
+  getAllData() async {
+    await getListData();
+    change();
+
+    getUsers();
   }
 
   // get provider data

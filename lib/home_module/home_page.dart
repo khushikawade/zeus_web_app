@@ -159,8 +159,6 @@ class _NavigationRailState extends State<MyHomePage>
 
   List _addtag = [];
 
-
-
   MyDropdownData myDropdownData = MyDropdownData();
   int _selectedIndex = 1;
   DateTime selectedDate = DateTime.now();
@@ -2116,12 +2114,15 @@ class _NavigationRailState extends State<MyHomePage>
                             try {
                               _debouncer.run(() async {
                                 if (projectListTapIcon) {
-                                  if (val != null && val.isNotEmpty) {
-                                    await Provider.of<ProjectHomeViewModel>(
-                                            context,
-                                            listen: false)
-                                        .getPeopleIdel(searchText: val);
-                                  }
+                                  // if (val != null && val.isNotEmpty) {
+                                  //   await Provider.of<ProjectHomeViewModel>(
+                                  //           context,
+                                  //           listen: false)
+                                  //       .getPeopleIdel(searchText: val);
+                                  // }
+                                  Provider.of<ProjectHomeViewModel>(context,
+                                          listen: false)
+                                      .getPeopleIdel(searchText: val);
                                 } else if (_selectedIndex == 2) {
                                   print(_selectedIndex);
                                 } else if (peopleListTapIcon) {
