@@ -670,9 +670,9 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
                                           title: 'Menu at bottom',
                                           alignment: Alignment.topRight,
                                           buildContext: context,
-                                          // onUpdateData: () {
-                                          //   getPeopleDetails(widget.peopleId);
-                                          // },
+                                          onUpdateData: () {
+                                            getPeopleDetails(widget.peopleId);
+                                          },
                                           returnValue: () {
                                             Navigator.pop(context, true);
                                           }),

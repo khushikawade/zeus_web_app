@@ -100,17 +100,18 @@ class _ProjectEditState extends State<ProjectEdit>
           value: 1,
           child: InkWell(
             hoverColor: Color(0xff1e293b),
-            onTap: () {
+            onTap: () async{
               Navigator.pop(context);
-              showDialog(
+
+              bool result = await showDialog(
                   context: context,
                   builder: (context) {
                     return StatefulBuilder(
                       builder: (context, setState) => AlertDialog(
-                        // scrollable: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
+                        contentPadding: EdgeInsets.zero,
                         backgroundColor: const Color(0xff1E293B),
                         content: Form(
                             key: _formKey,
@@ -121,6 +122,29 @@ class _ProjectEditState extends State<ProjectEdit>
                       ),
                     );
                   });
+
+                  if(result != null && result) {
+                    Navigator.pop(context,true);
+                  }
+              // showDialog(
+              //     context: context,
+              //     builder: (context) {
+              //       return StatefulBuilder(
+              //         builder: (context, setState) => AlertDialog(
+              //           // scrollable: true,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(16),
+              //           ),
+              //           backgroundColor: const Color(0xff1E293B),
+              //           content: Form(
+              //               key: _formKey,
+              //               child: CreateProjectPage(
+              //                 formKey: _formKey,
+              //                 response: widget.response,
+              //               )),
+              //         ),
+              //       );
+              //     });
             },
             child: Container(
               height: 50.h,

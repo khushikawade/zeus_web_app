@@ -12,11 +12,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/people_module/create_people/create_people_page.dart';
 import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_home/project_home_view.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/logout_module/logout_view.dart';
@@ -53,15 +55,13 @@ class _NavigationRailState extends State<MyHomePage1>
 
   Future? getList;
 
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
+
+  GlobalKey<FormState> _addFormKey = new GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
   void initState() {
-    print(widget.currentIndex);
-    _selectedIndex = widget.currentIndex;
-    print(_selectedIndex);
-
-    // TODO: implement initState
     super.initState();
   }
 
@@ -405,21 +405,18 @@ class _NavigationRailState extends State<MyHomePage1>
                       child: NavigationRail(
                         selectedIndex: _selectedIndex,
                         onDestinationSelected: (int index) {
-                          _selectedIndex = index;
-
-                          print(
-                              "<<<<<<<<<<<<<<<<<_selectedIndex>>>>>>>>>>>>>>>>> $_selectedIndex");
-                          setPathUrl(index);
-
-                          // final username = VRouter.of(context).path;
-                          // print("User name ----------------- ${username}");
-                          // if (_selectedIndex == 1) {
-                          //   ConnectedRoutes.toProject(context, username);
-                          // } else if (_selectedIndex == 3) {
-                          //   ConnectedRoutes.toPeople(context, username);
-                          // } else {}
-
-                          setState(() {});
+                          if (index == 0) {
+                            if (_selectedIndex == 1) {
+                              showAlertDialog(context);
+                            } else if (_selectedIndex == 3) {
+                              showAlertDialogPeople(context);
+                            }
+                          } else {
+                            setState(() {
+                              _selectedIndex = index;
+                              setPathUrl(index);
+                            });
+                          }
                         },
                         labelType: NavigationRailLabelType.selected,
                         backgroundColor: const Color(0xff0F172A),
@@ -752,6 +749,67 @@ class _NavigationRailState extends State<MyHomePage1>
         ),
       ),
     );
+  }
+
+  //Create project_detail popup
+  void showAlertDialog(BuildContext context) async {
+    bool result = await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              contentPadding: EdgeInsets.zero,
+              backgroundColor: const Color(0xff1E293B),
+              content: Form(
+                  key: _addFormKey,
+                  child: CreateProjectPage(
+                    formKey: _addFormKey,
+                    response: null,
+                  )),
+            ),
+          );
+        });
+
+    if (result != null && result) {
+      await Provider.of<ProjectHomeViewModel>(context, listen: false)
+          .getPeopleIdel(searchText: '');
+
+      setState(() {});
+    }
+  }
+
+  //Create project_detail popup
+  void showAlertDialogPeople(BuildContext context) async {
+    bool result = await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              contentPadding: EdgeInsets.zero,
+              backgroundColor: const Color(0xff1E293B),
+              content: Form(
+                  key: _formKey,
+                  child: CreatePeoplePage(
+                    formKey: _formKey,
+                    response: null,
+                    isEdit: false,
+                  )),
+            ),
+          );
+        });
+
+    if (result != null && result) {
+      Provider.of<PeopleHomeViewModel>(context, listen: false)
+          .getPeopleDataList(searchText: '');
+
+      setState(() {});
+    }
   }
 }
 

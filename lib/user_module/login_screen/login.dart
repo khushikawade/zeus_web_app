@@ -557,7 +557,11 @@ class _LoginScreenState extends State<LoginScreen> {
         sharedPreferences.setBool('isLogin', true);
         storage.write(isLogin, true);
 
-        context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
+        //context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
+        context.vRouter.toSegments([
+          "home",
+          RouteConstants.projectRoute,
+        ], isReplacement: true);
       } else {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');

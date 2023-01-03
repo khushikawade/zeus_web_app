@@ -80,11 +80,14 @@ class AppUtil {
   }
 
   static DateTime stringToDateValidate(String date) {
+    int count = 0;
     DateTime parseDate;
+
     try {
       try {
         date = AppUtil.dateToString(DateTime.parse(date));
         parseDate = DateFormat("dd/MM/yyyy").parse(date);
+        count = count + 1;
         return parseDate;
       } catch (e) {
         parseDate = DateFormat("dd/MM/yyyy").parse(date);
@@ -94,6 +97,7 @@ class AppUtil {
       print("this error-------------$e");
       return DateTime.now();
     }
+    print(count);
   }
 
   static String stringToDate1(String date) {

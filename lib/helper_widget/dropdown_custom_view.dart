@@ -154,6 +154,19 @@ class DropdownCustomViewState extends State<DropdownCustomView> {
                                             border: InputBorder.none,
                                           ),
                                         ),
+                                        noItemsFoundBuilder: (context) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              'No Items Found!',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp),
+                                            ),
+                                          );
+                                        },
                                         itemBuilder: (context, item) {
                                           return Container(
                                             width: double.infinity,

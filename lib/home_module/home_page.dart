@@ -2177,7 +2177,8 @@ class _NavigationRailState extends State<MyHomePage>
                                     EdgeInsets.only(left: 15.sp, right: 20.sp),
                                 child: Icon(
                                   Icons.search,
-                                  color: Color(0xff64748B),
+                                  size: 22.sp,
+                                  color: Color(0xff334155),
                                 )),
                             hintText: projectListTapIcon
                                 ? 'Search project'
@@ -2193,6 +2194,7 @@ class _NavigationRailState extends State<MyHomePage>
                                 fontWeight: FontWeight.w400),
                             border: InputBorder.none,
                           ),
+                          // textAlign: Alignment.center,
                           keyboardType: TextInputType.text,
                           style: TextStyle(
                               color: Colors.white,
@@ -2314,11 +2316,10 @@ class _NavigationRailState extends State<MyHomePage>
                                     cameraTapIcon == false &&
                                     circleTapIcon == false &&
                                     settingIcon == false &&
-                                    bellTapIcon == false
+                                    bellTapIcon == false 
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                      top: 12.sp, //left: 20.sp
-                                    ),
+                                        top: 12.sp, left: 20.sp),
                                     child: Text("Profile",
                                         style: TextStyle(
                                             color: Color(0xffFFFFFF),

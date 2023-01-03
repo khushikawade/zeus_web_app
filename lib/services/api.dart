@@ -142,7 +142,7 @@ class Api {
     try {
       response = await _apiClient.postMethod(AppUrl.createPhase, key);
       print(
-          '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
+          '<<<<<<<<<<<<<<<<<<<<<<<    response.bodyretet      >>>>>>>>>>>>>>>>>>>>>>>');
       print(response.body);
     } catch (e) {
       print(e);
@@ -228,8 +228,9 @@ class Api {
       print(
           '<<<<<<<<<<<<<<<<<<<<<<<    response.body      >>>>>>>>>>>>>>>>>>>>>>>');
       var res = response.body;
+      print(response.body);
 
-      if (response!.statusCode == 200) {
+      if (response.statusCode == 200) {
         try {
           if (response.body.contains('error')) {
             var jsonResponse = json.decode(response.body);
