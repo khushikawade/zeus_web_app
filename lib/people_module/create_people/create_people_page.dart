@@ -138,90 +138,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     return matches;
   }
 
-  Future<String?> getSelectStatus() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/status"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            projectStatusList!.clear();
-
-            mdata.forEach((element) {
-              projectStatusList!.add(
-                  DropdownModel(element['id'].toString(), element['title']));
-            });
-
-            // _accountableId.map((result) {
-            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
-            //   print(result);
-            //   accountablePersonList!.add(result['name']);
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAccountable() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse(AppUrl.accountable_person),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            accountablePersonList!.clear();
-
-            mdata.forEach((element) {
-              accountablePersonList!.add(
-                  DropdownModel(element['id'].toString(), element['name']));
-            });
-
-            // _accountableId.map((result) {
-            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
-            //   print(result);
-            //   accountablePersonList!.add(result['name']);
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
   Future<String?> getCustomer() async {
     String? value;
     if (value == null) {
@@ -1001,7 +917,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     Expanded(
                                       child: CustomFormField(
                                         controller: _designation,
-                                        maxLength: 20,
+                                        maxLength: 30,
                                         fontSizeForLabel: 14.sp,
                                         hint: 'Enter ',
                                         label: 'Designation',
@@ -1135,15 +1051,14 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               top: 10.sp),
                                           hintTextHeight: 1.7.h,
                                           validator: (value) {
-                                            RegExp regex =
-                                                RegExp(r'^\D+|(?<=\d),(?=\d)');
+                                            RegExp regex = RegExp(r'^[0-9]+$');
+
                                             if (value.isEmpty) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
-
                                               return 'Please enter';
-                                            } else if (regex.hasMatch(value)) {
+                                            } else if (!regex.hasMatch(value)) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
@@ -1839,8 +1754,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           top: 10.sp),
                                       hintTextHeight: 1.7.h,
                                       validator: (value) {
-                                        String pattern = r"([0-9])\w+";
-                                        RegExp regExp = new RegExp(pattern);
+                                        RegExp regExp = new RegExp(r'^[0-9]+$');
                                         if (value.isEmpty) {
                                           setState(() {
                                             createPeopleValidate = false;

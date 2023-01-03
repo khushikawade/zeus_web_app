@@ -442,12 +442,19 @@ class _EditPageState extends State<CreateProjectPage> {
                             hint: '',
                             label: "Budget",
                             validator: (value) {
+                              RegExp regex = RegExp(r'^[0-9]+$');
                               if (value.isEmpty) {
                                 setState(() {
                                   createProjectValidate = false;
                                 });
                                 return 'Please enter';
+                              } else if (!regex.hasMatch(value)) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Invalid Budget';
                               }
+
                               return null;
                             },
                             onChange: (text) => setState(() => name_ = text),
@@ -483,11 +490,17 @@ class _EditPageState extends State<CreateProjectPage> {
                             hint: '',
                             label: "Estimated hours",
                             validator: (value) {
+                              RegExp regex = RegExp(r'^[0-9]+$');
                               if (value.isEmpty) {
                                 setState(() {
                                   createProjectValidate = false;
                                 });
                                 return 'Please enter';
+                              } else if (!regex.hasMatch(value)) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Please enter valid Estimated hours';
                               }
                               return null;
                             },

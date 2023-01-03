@@ -45,11 +45,17 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
         .changeProfile();
   }
 
+  void change() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('val', 'y');
+  }
+
   @override
   void initState() {
     Provider.of<PeopleHomeViewModel>(context, listen: false)
         .getPeopleDataList();
-
+    change();
     super.initState();
   }
 
@@ -102,7 +108,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                           )
                         : Expanded(
                             child: RawScrollbar(
-                              controller: _scrollController,
+                              controller: verticalScroll,
                               thumbColor: const Color(0xff4b5563),
                               crossAxisMargin: 2,
                               shape: RoundedRectangleBorder(
@@ -223,7 +229,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                     MaterialPageRoute(
                         builder: (context) => ProfileDetail(
                               list: _peopleList,
-                              index: 6,
+                              index: 5,
                             )));
 
                 if (result) {
@@ -351,7 +357,8 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                         _peopleList.resource!.skills != null &&
                         _peopleList.resource!.skills!.isNotEmpty
                     ? Container(
-                        width: 240.w,
+                        // color: Colors.amber,
+                        width: 260.w,
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,

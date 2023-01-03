@@ -109,6 +109,11 @@ class ProjectHomeState extends State<ProjectHome> {
     var data = context.watch<ProjectHomeViewModel>();
   }
 
+  // // get provider data
+  // getData() {
+  //   var data = context.watch<ProjectHomeViewModel>();
+  // }
+
   // Make People List widget or Data Table
   Widget makeProjectList(ProjectHomeViewModel? data) {
     List<DataRow> rows = [];
