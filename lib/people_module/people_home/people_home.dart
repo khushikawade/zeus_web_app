@@ -357,7 +357,8 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                         _peopleList.resource!.skills != null &&
                         _peopleList.resource!.skills!.isNotEmpty
                     ? Container(
-                        width: 240.w,
+                        // color: Colors.amber,
+                        width: 250.w,
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
