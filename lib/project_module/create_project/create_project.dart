@@ -3,11 +3,14 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vrouter/vrouter.dart';
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
 import 'package:zeus/helper_widget/custom_form_field.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/home_module/home_page.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:zeus/utility/colors.dart';
@@ -15,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:zeus/utility/constant.dart';
 import 'package:zeus/utility/util.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CreateProjectPage extends StatefulWidget {
   ProjectDetailResponse? response;
@@ -318,7 +322,8 @@ class _EditPageState extends State<CreateProjectPage> {
                         )),
                         InkWell(
                             onTap: () {
-                              Navigator.of(context).pop();
+                              context.vRouter.pop();
+                              // Navigator.of(context).pop();
                             },
                             child: Container(
                               width: 35.sp,
@@ -558,7 +563,8 @@ class _EditPageState extends State<CreateProjectPage> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).pop();
+                            context.vRouter.pop();
+                            // Navigator.of(context).pop();
                           },
                           child: Container(
                             width: 97.w,
@@ -700,14 +706,23 @@ class _EditPageState extends State<CreateProjectPage> {
         responseJson =
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
+
+        // await Provider.of<ProjectHomeViewModel>(context, listen: false)
+        //     .getPeopleIdel(searchText: '');
+
         SmartDialog.dismiss();
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                      onSubmit: (String value) {},
-                      adOnSubmit: (String value) {},
-                    )),
-            (Route<dynamic> route) => false);
+
+        //Navigator.pop(context, true);
+
+        final username = VRouter.of(context).path;
+        ConnectedRoutes.toProject(context, "/home", true);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => MyHomePage(
+        //               onSubmit: (String value) {},
+        //               adOnSubmit: (String value) {},
+        //             )),
+        //     (Route<dynamic> route) => false);
       } else if (response.statusCode == 401) {
         SmartDialog.dismiss();
         AppUtil.showErrorDialog(

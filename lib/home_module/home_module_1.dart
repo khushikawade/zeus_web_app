@@ -18,6 +18,7 @@ import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
 import 'package:zeus/project_module/project_home/project_home_view.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/logout_module/logout_view.dart';
 import 'package:zeus/utility/debouncer.dart';
@@ -671,8 +672,8 @@ class _NavigationRailState extends State<MyHomePage1>
   }
 
   //Create project_detail popup
-  void showAlertDialog(BuildContext context) {
-    showDialog(
+  void showAlertDialog(BuildContext context) async {
+    bool result = await showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(
@@ -691,6 +692,13 @@ class _NavigationRailState extends State<MyHomePage1>
             ),
           );
         });
+
+    if (result != null && result) {
+      // await Provider.of<ProjectHomeViewModel>(context, listen: false)
+      //     .getPeopleIdel(searchText: '');
+
+      setState(() {});
+    }
   }
 
   //Create project_detail popup
