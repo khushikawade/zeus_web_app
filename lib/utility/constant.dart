@@ -37,7 +37,9 @@ const somethingWentWorng = "Something went wrong.";
 const success = "Success";
 
 // Click Ups details
-const String clientId = "VVNV2YGS2DRFKMYIO4S09ZIDFDX8ID8Z";
+//const String clientId = "VVNV2YGS2DRFKMYIO4S09ZIDFDX8ID8Z";
+
+const String clientId = "OQN1HAG1PV3X3SEYRU48H9KBMXEFT77I";
 
 //"OQN1HAG1PV3X3SEYRU48H9KBMXEFT77I";
 
@@ -47,6 +49,6 @@ const String secretKey =
 // const String code = "60KM7W4679VITC6TGH0PWGSQM5JBYUUJ";
 
 //const String redirectUrl = "localhost:52821/login";
-const String redirectUrl = "zeus-api.zehntech.net/login";
+const String redirectUrl = "zeus.zehntech.net/login";
 
 //  "https://zeus-api.zehntech.net/api/v1/clickup/auth";
