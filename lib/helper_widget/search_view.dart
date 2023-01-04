@@ -47,7 +47,7 @@ class _SearchTextClassState extends State<SearchTextClass> {
         loading = false;
       });
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
       // print(response.body);

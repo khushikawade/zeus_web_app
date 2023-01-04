@@ -88,7 +88,8 @@ class Api {
 
       return res;
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       print('department error===========>>>>>>>>');
       print("failed to much");
@@ -122,7 +123,8 @@ class Api {
         return ResourceNeededModel(error: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
-      return AppUtil.showErrorDialog(context);
+      return AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       return ResourceNeededModel(
           error: somethingWentWorng, statusCode: response.statusCode);
@@ -163,7 +165,8 @@ class Api {
         return CreatePhaseResp(message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
-      return AppUtil.showErrorDialog(context);
+      return AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       return CreatePhaseResp(
           message: somethingWentWorng, statusCode: response.statusCode);
@@ -204,7 +207,8 @@ class Api {
         return GetPhaseDetails(message: somethingWentWorng, statusCode: 500);
       }
     } else if (response.statusCode == 401) {
-      return AppUtil.showErrorDialog(context);
+      return AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       return GetPhaseDetails(
           message: somethingWentWorng, statusCode: response.statusCode);
@@ -244,7 +248,8 @@ class Api {
           return UpdatePhaseResp(message: somethingWentWorng, statusCode: 500);
         }
       } else if (response.statusCode == 401) {
-        return AppUtil.showErrorDialog(context);
+        return AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         return UpdatePhaseResp(
             message: somethingWentWorng, statusCode: response.statusCode);

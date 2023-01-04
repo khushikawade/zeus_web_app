@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:vrouter/vrouter.dart';
+import 'package:zeus/routers/route_constants.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,11 +19,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../helper_widget/search_view.dart';
 
 class LogOut extends StatefulWidget {
-  final Function? returnValue;
   final Offset offset;
 
-  LogOut({this.returnValue, this.offset = const Offset(180, 40), Key? key})
-      : super(key: key);
+  LogOut({this.offset = const Offset(180, 40), Key? key}) : super(key: key);
 
   @override
   State<LogOut> createState() => _LogOutState();
@@ -68,6 +69,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
           child: InkWell(
             // hoverColor: Color(0xff1e293b),
             onTap: () {
+              Navigator.pop(context);
               SmartDialog.showLoading(
                 msg: "Your request is in progress please wait for a while...",
               );
@@ -120,19 +122,21 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
 
       SmartDialog.dismiss();
 
-      widget.returnValue!();
       storage.erase();
       sharedPreferences.clear();
 
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => LoginScreen(
-                    onSubmit: (String value) {},
-                  )),
-          (Route<dynamic> route) => route is LoginScreen);
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(
+      //         builder: (context) => LoginScreen(
+      //               onSubmit: (String value) {},
+      //             )),
+      //     (Route<dynamic> route) => route is LoginScreen);
+      //context.vxNav.popToRoot();
+      context.vRouter.to(RouteConstants.loginRoute, isReplacement: true);
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       SmartDialog.dismiss();
       var user = userFromJson(response.body);
