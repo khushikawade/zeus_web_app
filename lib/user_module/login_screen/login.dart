@@ -32,10 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _formKey = GlobalKey<FormState>();
 
-  // TextEditingController emailController =
-  //     TextEditingController(text: 'omkar@omkar.com');
-  // TextEditingController passwordController =
-  //     TextEditingController(text: 'Password@123');
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -78,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(
             'Error while saving code ${response.statusCode} ${response.body}');
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg:
               'Error while saving code ${response.statusCode} ${response.body}',
           backgroundColor: Colors.grey,
@@ -85,11 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
         print("failedd");
       }
     }
-  }
-
-  launchClickUpsUrl() async {
-    final html.WindowBase windowBase =
-        html.window.open(AppUrl.clickUpsUrl, "_self");
   }
 
   @override
@@ -613,7 +605,7 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) =>
             const DemoClass()));*/
 
-       //launchClickUpsUrl();
+        //launchClickUpsUrl();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (context) => MyHomePage(
@@ -623,6 +615,7 @@ class _LoginScreenState extends State<LoginScreen> {
             (Route<dynamic> route) => route is MyHomePage);
       } else {
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg: 'Please check Email and Password',
           backgroundColor: Colors.grey,
         );
@@ -633,5 +626,10 @@ class _LoginScreenState extends State<LoginScreen> {
       SmartDialog.dismiss();
       _submit();
     }
+  }
+
+  launchClickUpsUrl() async {
+    final html.WindowBase windowBase =
+        html.window.open(AppUrl.clickUpsUrl, "_self");
   }
 }

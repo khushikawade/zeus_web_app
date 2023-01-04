@@ -38,7 +38,7 @@ class _SearchTextClassState extends State<SearchTextClass> {
       },
     );
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
       var user = userFromJson(response.body);
 
       users = user.data!;
@@ -136,8 +136,8 @@ Widget row(Datum user) {
 
 Widget rowProject(SkillsData user) {
   return Container(
-    width: 400,
-    padding: const EdgeInsets.all(11.0),
+    width: 400.w,
+    padding: EdgeInsets.all(11.0.r),
     decoration: const BoxDecoration(
       color: Color(0xff0F172A),
     ),
@@ -197,8 +197,10 @@ Widget rowResourceName(Details? item) {
 
       fullName = firstName.substring(0, 1).toUpperCase() +
           lastName.substring(0, 1).toUpperCase();
+      print(fullName);
     } else {
       fullName = item.name!.substring(0, 1).toUpperCase();
+      print(fullName);
     }
   }
   return Padding(

@@ -65,6 +65,7 @@ class AppUtil {
   }
 
   static DateTime stringToDate(String date) {
+    print(date);
     try {
       //date = AppUtil.dateToString(DateTime.parse(date));
       DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
@@ -78,20 +79,24 @@ class AppUtil {
   }
 
   static DateTime stringToDateValidate(String date) {
+    int count = 0;
     DateTime parseDate;
+
     try {
       try {
         date = AppUtil.dateToString(DateTime.parse(date));
         parseDate = DateFormat("dd/MM/yyyy").parse(date);
+        count = count + 1;
         return parseDate;
       } catch (e) {
         parseDate = DateFormat("dd/MM/yyyy").parse(date);
         return parseDate;
       }
     } catch (e) {
-      print(e);
+      print("this error-------------$e");
       return DateTime.now();
     }
+    print(count);
   }
 
   static String stringToDate1(String date) {
@@ -115,6 +120,7 @@ class AppUtil {
       String formatted = formatter.format(date);
       return formatted;
     } catch (e) {
+      print("----------------------------------------$e");
       return date.toString();
     }
   }

@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import 'package:zeus/helper_widget/custom_datepicker.dart';
 import 'package:zeus/helper_widget/custom_dropdown.dart';
@@ -24,6 +25,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:intl/intl.dart';
 import 'package:http_parser/http_parser.dart';
+
+import '../../user_module/people_profile/screen/people_detail_view.dart';
+import '../people_home/people_home_view_model.dart';
 
 class CreatePeoplePage extends StatefulWidget {
   PeopleData? response;
@@ -134,90 +138,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     return matches;
   }
 
-  Future<String?> getSelectStatus() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/status"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            projectStatusList!.clear();
-
-            mdata.forEach((element) {
-              projectStatusList!.add(
-                  DropdownModel(element['id'].toString(), element['title']));
-            });
-
-            // _accountableId.map((result) {
-            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
-            //   print(result);
-            //   accountablePersonList!.add(result['name']);
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAccountable() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse(AppUrl.accountable_person),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            accountablePersonList!.clear();
-
-            mdata.forEach((element) {
-              accountablePersonList!.add(
-                  DropdownModel(element['id'].toString(), element['name']));
-            });
-
-            // _accountableId.map((result) {
-            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
-            //   print(result);
-            //   accountablePersonList!.add(result['name']);
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
   Future<String?> getCustomer() async {
     String? value;
     if (value == null) {
@@ -255,73 +175,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     }
     return null;
   }
-
-  // // update Controller Value
-  // updateControllerValue() {
-  //   _projecttitle.text = widget.response!.data != null &&
-  //           widget.response!.data!.title != null &&
-  //           widget.response!.data!.title!.isNotEmpty
-  //       ? widget.response!.data!.title!
-  //       : '';
-
-  //   _crmtask.text = widget.response!.data != null &&
-  //           widget.response!.data!.crmTaskId != null &&
-  //           widget.response!.data!.crmTaskId!.isNotEmpty
-  //       ? widget.response!.data!.crmTaskId!
-  //       : '';
-
-  //   _warkfolderId.text = widget.response!.data != null &&
-  //           widget.response!.data!.workFolderId != null &&
-  //           widget.response!.data!.workFolderId!.isNotEmpty
-  //       ? widget.response!.data!.workFolderId!
-  //       : '';
-
-  //   _budget.text =
-  //       widget.response!.data != null && widget.response!.data!.budget != null
-  //           ? widget.response!.data!.budget!.toString()
-  //           : '';
-
-  //   _estimatehours.text = widget.response!.data != null &&
-  //           widget.response!.data!.estimationHours != null &&
-  //           widget.response!.data!.estimationHours!.isNotEmpty
-  //       ? widget.response!.data!.estimationHours!.toString()
-  //       : '';
-
-  //   _custome = widget.response!.data != null &&
-  //           widget.response!.data!.customerId != null
-  //       ? widget.response!.data!.customerId.toString()
-  //       : '';
-
-  //   _account = widget.response!.data != null &&
-  //           widget.response!.data!.accountablePersonId != null
-  //       ? widget.response!.data!.accountablePersonId.toString()
-  //       : '';
-
-  //   _status =
-  //       widget.response!.data != null && widget.response!.data!.status != null
-  //           ? widget.response!.data!.status.toString()
-  //           : '';
-
-  //   _curren =
-  //       widget.response!.data != null && widget.response!.data!.currency != null
-  //           ? widget.response!.data!.currency.toString()
-  //           : '';
-
-  //   try {
-  //     DropdownModel? result = getAllInitialValue(projectStatusList, _status);
-  //     if (result != null) {
-  //       _status = result.id;
-  //     } else {
-  //       _status = null;
-  //     }
-  //   } catch (e) {}
-
-  //   if (widget.response!.data != null &&
-  //       widget.response!.data!.deliveryDate != null &&
-  //       widget.response!.data!.deliveryDate!.isNotEmpty) {
-  //     selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
-  //   }
-  // }
 
   @override
   void initState() {
@@ -759,7 +612,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                   String availabilityTime = "";
                                   if (startTime1 != null && endTime2 != null) {
                                     availabilityTime =
-                                        '${startTime1}-${endTime2}';
+                                        '${startTime1} - ${endTime2}';
                                   } else {
                                     availabilityTime = '';
                                   }
@@ -1064,7 +917,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     Expanded(
                                       child: CustomFormField(
                                         controller: _designation,
-                                        maxLength: 20,
+                                        maxLength: 30,
                                         fontSizeForLabel: 14.sp,
                                         hint: 'Enter ',
                                         label: 'Designation',
@@ -1198,15 +1051,14 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               top: 10.sp),
                                           hintTextHeight: 1.7.h,
                                           validator: (value) {
-                                            RegExp regex =
-                                                RegExp(r'^\D+|(?<=\d),(?=\d)');
+                                            RegExp regex = RegExp(r'^[0-9]+$');
+
                                             if (value.isEmpty) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
-
                                               return 'Please enter';
-                                            } else if (regex.hasMatch(value)) {
+                                            } else if (!regex.hasMatch(value)) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
@@ -1299,57 +1151,74 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 ),
                                 selectedDaysList != null &&
                                         selectedDaysList.isNotEmpty
-                                    ? SizedBox(
-                                        height: 30.h,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: selectedDaysList.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8),
-                                              child: InputChip(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                8.r))),
-                                                deleteIcon: Icon(
-                                                  Icons.close,
-                                                  color: Colors.white,
-                                                  size: 20.sp,
+                                    ? Padding(
+                                        padding: EdgeInsets.only(right: 8.sp),
+                                        child: Wrap(
+                                          runSpacing: 8.sp,
+                                          spacing: 8.sp,
+                                          children: List.generate(
+                                            selectedDaysList.length,
+                                            (index) {
+                                              return Container(
+                                                // padding: EdgeInsets.only(top: 10),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xff334155),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    8.r,
+                                                  ),
                                                 ),
-                                                backgroundColor:
-                                                    Color(0xff334155),
-                                                visualDensity:
-                                                    VisualDensity.compact,
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
-                                                label: Text(
-                                                  selectedDaysList[index],
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                                // color: Colors.red,
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.all(8.0.sp),
+                                                  child: Wrap(
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        selectedDaysList[index],
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: ColorSelect
+                                                                .white_color,
+                                                            fontSize: 14.sp,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontFamily:
+                                                                'Inter-Regular',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      InkWell(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 8.0.sp),
+                                                          child: Icon(
+                                                            Icons.close,
+                                                            color: Colors.white,
+                                                            size: 18.sp,
+                                                          ),
+                                                        ),
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedDaysList
+                                                                .removeAt(
+                                                                    index);
+                                                          });
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                                selected: _isSelected!,
-                                                onSelected: (bool selected) {
-                                                  setState(() {
-                                                    _isSelected = selected;
-                                                    print(
-                                                        "_isSelected--------------------------${_isSelected}");
-                                                  });
-                                                },
-                                                onDeleted: () {
-                                                  setState(() {
-                                                    selectedDaysList
-                                                        .removeAt(index);
-                                                  });
-                                                },
-                                                showCheckmark: false,
-                                              ),
-                                            );
-                                          },
+                                              );
+                                            },
+                                          ),
                                         ),
                                       )
                                     : Container(),
@@ -1439,6 +1308,13 @@ class _EditPageState extends State<CreatePeoplePage> {
                                             : null,
                                     fromTitle: Text(
                                       'From',
+                                      strutStyle: StrutStyle(
+                                        fontFamily: 'Inter-Medium',
+                                        fontSize: 14,
+                                        // height: 1.7,
+
+                                        leading: 1,
+                                      ),
                                       style: TextStyle(
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Inter-Medium',
@@ -1457,7 +1333,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           fontSize: 14.sp,
                                           color: Colors.white),
                                     ),
-                                    titlePadding: 16.sp,
+                                    // titlePadding: 5.sp,
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         color: Colors.white),
@@ -1517,110 +1393,127 @@ class _EditPageState extends State<CreatePeoplePage> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Container(
                                       padding: EdgeInsets.only(
-                                        left: 5.sp,
-                                        right: 5.sp,
+                                        left: 15.sp,
+                                        right: 20.sp,
                                       ),
                                       margin: EdgeInsets.only(top: 16.sp),
-                                      height: 49.h,
+                                      // width: 400.w,
+                                      //  height: 49.h,
                                       decoration: BoxDecoration(
                                         color: const Color(0xff334155),
                                         borderRadius: BorderRadius.circular(
                                           48.r,
                                         ),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          searchTextField = TypeAheadFormField(
-                                            keepSuggestionsOnLoading: false,
-                                            suggestionsBoxVerticalOffset:
-                                                16.0.w,
-                                            suggestionsBoxDecoration:
-                                                SuggestionsBoxDecoration(
-                                                    offsetX: 57.w,
-                                                    constraints:
-                                                        BoxConstraints.expand(
-                                                            width: 313.w,
-                                                            height: 262.h),
-                                                    color: Color(0xff0F172A)),
-                                            hideOnLoading: true,
-                                            suggestionsCallback: (pattern) {
-                                              return getSuggestions(pattern);
-                                            },
-                                            textFieldConfiguration:
-                                                TextFieldConfiguration(
-                                              controller: _typeAheadController,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14.sp),
-                                              keyboardType: TextInputType.text,
-                                              cursorColor: Colors.white,
-                                              autofocus: false,
-                                              decoration: InputDecoration(
-                                                // border: InputBorder.none,
-                                                contentPadding: EdgeInsets.only(
-                                                    top: 14.sp, left: 10.sp),
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: Color(0xff64748B),
-                                                ),
-                                                hintText: 'Search',
-
-                                                hintStyle: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: Color(0xff64748B),
-                                                    fontFamily: 'Inter-Medium',
-                                                    letterSpacing: 0.1,
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                                border: InputBorder.none,
+                                      child: searchTextField =
+                                          TypeAheadFormField(
+                                        keepSuggestionsOnLoading: false,
+                                        suggestionsBoxVerticalOffset: 9.0.w,
+                                        suggestionsBoxDecoration:
+                                            SuggestionsBoxDecoration(
+                                                offsetX: 55.w,
+                                                constraints:
+                                                    BoxConstraints.expand(
+                                                        width: 291.w,
+                                                        height: 262.h),
+                                                color: Color(0xff0F172A)),
+                                        hideOnLoading: true,
+                                        suggestionsCallback: (pattern) {
+                                          return getSuggestions(pattern);
+                                        },
+                                        textFieldConfiguration:
+                                            TextFieldConfiguration(
+                                          controller: _typeAheadController,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14.sp),
+                                          keyboardType: TextInputType.text,
+                                          cursorColor: Colors.white,
+                                          autofocus: false,
+                                          decoration: InputDecoration(
+                                            // border: InputBorder.none,
+                                            // contentPadding: EdgeInsets.only(
+                                            //     top: 0.0.sp, right: 20.sp),
+                                            prefixIcon: Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 9.sp),
+                                              child: Icon(
+                                                Icons.search,
+                                                color: Color(0xff64748B),
                                               ),
                                             ),
-                                            itemBuilder: (context, item) {
-                                              return Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: 12.sp,
-                                                    left: 16.sp,
-                                                    bottom: 15.sp),
-                                                child: Text(
-                                                  item.title.toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      color: Colors.white),
-                                                ),
-                                              );
-                                              // Text("khushi");
-                                              // rowResourceName(item);
-                                            },
-                                            transitionBuilder: (context,
-                                                suggestionsBox, controller) {
-                                              return suggestionsBox;
-                                            },
-                                            onSuggestionSelected: (item) {
-                                              setState(() {
-                                                searchTextField!
-                                                    .textFieldConfiguration
-                                                    .controller!
-                                                    .text = '';
+                                            prefixIconConstraints:
+                                                BoxConstraints(),
+                                            hintText: 'Search',
 
-                                                if (abc.isNotEmpty) {
-                                                  if (abc
-                                                      .contains(item.title)) {
-                                                  } else {
-                                                    abc.add(item.title!);
-                                                  }
-                                                } else {
-                                                  abc.add(item.title!);
-                                                }
-                                                selectSkill = false;
-                                              });
-                                            },
+                                            hintStyle: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Color(0xff64748B),
+                                                fontFamily: 'Inter-Medium',
+                                                letterSpacing: 0.1,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w400),
+                                            border: InputBorder.none,
                                           ),
-                                        ],
+                                        ),
+                                        itemBuilder: (context, item) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 12.sp,
+                                                left: 16.sp,
+                                                bottom: 15.sp),
+                                            child: Text(
+                                              item.title.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.white),
+                                            ),
+                                          );
+                                          // Text("khushi");
+                                          // rowResourceName(item);
+                                        },
+                                        noItemsFoundBuilder: (context) {
+                                          return Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Text(
+                                                'No Items Found!',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14.sp),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        transitionBuilder: (context,
+                                            suggestionsBox, controller) {
+                                          return suggestionsBox;
+                                        },
+                                        onSuggestionSelected: (item) {
+                                          setState(() {
+                                            searchTextField!
+                                                .textFieldConfiguration
+                                                .controller!
+                                                .text = '';
+
+                                            if (abc.isNotEmpty) {
+                                              if (abc.contains(item.title)) {
+                                              } else {
+                                                abc.add(item.title!);
+                                              }
+                                            } else {
+                                              abc.add(item.title!);
+                                            }
+                                            selectSkill = false;
+                                          });
+                                        },
                                       ),
                                     ),
                                     selectSkill
@@ -1633,52 +1526,118 @@ class _EditPageState extends State<CreatePeoplePage> {
                                       height: 8.h,
                                     ),
                                     Wrap(
-                                      spacing: 5.sp,
-                                      runSpacing: 5.sp,
+                                      spacing: 8.sp,
+                                      runSpacing: 8.sp,
                                       children: List.generate(
                                         abc.length,
                                         (index) {
                                           return Container(
-                                            height: 32.h,
-                                            child: InputChip(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              8.r))),
-                                              deleteIcon: Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                                size: 20.sp,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                8.r,
                                               ),
-                                              backgroundColor:
-                                                  Color(0xff334155),
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              label: Text(
-                                                abc[index],
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                            ),
+                                            // color: Colors.red,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0.sp),
+                                              child: Wrap(
+                                                crossAxisAlignment:
+                                                    WrapCrossAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    abc[index],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: ColorSelect
+                                                            .white_color,
+                                                        fontSize: 14.sp,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontFamily:
+                                                            'Inter-Regular',
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  InkWell(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 8.0.sp),
+                                                      child: Icon(
+                                                        Icons.close,
+                                                        color: Colors.white,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        abc.removeAt(index);
+                                                      });
+                                                    },
+                                                  )
+                                                ],
                                               ),
-                                              onSelected: (bool selected) {
-                                                setState(() {
-                                                  _isSelected = selected;
-                                                });
-                                              },
-                                              onDeleted: () {
-                                                setState(() {
-                                                  abc.removeAt(index);
-                                                });
-                                              },
-                                              showCheckmark: false,
                                             ),
                                           );
                                         },
                                       ),
-                                    ),
+                                    )
+
+                                    // Wrap(
+                                    //   spacing: 5.sp,
+                                    //   runSpacing: 5.sp,
+                                    //   children: List.generate(
+                                    //     abc.length,
+                                    //     (index) {
+                                    //       return Container(
+                                    //         height: 32.h,
+                                    //         child: InputChip(
+                                    //           shadowColor: Color(0xff334155),
+                                    //           shape: RoundedRectangleBorder(
+                                    //               side: BorderSide(
+                                    //                   color: Color(0xff334155)),
+                                    //               borderRadius:
+                                    //                   BorderRadius.all(
+                                    //                 Radius.circular(
+                                    //                   8.r,
+                                    //                 ),
+                                    //               )),
+                                    //           side: BorderSide(
+                                    //               color: Color(0xff334155)),
+                                    //           deleteIcon: Icon(
+                                    //             Icons.close,
+                                    //             color: Colors.white,
+                                    //             size: 20.sp,
+                                    //           ),
+                                    //           backgroundColor:
+                                    //               Color(0xff334155),
+                                    //           visualDensity:
+                                    //               VisualDensity.compact,
+                                    //           materialTapTargetSize:
+                                    //               MaterialTapTargetSize
+                                    //                   .shrinkWrap,
+                                    //           label: Text(
+                                    //             abc[index],
+                                    //             style: TextStyle(
+                                    //                 color: Colors.white),
+                                    //           ),
+                                    //           onSelected: (bool selected) {
+                                    //             setState(() {
+                                    //               _isSelected = selected;
+                                    //             });
+                                    //           },
+                                    //           onDeleted: () {
+                                    //             setState(() {
+                                    //               abc.removeAt(index);
+                                    //             });
+                                    //           },
+                                    //           showCheckmark: false,
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ],
@@ -1783,7 +1742,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           setState(() => name_ = text),
                                     ),
                                     CustomFormField(
-                                      maxLength: 10,
+                                      // maxLength: 10,
                                       controller: _phoneNumber,
                                       hint: 'Enter number',
                                       label: "Phone number",
@@ -1795,9 +1754,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           top: 10.sp),
                                       hintTextHeight: 1.7.h,
                                       validator: (value) {
-                                        String pattern =
-                                            r'(^(?:[+0]9)?[0-9]{10}$)';
-                                        RegExp regExp = new RegExp(pattern);
+                                        RegExp regExp = new RegExp(r'^[0-9]+$');
                                         if (value.isEmpty) {
                                           setState(() {
                                             createPeopleValidate = false;
@@ -1978,7 +1935,7 @@ class _EditPageState extends State<CreatePeoplePage> {
     request.fields['salary'] = _salary.text;
     request.fields['salary_currency'] = _curren!;
     request.fields['availibilty_day'] = commaSepratedString;
-    request.fields['availibilty_time'] = '${startTime1}-${endTime2}';
+    request.fields['availibilty_time'] = '${startTime1} - ${endTime2}';
     request.fields['country'] = _country.text;
     request.fields['city'] = _enterCity.text;
     request.fields['time_zone'] = _time!;
@@ -2008,10 +1965,9 @@ class _EditPageState extends State<CreatePeoplePage> {
     var responseString = await response.stream.bytesToString();
     print("Response Data ------------------------------- ${responseString}");
     if (response.statusCode == 200) {
-      SmartDialog.dismiss();
+      print(widget.response);
 
       //setState(() {
-
       //clearContoller();
       selectDays = false;
       selectSkill = false;
@@ -2026,8 +1982,29 @@ class _EditPageState extends State<CreatePeoplePage> {
       _selectedFile = [];
       request.files.clear();
       // });
-
       Navigator.pop(context, true);
+
+      // Navigator.pop(context);
+
+      SmartDialog.dismiss();
+
+      // widget.returnValue!();
+
+      // widget.response = PeopleData.fromJson(jsonDecode(responseString));
+      // print(widget.response);
+
+      // bool result = await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => ProfileDetail(
+      //               list: widget.response!,
+      //               index: 6,
+      //             )));
+
+      // if (result) {
+      //   Provider.of<PeopleHomeViewModel>(context, listen: false)
+      //       .getPeopleDataList();
+      // }
 
       print("add people created");
     } else if (response.statusCode == 401) {
@@ -2040,6 +2017,7 @@ class _EditPageState extends State<CreatePeoplePage> {
       SmartDialog.dismiss();
 
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: responseJson['message'] ?? 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

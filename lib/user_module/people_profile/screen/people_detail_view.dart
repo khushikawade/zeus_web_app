@@ -21,6 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 
+import '../../../people_module/people_home/people_home_view_model.dart';
+
 class ProfileDetail extends StatefulWidget {
   PeopleData list;
   int index;
@@ -34,6 +36,7 @@ class ProfileDetail extends StatefulWidget {
 class _ProfileDetailState extends State<ProfileDetail> {
   _ProfileDetailState(this.list);
   PeopleData list;
+  String userName = "TBD";
 
   AutoCompleteTextField? searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Datum>> key = new GlobalKey();
@@ -55,28 +58,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
   final double width = 20;
 
   List<int> daysCountList = [1, 2, 3, 4, 5, 6, 7];
-
-  void getUsers() async {
-    var token = 'Bearer ' + storage.read("token");
-    var response = await http.get(
-      Uri.parse(AppUrl.tags_search),
-      headers: {"Accept": "application/json", "Authorization": token},
-    );
-    if (response.statusCode == 200) {
-      print("sucess");
-      var user = userFromJson(response.body);
-
-      users = user.data!;
-
-      setState(() {
-        loading = false;
-      });
-    } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
-    } else {
-      print("Error getting users.");
-    }
-  }
 
   Future<void> getUpdatePeople() async {
     var token = 'Bearer ' + storage.read("token");
@@ -200,13 +181,13 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
   @override
   void initState() {
+    print(
+        "--------------------------------------------------------------------");
     _getTag = getProject();
+    print(
+        "--------------------------9999999999999999999999------------------------------------------");
     change();
     _isSelected = false;
-    getUsers();
-    getDepartment();
-    getCurrency();
-    getTimeline();
 
     print("List Object --------------------------------- ");
     print(json.encode(list));
@@ -245,6 +226,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
     }
 
     if (list.resource != null) {
+      userName = list.resource!.nickname!;
       nickname = list.resource!.nickname!;
     } else {
       nickname = 'TBD';
@@ -600,8 +582,22 @@ class _ProfileDetailState extends State<ProfileDetail> {
                                     title: 'Menu at bottom',
                                     alignment: Alignment.topRight,
                                     buildContext: context,
+                                    onUpdateData: () {
+                                      setState(() {
+                                        nickname = "Vishal";
+                                        userName = "Vishal";
+                                      });
+                                      print(
+                                          "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<HIIIIIIIIIIIIIIIIIIIIII>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $userName");
+                                      setState(() {});
+                                    },
                                     returnValue: () {
                                       Navigator.pop(context, true);
+
+                                      // Provider.of<PeopleHomeViewModel>(context,
+                                      //         listen: false)
+                                      //     .getPeopleDataList();
+                                      // setState(() {});
                                     }),
                               ),
                             ),
@@ -922,86 +918,5 @@ class _ProfileDetailState extends State<ProfileDetail> {
             ))
       ],
     );
-  }
-
-  Future<String?> getTimeline() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _timeline = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getCurrency() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/currencies"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _currencyName = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getDepartment() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/departments"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _department = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
   }
 }

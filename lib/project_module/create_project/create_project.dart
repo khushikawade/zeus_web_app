@@ -237,7 +237,9 @@ class _EditPageState extends State<CreateProjectPage> {
     if (widget.response!.data != null &&
         widget.response!.data!.deliveryDate != null &&
         widget.response!.data!.deliveryDate!.isNotEmpty) {
-      selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
+      // selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
+      selectedDate =
+          AppUtil.stringToDateValidate(widget.response!.data!.deliveryDate!);
     }
   }
 
@@ -294,7 +296,7 @@ class _EditPageState extends State<CreateProjectPage> {
                     ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: ListView(
                   controller: verticalScroll,
-                  padding: EdgeInsets.all(widget.response == null ? 20 : 0),
+                  padding: EdgeInsets.all(widget.response == null ? 20 : 20),
                   shrinkWrap: true,
                   children: [
                     Row(
@@ -440,12 +442,19 @@ class _EditPageState extends State<CreateProjectPage> {
                             hint: '',
                             label: "Budget",
                             validator: (value) {
+                              RegExp regex = RegExp(r'^[0-9]+$');
                               if (value.isEmpty) {
                                 setState(() {
                                   createProjectValidate = false;
                                 });
                                 return 'Please enter';
+                              } else if (!regex.hasMatch(value)) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Invalid Budget';
                               }
+
                               return null;
                             },
                             onChange: (text) => setState(() => name_ = text),
@@ -481,11 +490,17 @@ class _EditPageState extends State<CreateProjectPage> {
                             hint: '',
                             label: "Estimated hours",
                             validator: (value) {
+                              RegExp regex = RegExp(r'^[0-9]+$');
                               if (value.isEmpty) {
                                 setState(() {
                                   createProjectValidate = false;
                                 });
                                 return 'Please enter';
+                              } else if (!regex.hasMatch(value)) {
+                                setState(() {
+                                  createProjectValidate = false;
+                                });
+                                return 'Please enter valid Estimated hours';
                               }
                               return null;
                             },
@@ -712,6 +727,7 @@ class _EditPageState extends State<CreateProjectPage> {
             .pushNamedAndRemoveUntil("/home", (route) => false);
 
         Fluttertoast.showToast(
+          timeInSecForIosWeb: 5,
           msg: 'Something Went Wrong',
           backgroundColor: Colors.grey,
         );

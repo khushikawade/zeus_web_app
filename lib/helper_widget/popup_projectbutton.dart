@@ -102,15 +102,16 @@ class _ProjectEditState extends State<ProjectEdit>
             hoverColor: Color(0xff1e293b),
             onTap: () {
               Navigator.pop(context);
+
               showDialog(
                   context: context,
                   builder: (context) {
                     return StatefulBuilder(
                       builder: (context, setState) => AlertDialog(
-                        // scrollable: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
+                        contentPadding: EdgeInsets.zero,
                         backgroundColor: const Color(0xff1E293B),
                         content: Form(
                             key: _formKey,
@@ -121,6 +122,25 @@ class _ProjectEditState extends State<ProjectEdit>
                       ),
                     );
                   });
+              // showDialog(
+              //     context: context,
+              //     builder: (context) {
+              //       return StatefulBuilder(
+              //         builder: (context, setState) => AlertDialog(
+              //           // scrollable: true,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(16),
+              //           ),
+              //           backgroundColor: const Color(0xff1E293B),
+              //           content: Form(
+              //               key: _formKey,
+              //               child: CreateProjectPage(
+              //                 formKey: _formKey,
+              //                 response: widget.response,
+              //               )),
+              //         ),
+              //       );
+              //     });
             },
             child: Container(
               height: 50.h,
@@ -193,17 +213,20 @@ class _ProjectEditState extends State<ProjectEdit>
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.only(right: 35.0.w),
-                                          child: const Text(
+                                          // margin:
+                                          //     EdgeInsets.only(right: 35.0.w),
+                                          child: Text(
                                             "Cancel",
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w700,
                                                 fontFamily: 'Inter',
                                                 color: ColorSelect.delete_text),
                                           ),
                                         ),
+                                      ),
+                                      SizedBox(
+                                        width: 35.w,
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -273,7 +296,7 @@ class _ProjectEditState extends State<ProjectEdit>
     );
 
     if (response.statusCode == 200) {
-      print("sucess");
+      print("success");
 
       SmartDialog.dismiss();
 
@@ -296,6 +319,7 @@ class _ProjectEditState extends State<ProjectEdit>
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );

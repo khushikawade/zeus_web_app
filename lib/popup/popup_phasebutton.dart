@@ -129,10 +129,7 @@ class _MenuPhaseState extends State<MenuPhase>
   @override
   void initState() {
     _isSelected = false;
-    getUsers();
-    getDepartment();
-    getCurrency();
-    getTimeline();
+
     super.initState();
   }
 
@@ -260,8 +257,6 @@ class _MenuPhaseState extends State<MenuPhase>
                                           Navigator.pop(context);
                                         },
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.only(right: 35.0.sp),
                                           child: Text(
                                             "Cancel",
                                             style: TextStyle(
@@ -272,6 +267,7 @@ class _MenuPhaseState extends State<MenuPhase>
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: 35.w),
                                       InkWell(
                                         onTap: () {
                                           Navigator.pop(context);
@@ -338,86 +334,6 @@ class _MenuPhaseState extends State<MenuPhase>
     }
   }
 
-  Future<String?> getDepartment() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/departments"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _department = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print('department error===========>>>>>>>>');
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getTimeline() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _timeline = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  void getUsers() async {
-    var token = 'Bearer ' + storage.read("token");
-
-    var response = await http.get(
-      Uri.parse(AppUrl.tags_search),
-      headers: {"Accept": "application/json", "Authorization": token},
-    );
-
-    if (response.statusCode == 200) {
-      print("sucess");
-
-      var user = userFromJson(response.body);
-
-      users = user.data!;
-
-      setState(() {
-        loading = false;
-      });
-    } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
-    } else {
-      print("Error getting users.");
-    }
-  }
-
   getUpdatePeople(String userId, BuildContext context) async {}
 
   deletePeople(int? peopleId, BuildContext buildContext, StateSetter setState,
@@ -447,38 +363,12 @@ class _MenuPhaseState extends State<MenuPhase>
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(
+        timeInSecForIosWeb: 5,
         msg: user.message != null ? user.message! : 'Something Went Wrong',
         backgroundColor: Colors.grey,
       );
       SmartDialog.dismiss();
     }
-  }
-
-  Future<String?> getCurrency() async {
-    String? value;
-    var token = 'Bearer ' + storage.read("token");
-    if (value == null) {
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/currencies"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _currencyName = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
   }
 
   errorWidget() {

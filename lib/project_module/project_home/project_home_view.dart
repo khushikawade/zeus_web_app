@@ -39,10 +39,7 @@ class ProjectHomeState extends State<ProjectHome> {
   GlobalKey key8 = new GlobalKey();
   GlobalKey key9 = new GlobalKey();
   GlobalKey key10 = new GlobalKey();
-  List _statusList = [];
-  List _currencyName = [];
-  List _accountableId = [];
-  List _customerName = [];
+
   ShowMoreTextPopups? popup;
   List<SkillsData> skillsData = [];
 
@@ -102,19 +99,20 @@ class ProjectHomeState extends State<ProjectHome> {
   getAllData() async {
     await getListData();
     change();
-    await getSelectStatus();
-    await getAccountable();
-    await getAccountable();
-    await getCustomer();
-    await getCurrency();
+
     getUsers();
-    //await getData();
+    await getData();
   }
 
   // get provider data
   getData() {
     var data = context.watch<ProjectHomeViewModel>();
   }
+
+  // // get provider data
+  // getData() {
+  //   var data = context.watch<ProjectHomeViewModel>();
+  // }
 
   // Make People List widget or Data Table
   Widget makeProjectList(ProjectHomeViewModel? data) {
@@ -254,18 +252,6 @@ class ProjectHomeState extends State<ProjectHome> {
                       Provider.of<ProjectHomeViewModel>(context, listen: false)
                           .productData(),
                       skillsData);
-
-                  // showProjectDetailsDailog(
-                  //   context,
-                  //   Provider.of<ProjectHomeViewModel>(context, listen: false)
-                  //       .productData(),
-                  //   _statusList,
-                  //   _currencyName,
-                  //   _accountableId,
-                  //   _customerName,
-                  //   _projectData.id.toString(),
-                  //   skillsData,
-                  // );
                 });
               },
               cells: [
@@ -728,87 +714,6 @@ class ProjectHomeState extends State<ProjectHome> {
     } catch (e) {}
   }
 
-  Future<String?> getSelectStatus() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/status"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _statusList = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getCurrency() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/currencies"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _currencyName = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAccountable() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse(AppUrl.accountable_person),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _accountableId = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
   void getUsers() async {
     skillsData.clear();
     var token = 'Bearer ' + storage.read("token");
@@ -831,32 +736,5 @@ class ProjectHomeState extends State<ProjectHome> {
     } else {
       print("Error getting users.");
     }
-  }
-
-  Future<String?> getCustomer() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/customer"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _customerName = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
   }
 }
