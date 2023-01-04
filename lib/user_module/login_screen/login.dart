@@ -39,10 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _formKey = GlobalKey<FormState>();
 
-  TextEditingController emailController =
-      TextEditingController(text: 'vishal.zt@mailinator.com');
-  TextEditingController passwordController =
-      TextEditingController(text: "Password@123");
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   void _submit() {
     setState(() => _submitted = true);
