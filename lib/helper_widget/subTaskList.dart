@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zeus/services/model/phase_details.dart';
+import 'package:zeus/services/model/resourcedata.dart';
 import 'package:zeus/services/model/subtask_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/util.dart';
@@ -155,6 +156,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails, verticalScroll,
                                                 phaseDetails.sub_tasks![index],
                                                 index,
                                                 'Edit');
+                                            // callbackforsubTakresource(phaseDetails.sub_tasks![index].resource,'Edit');
                                           },
                                           child: CircleAvatar(
                                               backgroundColor:
