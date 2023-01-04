@@ -607,22 +607,22 @@ class _LoginScreenState extends State<LoginScreen> {
         storage.write("user_id", responseJson['data']['user']['id'].toString());
 
         SmartDialog.dismiss();
-        // try {
-        //   //context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
+        try {
+          //context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
 
-        //   context.vRouter.toSegments([
-        //     "home",
-        //     RouteConstants.projectRoute,
-        //   ], isReplacement: true);
-        // } catch (e) {
-        //   print(e);
-        //   print("e");
-        // }
+          context.vRouter.toSegments([
+            "home",
+            RouteConstants.projectRoute,
+          ], isReplacement: true);
+        } catch (e) {
+          print(e);
+          print("e");
+        }
 
         /// final username = VRouter.of(context).path;
         //ConnectedRoutes.toProject(context, "/home");
 
-        launchClickUpsUrl();
+        //launchClickUpsUrl();
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(
         //         builder: (context) => MyHomePage(
