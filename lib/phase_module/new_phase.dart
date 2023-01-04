@@ -546,7 +546,10 @@ class _NewPhaseState extends State<NewPhase> {
                     hint: 'dd/mm/yyyy',
                     label: "End date",
                     initialDate: widget.type == 1
-                        ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
+                        ? phaseDetails.end_date != null
+                            ? AppUtil.stringToDateValidate(
+                                phaseDetails.end_date!)
+                            : null
                         : phaseDetails.start_date != null
                             ? AppUtil.stringToDateValidate(
                                 phaseDetails.start_date!)
@@ -848,6 +851,7 @@ class _NewPhaseState extends State<NewPhase> {
                                                       element.resource_name ==
                                                       selectedSource[index]);
                                               selectedSource.removeAt(index);
+
                                               // listResource.removeWhere(
                                               //     (element) =>
                                               //         element.details!
@@ -1328,7 +1332,10 @@ class _NewPhaseState extends State<NewPhase> {
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
                           initialDate: widget.type == 1 || editSubTask
-                              ? AppUtil.stringToDateValidate(subTaskStartDate!)
+                              ? subTaskStartDate != null
+                                  ? AppUtil.stringToDateValidate(
+                                      subTaskStartDate!)
+                                  : null
                               : phaseDetails.start_date != null
                                   ? AppUtil.stringToDateValidate(
                                       phaseDetails.start_date!)
@@ -1372,7 +1379,10 @@ class _NewPhaseState extends State<NewPhase> {
                           hint: 'dd/mm/yyyy',
                           label: "End date",
                           initialDate: widget.type == 1 || editSubTask
-                              ? AppUtil.stringToDateValidate(subTaskEndDate!)
+                              ? subTaskEndDate != null
+                                  ? AppUtil.stringToDateValidate(
+                                      subTaskEndDate!)
+                                  : null
                               : phaseDetails.start_date != null
                                   ? AppUtil.stringToDateValidate(
                                       phaseDetails.start_date!)
@@ -1621,6 +1631,11 @@ class _NewPhaseState extends State<NewPhase> {
                                           .toString()
                                           .toLowerCase()) {
                                     resourceSuggestions.add(element.details!);
+
+                                    //      selectedSubTaskSource
+                                    //     .add(element.details!.resource);
+                                    // print(selectedSubTaskSource);
+                                    // print(selectedSubTaskSource);
                                   }
                                 }
 
@@ -1782,7 +1797,8 @@ class _NewPhaseState extends State<NewPhase> {
                                     ),
                                     onTap: () {
                                       dialogSetState(() {
-                                        selectedSubTaskSource.removeAt(index);
+                                        // selectedSubTaskSource.removeAt(index);
+                                        // selectedSubTaskSource.add(values.resource!);
                                       });
                                     },
                                   )
@@ -2197,7 +2213,10 @@ class _NewPhaseState extends State<NewPhase> {
       } catch (e) {
         print(e);
       }
+      print("777777777777777777777777777777777777777777");
+      print(phaseDetails.sub_tasks);
 
+      print(phaseDetails.sub_tasks);
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
