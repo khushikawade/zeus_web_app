@@ -1797,7 +1797,7 @@ class _NewPhaseState extends State<NewPhase> {
                                     ),
                                     onTap: () {
                                       dialogSetState(() {
-                                        // selectedSubTaskSource.removeAt(index);
+                                        selectedSubTaskSource.removeAt(index);
                                         // selectedSubTaskSource.add(values.resource!);
                                       });
                                     },
