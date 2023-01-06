@@ -63,6 +63,15 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
   }
 
   @override
+  void didChangeDependencies() {
+    print(
+        "Called did update widget ----------------------------------------- ");
+    Provider.of<PeopleHomeViewModel>(context, listen: false)
+        .getPeopleDataList();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
 
@@ -228,40 +237,9 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
           rows.add(DataRow(
               onSelectChanged: (newValue) async {
-                // bool result = await Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => ProfileDetail(
-                //               list: _peopleList,
-
-                //             )));
-
-                // bool result = await context.vxNav.waitAndPush(
-                //     Uri(
-                //         path: MyRoutes.peopleDetailsRoute,
-                //         queryParameters: {"id": _peopleList.id.toString()}),
-                //     params: _peopleList);
-                // if (result) {
-                //   Provider.of<PeopleHomeViewModel>(context, listen: false)
-                //       .getPeopleDataList();
-                // }
-
-                // context.vRouter.to(
-                //   MyRoutes.peopleDetailsRoute,
-                //   isReplacement: false,
-                //   queryParameters: {'id': _peopleList.id.toString()},
-                // );
-
-                // final username = VRouter.of(context).path;
-                //ConnectedRoutes.toProfileDetails(context, username, _peopleList.id.toString());
-                // context.vRouter.to(RouteConstants.peopleDetails,
-                //     queryParameters: {"id": _peopleList.id.toString()});
-
                 context.vRouter.toSegments(
                     ["people", RouteConstants.peopleDetails],
                     queryParameters: {"id": _peopleList.id.toString()});
-
-                // Push the url '/home/settings'
               },
               cells: [
                 DataCell(Row(

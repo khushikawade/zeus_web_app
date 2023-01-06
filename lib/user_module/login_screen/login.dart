@@ -598,38 +598,21 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        sharedPreferences.setBool('isLogin', true);
+        //sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        storage.write(isLogin, true);
+        //storage.write(isLogin, true);
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
 
         SmartDialog.dismiss();
-        // try {
-        //   //context.vRouter.to(RouteConstants.homeRoute, isReplacement: true);
-
-        //   context.vRouter.toSegments([
-        //     "home",
-        //     RouteConstants.projectRoute,
-        //   ], isReplacement: true);
-        // } catch (e) {
-        //   print(e);
-        //   print("e");
-        // }
-
-        /// final username = VRouter.of(context).path;
-        //ConnectedRoutes.toProject(context, "/home");
 
         launchClickUpsUrl();
-        // Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(
-        //         builder: (context) => MyHomePage(
-        //               onSubmit: (String value) {},
-        //               adOnSubmit: (String value) {},
-        //             )),
-        //     (Route<dynamic> route) => route is MyHomePage);
+        // context.vRouter.toSegments([
+        //   "home",
+        //   RouteConstants.projectRoute,
+        // ], isReplacement: true);
       } else {
         Fluttertoast.showToast(
           timeInSecForIosWeb: 5,

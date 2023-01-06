@@ -40,7 +40,6 @@ void main() async {
   // await GetStorage.init();
   // setPathUrlStrategy();
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -60,6 +59,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => CreateProjectModel())
           ],
           child: VRouter(
+            scrollBehavior: MyCustomScrollBehavior(),
+            transitionDuration: Duration.zero,
+            buildTransition: (animation, secondaryAnimation, child) => child,
             debugShowCheckedModeBanner: false,
             builder: FlutterSmartDialog.init(),
             mode: VRouterMode.history,
