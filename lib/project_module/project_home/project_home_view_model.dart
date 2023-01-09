@@ -22,16 +22,20 @@ class ProjectHomeViewModel extends ChangeNotifier {
     return projectDetailResponse!;
   }
 
-  Future<void> getPeopleIdel({String? searchText}) async {
+  Future getPeopleIdel({String? searchText}) async {
     loading = true;
-    projectDetailsResponse = (await service.getIdel(searchText))!;
-    print("javascript");
-    // print(peopleIdelResponse);
-    loading = false;
-    notifyListeners();
+    try {
+      projectDetailsResponse = (await service.getIdel(searchText))!;
+      print("javascript");
+      // print(peopleIdelResponse);
+      loading = false;
+      notifyListeners();
+    } catch (e) {
+      print("Exception in parsing $e");
+    }
   }
 
-  void apiCall(id) {
+  apiCall(id) {
     getPeopleIdel();
     getProjectDetail(id);
     notifyListeners();

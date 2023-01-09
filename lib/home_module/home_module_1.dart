@@ -160,55 +160,55 @@ class _NavigationRailState extends State<MyHomePage1>
     }
   }
 
-  getAllData() async {
-    await getListData();
-    change();
+  // getAllData() async {
+  //   // await getListData();
+  //   // change();
 
-    getUsers();
-    await getData();
-  }
+  //   // getUsers();
+  //   // await getData();
+  // }
 
   // get provider data
-  getData() {
-    var data = context.watch<ProjectHomeViewModel>();
-  }
+  // getData() {
+  //   var data = context.watch<ProjectHomeViewModel>();
+  // }
 
-  Future? getListData() async {
-    var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
-        .getPeopleIdel(searchText: '');
+  // Future? getListData() async {
+  //   var result = await Provider.of<ProjectHomeViewModel>(context, listen: false)
+  //       .getPeopleIdel(searchText: '');
 
-    return result;
-  }
+  //   return result;
+  // }
 
-  void change() async {
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setString('val', 'q');
-  }
+  // void change() async {
+  //   var prefs = await SharedPreferences.getInstance();
+  //   prefs.setString('val', 'q');
+  // }
 
-  void getUsers() async {
-    skillsData.clear();
-    var token = 'Bearer ' + storage.read("token");
-    var response = await http.get(
-      Uri.parse(AppUrl.searchLanguage),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": token,
-      },
-    );
-    if (response.statusCode == 200) {
-      print("skills sucess");
-      var skills = skillProjectFromJson(response.body);
-      print(skills);
-      print('Users: ${skills.data}');
-      skillsData.addAll(skills.data!);
-      print(skillsData);
-    } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(
-          context, "Your Session has been expired, Please try again!");
-    } else {
-      print("Error getting users.");
-    }
-  }
+  // void getUsers() async {
+  //   skillsData.clear();
+  //   var token = 'Bearer ' + storage.read("token");
+  //   var response = await http.get(
+  //     Uri.parse(AppUrl.searchLanguage),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": token,
+  //     },
+  //   );
+  //   if (response.statusCode == 200) {
+  //     print("skills sucess");
+  //     var skills = skillProjectFromJson(response.body);
+  //     print(skills);
+  //     print('Users: ${skills.data}');
+  //     skillsData.addAll(skills.data!);
+  //     print(skillsData);
+  //   } else if (response.statusCode == 401) {
+  //     AppUtil.showErrorDialog(
+  //         context, "Your Session has been expired, Please try again!");
+  //   } else {
+  //     print("Error getting users.");
+  //   }
+  // }
 
   @override
   @override
@@ -451,29 +451,33 @@ class _NavigationRailState extends State<MyHomePage1>
                                 });
                               }
                             },
+                            // minExtendedWidth: 1
+                            // ,
+
                             labelType: NavigationRailLabelType.selected,
+
                             backgroundColor: const Color(0xff0F172A),
                             destinations: <NavigationRailDestination>[
                               NavigationRailDestination(
                                 padding: EdgeInsets.zero,
                                 icon: Container(
-                                  width: 46.0,
-                                  height: 46.0,
+                                  width: 56.w,
+                                  height: 56.h,
                                   decoration: BoxDecoration(
                                     color: const Color(0xff93C5FD),
                                     border: Border.all(
                                         color: const Color(0xff93C5FD)),
                                     borderRadius: BorderRadius.circular(
-                                      16.0,
+                                      16.r,
                                     ),
                                   ),
-                                  margin: const EdgeInsets.only(
-                                    top: 40.0,
-                                    left: 20.0,
+                                  margin: EdgeInsets.only(
+                                    top: 40.sp,
+                                    left: 20.sp,
                                     right: 0.0,
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
+                                    padding: EdgeInsets.all(20.sp),
                                     child: SvgPicture.asset(
                                       "images/plus.svg",
                                     ),
@@ -509,7 +513,7 @@ class _NavigationRailState extends State<MyHomePage1>
                                   width: 56.0,
                                   height: 32.0,
                                   margin: const EdgeInsets.only(
-                                    top: 40.0,
+                                    top: 0.0,
                                     left: 20.0,
                                     right: 0.0,
                                   ),
@@ -519,15 +523,11 @@ class _NavigationRailState extends State<MyHomePage1>
                                     border: Border.all(
                                         color: const Color(0xff334155)),
                                     borderRadius: BorderRadius.circular(
-                                      18.0,
+                                      18.0.r,
                                     ),
                                   ),
-                                  child: Stack(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "images/notification_icon.svg",
-                                      ),
-                                    ],
+                                  child: SvgPicture.asset(
+                                    "images/notification_icon.svg",
                                   ),
                                 ),
                                 label: const Align(
@@ -544,21 +544,17 @@ class _NavigationRailState extends State<MyHomePage1>
                               ),
                               NavigationRailDestination(
                                   padding: EdgeInsets.zero,
-                                  icon: Column(
-                                    children: [
-                                      Container(
-                                        width: 20.0,
-                                        height: 18.0,
-                                        margin: const EdgeInsets.only(
-                                          top: 0.0,
-                                          left: 20.0,
-                                          right: 0.0,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          "images/camera.svg",
-                                        ),
-                                      ),
-                                    ],
+                                  icon: Container(
+                                    width: 20.0,
+                                    height: 18.0,
+                                    margin: const EdgeInsets.only(
+                                      top: 0.0,
+                                      left: 20.0,
+                                      right: 0.0,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
+                                    ),
                                   ),
                                   selectedIcon: Container(
                                     width: 56.0,
@@ -574,15 +570,11 @@ class _NavigationRailState extends State<MyHomePage1>
                                       border: Border.all(
                                           color: const Color(0xff334155)),
                                       borderRadius: BorderRadius.circular(
-                                        18.0,
+                                        18.0.r,
                                       ),
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "images/camera.svg",
-                                        ),
-                                      ],
+                                    child: SvgPicture.asset(
+                                      "images/camera.svg",
                                     ),
                                   ),
                                   label: Text('')),
@@ -635,7 +627,7 @@ class _NavigationRailState extends State<MyHomePage1>
                                     border: Border.all(
                                         color: const Color(0xff334155)),
                                     borderRadius: BorderRadius.circular(
-                                      18.0,
+                                      18.0.r,
                                     ),
                                   ),
                                   child: SvgPicture.asset(

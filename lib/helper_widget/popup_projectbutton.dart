@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:vrouter/vrouter.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +16,7 @@ import 'search_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProjectEdit extends StatefulWidget {
   String title;
@@ -305,13 +309,23 @@ class _ProjectEditState extends State<ProjectEdit>
       SmartDialog.dismiss();
 
       try {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                      onSubmit: (String value) {},
-                      adOnSubmit: (String value) {},
-                    )),
-            (Route<dynamic> route) => false);
+        context.vRouter.toSegments([
+          "home",
+          RouteConstants.projectRoute,
+        ], isReplacement: true);
+
+        Provider.of<ProjectHomeViewModel>(context, listen: false)
+            .getPeopleIdel(searchText: '');
+
+        setState(() {});
+
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => MyHomePage(
+        //               onSubmit: (String value) {},
+        //               adOnSubmit: (String value) {},
+        //             )),
+        //     (Route<dynamic> route) => false);
       } catch (e) {
         print(buildContext.widget);
         print("Error in navigating ------------------------------");
