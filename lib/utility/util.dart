@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
 
@@ -143,7 +144,7 @@ class AppUtil {
   }
 
   // show Anothrised Error Dialog
-  static showErrorDialog(BuildContext context) {
+  static showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -158,9 +159,9 @@ class AppUtil {
                   fontSize: 18.0,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold)),
-          content: const Padding(
+          content: Padding(
             padding: EdgeInsets.only(left: 25, right: 25, top: 16, bottom: 10),
-            child: Text('Your Session has been expired, Please try again!',
+            child: Text(message,
                 style: TextStyle(
                     color: Color(0xffFFFFFF),
                     fontSize: 16.0,
@@ -170,12 +171,13 @@ class AppUtil {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => LoginScreen(
-                                onSubmit: (String value) {},
-                              )),
-                      (Route<dynamic> route) => route is LoginScreen);
+                  // context.vxNav.clearAndPush(Uri.parse(MyRoutes.loginRoute));
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (context) => LoginScreen(
+                  //               onSubmit: (String value) {},
+                  //             )),
+                  //     (Route<dynamic> route) => route is LoginScreen);
                 },
                 child: const Text(
                   'Ok',

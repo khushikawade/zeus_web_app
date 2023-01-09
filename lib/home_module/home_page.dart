@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/create_people/create_people_page.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
@@ -141,7 +142,6 @@ class _NavigationRailState extends State<MyHomePage>
   List addSkills = [];
 
   String name1 = '';
-  bool _autoValidate = false;
 
   String capitalize(String value) {
     var result = value[0].toUpperCase();
@@ -158,30 +158,6 @@ class _NavigationRailState extends State<MyHomePage>
   }
 
   List _addtag = [];
-
-  void getUsers() async {
-    var token = 'Bearer ' + storage.read("token");
-    var response = await http.get(
-      Uri.parse(AppUrl.tags_search),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": token,
-      },
-    );
-    if (response.statusCode == 200) {
-      print("skills sucess");
-      var user = userFromJson(response.body);
-      users = user.data!;
-
-      setState(() {
-        loading = false;
-      });
-    } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
-    } else {
-      print("Error getting users.");
-    }
-  }
 
   MyDropdownData myDropdownData = MyDropdownData();
   int _selectedIndex = 1;
@@ -229,19 +205,9 @@ class _NavigationRailState extends State<MyHomePage>
   void initState() {
     Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
-    getUsers();
+    // getUsers();
     change();
     _isSelected = false;
-
-    getAddpeople();
-
-    getTagpeople();
-    getDepartment();
-    getAccountable();
-    getCustomer();
-    getCurrency();
-    getSelectStatus();
-    getTimeline();
     super.initState();
   }
 
@@ -281,12 +247,13 @@ class _NavigationRailState extends State<MyHomePage>
         style: TextStyle(fontSize: 40, color: Colors.white),
       ),
     ),
-    Container(
-      child: const Navigator(
-        onGenerateRoute: generateRoute,
-        initialRoute: '/peopleList',
-      ),
-    ),
+    PeopleHomeView(),
+    // Container(
+    //   child: const Navigator(
+    //     onGenerateRoute: generateRoute,
+    //     initialRoute: '/peopleList',
+    //   ),
+    // ),
     Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,
@@ -2148,12 +2115,15 @@ class _NavigationRailState extends State<MyHomePage>
                             try {
                               _debouncer.run(() async {
                                 if (projectListTapIcon) {
-                                  if (val != null && val.isNotEmpty) {
-                                    await Provider.of<ProjectHomeViewModel>(
-                                            context,
-                                            listen: false)
-                                        .getPeopleIdel(searchText: val);
-                                  }
+                                  // if (val != null && val.isNotEmpty) {
+                                  //   await Provider.of<ProjectHomeViewModel>(
+                                  //           context,
+                                  //           listen: false)
+                                  //       .getPeopleIdel(searchText: val);
+                                  // }
+                                  Provider.of<ProjectHomeViewModel>(context,
+                                          listen: false)
+                                      .getPeopleIdel(searchText: val);
                                 } else if (_selectedIndex == 2) {
                                   print(_selectedIndex);
                                 } else if (peopleListTapIcon) {
@@ -2217,7 +2187,7 @@ class _NavigationRailState extends State<MyHomePage>
                     SizedBox(
                       width: 10.w,
                     ),
-                    LogOut(returnValue: () {}),
+                    LogOut(),
                     SizedBox(
                       width: 15.w,
                     ),
@@ -2314,7 +2284,7 @@ class _NavigationRailState extends State<MyHomePage>
                                     cameraTapIcon == false &&
                                     circleTapIcon == false &&
                                     settingIcon == false &&
-                                    bellTapIcon == false 
+                                    bellTapIcon == false
                                 ? Padding(
                                     padding: EdgeInsets.only(
                                         top: 12.sp, left: 20.sp),
@@ -3142,220 +3112,6 @@ class _NavigationRailState extends State<MyHomePage>
     );
   }
 
-  Future<String?> getAccountable() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse(AppUrl.accountable_person),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _accountableId = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getCustomer() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/customer"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _customerName = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getCurrency() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/currencies"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _currencyName = mdata;
-          try {
-            currencyList!.clear();
-            _currencyName.forEach((element) {
-              if (!currencyList!.contains(element['currency']['symbol'])) {
-                currencyList!.add(DropdownModel(
-                    element['id'].toString(), element['currency']['symbol']));
-              }
-            });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getSelectStatus() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/status"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _statusList = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getTimeline() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _timeline = mdata;
-
-          try {
-            selecTimeZoneList = [];
-            _timeline.forEach((element) {
-              print(element);
-              selecTimeZoneList!.add(DropdownModel(element['id'].toString(),
-                  '${element['name'] + ', ' + element['diff_from_gtm']}'));
-            });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAddpeople() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/tags"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          addTag = mdata;
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getTagpeople() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/skills"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          addSkills = mdata;
-          _addtag = addSkills;
-          print('ghjhjhjh' + _addtag.length.toString());
-        });
-        print("yes to much");
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
   onItemChanged(String value) {
     setState(() {
       _addtag = addSkills
@@ -3425,7 +3181,6 @@ class _NavigationRailState extends State<MyHomePage>
     startTime1 = '';
     endTime2 = '';
     _department.clear();
-    getDepartment();
 
     _country.clear();
     _enterCity.clear();
@@ -3433,53 +3188,5 @@ class _NavigationRailState extends State<MyHomePage>
     webImage!.clear();
 
     abc.clear();
-  }
-
-//dropdown apis
-  Future<String?> getDepartment() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/departments"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _department = mdata;
-          print(_department);
-          print(_department);
-          try {
-            departmentlist = []; //!.clear();
-            _department.forEach((element) {
-              print(element);
-              departmentlist!.add(
-                  DropdownModel(element['id'].toString(), element['name']));
-            });
-            // _department.forEach((element) {
-            //   print(element);
-            //   print(element);
-            //   if (!departmentlist!.contains(element["id"])) {
-            //     departmentlist!
-            //         .add(DropdownModel(element["id"], element["id"]));
-            //   }
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
   }
 }

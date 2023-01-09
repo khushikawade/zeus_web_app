@@ -117,6 +117,7 @@ class _NewPhaseState extends State<NewPhase> {
       TextEditingController();
   final TextEditingController _phaseLangugaeController =
       TextEditingController();
+  final ScrollController verticalScroll = ScrollController();
 
   phaseInitialData() {
     if (getPhaseDetails != null &&
@@ -226,6 +227,7 @@ class _NewPhaseState extends State<NewPhase> {
               width: MediaQuery.of(context).size.width * 0.99.w,
               height: double.infinity,
               child: RawScrollbar(
+                controller: verticalScroll,
                 thumbColor: const Color(0xff4b5563),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
@@ -544,7 +546,10 @@ class _NewPhaseState extends State<NewPhase> {
                     hint: 'dd/mm/yyyy',
                     label: "End date",
                     initialDate: widget.type == 1
-                        ? AppUtil.stringToDateValidate(phaseDetails.end_date!)
+                        ? phaseDetails.end_date != null
+                            ? AppUtil.stringToDateValidate(
+                                phaseDetails.end_date!)
+                            : null
                         : phaseDetails.start_date != null
                             ? AppUtil.stringToDateValidate(
                                 phaseDetails.start_date!)
@@ -743,7 +748,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   );
                                 },
                                 onSuggestionSelected: (item) {
-                                  setState(() {
+                                  dialogSetState(() {
                                     searchTextField!.textFieldConfiguration
                                         .controller!.text = '';
 
@@ -832,7 +837,7 @@ class _NewPhaseState extends State<NewPhase> {
                                           ),
                                         ),
                                         onTap: () {
-                                          setState(() {
+                                          dialogSetState(() {
                                             removeDuplicate();
                                             selectedSubTaskSource.removeWhere(
                                                 (element) =>
@@ -846,6 +851,7 @@ class _NewPhaseState extends State<NewPhase> {
                                                       element.resource_name ==
                                                       selectedSource[index]);
                                               selectedSource.removeAt(index);
+
                                               // listResource.removeWhere(
                                               //     (element) =>
                                               //         element.details!
@@ -1046,24 +1052,54 @@ class _NewPhaseState extends State<NewPhase> {
                                 ],
                               ),
                               onTap: () {
-                                dialogSetState(() {
+                                dialogSetState((() {
                                   milestoneValidate = true;
+
                                   addMilestoneBtnClick = true;
+
                                   createButtonClick = true;
+
                                   saveButtonClickForMileStone = false;
-                                });
+                                }));
+
                                 Future.delayed(
                                     const Duration(microseconds: 500), () {
                                   if (_formKey.currentState!.validate()) {
                                     if (allValidate &&
                                         selectedSource.isNotEmpty) {
                                       dialogSetState(() {
-                                        clickedAddMileStone = true;
+                                        phaseDetails.start_date!.isNotEmpty &&
+                                                phaseDetails
+                                                    .end_date!.isNotEmpty
+                                            ? clickedAddMileStone = true
+                                            : clickedAddMileStone;
+
                                         // saveButtonClickForMileStone = true;
                                       });
                                     }
+                                  } else {
+                                    print("fdghjdkfgh");
                                   }
                                 });
+                                // dialogSetState(() {
+                                //   milestoneValidate = true;
+                                //   addMilestoneBtnClick = true;
+                                //   createButtonClick = true;
+                                //   saveButtonClickForMileStone = false;
+
+                                // });
+                                // Future.delayed(
+                                //     const Duration(microseconds: 500), () {
+                                //   if (_formKey.currentState!.validate()) {
+                                //     if (allValidate &&
+                                //         selectedSource.isNotEmpty) {
+                                //       dialogSetState(() {
+                                //         clickedAddMileStone = true;
+                                //         // saveButtonClickForMileStone = true;
+                                //       });
+                                //     }
+                                //   }
+                                // });
                               },
                             ),
                             SizedBox(
@@ -1106,6 +1142,7 @@ class _NewPhaseState extends State<NewPhase> {
                     ? milestoneList(
                         context,
                         phaseDetails,
+                        verticalScroll,
                         callback: (values, index, action) {
                           dialogSetState(() {
                             if (action == "Delete") {
@@ -1258,7 +1295,12 @@ class _NewPhaseState extends State<NewPhase> {
                                           if (allValidate &&
                                               selectedSource.isNotEmpty) {
                                             dialogSetState(() {
-                                              clickAddSubTask = true;
+                                              phaseDetails.start_date!
+                                                          .isNotEmpty &&
+                                                      phaseDetails
+                                                          .end_date!.isNotEmpty
+                                                  ? clickAddSubTask = true
+                                                  : clickAddSubTask;
                                             });
                                           }
                                         }
@@ -1290,7 +1332,10 @@ class _NewPhaseState extends State<NewPhase> {
                           hint: 'dd/mm/yyyy',
                           label: "Start date",
                           initialDate: widget.type == 1 || editSubTask
-                              ? AppUtil.stringToDateValidate(subTaskStartDate!)
+                              ? subTaskStartDate != null
+                                  ? AppUtil.stringToDateValidate(
+                                      subTaskStartDate!)
+                                  : null
                               : phaseDetails.start_date != null
                                   ? AppUtil.stringToDateValidate(
                                       phaseDetails.start_date!)
@@ -1334,7 +1379,10 @@ class _NewPhaseState extends State<NewPhase> {
                           hint: 'dd/mm/yyyy',
                           label: "End date",
                           initialDate: widget.type == 1 || editSubTask
-                              ? AppUtil.stringToDateValidate(subTaskEndDate!)
+                              ? subTaskEndDate != null
+                                  ? AppUtil.stringToDateValidate(
+                                      subTaskEndDate!)
+                                  : null
                               : phaseDetails.start_date != null
                                   ? AppUtil.stringToDateValidate(
                                       phaseDetails.start_date!)
@@ -1415,6 +1463,7 @@ class _NewPhaseState extends State<NewPhase> {
                         child: subTaskList(
                           context,
                           phaseDetails,
+                          verticalScroll,
                           callback: (values, index, subTaskAction) {
                             if (subTaskAction == 'Delete') {
                               onDeleteSubtask(index, dialogSetState);
@@ -1554,7 +1603,7 @@ class _NewPhaseState extends State<NewPhase> {
                             left: 16.sp,
                           ),
                           child: CustomSearchDropdownSubTask(
-                            hint: "Typessss",
+                            hint: "Type",
                             label: "",
                             margin: EdgeInsets.all(0),
                             initialValue: getIntialValueForSubTask(
@@ -1582,6 +1631,11 @@ class _NewPhaseState extends State<NewPhase> {
                                           .toString()
                                           .toLowerCase()) {
                                     resourceSuggestions.add(element.details!);
+
+                                    //      selectedSubTaskSource
+                                    //     .add(element.details!.resource);
+                                    // print(selectedSubTaskSource);
+                                    // print(selectedSubTaskSource);
                                   }
                                 }
 
@@ -1674,7 +1728,7 @@ class _NewPhaseState extends State<NewPhase> {
                   );
                 },
                 onSuggestionSelected: (item) {
-                  setState(() {
+                  dialogSetState(() {
                     subTaskResourceName = item.name!;
                     _subTaskResourcesController.text = '';
 
@@ -1742,8 +1796,9 @@ class _NewPhaseState extends State<NewPhase> {
                                       ),
                                     ),
                                     onTap: () {
-                                      setState(() {
+                                      dialogSetState(() {
                                         selectedSubTaskSource.removeAt(index);
+                                        // selectedSubTaskSource.add(values.resource!);
                                       });
                                     },
                                   )
@@ -1849,7 +1904,6 @@ class _NewPhaseState extends State<NewPhase> {
               } catch (e) {
                 print("Erorr ----------------------- $e");
               }
-              print("here11111-------------------");
             },
           )
         ],
@@ -2159,7 +2213,10 @@ class _NewPhaseState extends State<NewPhase> {
       } catch (e) {
         print(e);
       }
+      print("777777777777777777777777777777777777777777");
+      print(phaseDetails.sub_tasks);
 
+      print(phaseDetails.sub_tasks);
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {

@@ -30,10 +30,8 @@ class ProjectDetailsDialogView extends StatefulWidget {
   ProjectDetailResponse? response;
   List<SkillsData>? skills;
   GlobalKey<FormState>? formKey = new GlobalKey<FormState>();
-
   ProjectDetailsDialogView({Key? key, this.formKey, this.response, this.skills})
       : super(key: key);
-
   @override
   State<ProjectDetailsDialogView> createState() => _EditPageState();
 }
@@ -47,9 +45,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
   ScrollController _verticalScrollController = ScrollController();
   ScrollController _ScrollController = ScrollController();
   TypeAheadFormField? searchTextField;
-
   final TextEditingController _description = TextEditingController();
-
   final TextEditingController _projecttitle = TextEditingController();
   final TextEditingController _crmtask = TextEditingController();
   final TextEditingController _warkfolderId = TextEditingController();
@@ -59,7 +55,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
   final TextEditingController _typeAheadController = TextEditingController();
   Debouncer _debouncer = Debouncer();
   List<SkillsData> users = <SkillsData>[];
-
   bool? _isSelected;
   String? _account,
       _custome,
@@ -69,7 +64,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
       roadblockCreateDate1,
       rcName,
       fullName;
-
   List<String> abc = [];
   List<String> roadblock = [];
   @override
@@ -496,7 +490,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
               ],
             ),
           ),
-
           //---------------------SAYYAM YADAV
           Container(
             color: Color(0xff424D5F),
@@ -861,7 +854,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                               decoration: InputDecoration(
                                                 // contentPadding: EdgeInsets.only(
                                                 //     left: 10.sp, bottom: 5.sp),
-
                                                 prefixIconConstraints:
                                                     BoxConstraints(),
                                                 prefixIcon: Padding(
@@ -972,7 +964,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                     ),
                                   ),
                                 )
-
                                 //  InputChip(
                                 //   labelPadding: EdgeInsets.only(
                                 //       left: 10.sp, top: 7.sp, bottom: 7.sp),
@@ -1019,7 +1010,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 //   },
                                 //   showCheckmark: false,
                                 // ),
-
                                 );
                       },
                     ),
@@ -1264,7 +1254,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                 var phaseType = phase.phaseType;
                 String name = title!.substring(0, 2).toUpperCase();
                 var date = phase.startDate;
-
                 var endDate = phase.endDate;
                 var _date = date.toString();
                 var date1 = AppUtil.getFormatedDate(_date);
@@ -1444,7 +1433,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ----------------------- 1 ${e}");
     }
-
     try {
       _projecttitle.text = widget.response!.data != null &&
               widget.response!.data!.title != null &&
@@ -1454,7 +1442,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in -------------------2 ${e}");
     }
-
     try {
       _crmtask.text = widget.response!.data != null &&
               widget.response!.data!.crmTaskId != null &&
@@ -1464,7 +1451,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in -------------3 ${e}");
     }
-
     try {
       _warkfolderId.text = widget.response!.data != null &&
               widget.response!.data!.workFolderId != null &&
@@ -1474,7 +1460,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ------------- 4 ${e}");
     }
-
     try {
       _budget.text =
           widget.response!.data != null && widget.response!.data!.budget != null
@@ -1483,7 +1468,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in --------------------- 5 ${e}");
     }
-
     try {
       _estimatehours.text = widget.response!.data != null &&
               widget.response!.data!.estimationHours != null &&
@@ -1493,7 +1477,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ------------------------6 ${e}");
     }
-
     try {
       _custome = widget.response!.data != null &&
               widget.response!.data!.customerId != null
@@ -1502,7 +1485,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ------------------------- 7 ${e}");
     }
-
     try {
       _account = widget.response!.data != null &&
               widget.response!.data!.accountablePersonId != null
@@ -1511,7 +1493,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in --------------------- 8 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.reminderDate != null &&
@@ -1526,7 +1507,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ---------------- 9 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.deadlineDate != null &&
@@ -1539,7 +1519,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in -------------------------- 10 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.deliveryDate != null &&
@@ -1552,7 +1531,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ----------------11 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.startDate != null &&
@@ -1565,7 +1543,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in ------------------- 12 ${e}");
     }
-
     try {
       _description.text = widget.response!.data != null &&
               widget.response!.data!.description != null
@@ -1574,7 +1551,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in --------------------- 13 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.tags != null &&
@@ -1591,7 +1567,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in -------------------- 14 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.roadblocks != null &&
@@ -1605,7 +1580,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in --------------------- 15 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.roadblocks != null &&
@@ -1629,7 +1603,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in -------------------16 ${e}");
     }
-
     try {
       if (widget.response!.data != null &&
           widget.response!.data!.roadblocks != null)
@@ -1656,7 +1629,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
     } catch (e) {
       print("Exception in --------------------- 18 ${e}");
     }
-
     try {
       _status = widget.response!.data != null &&
               widget.response!.data!.status != null &&
@@ -1692,7 +1664,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failuree");
         print(response.body);
@@ -1726,15 +1699,16 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failuree");
         print(response.body);
       }
     } catch (e) {}
   }
-  //Add
 
+  //Add
   Future<void> _selectDate(setState, int calendarTapValue) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -1781,7 +1755,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                         : DateTime.now(),
         //firstDate: DateTime.now(),
         lastDate: DateTime(5000));
-
     if (picked != null && picked != selectedDate) {
       setState(() {
         if (calendarTapValue == 1) {
@@ -1842,7 +1815,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is
         Uri.parse(
             '${AppUrl.baseUrl}/project/project-dates/${widget.response?.data?.id ?? 0}'),
-
         body: jsonEncode({
           "description": _description.text.toString(),
           "working_days": widget.response!.data != null &&
@@ -1866,7 +1838,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           "Authorization": token,
         },
       );
-
       // ignore: unrelated_type_equality_checks
       if (apiResponse.statusCode == 200) {
         var responseJson =
@@ -1876,7 +1847,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         print("yes description");
         print(apiResponse.body);
       } else if (apiResponse.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print(apiResponse.body);
         var responseJson =
@@ -1887,7 +1859,6 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
           msg: responseJson['message'],
           backgroundColor: Colors.grey,
         );
-
         print("failuree");
       }
     } catch (e) {
