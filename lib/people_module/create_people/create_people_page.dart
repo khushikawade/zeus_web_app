@@ -138,90 +138,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     return matches;
   }
 
-  Future<String?> getSelectStatus() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/status"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            projectStatusList!.clear();
-
-            mdata.forEach((element) {
-              projectStatusList!.add(
-                  DropdownModel(element['id'].toString(), element['title']));
-            });
-
-            // _accountableId.map((result) {
-            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
-            //   print(result);
-            //   accountablePersonList!.add(result['name']);
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
-  Future<String?> getAccountable() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse(AppUrl.accountable_person),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            accountablePersonList!.clear();
-
-            mdata.forEach((element) {
-              accountablePersonList!.add(
-                  DropdownModel(element['id'].toString(), element['name']));
-            });
-
-            // _accountableId.map((result) {
-            //   print("<<<<<<<<<<<<<<<<<<<<<<result>>>>>>>>>>>>>>>>>>>>>>");
-            //   print(result);
-            //   accountablePersonList!.add(result['name']);
-            // });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
-
   Future<String?> getCustomer() async {
     String? value;
     if (value == null) {
@@ -251,7 +167,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
@@ -259,73 +176,6 @@ class _EditPageState extends State<CreatePeoplePage> {
     }
     return null;
   }
-
-  // // update Controller Value
-  // updateControllerValue() {
-  //   _projecttitle.text = widget.response!.data != null &&
-  //           widget.response!.data!.title != null &&
-  //           widget.response!.data!.title!.isNotEmpty
-  //       ? widget.response!.data!.title!
-  //       : '';
-
-  //   _crmtask.text = widget.response!.data != null &&
-  //           widget.response!.data!.crmTaskId != null &&
-  //           widget.response!.data!.crmTaskId!.isNotEmpty
-  //       ? widget.response!.data!.crmTaskId!
-  //       : '';
-
-  //   _warkfolderId.text = widget.response!.data != null &&
-  //           widget.response!.data!.workFolderId != null &&
-  //           widget.response!.data!.workFolderId!.isNotEmpty
-  //       ? widget.response!.data!.workFolderId!
-  //       : '';
-
-  //   _budget.text =
-  //       widget.response!.data != null && widget.response!.data!.budget != null
-  //           ? widget.response!.data!.budget!.toString()
-  //           : '';
-
-  //   _estimatehours.text = widget.response!.data != null &&
-  //           widget.response!.data!.estimationHours != null &&
-  //           widget.response!.data!.estimationHours!.isNotEmpty
-  //       ? widget.response!.data!.estimationHours!.toString()
-  //       : '';
-
-  //   _custome = widget.response!.data != null &&
-  //           widget.response!.data!.customerId != null
-  //       ? widget.response!.data!.customerId.toString()
-  //       : '';
-
-  //   _account = widget.response!.data != null &&
-  //           widget.response!.data!.accountablePersonId != null
-  //       ? widget.response!.data!.accountablePersonId.toString()
-  //       : '';
-
-  //   _status =
-  //       widget.response!.data != null && widget.response!.data!.status != null
-  //           ? widget.response!.data!.status.toString()
-  //           : '';
-
-  //   _curren =
-  //       widget.response!.data != null && widget.response!.data!.currency != null
-  //           ? widget.response!.data!.currency.toString()
-  //           : '';
-
-  //   try {
-  //     DropdownModel? result = getAllInitialValue(projectStatusList, _status);
-  //     if (result != null) {
-  //       _status = result.id;
-  //     } else {
-  //       _status = null;
-  //     }
-  //   } catch (e) {}
-
-  //   if (widget.response!.data != null &&
-  //       widget.response!.data!.deliveryDate != null &&
-  //       widget.response!.data!.deliveryDate!.isNotEmpty) {
-  //     selectedDate = AppUtil.stringToDate(widget.response!.data!.deliveryDate!);
-  //   }
-  // }
 
   @override
   void initState() {
@@ -516,7 +366,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
@@ -563,7 +414,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
@@ -611,7 +463,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           loading = false;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("Error getting users.");
       }
@@ -1068,7 +921,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                     Expanded(
                                       child: CustomFormField(
                                         controller: _designation,
-                                        maxLength: 20,
+                                        maxLength: 30,
                                         fontSizeForLabel: 14.sp,
                                         hint: 'Enter ',
                                         label: 'Designation',
@@ -1202,15 +1055,14 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               top: 10.sp),
                                           hintTextHeight: 1.7.h,
                                           validator: (value) {
-                                            RegExp regex =
-                                                RegExp(r'^\D+|(?<=\d),(?=\d)');
+                                            RegExp regex = RegExp(r'^[0-9]+$');
+
                                             if (value.isEmpty) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
-
                                               return 'Please enter';
-                                            } else if (regex.hasMatch(value)) {
+                                            } else if (!regex.hasMatch(value)) {
                                               setState(() {
                                                 createPeopleValidate = false;
                                               });
@@ -1906,8 +1758,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           top: 10.sp),
                                       hintTextHeight: 1.7.h,
                                       validator: (value) {
-                                        String pattern = r"([0-9])\w+";
-                                        RegExp regExp = new RegExp(pattern);
+                                        RegExp regExp = new RegExp(r'^[0-9]+$');
                                         if (value.isEmpty) {
                                           setState(() {
                                             createPeopleValidate = false;
@@ -2162,7 +2013,8 @@ class _EditPageState extends State<CreatePeoplePage> {
       print("add people created");
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(
+          context, "Your Session has been expired, Please try again!");
     } else {
       Map<String, dynamic> responseJson = json.decode(responseString);
       print("Error response ------------------------ ${responseJson}");
@@ -2205,7 +2057,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }

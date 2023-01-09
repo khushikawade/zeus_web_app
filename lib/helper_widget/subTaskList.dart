@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:zeus/services/model/phase_details.dart';
+import 'package:zeus/services/model/resourcedata.dart';
 import 'package:zeus/services/model/subtask_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zeus/utility/util.dart';
 
-Widget subTaskList(context, PhaseDetails phaseDetails,
+Widget subTaskList(context, PhaseDetails phaseDetails, verticalScroll,
         {required Null Function(SubTasksModel values, int index, String action)
             callback}) =>
     Container(
@@ -13,6 +14,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
         child: ListView.builder(
             shrinkWrap: true,
+            controller: verticalScroll,
             // physics: BouncingScrollPhysics,
             itemCount: phaseDetails.sub_tasks?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
@@ -154,6 +156,7 @@ Widget subTaskList(context, PhaseDetails phaseDetails,
                                                 phaseDetails.sub_tasks![index],
                                                 index,
                                                 'Edit');
+                                            // callbackforsubTakresource(phaseDetails.sub_tasks![index].resource,'Edit');
                                           },
                                           child: CircleAvatar(
                                               backgroundColor:

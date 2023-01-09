@@ -60,8 +60,9 @@ class PeopleData {
     type = json['type'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    project =
-        json['project_detail'] != null ? new Project.fromJson(json['project_detail']) : null;
+    project = json['project_detail'] != null
+        ? new Project.fromJson(json['project_detail'])
+        : null;
     resource = json['resource'] != null
         ? new Resource.fromJson(json['resource'])
         : null;

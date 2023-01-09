@@ -138,6 +138,9 @@ class CustomDatePickerState extends State<CustomDatePicker> {
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w300),
                                       )
+                                      
+
+
                                     : Text(
                                         '${selectedDate!.day} / ${selectedDate!.month} / ${selectedDate!.year}',
                                         style: TextStyle(

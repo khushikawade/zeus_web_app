@@ -248,6 +248,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_web_auth",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_web_auth-0.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///C:/devloper/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
@@ -364,6 +370,12 @@
     {
       "name": "mime_type",
       "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/mime_type-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "move_to_background",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/move_to_background-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -620,6 +632,54 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "url_launcher",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.1.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "url_launcher_android",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_android-6.0.22",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "url_launcher_ios",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_ios-6.0.17",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "url_launcher_linux",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "url_launcher_macos",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "url_launcher_platform_interface",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_platform_interface-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "url_launcher_web",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.13",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "url_launcher_windows",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "url_strategy",
       "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/url_strategy-0.2.0",
       "packageUri": "lib/",
@@ -630,6 +690,42 @@
       "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "vrouter",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/vrouter-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.13"
+    },
+    {
+      "name": "webview_flutter",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-3.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "webview_flutter_android",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_android-2.10.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "webview_flutter_platform_interface",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_platform_interface-1.9.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "webview_flutter_web",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_web-0.1.0+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "webview_flutter_wkwebview",
+      "rootUri": "file:///C:/devloper/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_wkwebview-2.9.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "win32",
@@ -656,7 +752,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-01-09T06:26:20.137308Z",
+  "generated": "2023-01-09T06:35:23.398380Z",
   "generator": "pub",
   "generatorVersion": "2.18.4"
 }

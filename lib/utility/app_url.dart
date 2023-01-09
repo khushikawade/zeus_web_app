@@ -9,6 +9,8 @@ class AppUrl {
   static const String clickUpsUrl =
       "https://app.clickup.com/api?client_id=$clientId&redirect_uri=$redirectUrl";
 
+  //static const String clickUpsUrl = "https://flutter.dev";
+
   static const String login = '$baseUrl/user/signin';
   static const String register = '$baseUrl/registration';
   static const String department = '$baseUrl/departments';
@@ -36,4 +38,5 @@ class AppUrl {
   static const String getPhase = "/phase/";
   static const String updatePhase = "/phase/";
   static const String clickUpAuth = "$baseUrl/clickup/auth";
+  static const String peopleDetails = "$baseUrl/resource/";
 }
