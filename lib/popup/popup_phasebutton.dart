@@ -140,7 +140,7 @@ class _MenuPhaseState extends State<MenuPhase>
       // tooltip: null,
       // offset: widget.offset,
       // color: Color(0xFF0F172A),
-      constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
+      constraints: BoxConstraints.expand(width: 130.w, height: 120.h),
       // padding: EdgeInsets.only(left: 50, right: 50),
       offset: const Offset(-15, 12),
       position: PopupMenuPosition.under,
@@ -356,10 +356,12 @@ class _MenuPhaseState extends State<MenuPhase>
       widget.returnValue!();
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(

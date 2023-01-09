@@ -94,7 +94,9 @@ class ProjectHomeState extends State<ProjectHome> {
   initState() {
     print(
         "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
-    getAllData();
+    Provider.of<ProjectHomeViewModel>(context, listen: false)
+        .getPeopleIdel(searchText: '');
+    change();
 
     super.initState();
   }
@@ -112,18 +114,11 @@ class ProjectHomeState extends State<ProjectHome> {
     var data = context.watch<ProjectHomeViewModel>();
   }
 
-  // // get provider data
-  // getData() {
-  //   var data = context.watch<ProjectHomeViewModel>();
-  // }
-
   // Make People List widget or Data Table
   Widget makeProjectList(ProjectHomeViewModel? data) {
     List<DataRow> rows = [];
     if (data!.projectDetailsResponse != null) {
       if (data.projectDetailsResponse!.data!.isNotEmpty) {
-        // print(data.projectDetailsResponse!.data!.length);
-        // print(data.projectDetailsResponse!.data!.length);
         data.projectDetailsResponse!.data!.asMap().forEach((index, element) {
           Datum _projectData = data.projectDetailsResponse!.data![index];
 
