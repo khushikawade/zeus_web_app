@@ -137,37 +137,35 @@ class _MenuPhaseState extends State<MenuPhase>
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
       tooltip: "",
-
+      // tooltip: null,
       // offset: widget.offset,
-      // color: const Color(0xFF0F172A),
-      // position: PopupMenuPosition.under,
+      // color: Color(0xFF0F172A),
       constraints: BoxConstraints.expand(width: 130.w, height: 120.h),
       // padding: EdgeInsets.only(left: 50, right: 50),
-      offset: Offset(100.w, 13.h),
+      offset: const Offset(-15, 12),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
 
       child: Container(
-        height: 38.w,
-        width: 38.w,
+        height: 28.0.w,
+        width: 28.0.w,
         decoration: BoxDecoration(
             color: const Color(0xff334155),
             border: Border.all(
               color: ColorSelect.box_decoration,
             ),
-            borderRadius: BorderRadius.all(Radius.circular(100.r))),
+            borderRadius: const BorderRadius.all(Radius.circular(100))),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8.0.r),
+            padding: EdgeInsets.all(8.0.sp),
             child: SvgPicture.asset(
               "images/edit.svg",
-              // height: 30,
-              // width: 30,
             ),
           ),
         ),
       ),
+
       itemBuilder: (context) => [
         PopupMenuItem(
           padding: EdgeInsets.zero,

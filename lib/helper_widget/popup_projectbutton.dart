@@ -68,7 +68,7 @@ class _ProjectEditState extends State<ProjectEdit>
       // position: PopupMenuPosition.under,
       constraints: BoxConstraints.expand(width: 130.w, height: 120.h),
       // padding: EdgeInsets.only(left: 50, right: 50),
-      offset: Offset(-100.w, 13.h),
+      offset: Offset(-100.w, 15.h),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
