@@ -401,7 +401,8 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
       widget.returnValue!();
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(

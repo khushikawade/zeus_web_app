@@ -356,10 +356,10 @@ class _MenuPhaseState extends State<MenuPhase>
       widget.returnValue!();
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
     } else {
       var user = userFromJson(response.body);
       Fluttertoast.showToast(

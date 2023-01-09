@@ -25,9 +25,8 @@ import '../../../people_module/people_home/people_home_view_model.dart';
 
 class ProfileDetail extends StatefulWidget {
   PeopleData list;
-  int index;
 
-  ProfileDetail({Key? key, required this.list, required this.index});
+  ProfileDetail({Key? key, required this.list});
 
   @override
   State<ProfileDetail> createState() => _ProfileDetailState(list);
@@ -116,7 +115,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
       print("yes");
       print("===============================???UPdated Successfully");
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       print(responseString);
       print("failed");

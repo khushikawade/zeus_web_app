@@ -1664,7 +1664,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failuree");
         print(response.body);
@@ -1698,7 +1699,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             jsonDecode(response.body.toString()) as Map<String, dynamic>;
         final stringRes = JsonEncoder.withIndent('').convert(responseJson);
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failuree");
         print(response.body);
@@ -1845,7 +1847,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         print("yes description");
         print(apiResponse.body);
       } else if (apiResponse.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print(apiResponse.body);
         var responseJson =

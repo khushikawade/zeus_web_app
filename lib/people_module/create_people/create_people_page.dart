@@ -167,7 +167,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
@@ -365,7 +366,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
@@ -412,7 +414,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
@@ -460,7 +463,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           loading = false;
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("Error getting users.");
       }
@@ -2009,7 +2013,8 @@ class _EditPageState extends State<CreatePeoplePage> {
       print("add people created");
     } else if (response.statusCode == 401) {
       SmartDialog.dismiss();
-      AppUtil.showErrorDialog(context);
+      AppUtil.showErrorDialog(
+          context, "Your Session has been expired, Please try again!");
     } else {
       Map<String, dynamic> responseJson = json.decode(responseString);
       print("Error response ------------------------ ${responseJson}");
@@ -2052,7 +2057,8 @@ class _EditPageState extends State<CreatePeoplePage> {
           }
         });
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context);
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }

@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:zeus/helper_widget/custom_dropdown.dart';
+import 'package:zeus/people_module/people_home/people_home.dart';
 import 'package:zeus/helper_widget/custom_search_dropdown.dart';
 import 'package:zeus/people_module/create_people/create_people_page.dart';
 import 'package:zeus/people_module/people_home/people_home_view_model.dart';
@@ -141,7 +142,6 @@ class _NavigationRailState extends State<MyHomePage>
   List addSkills = [];
 
   String name1 = '';
-  bool _autoValidate = false;
 
   String capitalize(String value) {
     var result = value[0].toUpperCase();
@@ -247,12 +247,13 @@ class _NavigationRailState extends State<MyHomePage>
         style: TextStyle(fontSize: 40, color: Colors.white),
       ),
     ),
-    Container(
-      child: const Navigator(
-        onGenerateRoute: generateRoute,
-        initialRoute: '/peopleList',
-      ),
-    ),
+    PeopleHomeView(),
+    // Container(
+    //   child: const Navigator(
+    //     onGenerateRoute: generateRoute,
+    //     initialRoute: '/peopleList',
+    //   ),
+    // ),
     Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,
@@ -2186,7 +2187,7 @@ class _NavigationRailState extends State<MyHomePage>
                     SizedBox(
                       width: 10.w,
                     ),
-                    LogOut(returnValue: () {}),
+                    LogOut(),
                     SizedBox(
                       width: 15.w,
                     ),
