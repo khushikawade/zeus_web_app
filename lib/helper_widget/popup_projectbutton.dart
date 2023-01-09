@@ -66,9 +66,9 @@ class _ProjectEditState extends State<ProjectEdit>
       // offset: widget.offset,
       // color: const Color(0xFF0F172A),
       // position: PopupMenuPosition.under,
-      constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
+      constraints: BoxConstraints.expand(width: 130.w, height: 120.h),
       // padding: EdgeInsets.only(left: 50, right: 50),
-      offset: Offset(-100.w, 20.h),
+      offset: Offset(-100.w, 10.h),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -100,7 +100,7 @@ class _ProjectEditState extends State<ProjectEdit>
           value: 1,
           child: InkWell(
             hoverColor: Color(0xff1e293b),
-            onTap: () async{
+            onTap: () async {
               Navigator.pop(context);
 
               bool result = await showDialog(
@@ -123,9 +123,9 @@ class _ProjectEditState extends State<ProjectEdit>
                     );
                   });
 
-                  if(result != null && result) {
-                    Navigator.pop(context,true);
-                  }
+              if (result != null && result) {
+                Navigator.pop(context, true);
+              }
               // showDialog(
               //     context: context,
               //     builder: (context) {
