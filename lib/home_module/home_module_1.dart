@@ -344,7 +344,9 @@ class _NavigationRailState extends State<MyHomePage1>
               // ),
               Column(
                 children: [
-                  _selectedIndex == 1
+                  _selectedIndex == 1 &&
+                          !context.vRouter.path
+                              .contains(RouteConstants.peopleDetails)
                       ? Padding(
                           padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
                           child: Row(
@@ -378,7 +380,9 @@ class _NavigationRailState extends State<MyHomePage1>
                               SizedBox(
                                 width: 30.w,
                               ),
-                              _selectedIndex == 1
+                              _selectedIndex == 1 &&
+                                      !context.vRouter.path.contains(
+                                          RouteConstants.peopleDetails)
                                   // _selectedIndex == 1
                                   ? Text("Timeline",
                                       style: TextStyle(
