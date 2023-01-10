@@ -97,7 +97,7 @@ class ProjectHomeState extends State<ProjectHome> {
     Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
     change();
-
+    getUsers();
     super.initState();
   }
 
