@@ -43,11 +43,6 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
   final ScrollController _scrollController =
       ScrollController(initialScrollOffset: 50.0);
 
-  Future getListData1() {
-    return Provider.of<ProjectHomeViewModel>(context, listen: false)
-        .changeProfile();
-  }
-
   void change() async {
     var prefs = await SharedPreferences.getInstance();
 
@@ -64,8 +59,6 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
   @override
   void didChangeDependencies() {
-    print(
-        "Called did update widget ----------------------------------------- ");
     Provider.of<PeopleHomeViewModel>(context, listen: false)
         .getPeopleDataList();
     super.didChangeDependencies();

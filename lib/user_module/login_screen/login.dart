@@ -609,11 +609,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SmartDialog.dismiss();
 
-        // launchClickUpsUrl();
-        context.vRouter.toSegments([
-          "home",
-          RouteConstants.projectRoute,
-        ], isReplacement: true);
+        launchClickUpsUrl();
+        // context.vRouter.toSegments([
+        //   "home",
+        //   RouteConstants.projectRoute,
+        // ], isReplacement: true);
       } else {
         Fluttertoast.showToast(
           timeInSecForIosWeb: 5,

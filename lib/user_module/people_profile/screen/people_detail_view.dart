@@ -181,16 +181,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
 
   @override
   void initState() {
-    print(
-        "--------------------------------------------------------------------");
     _getTag = getProject();
-    print(
-        "--------------------------9999999999999999999999------------------------------------------");
+
     change();
     _isSelected = false;
 
-    print("List Object --------------------------------- ");
-    print(json.encode(list));
     super.initState();
   }
 

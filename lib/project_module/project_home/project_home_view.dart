@@ -92,26 +92,11 @@ class ProjectHomeState extends State<ProjectHome> {
 
   @override
   initState() {
-    print(
-        "Called Second time ----------------------------------------- jdfjdjjjdfjdfjdj  ");
     Provider.of<ProjectHomeViewModel>(context, listen: false)
         .getPeopleIdel(searchText: '');
     change();
     getUsers();
     super.initState();
-  }
-
-  getAllData() async {
-    await getListData();
-    change();
-
-    getUsers();
-    await getData();
-  }
-
-  // get provider data
-  getData() {
-    var data = context.watch<ProjectHomeViewModel>();
   }
 
   // Make People List widget or Data Table

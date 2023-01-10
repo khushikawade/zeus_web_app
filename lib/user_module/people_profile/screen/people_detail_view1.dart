@@ -169,8 +169,6 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
   void initState() {
     change();
 
-    print("People Id ------------------------------- ${widget.peopleId}");
-
     if (widget.peopleId != null && widget.peopleId.isNotEmpty) {
       getPeopleDetails(widget.peopleId);
     }
