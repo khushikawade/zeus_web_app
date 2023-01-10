@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:vrouter/vrouter.dart';
 import 'package:zeus/home_module/home_page.dart';
 import 'package:zeus/project_module/create_project/create_project.dart';
+import 'package:zeus/project_module/project_home/project_home_view_model.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/utility/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +16,7 @@ import 'search_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zeus/utility/app_url.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProjectEdit extends StatefulWidget {
   String title;
@@ -66,9 +70,9 @@ class _ProjectEditState extends State<ProjectEdit>
       // offset: widget.offset,
       // color: const Color(0xFF0F172A),
       // position: PopupMenuPosition.under,
-      constraints: BoxConstraints.expand(width: 140.w, height: 120.h),
+      constraints: BoxConstraints.expand(width: 130.w, height: 120.h),
       // padding: EdgeInsets.only(left: 50, right: 50),
-      offset: Offset(-100.w, 20.h),
+      offset: Offset(-100.w, 15.h),
       position: PopupMenuPosition.under,
       color: const Color(0xFF0F172A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -100,7 +104,7 @@ class _ProjectEditState extends State<ProjectEdit>
           value: 1,
           child: InkWell(
             hoverColor: Color(0xff1e293b),
-            onTap: () async{
+            onTap: () async {
               Navigator.pop(context);
 
               bool result = await showDialog(
@@ -123,9 +127,9 @@ class _ProjectEditState extends State<ProjectEdit>
                     );
                   });
 
-                  if(result != null && result) {
-                    Navigator.pop(context,true);
-                  }
+              if (result != null && result) {
+                Navigator.pop(context, true);
+              }
               // showDialog(
               //     context: context,
               //     builder: (context) {
@@ -305,13 +309,23 @@ class _ProjectEditState extends State<ProjectEdit>
       SmartDialog.dismiss();
 
       try {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                      onSubmit: (String value) {},
-                      adOnSubmit: (String value) {},
-                    )),
-            (Route<dynamic> route) => false);
+        context.vRouter.toSegments([
+          "home",
+          RouteConstants.projectRoute,
+        ], isReplacement: true);
+
+        Provider.of<ProjectHomeViewModel>(context, listen: false)
+            .getPeopleIdel(searchText: '');
+
+        setState(() {});
+
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(
+        //         builder: (context) => MyHomePage(
+        //               onSubmit: (String value) {},
+        //               adOnSubmit: (String value) {},
+        //             )),
+        //     (Route<dynamic> route) => false);
       } catch (e) {
         print(buildContext.widget);
         print("Error in navigating ------------------------------");

@@ -570,6 +570,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> login() async {
     var responseJson;
+
     String username = emailController.text.toString();
     String password = passwordController.text.toString();
     // String username = "admin.crebos@gmail.com";
@@ -608,11 +609,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SmartDialog.dismiss();
 
-        launchClickUpsUrl();
-        // context.vRouter.toSegments([
-        //   "home",
-        //   RouteConstants.projectRoute,
-        // ], isReplacement: true);
+        // launchClickUpsUrl();
+        context.vRouter.toSegments([
+          "home",
+          RouteConstants.projectRoute,
+        ], isReplacement: true);
       } else {
         Fluttertoast.showToast(
           timeInSecForIosWeb: 5,

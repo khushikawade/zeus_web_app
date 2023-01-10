@@ -42,12 +42,13 @@ class _SearchTextClassState extends State<SearchTextClass> {
       var user = userFromJson(response.body);
 
       users = user.data!;
-      // print('Users: ${users.length}');
+
       setState(() {
         loading = false;
       });
     } else if (response.statusCode == 401) {
-      AppUtil.showErrorDialog(context,'Your Session has been expired, Please try again!');
+      AppUtil.showErrorDialog(
+          context, 'Your Session has been expired, Please try again!');
     } else {
       print("Error getting users.");
       // print(response.body);

@@ -12,7 +12,7 @@ class Service {
     var token = 'Bearer ' + storage.read("token");
     try {
       var response = await http.get(
-        Uri.parse(AppUrl.ideal_list+'?search=${searchText??''}'),
+        Uri.parse(AppUrl.ideal_list + '?search=${searchText ?? ''}'),
         headers: {
           "Accept": "application/json",
           "Authorization": token,
@@ -21,7 +21,8 @@ class Service {
       if (response.statusCode == 200) {
         var res = response.body;
 
-        ProjectDetailsResponse idel = ProjectDetailsResponse.fromJson(json.decode(res));
+        ProjectDetailsResponse idel =
+            ProjectDetailsResponse.fromJson(json.decode(res));
         return idel;
 
         final stringRes = JsonEncoder.withIndent('').convert(res);
@@ -34,9 +35,9 @@ class Service {
   }
 
   Future<PeopleList?> getpeopleList(String? searchText) async {
-
     var token = 'Bearer ' + storage.read("token");
-    var response = await http.get(Uri.parse(AppUrl.people_list+'?search=${searchText??''}'),
+    var response = await http.get(
+      Uri.parse(AppUrl.people_list + '?search=${searchText ?? ''}'),
       headers: {
         "Accept": "application/json",
         "Authorization": token,

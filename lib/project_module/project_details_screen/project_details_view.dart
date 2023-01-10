@@ -908,11 +908,12 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 ),
                               )
                             : Padding(
-                                padding: EdgeInsets.only(
-                                    top: 2.sp, bottom: 2.sp, left: 5.sp),
+                                padding:
+                                    EdgeInsets.only(top: 4.5.sp, left: 5.sp),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: const Color(0xff334155),
+                                    //color: Colors.red,
                                     borderRadius: BorderRadius.circular(
                                       8.r,
                                     ),
@@ -921,6 +922,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0.sp),
                                     child: Wrap(
+                                      // alignment: WrapAlignment.center,
                                       crossAxisAlignment:
                                           WrapCrossAlignment.center,
                                       children: [
@@ -963,54 +965,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                       ],
                                     ),
                                   ),
-                                )
-                                //  InputChip(
-                                //   labelPadding: EdgeInsets.only(
-                                //       left: 10.sp, top: 7.sp, bottom: 7.sp),
-                                //   shadowColor: Color(0xff334155),
-                                //   shape: RoundedRectangleBorder(
-                                //       side:
-                                //           BorderSide(color: Color(0xff334155)),
-                                //       borderRadius: BorderRadius.all(
-                                //         Radius.circular(
-                                //           13.r,
-                                //         ),
-                                //       )),
-                                //   side: BorderSide(color: Color(0xff334155)),
-                                //   deleteIcon: Icon(
-                                //     Icons.close,
-                                //     color: Colors.white,
-                                //     size: 20.sp,
-                                //   ),
-                                //   backgroundColor: Color(0xff334155),
-                                //   visualDensity: VisualDensity.compact,
-                                //   materialTapTargetSize:
-                                //       MaterialTapTargetSize.shrinkWrap,
-                                //   label: Text(
-                                //     abc[index] ?? '',
-                                //     style: TextStyle(
-                                //         color: Colors.white, fontSize: 14.sp),
-                                //   ),
-                                //   onSelected: (bool selected) {
-                                //     setState(() {
-                                //       _isSelected = selected;
-                                //     });
-                                //   },
-                                //   onDeleted: () {
-                                //     widget.response!.data!.tags!.forEach(
-                                //       (element) {
-                                //         if (element.name == abc[index]) {
-                                //           removeTagAPI(element.id.toString());
-                                //         }
-                                //       },
-                                //     );
-                                //     setState(() {
-                                //       abc.removeAt(index);
-                                //     });
-                                //   },
-                                //   showCheckmark: false,
-                                // ),
-                                );
+                                ));
                       },
                     ),
                   ),
@@ -1164,7 +1119,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     }
                   },
                 ),
-                SizedBox(width: 80.w)
+                SizedBox(width: 42.w)
               ],
             ),
           ),
