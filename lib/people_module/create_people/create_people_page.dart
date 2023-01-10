@@ -138,44 +138,44 @@ class _EditPageState extends State<CreatePeoplePage> {
     return matches;
   }
 
-  Future<String?> getCustomer() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/customer"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          try {
-            consumerList!.clear();
+  // Future<String?> getCustomer() async {
+  //   String? value;
+  //   if (value == null) {
+  //     var token = 'Bearer ' + storage.read("token");
+  //     var response = await http.get(
+  //       Uri.parse("${AppUrl.baseUrl}/customer"),
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Authorization": token,
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
+  //       List<dynamic> mdata = map["data"];
+  //       setState(() {
+  //         try {
+  //           consumerList!.clear();
 
-            mdata.forEach((element) {
-              if (!currencyList!.contains(element)) {
-                consumerList!.add(
-                    DropdownModel(element['id'].toString(), element['name']));
-              }
-            });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(
-            context, "Your Session has been expired, Please try again!");
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
+  //           mdata.forEach((element) {
+  //             if (!currencyList!.contains(element)) {
+  //               consumerList!.add(
+  //                   DropdownModel(element['id'].toString(), element['name']));
+  //             }
+  //           });
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //       });
+  //     } else if (response.statusCode == 401) {
+  //       AppUtil.showErrorDialog(
+  //           context, "Your Session has been expired, Please try again!");
+  //     } else {
+  //       print("failed to much");
+  //     }
+  //     return value;
+  //   }
+  //   return null;
+  // }
 
   @override
   void initState() {
@@ -197,9 +197,9 @@ class _EditPageState extends State<CreatePeoplePage> {
     await getUsers();
 
     await getDepartment();
-    await getCustomer();
+   // await getCustomer();
     await getCurrency();
-    await getTimeline();
+    //await getTimeline();
     if (widget.response != null) {
       await updateControllerValue();
     }
@@ -337,44 +337,44 @@ class _EditPageState extends State<CreatePeoplePage> {
     }
   }
 
-  Future<String?> getTimeline() async {
-    String? value;
-    if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
-      var response = await http.get(
-        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": token,
-        },
-      );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(response.body.toString());
-        List<dynamic> mdata = map["data"];
-        setState(() {
-          _timeline = mdata;
+  // Future<String?> getTimeline() async {
+  //   String? value;
+  //   if (value == null) {
+  //     var token = 'Bearer ' + storage.read("token");
+  //     var response = await http.get(
+  //       Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Authorization": token,
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(response.body.toString());
+  //       List<dynamic> mdata = map["data"];
+  //       setState(() {
+  //         _timeline = mdata;
 
-          try {
-            selecTimeZoneList = [];
-            _timeline.forEach((element) {
-              print(element);
-              selecTimeZoneList!.add(DropdownModel(element['id'].toString(),
-                  '${element['name'] + ', ' + element['diff_from_gtm']}'));
-            });
-          } catch (e) {
-            print(e);
-          }
-        });
-      } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(
-            context, "Your Session has been expired, Please try again!");
-      } else {
-        print("failed to much");
-      }
-      return value;
-    }
-    return null;
-  }
+  //         try {
+  //           selecTimeZoneList = [];
+  //           _timeline.forEach((element) {
+  //             print(element);
+  //             selecTimeZoneList!.add(DropdownModel(element['id'].toString(),
+  //                 '${element['name'] + ', ' + element['diff_from_gtm']}'));
+  //           });
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //       });
+  //     } else if (response.statusCode == 401) {
+  //       AppUtil.showErrorDialog(
+  //           context, "Your Session has been expired, Please try again!");
+  //     } else {
+  //       print("failed to much");
+  //     }
+  //     return value;
+  //   }
+  //   return null;
+  // }
 
   Future<String?> getDepartment() async {
     String? value;
