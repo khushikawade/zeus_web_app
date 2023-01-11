@@ -208,6 +208,7 @@ class _NavigationRailState extends State<MyHomePage1>
   @override
   @override
   Widget build(BuildContext context) {
+    AppUtil.isValidNavigation(context);
     final mediaQueryData = MediaQuery.of(context);
     return MediaQuery(
       data: mediaQueryData.copyWith(textScaleFactor: 1.0),
@@ -842,8 +843,10 @@ class _NavigationRailState extends State<MyHomePage1>
 }
 
 class SecondView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    AppUtil.isValidNavigation(context);
     return Container(
       color: const Color(0xff0F172A),
       alignment: Alignment.center,

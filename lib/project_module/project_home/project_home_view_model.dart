@@ -35,11 +35,6 @@ class ProjectHomeViewModel extends ChangeNotifier {
     }
   }
 
-  apiCall(id) {
-    getPeopleIdel();
-    getProjectDetail(id);
-    notifyListeners();
-  }
 
   Future<bool> changeProfile() async {
     var prefs = await SharedPreferences.getInstance();
