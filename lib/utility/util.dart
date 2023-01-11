@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vrouter/vrouter.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
@@ -191,5 +193,14 @@ class AppUtil {
         );
       },
     );
+  }
+
+  static isValidNavigation(BuildContext context){
+    print("<<<<<<<<<<<<<<<<<<is_LOGIN>>>>>>>>>>>>>>>>>>");
+    print(storage.read("isLogin"));
+    if(storage.read("isLogin") == null){
+      context.vRouter.to(RouteConstants.loginRoute, isReplacement: true);
+    }
+
   }
 }

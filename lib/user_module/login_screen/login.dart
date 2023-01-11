@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
   bool _submitted = false;
   String _name = '';
+  bool enableClickupLogin = false;
 
   var _formKey = GlobalKey<FormState>();
 
@@ -48,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       widget.onSubmit(_name);
     }
   }
+
 
   @override
   void initState() {
@@ -599,21 +601,25 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        //sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        //storage.write(isLogin, true);
+        if (!enableClickupLogin) {
+          storage.write(isLogin, true);
+          sharedPreferences.setBool('isLogin', true);
+        }
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
-
         SmartDialog.dismiss();
+        if (enableClickupLogin) {
+          launchClickUpsUrl();
+        } else {
 
-        launchClickUpsUrl();
-        // context.vRouter.toSegments([
-        //   "home",
-        //   RouteConstants.projectRoute,
-        // ], isReplacement: true);
+          context.vRouter.toSegments([
+            "home",
+            RouteConstants.projectRoute,
+          ], isReplacement: true);
+        }
       } else {
         Fluttertoast.showToast(
           timeInSecForIosWeb: 5,

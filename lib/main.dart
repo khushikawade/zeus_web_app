@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
             ChangeNotifierProvider(create: (_) => PeopleHomeViewModel()),
-            ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
             ChangeNotifierProvider(create: (_) => TagDetail()),
             ChangeNotifierProvider(create: (_) => CreateProjectModel())
           ],
@@ -69,6 +68,7 @@ class MyApp extends StatelessWidget {
                 ? RouteConstants.loginRoute
                 : RouteConstants.homeRoute,
             routes: [
+
               VWidget(
                 path: RouteConstants.loginRoute,
                 widget: LoginScreen(
@@ -79,7 +79,8 @@ class MyApp extends StatelessWidget {
                 path: RouteConstants.homeRoute,
                 widgetBuilder: (child) => MyHomePage1(
                     child: child,
-                    currentIndex: 1), // Child is the widget from nestedRoutes
+                    currentIndex: 1,
+                ), // Child is the widget from nestedRoutes
                 nestedRoutes: [
                   VWidget(
                       path: RouteConstants.projectRoute,
