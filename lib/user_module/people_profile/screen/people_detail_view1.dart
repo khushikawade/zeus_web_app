@@ -264,6 +264,7 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtil.isValidNavigation(context);
     final mediaQueryData = MediaQuery.of(context);
 
     return RawScrollbar(

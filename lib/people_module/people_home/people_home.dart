@@ -66,6 +66,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtil.isValidNavigation(context);
     final mediaQueryData = MediaQuery.of(context);
 
     return MediaQuery(

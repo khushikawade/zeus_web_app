@@ -599,6 +599,7 @@ class ProjectHomeState extends State<ProjectHome> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtil.isValidNavigation(context);
     final mediaQueryData = MediaQuery.of(context);
     // return Container(
     //   width: 950,

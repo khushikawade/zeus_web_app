@@ -61,13 +61,13 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
             ChangeNotifierProvider(create: (_) => PeopleHomeViewModel()),
-            ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
             ChangeNotifierProvider(create: (_) => TagDetail()),
             ChangeNotifierProvider(create: (_) => CreateProjectModel())
           ],
           child: VRouter(
             scrollBehavior: MyCustomScrollBehavior(),
             transitionDuration: Duration.zero,
+            title: 'Zeus',
             buildTransition: (animation, secondaryAnimation, child) => child,
             debugShowCheckedModeBanner: false,
             builder: FlutterSmartDialog.init(),
@@ -85,8 +85,9 @@ class MyApp extends StatelessWidget {
               VNester(
                 path: RouteConstants.homeRoute,
                 widgetBuilder: (child) => MyHomePage1(
-                    child: child,
-                    currentIndex: 1), // Child is the widget from nestedRoutes
+                  child: child,
+                  currentIndex: 1,
+                ), // Child is the widget from nestedRoutes
                 nestedRoutes: [
                   VWidget(
                       path: RouteConstants.projectRoute,
@@ -133,7 +134,9 @@ class MyApp extends StatelessWidget {
                 ],
               ),
               VRouteRedirector(
-                redirectTo: RouteConstants.homeRoute,
+                redirectTo: storage.read(isLogin) == null
+                    ? RouteConstants.loginRoute
+                    : '${RouteConstants.homeRoute + "/" + RouteConstants.projectRoute}',
                 path: r'*',
               ),
             ],

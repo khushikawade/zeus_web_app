@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vrouter/vrouter.dart';
+import 'package:zeus/routers/route_constants.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
@@ -213,5 +215,12 @@ class AppUtil {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     return sharedPreferences.getBool("isLogin");
+  }
+
+  static isValidNavigation(BuildContext context) {
+   
+    if (getIsLogin() == false) {
+      context.vRouter.to(RouteConstants.loginRoute, isReplacement: true);
+    }
   }
 }

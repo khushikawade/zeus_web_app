@@ -79,9 +79,6 @@ class _EditPageState extends State<CreatePeoplePage> {
   final TextEditingController _emailAddress = TextEditingController();
   final ScrollController verticalScroll = ScrollController();
 
-  List<DropdownModel>? accountablePersonList = [];
-  List<DropdownModel>? consumerList = [];
-  List<DropdownModel>? projectStatusList = [];
   List<String> abc = [];
   List<DropdownModel>? selecTimeZoneList = [];
   List _department = [];
@@ -156,9 +153,10 @@ class _EditPageState extends State<CreatePeoplePage> {
     });
 
     await getUsers();
-
     await getDepartment();
     await getCurrency();
+    await getTimeline();
+
     if (widget.response != null) {
       await updateControllerValue();
     }
@@ -1984,5 +1982,45 @@ class _EditPageState extends State<CreatePeoplePage> {
       }
       return value;
     }
+  }
+
+  Future<String?> getTimeline() async {
+    String? value;
+    var token = 'Bearer ' + await AppUtil.getToken();
+    if (value == null) {
+      var response = await http.get(
+        Uri.parse("${AppUrl.baseUrl}/time-zone/list"),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": token,
+        },
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body.toString());
+        List<dynamic> mdata = map["data"];
+        _timeline = mdata;
+        setState(() {
+          try {
+            selecTimeZoneList = []; //!.clear();
+            _timeline.forEach((element) {
+              print(element);
+              selecTimeZoneList!.add(
+                  DropdownModel(element['id'].toString(), element['name']));
+            });
+          } catch (e) {
+            print(e);
+          }
+        });
+
+
+
+      } else if (response.statusCode == 401) {
+        AppUtil.showErrorDialog(context, "Your Session has been expired, Please try again!");
+      } else {
+        print("failed to much");
+      }
+      return value;
+    }
+    return null;
   }
 }
