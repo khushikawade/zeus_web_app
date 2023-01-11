@@ -316,11 +316,11 @@ class _LoginScreenState extends State<LoginScreen> {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
 
-        //sharedPreferences.setBool('isLogin', true);
+        sharedPreferences.setBool('isLogin', true);
         sharedPreferences.setString('login', responseJson['data']['token']);
         sharedPreferences.setString(
             'user_id', responseJson['data']['user']['id'].toString());
-        //storage.write(isLogin, true);
+        storage.write(isLogin, true);
         storage.write("token", responseJson['data']['token']);
         storage.write("user_id", responseJson['data']['user']['id'].toString());
 

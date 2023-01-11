@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, widget) {
+        print("Storage is login value --------------------- ${storage.read(isLogin)}");
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             builder: FlutterSmartDialog.init(),
             mode: VRouterMode.history,
-            initialUrl: storage.read("isLogin") == null
+            initialUrl: storage.read(isLogin) == null
                 ? RouteConstants.loginRoute
                 : RouteConstants.homeRoute,
             routes: [
