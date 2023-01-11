@@ -1,6 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 
-//var storage = GetStorage();
+var storage = GetStorage();
 
 const String isLogin = "isLogin";
 // ignore: constant_identifier_names

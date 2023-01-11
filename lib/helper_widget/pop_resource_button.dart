@@ -387,7 +387,7 @@ class _MyMenuState extends State<MyMenu> with SingleTickerProviderStateMixin {
 
   deletePeople(int? peopleId, BuildContext buildContext) async {
     var url = '${AppUrl.delete}${peopleId}';
-    var token = 'Bearer ' + await await AppUtil.getToken();
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     var response = await http.delete(
       Uri.parse(url),

@@ -195,21 +195,21 @@ class AppUtil {
   }
 
   // get Token from Shared Prefrences
-  static Future getToken() async {
+  static Future<String> getToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    return sharedPreferences.getString("token");
+    return sharedPreferences.getString("login")!;
   }
 
   // get Token from Shared Prefrences
-  static Future getUserId() async {
+  static Future<String> getUserId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    return sharedPreferences.getString("user_id");
+    return sharedPreferences.getString("user_id")!;
   }
 
   // get Token from Shared Prefrences
-  static Future getIsLogin() async {
+  static Future<bool?> getIsLogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     return sharedPreferences.getBool("isLogin");
