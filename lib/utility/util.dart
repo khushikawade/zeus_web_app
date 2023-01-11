@@ -199,6 +199,7 @@ class AppUtil {
     print("<<<<<<<<<<<<<<<<<<is_LOGIN>>>>>>>>>>>>>>>>>>");
     print(storage.read("isLogin"));
     if(storage.read("isLogin") == null){
+
       context.vRouter.to(RouteConstants.loginRoute, isReplacement: true);
     }
 
