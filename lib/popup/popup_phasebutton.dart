@@ -339,7 +339,7 @@ class _MenuPhaseState extends State<MenuPhase>
   deletePeople(int? peopleId, BuildContext buildContext, StateSetter setState,
       int indexs) async {
     var url = '${AppUrl.deleteForphase}${peopleId}';
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     var response = await http.delete(
       Uri.parse(url),

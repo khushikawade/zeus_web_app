@@ -75,7 +75,7 @@
 // //   Debouncer _debouncer = Debouncer();
 // //   //Edit project_detail api
 // //   Future<void> editProject() async {
-// //     var token = 'Bearer ' + storage.read("token");
+// //     var token = 'Bearer ' + await AppUtil.getToken();
 // //     try {
 // //       var response = await http.put(
 // //         Uri.parse('${AppUrl.baseUrl}/project_detail/$_id'),
@@ -119,7 +119,7 @@
 
 // //   //Edit project_detail api
 // //   Future<void> removeTagAPI(String tagId) async {
-// //     var token = 'Bearer ' + storage.read("token");
+// //     var token = 'Bearer ' + await AppUtil.getToken();
 // //     try {
 // //       var response = await http.delete(
 // //         Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
@@ -143,7 +143,7 @@
 
 // //   //Edit project_detail api
 // //   Future<void> saveTagApi(String projectId, String tagName) async {
-// //     var token = 'Bearer ' + storage.read("token");
+// //     var token = 'Bearer ' + await AppUtil.getToken();
 // //     try {
 // //       var response = await http.post(
 // //         Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
@@ -173,7 +173,7 @@
 // //   //Add
 // //   //Add description and time api
 // //   Future<void> addDescriptionProject() async {
-// //     var token = 'Bearer ' + storage.read("token");
+// //     var token = 'Bearer ' + await AppUtil.getToken();
 // //     try {
 // //       var apiResponse = await http.post(
 // //         ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is
@@ -278,7 +278,7 @@
 //   Debouncer _debouncer = Debouncer();
 //   //Edit project_detail api
 //   Future<void> editProject() async {
-//     var token = 'Bearer ' + storage.read("token");
+//     var token = 'Bearer ' + await AppUtil.getToken();
 //     try {
 //       var response = await http.put(
 //         Uri.parse('${AppUrl.baseUrl}/project_detail/$_id'),
@@ -322,7 +322,7 @@
 
 //   //Edit project_detail api
 //   Future<void> removeTagAPI(String tagId) async {
-//     var token = 'Bearer ' + storage.read("token");
+//     var token = 'Bearer ' + await AppUtil.getToken();
 //     try {
 //       var response = await http.delete(
 //         Uri.parse('${AppUrl.baseUrl}/project_detail/tags/${tagId}'),
@@ -346,7 +346,7 @@
 
 //   //Edit project_detail api
 //   Future<void> saveTagApi(String projectId, String tagName) async {
-//     var token = 'Bearer ' + storage.read("token");
+//     var token = 'Bearer ' + await AppUtil.getToken();
 //     try {
 //       var response = await http.post(
 //         Uri.parse('${AppUrl.baseUrl}/project_detail/tags'),
@@ -376,7 +376,7 @@
 //   //Add
 //   //Add description and time api
 //   Future<void> addDescriptionProject() async {
-//     var token = 'Bearer ' + storage.read("token");
+//     var token = 'Bearer ' + await AppUtil.getToken();
 //     try {
 //       var apiResponse = await http.post(
 //         ///project/$_id/update  /project_detail/project_detail-dates/$_id//project/project-dates/4?delivery_date=2022-09-13&reminder_date=2022-09-03&deadline_date=2022-09-10&working_days=12&cost=12000&description=test this is

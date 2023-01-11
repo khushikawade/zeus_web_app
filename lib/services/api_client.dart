@@ -2,6 +2,7 @@ import 'package:zeus/utility/app_url.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:zeus/utility/util.dart';
 
 import '../utility/constant.dart';
 
@@ -13,7 +14,7 @@ class ApiClient {
       {Map<String, String>? header1}) async {
     Map<String, String>? header = Map();
     try {
-      var token = storage.read("token");
+      var token = await AppUtil.getToken();
       var token1 = 'Bearer ' + token;
       header['Authorization'] = token1;
       header['Content-Type'] = "application/json";
@@ -33,7 +34,7 @@ class ApiClient {
       {Map<String, String>? header1}) async {
     Map<String, String>? header = Map();
     try {
-      var token = storage.read("token");
+      var token = await AppUtil.getToken();
       var token1 = 'Bearer ' + token;
       header['Authorization'] = token1;
       header['Content-Type'] = "application/json";
@@ -51,7 +52,7 @@ class ApiClient {
 
   Future<http.Response> getMethod(String url,
       {Map<String, String>? header}) async {
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     http.Response response =
         await http.get(Uri.parse(BASE_URL + url), headers: {

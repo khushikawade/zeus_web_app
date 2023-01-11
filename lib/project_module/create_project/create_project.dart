@@ -59,7 +59,7 @@ class _EditPageState extends State<CreateProjectPage> {
   Future<String?> getSelectStatus() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse("${AppUrl.baseUrl}/status"),
         headers: {
@@ -102,7 +102,7 @@ class _EditPageState extends State<CreateProjectPage> {
   Future<String?> getAccountable() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse(AppUrl.accountable_person),
         headers: {
@@ -145,7 +145,7 @@ class _EditPageState extends State<CreateProjectPage> {
   Future<String?> getCustomer() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse("${AppUrl.baseUrl}/customer"),
         headers: {
@@ -688,7 +688,7 @@ class _EditPageState extends State<CreateProjectPage> {
   //Create project_detail Api
   createProject(BuildContext context) async {
     var responseJson;
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
     try {
       var response = await http.post(
         widget.response != null
@@ -759,7 +759,7 @@ class _EditPageState extends State<CreateProjectPage> {
   getCurrency() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {

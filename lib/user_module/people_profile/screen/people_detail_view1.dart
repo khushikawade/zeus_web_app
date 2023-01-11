@@ -56,7 +56,7 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
   var nickname;
 
   // Future<void> getUpdatePeople() async {
-  //   var token = 'Bearer ' + storage.read("token");
+  //   var token = 'Bearer ' + await AppUtil.getToken();
   //   var userId = storage.read("user_id");
   //   var request = http.MultipartRequest(
   //       'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
@@ -181,7 +181,7 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
       isAPICall = true;
     });
     try {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
 
       var response = await http.get(
         Uri.parse("${AppUrl.peopleDetails}$peopleId"),

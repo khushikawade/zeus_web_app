@@ -182,7 +182,7 @@ class _NavigationRailState extends State<MyHomePage1>
 
   // void getUsers() async {
   //   skillsData.clear();
-  //   var token = 'Bearer ' + storage.read("token");
+  //   var token = 'Bearer ' + await AppUtil.getToken();
   //   var response = await http.get(
   //     Uri.parse(AppUrl.searchLanguage),
   //     headers: {

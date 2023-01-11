@@ -59,8 +59,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
   List<int> daysCountList = [1, 2, 3, 4, 5, 6, 7];
 
   Future<void> getUpdatePeople() async {
-    var token = 'Bearer ' + storage.read("token");
-    var userId = storage.read("user_id");
+    var token = 'Bearer ' + await AppUtil.getToken();
+    var userId = await AppUtil.getUserId();
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}/resource/update'));
     request.headers

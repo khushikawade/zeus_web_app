@@ -5,11 +5,12 @@ import 'package:zeus/services/response_model/project_idel_response.dart';
 import 'package:zeus/services/response_model/project_detail_response.dart';
 import 'package:zeus/services/response_model/tag_model/tagresponse.dart';
 import 'package:zeus/utility/app_url.dart';
+import 'package:zeus/utility/util.dart';
 import '../utility/constant.dart';
 
 class Service {
   Future<ProjectDetailsResponse?> getIdel(String? searchText) async {
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
     try {
       var response = await http.get(
         Uri.parse(AppUrl.ideal_list + '?search=${searchText ?? ''}'),
@@ -35,7 +36,7 @@ class Service {
   }
 
   Future<PeopleList?> getpeopleList(String? searchText) async {
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
     var response = await http.get(
       Uri.parse(AppUrl.people_list + '?search=${searchText ?? ''}'),
       headers: {
@@ -59,7 +60,7 @@ class Service {
 
   Future<ProjectDetailResponse?> getIdelDetail(String id) async {
     var url = AppUrl.abc + id;
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     print("Token   ===   " + token);
     print("Token END ");
@@ -87,7 +88,7 @@ class Service {
   }
 
   Future<TagResponse?> getTag() async {
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
     try {
       var response = await http.get(
         Uri.parse(AppUrl.tags),

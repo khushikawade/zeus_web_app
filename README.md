@@ -111,7 +111,7 @@ selectDeliveryDate = true;
 Future<String?> getSelectStatus() async {
 String? value;
 if (value == null) {
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 var response = await http.get(
 Uri.parse("${AppUrl.baseUrl}/status"),
 headers: {
@@ -138,7 +138,7 @@ return null;
 Future<String?> getAccountable() async {
 String? value;
 if (value == null) {
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 var response = await http.get(
 Uri.parse(AppUrl.accountable_person),
 headers: {
@@ -165,7 +165,7 @@ return null;
 Future<String?> getCustomer() async {
 String? value;
 if (value == null) {
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 var response = await http.get(
 Uri.parse("${AppUrl.baseUrl}/customer"),
 headers: {
@@ -1300,7 +1300,7 @@ child: SvgPicture.asset(
 //Create project_detail Api
 createProject(BuildContext context) async {
 var responseJson;
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 try {
 var response = await http.post(
 Uri.parse(AppUrl.create_project),
@@ -1357,7 +1357,7 @@ print(response.statusCode);
 getCurrency() async {
 String? value;
 if (value == null) {
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 var response = await http.get(
 Uri.parse("${AppUrl.baseUrl}/currencies"),
 headers: {
@@ -1383,7 +1383,7 @@ return value;
 Future<String?> getTagpeople() async {
 String? value;
 if (value == null) {
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 var response = await http.get(
 Uri.parse("${AppUrl.baseUrl}/skills"),
 headers: {
@@ -1409,7 +1409,7 @@ List<dynamic> mdata = map["data"];
 Future<String?> getAddpeople() async {
 String? value;
 if (value == null) {
-var token = 'Bearer ' + storage.read("token");
+var token = 'Bearer ' + await AppUtil.getToken();
 var response = await http.get(
 Uri.parse("${AppUrl.baseUrl}/tags"),
 headers: {

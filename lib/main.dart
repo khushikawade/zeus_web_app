@@ -24,6 +24,7 @@ import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/user_module/people_profile/screen/people_detail_view.dart';
 import 'package:zeus/utility/constant.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:zeus/utility/util.dart';
 // import 'package:url_strategy/url_strategy.dart';
 import 'home_module/home_page.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,11 @@ void main() async {
   runApp(MyApp());
 }
 
+// get Is Login
+getIsLogin() async {
+  return await AppUtil.getIsLogin();
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -50,7 +56,6 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, widget) {
-        print("Storage is login value --------------------- ${storage.read(isLogin)}");
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => ProjectHomeViewModel()),
@@ -66,7 +71,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             builder: FlutterSmartDialog.init(),
             mode: VRouterMode.history,
-            initialUrl: storage.read(isLogin) == null
+            initialUrl: getIsLogin() == null
                 ? RouteConstants.loginRoute
                 : RouteConstants.homeRoute,
             routes: [

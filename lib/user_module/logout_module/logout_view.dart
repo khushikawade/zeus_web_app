@@ -110,7 +110,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
   LogOut() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = '${AppUrl.logOut}';
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     var response = await http.get(
       Uri.parse(url),
@@ -122,7 +122,7 @@ class _LogOutState extends State<LogOut> with SingleTickerProviderStateMixin {
 
       SmartDialog.dismiss();
 
-      storage.erase();
+      //storage.erase();
       sharedPreferences.clear();
 
       // Navigator.of(context).pushAndRemoveUntil(

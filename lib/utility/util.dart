@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:zeus/routers/routers_class.dart';
 import 'package:zeus/user_module/login_screen/login.dart';
 import 'package:zeus/utility/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppUtil {
   static Color getStatusContainerColor(String status) {
@@ -191,5 +192,26 @@ class AppUtil {
         );
       },
     );
+  }
+
+  // get Token from Shared Prefrences
+  static Future getToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    return sharedPreferences.getString("token");
+  }
+
+  // get Token from Shared Prefrences
+  static Future getUserId() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    return sharedPreferences.getString("user_id");
+  }
+
+  // get Token from Shared Prefrences
+  static Future getIsLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    return sharedPreferences.getBool("isLogin");
   }
 }

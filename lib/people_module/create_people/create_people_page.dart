@@ -299,7 +299,7 @@ class _EditPageState extends State<CreatePeoplePage> {
   Future<String?> getDepartment() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse("${AppUrl.baseUrl}/departments"),
         headers: {
@@ -366,7 +366,7 @@ class _EditPageState extends State<CreatePeoplePage> {
   Future<String?> getUsers() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse(AppUrl.tags_search),
         headers: {
@@ -1832,7 +1832,7 @@ class _EditPageState extends State<CreatePeoplePage> {
     String commaSepratedString = selectedDaysList.join(", ");
 
     print("add People---------------------------------------------------");
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     var request = http.MultipartRequest(
         'POST',
@@ -1952,7 +1952,7 @@ class _EditPageState extends State<CreatePeoplePage> {
   getCurrency() async {
     String? value;
     if (value == null) {
-      var token = 'Bearer ' + storage.read("token");
+      var token = 'Bearer ' + await AppUtil.getToken();
       var response = await http.get(
         Uri.parse("${AppUrl.baseUrl}/currencies"),
         headers: {

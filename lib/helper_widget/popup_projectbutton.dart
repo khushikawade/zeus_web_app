@@ -295,7 +295,7 @@ class _ProjectEditState extends State<ProjectEdit>
   deleteProject(String? projectId, BuildContext buildContext) async {
     var response;
     var url = '${AppUrl.deleteForProject}${projectId}';
-    var token = 'Bearer ' + storage.read("token");
+    var token = 'Bearer ' + await AppUtil.getToken();
 
     // var userId = storage.read("user_id");
     response = await http.delete(
