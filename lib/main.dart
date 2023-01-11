@@ -153,7 +153,7 @@ class MyApp extends StatelessWidget {
                 ],
               ),
               VRouteRedirector(
-                redirectTo: RouteConstants.homeRoute,
+                redirectTo: RouteConstants.loginRoute,
                 path: r'*',
               ),
             ],
