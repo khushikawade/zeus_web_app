@@ -419,199 +419,133 @@ class _NavigationRailState extends State<MyHomePage1>
                   // highlightColor: Colors.transparent,
                   colorScheme: ColorScheme.light(primary: Color(0xff0F172A)),
                 ),
-                child: RawScrollbar(
-                  controller: verticalScroll,
-                  thumbColor: const Color(0xff4b5563),
-                  crossAxisMargin: -11,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  thickness: 8,
-                  child: ScrollConfiguration(
-                    behavior: ScrollConfiguration.of(context)
-                        .copyWith(scrollbars: false),
-                    child: SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minHeight: constraint.maxHeight),
-                        child: IntrinsicHeight(
-                          child: NavigationRail(
-                            selectedIndex: _selectedIndex,
-                            onDestinationSelected: (int index) {
-                              if (index == 0) {
-                                if (_selectedIndex == 1) {
-                                  showAlertDialog(context);
-                                } else if (_selectedIndex == 3) {
-                                  showAlertDialogPeople(context);
-                                }
-                              } else {
-                                setState(() {
-                                  _selectedIndex = index;
-                                  setPathUrl(index);
-                                });
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraint.maxHeight),
+                      child: IntrinsicHeight(
+                        child: NavigationRail(
+                          selectedIndex: _selectedIndex,
+                          onDestinationSelected: (int index) {
+                            if (index == 0) {
+                              if (_selectedIndex == 1) {
+                                showAlertDialog(context);
+                              } else if (_selectedIndex == 3) {
+                                showAlertDialogPeople(context);
                               }
-                            },
-                            // minExtendedWidth: 1
-                            // ,
+                            } else {
+                              setState(() {
+                                _selectedIndex = index;
+                                setPathUrl(index);
+                              });
+                            }
+                          },
+                          // minExtendedWidth: 1
+                          // ,
 
-                            labelType: NavigationRailLabelType.selected,
-                            
-                            backgroundColor: const Color(0xff0F172A),
-                            destinations: <NavigationRailDestination>[
-                              NavigationRailDestination(
-                                padding: EdgeInsets.zero,
-                                icon: Container(
-                                  width: 56.w,
-                                  height: 56.h,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff93C5FD),
-                                    border: Border.all(
-                                        color: const Color(0xff93C5FD)),
-                                    borderRadius: BorderRadius.circular(
-                                      16.r,
-                                    ),
-                                  ),
-                                  margin: EdgeInsets.only(
-                                    top: 40.sp,
-                                    left: 20.sp,
-                                    right: 0.0,
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20.sp),
-                                    child: SvgPicture.asset(
-                                      "images/plus.svg",
-                                    ),
+                          labelType: NavigationRailLabelType.selected,
+
+                          backgroundColor: const Color(0xff0F172A),
+                          destinations: <NavigationRailDestination>[
+                            NavigationRailDestination(
+                              padding: EdgeInsets.zero,
+                              icon: Container(
+                                width: 56.w,
+                                height: 56.h,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff93C5FD),
+                                  border: Border.all(
+                                      color: const Color(0xff93C5FD)),
+                                  borderRadius: BorderRadius.circular(
+                                    16.r,
                                   ),
                                 ),
-                                label: const Text(''),
+                                margin: EdgeInsets.only(
+                                  top: 40.sp,
+                                  left: 20.sp,
+                                  right: 0.0,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.sp),
+                                  child: SvgPicture.asset(
+                                    "images/plus.svg",
+                                  ),
+                                ),
                               ),
-                              NavigationRailDestination(
-                                padding: EdgeInsets.zero,
-                                icon: Tooltip(
-                                  verticalOffset: 40,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff334155)),
-                                    borderRadius: BorderRadius.circular(
-                                      18.0,
-                                    ),
-                                  ),
-                                  message: 'Projects',
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                      top: 40.0,
-                                      left: 20.0,
-                                      right: 0.0,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "images/notification_icon.svg",
-                                    ),
+                              label: const Text(''),
+                            ),
+                            NavigationRailDestination(
+                              padding: EdgeInsets.zero,
+                              icon: Tooltip(
+                                verticalOffset: 40,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  border: Border.all(
+                                      color: const Color(0xff334155)),
+                                  borderRadius: BorderRadius.circular(
+                                    18.0,
                                   ),
                                 ),
-                                selectedIcon: Container(
-                                  width: 56.0,
-                                  height: 32.0,
+                                message: 'Projects',
+                                child: Container(
                                   margin: const EdgeInsets.only(
-                                    top: 0.0,
+                                    top: 40.0,
                                     left: 20.0,
                                     right: 0.0,
-                                  ),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff334155)),
-                                    borderRadius: BorderRadius.circular(
-                                      18.0.r,
-                                    ),
                                   ),
                                   child: SvgPicture.asset(
                                     "images/notification_icon.svg",
                                   ),
                                 ),
-                                label: const Align(
-                                    alignment: Alignment.center,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 25, top: 5),
-                                      child: Text(
-                                        'Projects',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    )),
                               ),
-                              NavigationRailDestination(
-                                  padding: EdgeInsets.zero,
-                                  icon: Container(
-                                    width: 20.0,
-                                    height: 18.0,
-                                    margin: const EdgeInsets.only(
-                                      top: 0.0,
-                                      left: 20.0,
-                                      right: 0.0,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "images/camera.svg",
-                                    ),
+                              selectedIcon: Container(
+                                width: 56.0,
+                                height: 32.0,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  border: Border.all(
+                                      color: const Color(0xff334155)),
+                                  borderRadius: BorderRadius.circular(
+                                    18.0.r,
                                   ),
-                                  selectedIcon: Container(
-                                    width: 56.0,
-                                    height: 32.0,
-                                    margin: const EdgeInsets.only(
-                                      top: 0.0,
-                                      left: 20.0,
-                                      right: 0.0,
+                                ),
+                                child: SvgPicture.asset(
+                                  "images/notification_icon.svg",
+                                ),
+                              ),
+                              label: const Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 25, top: 5),
+                                    child: Text(
+                                      'Projects',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff334155),
-                                      border: Border.all(
-                                          color: const Color(0xff334155)),
-                                      borderRadius: BorderRadius.circular(
-                                        18.0.r,
-                                      ),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "images/camera.svg",
-                                    ),
-                                  ),
-                                  label: Text('')),
-                              NavigationRailDestination(
+                                  )),
+                            ),
+                            NavigationRailDestination(
                                 padding: EdgeInsets.zero,
-                                icon: Column(
-                                  children: [
-                                    Tooltip(
-                                      verticalOffset: 17,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12.0, vertical: 5.0),
-                                      //  textAlign: TextAlign.center,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff334155),
-                                        border: Border.all(
-                                            color: const Color(0xff334155)),
-                                        borderRadius: BorderRadius.circular(
-                                          18.0,
-                                        ),
-                                      ),
-                                      excludeFromSemantics: true,
-                                      preferBelow: true,
-                                      message: 'People',
-                                      child: Container(
-                                        width: 20.0,
-                                        height: 18.0,
-                                        margin: const EdgeInsets.only(
-                                          top: 0.0,
-                                          left: 20.0,
-                                          right: 0.0,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          "images/people.svg",
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                icon: Container(
+                                  width: 20.0,
+                                  height: 18.0,
+                                  margin: const EdgeInsets.only(
+                                    top: 0.0,
+                                    left: 20.0,
+                                    right: 0.0,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    "images/camera.svg",
+                                  ),
                                 ),
                                 selectedIcon: Container(
                                   width: 56.0,
@@ -631,141 +565,197 @@ class _NavigationRailState extends State<MyHomePage1>
                                     ),
                                   ),
                                   child: SvgPicture.asset(
-                                    "images/people.svg",
+                                    "images/camera.svg",
                                   ),
                                 ),
-                                label: const Align(
-                                    alignment: Alignment.center,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 25, top: 5),
-                                      child: Text(
-                                        'People',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 12),
+                                label: Text('')),
+                            NavigationRailDestination(
+                              padding: EdgeInsets.zero,
+                              icon: Column(
+                                children: [
+                                  Tooltip(
+                                    verticalOffset: 17,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 5.0),
+                                    //  textAlign: TextAlign.center,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff334155),
+                                      border: Border.all(
+                                          color: const Color(0xff334155)),
+                                      borderRadius: BorderRadius.circular(
+                                        18.0,
                                       ),
-                                    )),
-                              ),
-                              NavigationRailDestination(
-                                padding: EdgeInsets.zero,
-                                icon: Container(
-                                  width: 20.0,
-                                  height: 18.0,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "images/button.svg",
-                                  ),
-                                ),
-                                selectedIcon: Container(
-                                  width: 56.0,
-                                  height: 32.0,
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff334155)),
-                                    borderRadius: BorderRadius.circular(
-                                      18.0,
+                                    ),
+                                    excludeFromSemantics: true,
+                                    preferBelow: true,
+                                    message: 'People',
+                                    child: Container(
+                                      width: 20.0,
+                                      height: 18.0,
+                                      margin: const EdgeInsets.only(
+                                        top: 0.0,
+                                        left: 20.0,
+                                        right: 0.0,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        "images/people.svg",
+                                      ),
                                     ),
                                   ),
-                                  child: SvgPicture.asset(
-                                    "images/button.svg",
-                                  ),
-                                ),
-                                label: const Text(''),
+                                ],
                               ),
-                              NavigationRailDestination(
-                                padding: EdgeInsets.zero,
-                                icon: Container(
-                                  width: 20.0,
-                                  height: 18.0,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "images/bell.svg",
+                              selectedIcon: Container(
+                                width: 56.0,
+                                height: 32.0,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  border: Border.all(
+                                      color: const Color(0xff334155)),
+                                  borderRadius: BorderRadius.circular(
+                                    18.0.r,
                                   ),
                                 ),
-                                selectedIcon: Container(
-                                  width: 56.0,
-                                  height: 32.0,
+                                child: SvgPicture.asset(
+                                  "images/people.svg",
+                                ),
+                              ),
+                              label: const Align(
                                   alignment: Alignment.center,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff334155)),
-                                    borderRadius: BorderRadius.circular(
-                                      18.0,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 25, top: 5),
+                                    child: Text(
+                                      'People',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "images/bell.svg",
-                                  ),
+                                  )),
+                            ),
+                            NavigationRailDestination(
+                              padding: EdgeInsets.zero,
+                              icon: Container(
+                                width: 20.0,
+                                height: 18.0,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
                                 ),
-                                label: const Text(''),
+                                child: SvgPicture.asset(
+                                  "images/button.svg",
+                                ),
                               ),
-                              NavigationRailDestination(
-                                padding: EdgeInsets.zero,
-                                icon: Container(
-                                  width: 20.0,
-                                  height: 18.0,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "images/setting.svg",
+                              selectedIcon: Container(
+                                width: 56.0,
+                                height: 32.0,
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  border: Border.all(
+                                      color: const Color(0xff334155)),
+                                  borderRadius: BorderRadius.circular(
+                                    18.0,
                                   ),
                                 ),
-                                selectedIcon: Container(
-                                  width: 56.0,
-                                  height: 32.0,
-                                  margin: const EdgeInsets.only(
-                                    top: 0.0,
-                                    left: 20.0,
-                                    right: 0.0,
-                                  ),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff334155),
-                                    border: Border.all(
-                                        color: const Color(0xff334155)),
-                                    borderRadius: BorderRadius.circular(
-                                      16.0,
-                                    ),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "images/setting.svg",
-                                  ),
+                                child: SvgPicture.asset(
+                                  "images/button.svg",
                                 ),
-                                label: const Text(''),
                               ),
-                            ],
-                            selectedIconTheme:
-                                const IconThemeData(color: Colors.white),
-                            unselectedIconTheme:
-                                const IconThemeData(color: Colors.black),
-                            selectedLabelTextStyle:
-                                const TextStyle(color: Colors.white),
-                            extended: false,
-                          ),
+                              label: const Text(''),
+                            ),
+                            NavigationRailDestination(
+                              padding: EdgeInsets.zero,
+                              icon: Container(
+                                width: 20.0,
+                                height: 18.0,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                child: SvgPicture.asset(
+                                  "images/bell.svg",
+                                ),
+                              ),
+                              selectedIcon: Container(
+                                width: 56.0,
+                                height: 32.0,
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  border: Border.all(
+                                      color: const Color(0xff334155)),
+                                  borderRadius: BorderRadius.circular(
+                                    18.0,
+                                  ),
+                                ),
+                                child: SvgPicture.asset(
+                                  "images/bell.svg",
+                                ),
+                              ),
+                              label: const Text(''),
+                            ),
+                            NavigationRailDestination(
+                              padding: EdgeInsets.zero,
+                              icon: Container(
+                                width: 20.0,
+                                height: 18.0,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                child: SvgPicture.asset(
+                                  "images/setting.svg",
+                                ),
+                              ),
+                              selectedIcon: Container(
+                                width: 56.0,
+                                height: 32.0,
+                                margin: const EdgeInsets.only(
+                                  top: 0.0,
+                                  left: 20.0,
+                                  right: 0.0,
+                                ),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff334155),
+                                  border: Border.all(
+                                      color: const Color(0xff334155)),
+                                  borderRadius: BorderRadius.circular(
+                                    16.0,
+                                  ),
+                                ),
+                                child: SvgPicture.asset(
+                                  "images/setting.svg",
+                                ),
+                              ),
+                              label: const Text(''),
+                            ),
+                          ],
+                          selectedIconTheme:
+                              const IconThemeData(color: Colors.white),
+                          unselectedIconTheme:
+                              const IconThemeData(color: Colors.black),
+                          selectedLabelTextStyle:
+                              const TextStyle(color: Colors.white),
+                          extended: false,
                         ),
                       ),
                     ),
