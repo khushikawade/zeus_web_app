@@ -217,9 +217,11 @@ class AppUtil {
     return sharedPreferences.getBool("isLogin");
   }
 
-  static isValidNavigation(BuildContext context) {
-   
-    if (getIsLogin() == false) {
+  static isValidNavigation(BuildContext context) async {
+    bool? isLogin=false;
+    isLogin=await getIsLogin();
+    print("<<<<<<<<<<<<<<<<IS USER LOGIN>>>>>>>>>>>>>>>> ${isLogin}",);
+    if (isLogin==null||isLogin==false) {
       context.vRouter.to(RouteConstants.loginRoute, isReplacement: true);
     }
   }
