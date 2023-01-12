@@ -85,12 +85,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
       width: MediaQuery.of(context).size.width * 0.99,
       height: MediaQuery.of(context).size.height * 0.99,
       child: Form(
-        child: RawScrollbar(
-          thumbColor: Color(0xff4b5563),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          thickness: 8,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+              scrollbarTheme: ScrollbarThemeData(
+                thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
+              )),
           child: SingleChildScrollView(
               child: Container(
             child: Column(
