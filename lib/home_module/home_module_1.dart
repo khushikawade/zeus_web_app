@@ -335,7 +335,7 @@ class _NavigationRailState extends State<MyHomePage1>
                   ),
                 ),
                 SizedBox(
-                  width: 10.sp,
+                  width: 17.sp,
                 ),
                 Container(
                   child: SvgPicture.asset(
