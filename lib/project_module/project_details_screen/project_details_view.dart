@@ -823,19 +823,11 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                             suggestionsBoxVerticalOffset: 0.0,
                                             suggestionsBoxDecoration:
                                                 SuggestionsBoxDecoration(
-                                                    //                 border: Border.all(
-                                                    //     color: Color(0xff334155), width: 0.6),
-                                                    // shape: BoxShape.circle
-
                                                     borderRadius:
                                                         new BorderRadius
                                                             .circular(10.0),
                                                     clipBehavior: Clip
                                                         .antiAliasWithSaveLayer,
-                                                    // constraints:
-                                                    //     BoxConstraints(),
-                                                    //     shape: ShapeBorder(),
-
                                                     color: Color(0xff0F172A)),
                                             suggestionsCallback: (pattern) {
                                               return getSuggestions(pattern);
