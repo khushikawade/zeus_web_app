@@ -260,9 +260,11 @@ Widget rowResourceName(Details? item) {
         SizedBox(
           width: 8,
         ),
-        Text(
-          item.name.toString(),
-          style: const TextStyle(fontSize: 16.0, color: Colors.white),
+        Expanded(
+          child: Text(
+            item.name.toString(),
+            style: const TextStyle(fontSize: 16.0, color: Colors.white),
+          ),
         ),
       ],
     ),

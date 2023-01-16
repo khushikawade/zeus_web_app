@@ -326,14 +326,20 @@ class _NavigationRailState extends State<MyHomePage1>
             children: [
               GestureDetector(
                 onTap: () {},
-                child: SvgPicture.asset(
-                  'images/hamburger.svg',
-                  width: 18.w,
-                  height: 12.h,
+                child: Container(
+                  width: 20.w,
+                  child: SvgPicture.asset(
+                    'images/hamburger.svg',
+                    height: 12.h,
+                  ),
                 ),
               ),
-              SvgPicture.asset(
-                'images/logo.svg',
+              Container(
+                width: 60.w,
+                child: SvgPicture.asset(
+                  'images/logo.svg',
+                  height: 50.h,
+                ),
               ),
               // SizedBox(
               //   width: 25,
@@ -344,7 +350,7 @@ class _NavigationRailState extends State<MyHomePage1>
                           !context.vRouter.path
                               .contains(RouteConstants.peopleDetails)
                       ? Padding(
-                          padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
+                          padding: EdgeInsets.only(top: 12.sp, left: 36.sp),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -499,10 +505,8 @@ class _NavigationRailState extends State<MyHomePage1>
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
                                             border: Border.all(
-                                                color:
-                                                    const Color(0xff334155)),
-                                            borderRadius:
-                                                BorderRadius.circular(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
                                               18.0.r,
                                             ),
                                           ),
@@ -588,10 +592,8 @@ class _NavigationRailState extends State<MyHomePage1>
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
                                             border: Border.all(
-                                                color:
-                                                    const Color(0xff334155)),
-                                            borderRadius:
-                                                BorderRadius.circular(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
                                               18.0.r,
                                             ),
                                           ),

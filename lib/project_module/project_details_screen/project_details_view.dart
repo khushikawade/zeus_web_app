@@ -88,8 +88,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         child: Theme(
           data: Theme.of(context).copyWith(
               scrollbarTheme: ScrollbarThemeData(
-                thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
-              )),
+            thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
+          )),
           child: SingleChildScrollView(
               child: Container(
             child: Column(
@@ -540,7 +540,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
                             bottom: 20.0.sp,
-                            top: 14.0.sp,
+                            top: 22.0.sp,
                             right: 10.sp,
                             left: 14.0.sp,
                           ),
@@ -823,6 +823,19 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                             suggestionsBoxVerticalOffset: 0.0,
                                             suggestionsBoxDecoration:
                                                 SuggestionsBoxDecoration(
+                                                    //                 border: Border.all(
+                                                    //     color: Color(0xff334155), width: 0.6),
+                                                    // shape: BoxShape.circle
+
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(10.0),
+                                                    clipBehavior: Clip
+                                                        .antiAliasWithSaveLayer,
+                                                    // constraints:
+                                                    //     BoxConstraints(),
+                                                    //     shape: ShapeBorder(),
+
                                                     color: Color(0xff0F172A)),
                                             suggestionsCallback: (pattern) {
                                               return getSuggestions(pattern);
@@ -907,8 +920,9 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                 ),
                               )
                             : Padding(
-                                padding:
-                                    EdgeInsets.only(top: 4.5.sp, left: 5.sp),
+                                padding: EdgeInsets.only(
+                                  top: 4.5.sp,
+                                ),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: const Color(0xff334155),
@@ -1222,7 +1236,10 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.99,
                       margin: EdgeInsets.only(
-                          left: 15.0.sp, top: 12.0.sp, right: 15.0.sp),
+                          left: 15.0.sp,
+                          top: 8.0.sp,
+                          right: 15.0.sp,
+                          bottom: 8.sp),
                       height: 50.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
