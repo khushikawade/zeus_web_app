@@ -211,867 +211,873 @@ class _NavigationRailState extends State<MyHomePage1>
     AppUtil.isValidNavigation(context);
     final mediaQueryData = MediaQuery.of(context);
     return MediaQuery(
-      data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-      child: Scaffold(
-        backgroundColor: Color(0xff0F172A),
-        appBar: AppBar(
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          toolbarHeight: 70.h,
-          backgroundColor: const Color(0xff0F172A),
-          elevation: 0,
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 16.sp),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 5.sp, right: 5.sp),
-                    width: 475.w,
-                    height: 48.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1e293b),
-                      borderRadius: BorderRadius.circular(
-                        48.r,
+        data: mediaQueryData.copyWith(textScaleFactor: 1.0),
+        child: Scaffold(
+          backgroundColor: Color(0xff0F172A),
+          appBar: AppBar(
+            centerTitle: false,
+            automaticallyImplyLeading: false,
+            toolbarHeight: 70.h,
+            backgroundColor: const Color(0xff0F172A),
+            elevation: 0,
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: 16.sp),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 5.sp, right: 5.sp),
+                      width: 475.w,
+                      height: 48.h,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff1e293b),
+                        borderRadius: BorderRadius.circular(
+                          48.r,
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: TextField(
-                        controller: searchController,
-                        onChanged: (val) {
-                          try {
-                            _debouncer.run(() async {
-                              if (_selectedIndex == 1) {
-                                Provider.of<ProjectHomeViewModel>(context,
-                                        listen: false)
-                                    .getPeopleIdel(searchText: val);
-                              } else if (_selectedIndex == 2) {
-                                print(_selectedIndex);
-                              } else if (_selectedIndex == 3) {
-                                Provider.of<PeopleHomeViewModel>(context,
-                                        listen: false)
-                                    .getPeopleDataList(searchText: val);
-                              }
-                            });
-                          } catch (e) {
-                            print(e);
-                            print(val);
-                          }
-                        },
-                        decoration: InputDecoration(
-                          // contentPadding: EdgeInsets.only(top: 16.sp),
-                          prefixIconConstraints: BoxConstraints(),
-                          prefixIcon: Padding(
-                              padding:
-                                  EdgeInsets.only(left: 15.sp, right: 20.sp),
-                              child: Icon(
-                                Icons.search,
-                                size: 22.sp,
-                                color: Color(0xff334155),
-                              )),
-                          hintText: _selectedIndex == 1
-                              ? 'Search project'
-                              : _selectedIndex == 3
-                                  ? 'Search people'
-                                  : 'Search',
-                          hintStyle: TextStyle(
+                      child: Center(
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: (val) {
+                            try {
+                              _debouncer.run(() async {
+                                if (_selectedIndex == 1) {
+                                  Provider.of<ProjectHomeViewModel>(context,
+                                          listen: false)
+                                      .getPeopleIdel(searchText: val);
+                                } else if (_selectedIndex == 2) {
+                                  print(_selectedIndex);
+                                } else if (_selectedIndex == 3) {
+                                  Provider.of<PeopleHomeViewModel>(context,
+                                          listen: false)
+                                      .getPeopleDataList(searchText: val);
+                                }
+                              });
+                            } catch (e) {
+                              print(e);
+                              print(val);
+                            }
+                          },
+                          decoration: InputDecoration(
+                            // contentPadding: EdgeInsets.only(top: 16.sp),
+                            prefixIconConstraints: BoxConstraints(),
+                            prefixIcon: Padding(
+                                padding:
+                                    EdgeInsets.only(left: 15.sp, right: 20.sp),
+                                child: Icon(
+                                  Icons.search,
+                                  size: 22.sp,
+                                  color: Color(0xff334155),
+                                )),
+                            hintText: _selectedIndex == 1
+                                ? 'Search project'
+                                : _selectedIndex == 3
+                                    ? 'Search people'
+                                    : 'Search',
+                            hintStyle: TextStyle(
+                                fontSize: 14.sp,
+                                color: Color(0xff64748B),
+                                fontFamily: 'Inter-Recgular',
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.1,
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                          // textAlign: Alignment.center,
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                              color: Colors.white,
                               fontSize: 14.sp,
-                              color: Color(0xff64748B),
-                              fontFamily: 'Inter-Recgular',
+                              fontFamily: 'Inter-Medium',
                               fontStyle: FontStyle.normal,
                               letterSpacing: 0.1,
                               fontWeight: FontWeight.w400),
-                          border: InputBorder.none,
                         ),
-                        // textAlign: Alignment.center,
-                        keyboardType: TextInputType.text,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontFamily: 'Inter-Medium',
-                            fontStyle: FontStyle.normal,
-                            letterSpacing: 0.1,
-                            fontWeight: FontWeight.w400),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Container(
-                      width: 40.w,
-                      height: 40.h,
-                      child: CircleAvatar(
-                        radius: 20.r,
-                        backgroundImage: AssetImage('images/images.jpeg'),
-                      )),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  LogOut(),
-                  SizedBox(
-                    width: 15.w,
-                  ),
-                ],
-              ),
-            ),
-          ],
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: SvgPicture.asset(
-                  'images/hamburger.svg',
-                  width: 18.w,
-                  height: 12.h,
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Container(
+                        width: 40.w,
+                        height: 40.h,
+                        child: CircleAvatar(
+                          radius: 20.r,
+                          backgroundImage: AssetImage('images/images.jpeg'),
+                        )),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    LogOut(),
+                    SizedBox(
+                      width: 15.w,
+                    ),
+                  ],
                 ),
-              ),
-              SvgPicture.asset(
-                'images/logo.svg',
-              ),
-              // SizedBox(
-              //   width: 25,
-              // ),
-              Column(
-                children: [
-                  _selectedIndex == 1 &&
-                          !context.vRouter.path
-                              .contains(RouteConstants.peopleDetails)
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 12.sp, left: 12.sp),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  Text("List",
-                                      style: TextStyle(
-                                          color: Color(0xff93C5FD),
-                                          fontSize: 14.sp,
-                                          fontFamily: 'Inter-Medium',
-                                          fontStyle: FontStyle.normal,
-                                          letterSpacing: 0.1,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(
-                                    height: 12.h,
-                                  ),
-                                  Container(
-                                    width: 25.w,
-                                    height: 3.h,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xff93C5FD),
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(3.r),
-                                            topRight: Radius.circular(3.r))),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 30.w,
-                              ),
-                              _selectedIndex == 1 &&
-                                      !context.vRouter.path.contains(
-                                          RouteConstants.peopleDetails)
-                                  // _selectedIndex == 1
-                                  ? Text("Timeline",
-                                      style: TextStyle(
-                                          color: Color(0xffffffff),
-                                          fontSize: 14.sp,
-                                          letterSpacing: 0.1,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'Inter-Medium',
-                                          fontWeight: FontWeight.w500))
-                                  : Container(),
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  context.vRouter.path.contains(RouteConstants.peopleDetails)
-                      ? Padding(
-                          padding: EdgeInsets.only(left: 22.sp),
-                          child: Text("Profile",
-                              style: TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontSize: 22.sp,
-                                  fontFamily: 'Inter-Medium',
-                                  letterSpacing: 0.1,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700)),
-                        )
-                      : Container(),
-                ],
               ),
             ],
-          ),
-        ),
-        body: Row(
-          children: <Widget>[
-            LayoutBuilder(builder: (context, constraint) {
-              return Theme(
-                data: ThemeData(
-                  // highlightColor: Colors.transparent,
-                  colorScheme: ColorScheme.light(primary: Color(0xff0F172A)),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 20.w,
+                    child: SvgPicture.asset(
+                      'images/hamburger.svg',
+                      height: 12.h,
+                    ),
+                  ),
                 ),
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context)
-                      .copyWith(scrollbars: false),
+                Container(
+                  width: 60.w,
+                  child: SvgPicture.asset(
+                    'images/logo.svg',
+                    height: 50.h,
+                  ),
+                ),
+                // SizedBox(
+                //   width: 25,
+                // ),
+                Column(
+                  children: [
+                    _selectedIndex == 1 &&
+                            !context.vRouter.path
+                                .contains(RouteConstants.peopleDetails)
+                        ? Padding(
+                            padding: EdgeInsets.only(top: 12.sp, left: 36.sp),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text("List",
+                                        style: TextStyle(
+                                            color: Color(0xff93C5FD),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Inter-Medium',
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing: 0.1,
+                                            fontWeight: FontWeight.w500)),
+                                    SizedBox(
+                                      height: 12.h,
+                                    ),
+                                    Container(
+                                      width: 25.w,
+                                      height: 3.h,
+                                      decoration: BoxDecoration(
+                                          color: Color(0xff93C5FD),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(3.r),
+                                              topRight: Radius.circular(3.r))),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 30.w,
+                                ),
+                                _selectedIndex == 1 &&
+                                        !context.vRouter.path.contains(
+                                            RouteConstants.peopleDetails)
+                                    // _selectedIndex == 1
+                                    ? Text("Timeline",
+                                        style: TextStyle(
+                                            color: Color(0xffffffff),
+                                            fontSize: 14.sp,
+                                            letterSpacing: 0.1,
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'Inter-Medium',
+                                            fontWeight: FontWeight.w500))
+                                    : Container(),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    context.vRouter.path.contains(RouteConstants.peopleDetails)
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 22.sp),
+                            child: Text("Profile",
+                                style: TextStyle(
+                                    color: Color(0xffFFFFFF),
+                                    fontSize: 22.sp,
+                                    fontFamily: 'Inter-Medium',
+                                    letterSpacing: 0.1,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w700)),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              LayoutBuilder(builder: (context, constraint) {
+                return Theme(
+                  data: ThemeData(
+                    // highlightColor: Colors.transparent,
+                    colorScheme: ColorScheme.light(primary: Color(0xff0F172A)),
+                  ),
                   child: ScrollConfiguration(
                     behavior: ScrollConfiguration.of(context)
                         .copyWith(scrollbars: false),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 56.w,
-                            height: 56.h,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff93C5FD),
-                              border:
-                                  Border.all(color: const Color(0xff93C5FD)),
-                              borderRadius: BorderRadius.circular(
-                                16.r,
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context)
+                          .copyWith(scrollbars: false),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 56.w,
+                              height: 56.h,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff93C5FD),
+                                border:
+                                    Border.all(color: const Color(0xff93C5FD)),
+                                borderRadius: BorderRadius.circular(
+                                  16.r,
+                                ),
                               ),
-                            ),
-                            margin: EdgeInsets.only(
-                              top: 40.sp,
-                              left: 20.sp,
-                              right: 0.0,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _selectedIndex == 1
-                                      ? showAlertDialog(context)
-                                      : Container();
-                                  _selectedIndex == 3
-                                      ? showAlertDialogPeople(context)
-                                      : Container();
-                                });
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(20.sp),
-                                child: SvgPicture.asset(
-                                  "images/plus.svg",
+                              margin: EdgeInsets.only(
+                                top: 60.sp,
+                                left: 20.sp,
+                                right: 0.0,
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedIndex == 1
+                                        ? showAlertDialog(context)
+                                        : Container();
+                                    _selectedIndex == 3
+                                        ? showAlertDialogPeople(context)
+                                        : Container();
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.sp),
+                                  child: SvgPicture.asset(
+                                    "images/plus.svg",
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 100.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.sp),
-                            child: Column(
-                              children: [
-                                _selectedIndex == 1
-                                    ? Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          border: Border.all(
-                                              color: const Color(0xff334155)),
-                                          borderRadius: BorderRadius.circular(
-                                            18.r,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 16.sp,
-                                              right: 16.sp,
-                                              top: 8.sp,
-                                              bottom: 8.sp),
-                                          child: SvgPicture.asset(
-                                            "images/notification_icon.svg",
-                                          ),
-                                        ),
-                                      )
-                                    : InkWell(
-                                        child: Tooltip(
-                                          // verticalOffset: 40,
+                            SizedBox(
+                              height: 100.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 20.sp),
+                              child: Column(
+                                children: [
+                                  _selectedIndex == 1
+                                      ? Container(
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
                                             border: Border.all(
-                                                color:
-                                                    const Color(0xff334155)),
-                                            borderRadius:
-                                                BorderRadius.circular(
-                                              18.0.r,
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.r,
                                             ),
                                           ),
-                                          message: 'Projects',
-                                          child: SvgPicture.asset(
-                                            "images/notification_icon.svg",
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 16.sp,
+                                                right: 16.sp,
+                                                top: 8.sp,
+                                                bottom: 8.sp),
+                                            child: SvgPicture.asset(
+                                              "images/notification_icon.svg",
+                                            ),
                                           ),
-                                        ),
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedIndex = 1;
-                                          });
-                                          setPathUrl(1);
-                                        },
-                                      ),
-                                _selectedIndex == 1
-                                    ? Text(
-                                        'Projects',
-                                        style: TextStyle(color: Colors.white),
-                                      )
-                                    : Container(),
-                                SizedBox(height: 40.h),
-                                _selectedIndex == 2
-                                    ? Container(
-                                        // height: 40,
-                                        // width: 40,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          border: Border.all(
-                                              color: const Color(0xff334155)),
-                                          borderRadius: BorderRadius.circular(
-                                            18.r,
+                                        )
+                                      : InkWell(
+                                          child: Tooltip(
+                                            // verticalOffset: 40,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xff334155)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                18.0.r,
+                                              ),
+                                            ),
+                                            message: 'Projects',
+                                            child: SvgPicture.asset(
+                                              "images/notification_icon.svg",
+                                            ),
                                           ),
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = 1;
+                                            });
+                                            setPathUrl(1);
+                                          },
                                         ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 16.sp,
-                                              right: 16.sp,
-                                              top: 8.sp,
-                                              bottom: 8.sp),
+                                  _selectedIndex == 1
+                                      ? Text(
+                                          'Projects',
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      : Container(),
+                                  SizedBox(height: 40.h),
+                                  _selectedIndex == 2
+                                      ? Container(
+                                          // height: 40,
+                                          // width: 40,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            border: Border.all(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.r,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 16.sp,
+                                                right: 16.sp,
+                                                top: 8.sp,
+                                                bottom: 8.sp),
+                                            child: SvgPicture.asset(
+                                              "images/camera.svg",
+                                            ),
+                                          ),
+                                        )
+                                      : InkWell(
                                           child: SvgPicture.asset(
                                             "images/camera.svg",
                                           ),
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = 2;
+                                            });
+                                            setPathUrl(2);
+                                          },
                                         ),
-                                      )
-                                    : InkWell(
-                                        child: SvgPicture.asset(
-                                          "images/camera.svg",
-                                        ),
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedIndex = 2;
-                                          });
-                                          setPathUrl(2);
-                                        },
-                                      ),
-                                SizedBox(height: 40.h),
-                                _selectedIndex == 3
-                                    ? Container(
-                                        // height: 40,
-                                        // width: 40,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          border: Border.all(
-                                              color: const Color(0xff334155)),
-                                          borderRadius: BorderRadius.circular(
-                                            18.r,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 16.sp,
-                                              right: 16.sp,
-                                              top: 8.sp,
-                                              bottom: 8.sp),
-                                          child: SvgPicture.asset(
-                                            "images/people.svg",
-                                          ),
-                                        ),
-                                      )
-                                    : InkWell(
-                                        child: Tooltip(
+                                  SizedBox(height: 40.h),
+                                  _selectedIndex == 3
+                                      ? Container(
+                                          // height: 40,
+                                          // width: 40,
                                           decoration: BoxDecoration(
                                             color: const Color(0xff334155),
                                             border: Border.all(
-                                                color:
-                                                    const Color(0xff334155)),
-                                            borderRadius:
-                                                BorderRadius.circular(
-                                              18.0.r,
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.r,
                                             ),
                                           ),
-                                          message: 'People',
-                                          child: SvgPicture.asset(
-                                            "images/people.svg",
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 16.sp,
+                                                right: 16.sp,
+                                                top: 8.sp,
+                                                bottom: 8.sp),
+                                            child: SvgPicture.asset(
+                                              "images/people.svg",
+                                            ),
                                           ),
-                                        ),
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedIndex = 3;
-                                          });
-                                          setPathUrl(3);
-                                        },
-                                      ),
-                                _selectedIndex == 3
-                                    ? Text('People',
-                                        style: TextStyle(color: Colors.white))
-                                    : Container(),
-                                SizedBox(height: 40.h),
-                                _selectedIndex == 4
-                                    ? Container(
-                                        // height: 40,
-                                        // width: 40,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          border: Border.all(
-                                              color: const Color(0xff334155)),
-                                          borderRadius: BorderRadius.circular(
-                                            18.r,
+                                        )
+                                      : InkWell(
+                                          child: Tooltip(
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff334155),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xff334155)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                18.0.r,
+                                              ),
+                                            ),
+                                            message: 'People',
+                                            child: SvgPicture.asset(
+                                              "images/people.svg",
+                                            ),
                                           ),
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = 3;
+                                            });
+                                            setPathUrl(3);
+                                          },
                                         ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 16.sp,
-                                              right: 16.sp,
-                                              top: 8.sp,
-                                              bottom: 8.sp),
+                                  _selectedIndex == 3
+                                      ? Text('People',
+                                          style: TextStyle(color: Colors.white))
+                                      : Container(),
+                                  SizedBox(height: 40.h),
+                                  _selectedIndex == 4
+                                      ? Container(
+                                          // height: 40,
+                                          // width: 40,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            border: Border.all(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.r,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 16.sp,
+                                                right: 16.sp,
+                                                top: 8.sp,
+                                                bottom: 8.sp),
+                                            child: SvgPicture.asset(
+                                              "images/button.svg",
+                                            ),
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = 4;
+                                            });
+                                            setPathUrl(4);
+                                          },
                                           child: SvgPicture.asset(
                                             "images/button.svg",
                                           ),
                                         ),
-                                      )
-                                    : InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedIndex = 4;
-                                          });
-                                          setPathUrl(4);
-                                        },
-                                        child: SvgPicture.asset(
-                                          "images/button.svg",
-                                        ),
-                                      ),
-                                SizedBox(height: 40.h),
-                                _selectedIndex == 5
-                                    ? Container(
-                                        // height: 40,
-                                        // width: 40,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          border: Border.all(
-                                              color: const Color(0xff334155)),
-                                          borderRadius: BorderRadius.circular(
-                                            18.r,
+                                  SizedBox(height: 40.h),
+                                  _selectedIndex == 5
+                                      ? Container(
+                                          // height: 40,
+                                          // width: 40,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            border: Border.all(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.r,
+                                            ),
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 16.sp,
-                                              right: 16.sp,
-                                              top: 8.sp,
-                                              bottom: 8.sp),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 16.sp,
+                                                right: 16.sp,
+                                                top: 8.sp,
+                                                bottom: 8.sp),
+                                            child: SvgPicture.asset(
+                                              "images/bell.svg",
+                                            ),
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = 5;
+                                            });
+                                            setPathUrl(5);
+                                          },
                                           child: SvgPicture.asset(
                                             "images/bell.svg",
                                           ),
                                         ),
-                                      )
-                                    : InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedIndex = 5;
-                                          });
-                                          setPathUrl(5);
-                                        },
-                                        child: SvgPicture.asset(
-                                          "images/bell.svg",
-                                        ),
-                                      ),
-                                SizedBox(height: 40.h),
-                                _selectedIndex == 6
-                                    ? Container(
-                                        // height: 40,
-                                        // width: 40,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff334155),
-                                          border: Border.all(
-                                              color: const Color(0xff334155)),
-                                          borderRadius: BorderRadius.circular(
-                                            18.r,
+                                  SizedBox(height: 40.h),
+                                  _selectedIndex == 6
+                                      ? Container(
+                                          // height: 40,
+                                          // width: 40,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff334155),
+                                            border: Border.all(
+                                                color: const Color(0xff334155)),
+                                            borderRadius: BorderRadius.circular(
+                                              18.r,
+                                            ),
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 16.sp,
-                                              right: 16.sp,
-                                              top: 8.sp,
-                                              bottom: 8.sp),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 16.sp,
+                                                right: 16.sp,
+                                                top: 8.sp,
+                                                bottom: 8.sp),
+                                            child: SvgPicture.asset(
+                                              "images/setting.svg",
+                                            ),
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = 6;
+                                            });
+                                            setPathUrl(6);
+                                          },
                                           child: SvgPicture.asset(
                                             "images/setting.svg",
                                           ),
                                         ),
-                                      )
-                                    : InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedIndex = 6;
-                                          });
-                                          setPathUrl(6);
-                                        },
-                                        child: SvgPicture.asset(
-                                          "images/setting.svg",
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          )
-                        ],
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+
+                    // child: SingleChildScrollView(
+                    //   child: ConstrainedBox(
+                    //     constraints:
+                    //         BoxConstraints(minHeight: constraint.maxHeight),
+                    //     child: IntrinsicHeight(
+                    //       child:
+                    //       NavigationRail(
+                    //         selectedIndex: _selectedIndex,
+                    //         onDestinationSelected: (int index) {
+                    //           if (index == 0) {
+                    //             if (_selectedIndex == 1) {
+                    //               showAlertDialog(context);
+                    //             } else if (_selectedIndex == 3) {
+                    //               showAlertDialogPeople(context);
+                    //             }
+                    //           } else {
+                    //             setState(() {
+                    //               _selectedIndex = index;
+                    //               setPathUrl(index);
+                    //             });
+                    //           }
+                    //         },
+                    //         // minExtendedWidth: 1
+                    //         // ,
+
+                    //         labelType: NavigationRailLabelType.selected,
+
+                    //         backgroundColor: const Color(0xff0F172A),
+                    //         destinations: <NavigationRailDestination>[
+                    //           NavigationRailDestination(
+                    //             padding: EdgeInsets.zero,
+                    //             icon: Container(
+                    //               width: 56.w,
+                    //               height: 56.h,
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff93C5FD),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff93C5FD)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   16.r,
+                    //                 ),
+                    //               ),
+                    //               margin: EdgeInsets.only(
+                    //                 top: 40.sp,
+                    //                 left: 20.sp,
+                    //                 right: 0.0,
+                    //               ),
+                    //               child: Padding(
+                    //                 padding: EdgeInsets.all(20.sp),
+                    //                 child: SvgPicture.asset(
+                    //                   "images/plus.svg",
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             label: const Text(''),
+                    //           ),
+                    //           NavigationRailDestination(
+                    //             padding: EdgeInsets.zero,
+                    //             icon: Tooltip(
+                    //               verticalOffset: 40,
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff334155),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff334155)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   18.0,
+                    //                 ),
+                    //               ),
+                    //               message: 'Projects',
+                    //               child: Container(
+                    //                 margin: const EdgeInsets.only(
+                    //                   top: 40.0,
+                    //                   left: 20.0,
+                    //                   right: 0.0,
+                    //                 ),
+                    //                 child: SvgPicture.asset(
+                    //                   "images/notification_icon.svg",
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             selectedIcon: Container(
+                    //               width: 56.0,
+                    //               height: 32.0,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               alignment: Alignment.center,
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff334155),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff334155)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   18.0.r,
+                    //                 ),
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/notification_icon.svg",
+                    //               ),
+                    //             ),
+                    //             label: const Align(
+                    //                 alignment: Alignment.center,
+                    //                 child: Padding(
+                    //                   padding:
+                    //                       EdgeInsets.only(left: 25, top: 5),
+                    //                   child: Text(
+                    //                     'Projects',
+                    //                     textAlign: TextAlign.center,
+                    //                     style: TextStyle(fontSize: 12),
+                    //                   ),
+                    //                 )),
+                    //           ),
+                    //           NavigationRailDestination(
+                    //               padding: EdgeInsets.zero,
+                    //               icon: Container(
+                    //                 width: 20.0,
+                    //                 height: 18.0,
+                    //                 margin: const EdgeInsets.only(
+                    //                   top: 0.0,
+                    //                   left: 20.0,
+                    //                   right: 0.0,
+                    //                 ),
+                    //                 child: SvgPicture.asset(
+                    //                   "images/camera.svg",
+                    //                 ),
+                    //               ),
+                    //               selectedIcon: Container(
+                    //                 width: 56.0,
+                    //                 height: 32.0,
+                    //                 margin: const EdgeInsets.only(
+                    //                   top: 0.0,
+                    //                   left: 20.0,
+                    //                   right: 0.0,
+                    //                 ),
+                    //                 alignment: Alignment.center,
+                    //                 decoration: BoxDecoration(
+                    //                   color: const Color(0xff334155),
+                    //                   border: Border.all(
+                    //                       color: const Color(0xff334155)),
+                    //                   borderRadius: BorderRadius.circular(
+                    //                     18.0.r,
+                    //                   ),
+                    //                 ),
+                    //                 child: SvgPicture.asset(
+                    //                   "images/camera.svg",
+                    //                 ),
+                    //               ),
+                    //               label: Text('')),
+                    //           NavigationRailDestination(
+                    //             padding: EdgeInsets.zero,
+                    //             icon: Column(
+                    //               children: [
+                    //                 Tooltip(
+                    //                   verticalOffset: 17,
+                    //                   padding: const EdgeInsets.symmetric(
+                    //                       horizontal: 12.0, vertical: 5.0),
+                    //                   //  textAlign: TextAlign.center,
+                    //                   decoration: BoxDecoration(
+                    //                     color: const Color(0xff334155),
+                    //                     border: Border.all(
+                    //                         color: const Color(0xff334155)),
+                    //                     borderRadius: BorderRadius.circular(
+                    //                       18.0,
+                    //                     ),
+                    //                   ),
+                    //                   excludeFromSemantics: true,
+                    //                   preferBelow: true,
+                    //                   message: 'People',
+                    //                   child: Container(
+                    //                     width: 20.0,
+                    //                     height: 18.0,
+                    //                     margin: const EdgeInsets.only(
+                    //                       top: 0.0,
+                    //                       left: 20.0,
+                    //                       right: 0.0,
+                    //                     ),
+                    //                     child: SvgPicture.asset(
+                    //                       "images/people.svg",
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             selectedIcon: Container(
+                    //               width: 56.0,
+                    //               height: 32.0,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               alignment: Alignment.center,
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff334155),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff334155)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   18.0.r,
+                    //                 ),
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/people.svg",
+                    //               ),
+                    //             ),
+                    //             label: const Align(
+                    //                 alignment: Alignment.center,
+                    //                 child: Padding(
+                    //                   padding:
+                    //                       EdgeInsets.only(left: 25, top: 5),
+                    //                   child: Text(
+                    //                     'People',
+                    //                     textAlign: TextAlign.center,
+                    //                     style: TextStyle(fontSize: 12),
+                    //                   ),
+                    //                 )),
+                    //           ),
+                    //           NavigationRailDestination(
+                    //             padding: EdgeInsets.zero,
+                    //             icon: Container(
+                    //               width: 20.0,
+                    //               height: 18.0,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/button.svg",
+                    //               ),
+                    //             ),
+                    //             selectedIcon: Container(
+                    //               width: 56.0,
+                    //               height: 32.0,
+                    //               alignment: Alignment.center,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff334155),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff334155)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   18.0,
+                    //                 ),
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/button.svg",
+                    //               ),
+                    //             ),
+                    //             label: const Text(''),
+                    //           ),
+                    //           NavigationRailDestination(
+                    //             padding: EdgeInsets.zero,
+                    //             icon: Container(
+                    //               width: 20.0,
+                    //               height: 18.0,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/bell.svg",
+                    //               ),
+                    //             ),
+                    //             selectedIcon: Container(
+                    //               width: 56.0,
+                    //               height: 32.0,
+                    //               alignment: Alignment.center,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff334155),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff334155)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   18.0,
+                    //                 ),
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/bell.svg",
+                    //               ),
+                    //             ),
+                    //             label: const Text(''),
+                    //           ),
+                    //           NavigationRailDestination(
+                    //             padding: EdgeInsets.zero,
+                    //             icon: Container(
+                    //               width: 20.0,
+                    //               height: 18.0,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/setting.svg",
+                    //               ),
+                    //             ),
+                    //             selectedIcon: Container(
+                    //               width: 56.0,
+                    //               height: 32.0,
+                    //               margin: const EdgeInsets.only(
+                    //                 top: 0.0,
+                    //                 left: 20.0,
+                    //                 right: 0.0,
+                    //               ),
+                    //               alignment: Alignment.center,
+                    //               decoration: BoxDecoration(
+                    //                 color: const Color(0xff334155),
+                    //                 border: Border.all(
+                    //                     color: const Color(0xff334155)),
+                    //                 borderRadius: BorderRadius.circular(
+                    //                   16.0,
+                    //                 ),
+                    //               ),
+                    //               child: SvgPicture.asset(
+                    //                 "images/setting.svg",
+                    //               ),
+                    //             ),
+                    //             label: const Text(''),
+                    //           ),
+                    //         ],
+                    //         selectedIconTheme:
+                    //             const IconThemeData(color: Colors.white),
+                    //         unselectedIconTheme:
+                    //             const IconThemeData(color: Colors.black),
+                    //         selectedLabelTextStyle:
+                    //             const TextStyle(color: Colors.white),
+                    //         extended: false,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ),
-
-                  // child: SingleChildScrollView(
-                  //   child: ConstrainedBox(
-                  //     constraints:
-                  //         BoxConstraints(minHeight: constraint.maxHeight),
-                  //     child: IntrinsicHeight(
-                  //       child:
-                  //       NavigationRail(
-                  //         selectedIndex: _selectedIndex,
-                  //         onDestinationSelected: (int index) {
-                  //           if (index == 0) {
-                  //             if (_selectedIndex == 1) {
-                  //               showAlertDialog(context);
-                  //             } else if (_selectedIndex == 3) {
-                  //               showAlertDialogPeople(context);
-                  //             }
-                  //           } else {
-                  //             setState(() {
-                  //               _selectedIndex = index;
-                  //               setPathUrl(index);
-                  //             });
-                  //           }
-                  //         },
-                  //         // minExtendedWidth: 1
-                  //         // ,
-
-                  //         labelType: NavigationRailLabelType.selected,
-
-                  //         backgroundColor: const Color(0xff0F172A),
-                  //         destinations: <NavigationRailDestination>[
-                  //           NavigationRailDestination(
-                  //             padding: EdgeInsets.zero,
-                  //             icon: Container(
-                  //               width: 56.w,
-                  //               height: 56.h,
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff93C5FD),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff93C5FD)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   16.r,
-                  //                 ),
-                  //               ),
-                  //               margin: EdgeInsets.only(
-                  //                 top: 40.sp,
-                  //                 left: 20.sp,
-                  //                 right: 0.0,
-                  //               ),
-                  //               child: Padding(
-                  //                 padding: EdgeInsets.all(20.sp),
-                  //                 child: SvgPicture.asset(
-                  //                   "images/plus.svg",
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             label: const Text(''),
-                  //           ),
-                  //           NavigationRailDestination(
-                  //             padding: EdgeInsets.zero,
-                  //             icon: Tooltip(
-                  //               verticalOffset: 40,
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff334155),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff334155)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   18.0,
-                  //                 ),
-                  //               ),
-                  //               message: 'Projects',
-                  //               child: Container(
-                  //                 margin: const EdgeInsets.only(
-                  //                   top: 40.0,
-                  //                   left: 20.0,
-                  //                   right: 0.0,
-                  //                 ),
-                  //                 child: SvgPicture.asset(
-                  //                   "images/notification_icon.svg",
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             selectedIcon: Container(
-                  //               width: 56.0,
-                  //               height: 32.0,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               alignment: Alignment.center,
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff334155),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff334155)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   18.0.r,
-                  //                 ),
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/notification_icon.svg",
-                  //               ),
-                  //             ),
-                  //             label: const Align(
-                  //                 alignment: Alignment.center,
-                  //                 child: Padding(
-                  //                   padding:
-                  //                       EdgeInsets.only(left: 25, top: 5),
-                  //                   child: Text(
-                  //                     'Projects',
-                  //                     textAlign: TextAlign.center,
-                  //                     style: TextStyle(fontSize: 12),
-                  //                   ),
-                  //                 )),
-                  //           ),
-                  //           NavigationRailDestination(
-                  //               padding: EdgeInsets.zero,
-                  //               icon: Container(
-                  //                 width: 20.0,
-                  //                 height: 18.0,
-                  //                 margin: const EdgeInsets.only(
-                  //                   top: 0.0,
-                  //                   left: 20.0,
-                  //                   right: 0.0,
-                  //                 ),
-                  //                 child: SvgPicture.asset(
-                  //                   "images/camera.svg",
-                  //                 ),
-                  //               ),
-                  //               selectedIcon: Container(
-                  //                 width: 56.0,
-                  //                 height: 32.0,
-                  //                 margin: const EdgeInsets.only(
-                  //                   top: 0.0,
-                  //                   left: 20.0,
-                  //                   right: 0.0,
-                  //                 ),
-                  //                 alignment: Alignment.center,
-                  //                 decoration: BoxDecoration(
-                  //                   color: const Color(0xff334155),
-                  //                   border: Border.all(
-                  //                       color: const Color(0xff334155)),
-                  //                   borderRadius: BorderRadius.circular(
-                  //                     18.0.r,
-                  //                   ),
-                  //                 ),
-                  //                 child: SvgPicture.asset(
-                  //                   "images/camera.svg",
-                  //                 ),
-                  //               ),
-                  //               label: Text('')),
-                  //           NavigationRailDestination(
-                  //             padding: EdgeInsets.zero,
-                  //             icon: Column(
-                  //               children: [
-                  //                 Tooltip(
-                  //                   verticalOffset: 17,
-                  //                   padding: const EdgeInsets.symmetric(
-                  //                       horizontal: 12.0, vertical: 5.0),
-                  //                   //  textAlign: TextAlign.center,
-                  //                   decoration: BoxDecoration(
-                  //                     color: const Color(0xff334155),
-                  //                     border: Border.all(
-                  //                         color: const Color(0xff334155)),
-                  //                     borderRadius: BorderRadius.circular(
-                  //                       18.0,
-                  //                     ),
-                  //                   ),
-                  //                   excludeFromSemantics: true,
-                  //                   preferBelow: true,
-                  //                   message: 'People',
-                  //                   child: Container(
-                  //                     width: 20.0,
-                  //                     height: 18.0,
-                  //                     margin: const EdgeInsets.only(
-                  //                       top: 0.0,
-                  //                       left: 20.0,
-                  //                       right: 0.0,
-                  //                     ),
-                  //                     child: SvgPicture.asset(
-                  //                       "images/people.svg",
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //             selectedIcon: Container(
-                  //               width: 56.0,
-                  //               height: 32.0,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               alignment: Alignment.center,
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff334155),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff334155)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   18.0.r,
-                  //                 ),
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/people.svg",
-                  //               ),
-                  //             ),
-                  //             label: const Align(
-                  //                 alignment: Alignment.center,
-                  //                 child: Padding(
-                  //                   padding:
-                  //                       EdgeInsets.only(left: 25, top: 5),
-                  //                   child: Text(
-                  //                     'People',
-                  //                     textAlign: TextAlign.center,
-                  //                     style: TextStyle(fontSize: 12),
-                  //                   ),
-                  //                 )),
-                  //           ),
-                  //           NavigationRailDestination(
-                  //             padding: EdgeInsets.zero,
-                  //             icon: Container(
-                  //               width: 20.0,
-                  //               height: 18.0,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/button.svg",
-                  //               ),
-                  //             ),
-                  //             selectedIcon: Container(
-                  //               width: 56.0,
-                  //               height: 32.0,
-                  //               alignment: Alignment.center,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff334155),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff334155)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   18.0,
-                  //                 ),
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/button.svg",
-                  //               ),
-                  //             ),
-                  //             label: const Text(''),
-                  //           ),
-                  //           NavigationRailDestination(
-                  //             padding: EdgeInsets.zero,
-                  //             icon: Container(
-                  //               width: 20.0,
-                  //               height: 18.0,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/bell.svg",
-                  //               ),
-                  //             ),
-                  //             selectedIcon: Container(
-                  //               width: 56.0,
-                  //               height: 32.0,
-                  //               alignment: Alignment.center,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff334155),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff334155)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   18.0,
-                  //                 ),
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/bell.svg",
-                  //               ),
-                  //             ),
-                  //             label: const Text(''),
-                  //           ),
-                  //           NavigationRailDestination(
-                  //             padding: EdgeInsets.zero,
-                  //             icon: Container(
-                  //               width: 20.0,
-                  //               height: 18.0,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/setting.svg",
-                  //               ),
-                  //             ),
-                  //             selectedIcon: Container(
-                  //               width: 56.0,
-                  //               height: 32.0,
-                  //               margin: const EdgeInsets.only(
-                  //                 top: 0.0,
-                  //                 left: 20.0,
-                  //                 right: 0.0,
-                  //               ),
-                  //               alignment: Alignment.center,
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xff334155),
-                  //                 border: Border.all(
-                  //                     color: const Color(0xff334155)),
-                  //                 borderRadius: BorderRadius.circular(
-                  //                   16.0,
-                  //                 ),
-                  //               ),
-                  //               child: SvgPicture.asset(
-                  //                 "images/setting.svg",
-                  //               ),
-                  //             ),
-                  //             label: const Text(''),
-                  //           ),
-                  //         ],
-                  //         selectedIconTheme:
-                  //             const IconThemeData(color: Colors.white),
-                  //         unselectedIconTheme:
-                  //             const IconThemeData(color: Colors.black),
-                  //         selectedLabelTextStyle:
-                  //             const TextStyle(color: Colors.white),
-                  //         extended: false,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ),
-              );
-            }),
-            Expanded(child: widget.child)
-          ],
-        ),
-      ),
-    );
+                );
+              }),
+              Expanded(child: widget.child)
+            ],
+          ),
+        ));
   }
 
   //Create project_detail popup

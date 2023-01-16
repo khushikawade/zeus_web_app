@@ -231,166 +231,162 @@ class _NewPhaseState extends State<NewPhase> {
                       child: CircularProgressIndicator(),
                     )
                   : Theme(
-                data: Theme.of(context).copyWith(
-                    scrollbarTheme: ScrollbarThemeData(
-                      thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
-                    )),
-                    child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            padding:
-                            EdgeInsets.only(top: 15.sp, bottom: 15.sp),
-                            // height: MediaQuery.of(context).size.height * 0.11,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Color(0xff283345),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(16.0.r),
-                                topLeft: Radius.circular(16.0.r),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x26000000),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
-                                  ),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
+                      data: Theme.of(context).copyWith(
+                          scrollbarTheme: ScrollbarThemeData(
+                        thumbColor:
+                            MaterialStateProperty.all(Color(0xff4b5563)),
+                      )),
+                      child: SingleChildScrollView(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              padding:
+                                  EdgeInsets.only(top: 15.sp, bottom: 15.sp),
+                              // height: MediaQuery.of(context).size.height * 0.11,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Color(0xff283345),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(16.0.r),
+                                  topLeft: Radius.circular(16.0.r),
                                 ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 30.sp, right: 30.sp),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: [
-                                  titleHeadlineWidget(
-                                      widget.type == 0
-                                          ? "New Phase"
-                                          : "Edit Phase",
-                                      22.0.sp),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.end,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            width: 97.0.w,
-                                            margin: EdgeInsets.only(
-                                                top: 10.0.sp,
-                                                bottom: 10.0.sp),
-                                            height: 40.h,
-                                            decoration: BoxDecoration(
-                                              color:
-                                              const Color(0xff334155),
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                40.0.r,
-                                              ),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Cancel",
-                                                style: TextStyle(
-                                                    fontSize: 14.0.sp,
-                                                    color:
-                                                    Color(0xffFFFFFF),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                    FontWeight.w700),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 16.w,
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                            width: 97.w,
-                                            margin: EdgeInsets.only(
-                                                top: 10.0.sp,
-                                                bottom: 10.0.sp),
-                                            height: 40.0.h,
-                                            decoration: BoxDecoration(
-                                              color:
-                                              const Color(0xff7DD3FC),
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                40.0.r,
-                                              ),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                    fontSize: 14.0.sp,
-                                                    color:
-                                                    Color(0xff000000),
-                                                    fontFamily: 'Inter',
-                                                    fontWeight:
-                                                    FontWeight.w700),
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            setState(() {
-                                              savePhaseClick = true;
-                                              createButtonClick = true;
-                                              milestoneValidate = true;
-                                            });
-
-                                            Future.delayed(
-                                                const Duration(
-                                                    microseconds: 500), () {
-                                              createPhase();
-                                            });
-                                          },
-                                        ),
-                                      ],
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0x26000000),
+                                    offset: Offset(
+                                      0.0,
+                                      1.0,
                                     ),
-                                  )
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ),
                                 ],
                               ),
-                            )),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            phaseView(dialogSetState),
-                            Container(
-                                height: MediaQuery.of(context).size.height *
-                                    1.2,
-                                child: const VerticalDivider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
-                                )),
-                            mileStoneView(dialogSetState),
-                            Container(
-                                height: MediaQuery.of(context).size.height *
-                                    1.2,
-                                child: const VerticalDivider(
-                                  color: Color(0xff94A3B8),
-                                  thickness: 0.2,
-                                )),
-                            subtaskView(dialogSetState)
-                          ],
-                        ),
-                      ],
-                    )),
-                  ),
+                              child: Padding(
+                                padding:
+                                    EdgeInsets.only(left: 30.sp, right: 30.sp),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    titleHeadlineWidget(
+                                        widget.type == 0
+                                            ? "New Phase"
+                                            : "Edit Phase",
+                                        22.0.sp),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Container(
+                                              width: 97.0.w,
+                                              margin: EdgeInsets.only(
+                                                  top: 10.0.sp,
+                                                  bottom: 10.0.sp),
+                                              height: 40.h,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff334155),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  40.0.r,
+                                                ),
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 14.0.sp,
+                                                      color: Color(0xffFFFFFF),
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 16.w,
+                                          ),
+                                          InkWell(
+                                            child: Container(
+                                              width: 97.w,
+                                              margin: EdgeInsets.only(
+                                                  top: 10.0.sp,
+                                                  bottom: 10.0.sp),
+                                              height: 40.0.h,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff7DD3FC),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  40.0.r,
+                                                ),
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "Save",
+                                                  style: TextStyle(
+                                                      fontSize: 14.0.sp,
+                                                      color: Color(0xff000000),
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                savePhaseClick = true;
+                                                createButtonClick = true;
+                                                milestoneValidate = true;
+                                              });
+
+                                              Future.delayed(
+                                                  const Duration(
+                                                      microseconds: 500), () {
+                                                createPhase();
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              phaseView(dialogSetState),
+                              Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 1.2,
+                                  child: const VerticalDivider(
+                                    color: Color(0xff94A3B8),
+                                    thickness: 0.2,
+                                  )),
+                              mileStoneView(dialogSetState),
+                              Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 1.2,
+                                  child: const VerticalDivider(
+                                    color: Color(0xff94A3B8),
+                                    thickness: 0.2,
+                                  )),
+                              subtaskView(dialogSetState)
+                            ],
+                          ),
+                        ],
+                      )),
+                    ),
             ));
       },
     );
@@ -726,7 +722,8 @@ class _NewPhaseState extends State<NewPhase> {
                                 ),
                                 itemBuilder: (context, item) {
                                   print(item);
-                                  return rowResourceName(item);
+                                  return 
+                                  rowResourceName(item);
                                 },
                                 transitionBuilder:
                                     (context, suggestionsBox, controller) {

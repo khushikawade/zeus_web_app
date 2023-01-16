@@ -1340,8 +1340,9 @@ class _EditPageState extends State<CreatePeoplePage> {
                                                 offsetX: 55.w,
                                                 constraints:
                                                     BoxConstraints.expand(
-                                                        width: 291.w,
-                                                        height: 262.h),
+                                                  width: 291.w,
+                                                  // height: 262.h
+                                                ),
                                                 color: Color(0xff0F172A)),
                                         hideOnLoading: true,
                                         suggestionsCallback: (pattern) {
@@ -2011,11 +2012,9 @@ class _EditPageState extends State<CreatePeoplePage> {
             print(e);
           }
         });
-
-
-
       } else if (response.statusCode == 401) {
-        AppUtil.showErrorDialog(context, "Your Session has been expired, Please try again!");
+        AppUtil.showErrorDialog(
+            context, "Your Session has been expired, Please try again!");
       } else {
         print("failed to much");
       }
