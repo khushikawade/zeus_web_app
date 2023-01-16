@@ -722,8 +722,7 @@ class _NewPhaseState extends State<NewPhase> {
                                 ),
                                 itemBuilder: (context, item) {
                                   print(item);
-                                  return 
-                                  rowResourceName(item);
+                                  return rowResourceName(item);
                                 },
                                 transitionBuilder:
                                     (context, suggestionsBox, controller) {
@@ -974,35 +973,57 @@ class _NewPhaseState extends State<NewPhase> {
     // }
   }
 
-  PhasesSortedResources? getIntialValueForSubTask(
+  PhasesSortedResources? getInitialValueForSubTask(
       List<PhasesSortedResources>? list, String? id) {
     //if (widget.response != null && list!.isNotEmpty) {
     try {
       PhasesSortedResources? result = list!.firstWhere(
           (o) =>
               o.details!.departmentId.toString() == id ||
-              o.details!.departmentId.toString() == id,
-          orElse: () => PhasesSortedResources(department: null, details: null));
-
-      try {
-        if (result.details == null) {
-          return null;
-        } else {
-          return result;
-        }
-      } catch (e) {
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+              o.details!.departmentName.toString() == id,
+          orElse: () => PhasesSortedResources(department: "", details: null));
+      if (result.details == null) {
+        return null;
+      } else {
+        return result;
       }
     } catch (e) {
-      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
-      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
       return null;
     }
     // } else {
     //   return null;
     // }
   }
+
+  // PhasesSortedResources? getIntialValueForSubTask(
+  //     List<PhasesSortedResources>? list, String? id) {
+  //   //if (widget.response != null && list!.isNotEmpty) {
+  //   try {
+  //     PhasesSortedResources? result = list!.firstWhere(
+  //         (o) =>
+  //             o.details!.departmentId.toString() == id ||
+  //             o.details!.departmentId.toString() == id,
+  //         orElse: () => PhasesSortedResources(department: null, details: null));
+
+  //     try {
+  //       if (result.details == null) {
+  //         return null;
+  //       } else {
+  //         return result;
+  //       }
+  //     } catch (e) {
+  //       print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+  //       print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+  //     }
+  //   } catch (e) {
+  //     print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+  //     print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<$e>>>>>>>>>>>>>>>>>>");
+  //     return null;
+  //   }
+  //   // } else {
+  //   //   return null;
+  //   // }
+  // }
 
   Widget mileStoneView(StateSetter dialogSetState) {
     return Expanded(
@@ -1600,7 +1621,7 @@ class _NewPhaseState extends State<NewPhase> {
                             hint: "Type",
                             label: "",
                             margin: EdgeInsets.all(0),
-                            initialValue: getIntialValueForSubTask(
+                            initialValue: getInitialValueForSubTask(
                                     removeDuplicate(),
                                     subtaskDepat.toString()) ??
                                 null,

@@ -1337,12 +1337,12 @@ class _EditPageState extends State<CreatePeoplePage> {
                                         suggestionsBoxVerticalOffset: 9.0.w,
                                         suggestionsBoxDecoration:
                                             SuggestionsBoxDecoration(
-                                                offsetX: 55.w,
-                                                constraints:
-                                                    BoxConstraints.expand(
-                                                  width: 291.w,
-                                                  // height: 262.h
-                                                ),
+                                                // offsetX: 55.w,
+                                                // constraints:
+                                                //     BoxConstraints.expand(
+                                                //         width: 291.w,
+                                                //         height: 262.h
+                                                //         ),
                                                 color: Color(0xff0F172A)),
                                         hideOnLoading: true,
                                         suggestionsCallback: (pattern) {
@@ -1356,7 +1356,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                                               fontSize: 14.sp),
                                           keyboardType: TextInputType.text,
                                           cursorColor: Colors.white,
-                                          autofocus: false,
+                                          autofocus: true,
                                           decoration: InputDecoration(
                                             // border: InputBorder.none,
                                             // contentPadding: EdgeInsets.only(
@@ -1400,11 +1400,10 @@ class _EditPageState extends State<CreatePeoplePage> {
                                           // rowResourceName(item);
                                         },
                                         noItemsFoundBuilder: (context) {
-                                          return Center(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8.0),
+                                          return Container(
+                                            height: 30.h,
+                                            // width: 50.w,
+                                            child: Center(
                                               child: Text(
                                                 'No Items Found!',
                                                 textAlign: TextAlign.center,
