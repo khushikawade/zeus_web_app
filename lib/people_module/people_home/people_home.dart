@@ -160,6 +160,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
           var associate = '';
           var nickname = '';
           var capacity = '';
+          var department = '';
 
           var name = _peopleList.name;
 
@@ -201,6 +202,17 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
             }
           } catch (e) {
             print("Exception in ----------------------------- 4 ${e}");
+          }
+          try {
+            if (_peopleList.resource != null &&
+                _peopleList.resource!.department != null &&
+                _peopleList.resource!.department!.name != null) {
+              department = _peopleList.resource!.department!.name!;
+            } else {
+              department = 'N/A';
+            }
+          } catch (e) {
+            print("Exception in ----------------------------- 2 ${e}");
           }
 
           var image = _peopleList.image;
@@ -289,7 +301,7 @@ class _PeopleHomeViewState extends State<PeopleHomeView> {
                           ),
                           SizedBox(height: 4.h),
                           Text(
-                            "$designation, $associate",
+                            "$designation, $department",
                             style: TextStyle(
                                 color: ColorSelect.designation_color,
                                 fontSize: 14.sp,
