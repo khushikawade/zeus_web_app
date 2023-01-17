@@ -645,6 +645,7 @@ class _NewPhaseState extends State<NewPhase> {
                                   onChange: ((value) {
                                     // _curren = value.id;
                                     _depat = value.item;
+                                    users.clear();
                                     dialogSetState(() {
                                       startloading = true;
                                       getResourcesNeeded(
@@ -1636,10 +1637,8 @@ class _NewPhaseState extends State<NewPhase> {
                               dialogSetState(() {
                                 selectedSubTaskSource.clear();
                               });
-
                               dialogSetState(() {
                                 resourceSuggestions.clear();
-
                                 for (var element in listResource) {
                                   if (element.department!.toLowerCase() ==
                                       value.department
@@ -1653,7 +1652,6 @@ class _NewPhaseState extends State<NewPhase> {
                                     // print(selectedSubTaskSource);
                                   }
                                 }
-
                                 subtaskDepat = value.department.toString();
 
                                 if (value != null) {}
@@ -1748,6 +1746,22 @@ class _NewPhaseState extends State<NewPhase> {
                     _subTaskResourcesController.text = '';
 
                     selectedSubTaskSource.clear();
+                    // if (widget.type == 1) {
+                    //   selectedSubTaskSource.add(ResourceData(
+                    //       department_id: item.departmentId,
+                    //       resource_id: item.id,
+                    //       resource_name: item.name,
+                    //       profileImage: item.image,
+                    //       department_name: item.departmentName));
+                    // }
+                    // if (widget.type == 0) {
+                    //   selectedSubTaskSource.add(ResourceData(
+                    //       department_id: item.departmentId,
+                    //       resource_id: item.userId,
+                    //       resource_name: item.name,
+                    //       profileImage: item.image,
+                    //       department_name: item.departmentName));
+                    // }
                     selectedSubTaskSource.add(ResourceData(
                         department_id: item.departmentId,
                         resource_id: item.userId,
@@ -2006,7 +2020,7 @@ class _NewPhaseState extends State<NewPhase> {
                         subtaskActionType = '';
                       }
 
-                      selectedSubTaskSource.clear();
+                      // selectedSubTaskSource.clear();
                       subTaskStartDate = "";
                       subTaskEndDate = "";
                       clickAddSubTask = false;
@@ -2232,6 +2246,7 @@ class _NewPhaseState extends State<NewPhase> {
       print(phaseDetails.sub_tasks);
 
       print(phaseDetails.sub_tasks);
+
       UpdatePhaseResp updatePhaseResp =
           await api.updatePhase(json.encode(phaseDetails), widget.id, context);
       if (updatePhaseResp.status == true) {
@@ -2255,7 +2270,8 @@ class _NewPhaseState extends State<NewPhase> {
     });
     resourceNeededModel = await api.getResourceNeeded(newValue, context);
     if (resourceNeededModel != null && resourceNeededModel!.data != null) {
-      if (resourceNeededModel!.data!.isNotEmpty) {
+      if (resourceNeededModel!.data!.isNotEmpty &&
+          resourceNeededModel!.data != null) {
         users = resourceNeededModel!.data!;
       } else {}
     }
