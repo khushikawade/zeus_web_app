@@ -256,12 +256,6 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
     }
   }
 
-
-
-
-  
-
-
   @override
   Widget build(BuildContext context) {
     AppUtil.isValidNavigation(context);
@@ -276,435 +270,462 @@ class _ProfileDetail1State extends State<ProfileDetail1> {
                 child: CircularProgressIndicator(),
               )
             : Theme(
-          data: Theme.of(context).copyWith(
-              scrollbarTheme: ScrollbarThemeData(
-                thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
-              )),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                data: Theme.of(context).copyWith(
+                    scrollbarTheme: ScrollbarThemeData(
+                        // thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
+                        )),
+                child: RawScrollbar(
+                  thumbColor: const Color(0xff4b5563),
+                  crossAxisMargin: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                   thickness: 8,
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: 60.sp),
-                            margin: EdgeInsets.only(
-                                left: 40.sp,
-                                right: 30.sp,
-                                bottom: 0.0,
-                                top: 35.sp),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff1E293B),
-                              border: Border.all(
-                                  color:
-                                      ColorSelect.peoplelistbackgroundcolor),
-                              borderRadius: BorderRadius.circular(
-                                12.r,
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 40.h,
-                                        padding: EdgeInsets.all(8.sp),
-                                        margin: EdgeInsets.only(
-                                            left: 16.sp, top: 16.sp),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff263143),
-                                          borderRadius: BorderRadius.circular(
-                                            55.r,
-                                          ),
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "OCCUPIED",
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.boxtext_color,
-                                                fontSize: 14.sp,
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'Inter-Regular',
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.only(bottom: 60.sp),
+                                margin: EdgeInsets.only(
+                                    left: 40.sp,
+                                    right: 30.sp,
+                                    bottom: 0.0,
+                                    top: 35.sp),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff1E293B),
+                                  border: Border.all(
+                                      color: ColorSelect
+                                          .peoplelistbackgroundcolor),
+                                  borderRadius: BorderRadius.circular(
+                                    12.r,
                                   ),
                                 ),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
+                                child: Stack(
                                   children: [
-                                    Container(
-                                        width: 134.w,
-                                        height: 134.h,
-                                        margin: EdgeInsets.only(
-                                            left: 0.0, top: 35.sp),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 110.r,
-                                          backgroundImage: NetworkImage(
-                                              peopleData!.image!),
-                                        )),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: 0.0, top: 25.sp),
-                                      child: Text(
-                                        "@$nickname",
-                                        style: TextStyle(
-                                            color: ColorSelect.white_color,
-                                            fontSize: 22.sp,
-                                            fontStyle: FontStyle.normal,
-                                            letterSpacing: 0.1,
-                                            fontFamily: 'Inter-Bold',
-                                            fontWeight: FontWeight.w700),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 40.h,
+                                            padding: EdgeInsets.all(8.sp),
+                                            margin: EdgeInsets.only(
+                                                left: 16.sp, top: 16.sp),
+                                            decoration: BoxDecoration(
+                                              color: Color(0xff263143),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                55.r,
+                                              ),
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "OCCUPIED",
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .boxtext_color,
+                                                    fontSize: 14.sp,
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontFamily: 'Inter-Regular',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.max,
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
+                                            width: 134.w,
+                                            height: 134.h,
+                                            margin: EdgeInsets.only(
+                                                left: 0.0, top: 35.sp),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 110.r,
+                                              backgroundImage: NetworkImage(
+                                                  peopleData!.image!),
+                                            )),
+                                        Container(
                                           margin: EdgeInsets.only(
-                                            top: 10.sp,
-                                            right: 0.0,
-                                          ),
+                                              left: 0.0, top: 25.sp),
                                           child: Text(
-                                            peopleData!.resource != null
-                                                ? peopleData!.resource!
-                                                                .designation !=
-                                                            null &&
-                                                        peopleData!
-                                                            .resource!
-                                                            .designation!
-                                                            .isNotEmpty
-                                                    ? peopleData!
-                                                        .resource!.designation
-                                                        .toString()
-                                                    : 'N/A'
-                                                : 'N/A',
+                                            "@$nickname",
                                             style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
+                                                color: ColorSelect.white_color,
+                                                fontSize: 22.sp,
                                                 fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
+                                                letterSpacing: 0.1,
+                                                fontFamily: 'Inter-Bold',
+                                                fontWeight: FontWeight.w700),
                                           ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 13.sp,
-                                            left: 8.sp,
-                                          ),
-                                          height: 6.sp,
-                                          width: 6.sp,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xff64748B),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20.r))),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 10.sp,
-                                            left: 8.sp,
-                                            right: 0.0,
-                                          ),
-                                          child: Text(
-                                            peopleData!.resource != null
-                                                ? peopleData!
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 10.sp,
+                                                right: 0.0,
+                                              ),
+                                              child: Text(
+                                                peopleData!.resource != null
+                                                    ? peopleData!.resource!
+                                                                    .designation !=
+                                                                null &&
+                                                            peopleData!
+                                                                .resource!
+                                                                .designation!
+                                                                .isNotEmpty
+                                                        ? peopleData!.resource!
+                                                            .designation
+                                                            .toString()
+                                                        : 'N/A'
+                                                    : 'N/A',
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 13.sp,
+                                                left: 8.sp,
+                                              ),
+                                              height: 6.sp,
+                                              width: 6.sp,
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xff64748B),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              20.r))),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 10.sp,
+                                                left: 8.sp,
+                                                right: 0.0,
+                                              ),
+                                              child: Text(
+                                                peopleData!.resource != null
+                                                    ? peopleData!
+                                                                    .resource!
+                                                                    .department!
+                                                                    .name !=
+                                                                null &&
+                                                            peopleData!
                                                                 .resource!
                                                                 .department!
-                                                                .name !=
-                                                            null &&
-                                                        peopleData!
-                                                            .resource!
-                                                            .department!
-                                                            .name!
-                                                            .isNotEmpty
+                                                                .name!
+                                                                .isNotEmpty
+                                                        ? peopleData!.resource!
+                                                            .department!.name
+                                                            .toString()
+                                                        : 'N/A'
+                                                    : 'N/A',
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 13.sp,
+                                                left: 8.sp,
+                                              ),
+                                              height: 6.sp,
+                                              width: 6.sp,
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xff64748B),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              20.r))),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 10.sp,
+                                                left: 8.sp,
+                                                right: 0.0,
+                                              ),
+                                              child: Text(
+                                                "Associated with:",
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 10.sp,
+                                                left: 8.sp,
+                                                right: 0.0,
+                                              ),
+                                              child: Text(
+                                                peopleData!.resource != null
                                                     ? peopleData!.resource!
-                                                        .department!.name
-                                                        .toString()
-                                                    : 'N/A'
-                                                : 'N/A',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
+                                                                    .associate !=
+                                                                null &&
+                                                            peopleData!
+                                                                .resource!
+                                                                .associate!
+                                                                .isNotEmpty
+                                                        ? peopleData!
+                                                            .resource!.associate
+                                                            .toString()
+                                                        : 'N/A'
+                                                    : 'N/A',
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 13.sp,
-                                            left: 8.sp,
-                                          ),
-                                          height: 6.sp,
-                                          width: 6.sp,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xff64748B),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20.r))),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 10.sp,
-                                            left: 8.sp,
-                                            right: 0.0,
-                                          ),
-                                          child: Text(
-                                            "Associated with:",
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 10.sp,
-                                            left: 8.sp,
-                                            right: 0.0,
-                                          ),
-                                          child: Text(
-                                            peopleData!.resource != null
-                                                ? peopleData!.resource!
-                                                                .associate !=
-                                                            null &&
-                                                        peopleData!
-                                                            .resource!
-                                                            .associate!
-                                                            .isNotEmpty
-                                                    ? peopleData!
-                                                        .resource!.associate
-                                                        .toString()
-                                                    : 'N/A'
-                                                : 'N/A',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 20.sp,
+                                              height: 18.sp,
+                                              margin: EdgeInsets.only(
+                                                top: 10.sp,
+                                                left: 0.0,
+                                                right: 0.0,
+                                              ),
+                                              child: SvgPicture.asset(
+                                                "images/location_icon.svg",
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 10.sp, top: 10.sp),
+                                              child: Text(
+                                                peopleData!.resource != null
+                                                    ? peopleData!.resource!
+                                                                    .city !=
+                                                                null &&
+                                                            peopleData!
+                                                                .resource!
+                                                                .city!
+                                                                .isNotEmpty
+                                                        ? peopleData!
+                                                            .resource!.city
+                                                            .toString()
+                                                        : 'N/A'
+                                                    : 'N/A',
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 0.0, top: 10.sp),
+                                              child: Text(
+                                                ", ",
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 0.0, top: 10.sp),
+                                              child: Text(
+                                                peopleData!.resource != null
+                                                    ? peopleData!.resource!
+                                                                    .country !=
+                                                                null &&
+                                                            peopleData!
+                                                                .resource!
+                                                                .country!
+                                                                .isNotEmpty
+                                                        ? peopleData!
+                                                            .resource!.country
+                                                            .toString()
+                                                        : 'N/A'
+                                                    : 'N/A',
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                top: 13.sp,
+                                                left: 8.sp,
+                                              ),
+                                              height: 6.sp,
+                                              width: 6.sp,
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xff64748B),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              20.r))),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 10.sp, top: 10.sp),
+                                              child: Text(
+                                                peopleData!.resource != null
+                                                    ? peopleData!.resource!
+                                                                    .timeZone !=
+                                                                null &&
+                                                            peopleData!
+                                                                    .resource!
+                                                                    .timeZone!
+                                                                    .offset !=
+                                                                null &&
+                                                            peopleData!
+                                                                .resource!
+                                                                .timeZone!
+                                                                .offset!
+                                                                .isNotEmpty
+                                                        ? peopleData!.resource!
+                                                            .timeZone!.offset
+                                                            .toString()
+                                                        : 'N/A'
+                                                    : 'N/A',
+                                                style: TextStyle(
+                                                    color: ColorSelect
+                                                        .profile_color,
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'Inter-Regular',
+                                                    letterSpacing: 0.25,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 20.sp,
-                                          height: 18.sp,
-                                          margin: EdgeInsets.only(
-                                            top: 10.sp,
-                                            left: 0.0,
-                                            right: 0.0,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "images/location_icon.svg",
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              left: 10.sp, top: 10.sp),
-                                          child: Text(
-                                            peopleData!.resource != null
-                                                ? peopleData!.resource!
-                                                                .city !=
-                                                            null &&
-                                                        peopleData!.resource!
-                                                            .city!.isNotEmpty
-                                                    ? peopleData!
-                                                        .resource!.city
-                                                        .toString()
-                                                    : 'N/A'
-                                                : 'N/A',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              left: 0.0, top: 10.sp),
-                                          child: Text(
-                                            ", ",
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              left: 0.0, top: 10.sp),
-                                          child: Text(
-                                            peopleData!.resource != null
-                                                ? peopleData!.resource!
-                                                                .country !=
-                                                            null &&
-                                                        peopleData!
-                                                            .resource!
-                                                            .country!
-                                                            .isNotEmpty
-                                                    ? peopleData!
-                                                        .resource!.country
-                                                        .toString()
-                                                    : 'N/A'
-                                                : 'N/A',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 13.sp,
-                                            left: 8.sp,
-                                          ),
-                                          height: 6.sp,
-                                          width: 6.sp,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xff64748B),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20.r))),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              left: 10.sp, top: 10.sp),
-                                          child: Text(
-                                            peopleData!.resource != null
-                                                ? peopleData!.resource!
-                                                                .timeZone !=
-                                                            null &&
-                                                        peopleData!
-                                                                .resource!
-                                                                .timeZone!
-                                                                .offset !=
-                                                            null &&
-                                                        peopleData!
-                                                            .resource!
-                                                            .timeZone!
-                                                            .offset!
-                                                            .isNotEmpty
-                                                    ? peopleData!.resource!
-                                                        .timeZone!.offset
-                                                        .toString()
-                                                    : 'N/A'
-                                                : 'N/A',
-                                            style: TextStyle(
-                                                color:
-                                                    ColorSelect.profile_color,
-                                                fontSize: 14.sp,
-                                                fontFamily: 'Inter-Regular',
-                                                letterSpacing: 0.25,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                      ],
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            right: 12.sp, top: 16.sp),
+                                        child: pop.MyMenu(
+                                            data: peopleData!,
+                                            title: 'Menu at bottom',
+                                            alignment: Alignment.topRight,
+                                            buildContext: context,
+                                            onUpdateData: () {
+                                              getPeopleDetails(widget.peopleId);
+                                            },
+                                            returnValue: () {
+                                              Navigator.pop(context, true);
+                                            }),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        right: 12.sp, top: 16.sp),
-                                    child: pop.MyMenu(
-                                        data: peopleData!,
-                                        title: 'Menu at bottom',
-                                        alignment: Alignment.topRight,
-                                        buildContext: context,
-                                        onUpdateData: () {
-                                          getPeopleDetails(widget.peopleId);
-                                        },
-                                        returnValue: () {
-                                          Navigator.pop(context, true);
-                                        }),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 140.sp,
+                              right: 140.sp,
+                              top: 30.sp,
+                              bottom: 20.sp),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              aboutMeWidget(),
+                              SizedBox(
+                                height: 45.h,
+                              ),
+                              availabilityWidget(),
+                              SizedBox(
+                                height: 45.h,
+                              ),
+                              skillsWidget(),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 140.sp,
-                          right: 140.sp,
-                          top: 30.sp,
-                          bottom: 20.sp),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          aboutMeWidget(),
-                          SizedBox(
-                            height: 45.h,
-                          ),
-                          availabilityWidget(),
-                          SizedBox(
-                            height: 45.h,
-                          ),
-                          skillsWidget(),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
-            ),
       ),
     );
   }

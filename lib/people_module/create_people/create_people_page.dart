@@ -1008,7 +1008,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                           ),
                         ),
                         Container(
-                            height: MediaQuery.of(context).size.height * 1.1,
+                            height: MediaQuery.of(context).size.height * 1.2,
                             child: const VerticalDivider(
                               color: Color(0xff94A3B8),
                               thickness: 0.2,
@@ -1567,7 +1567,7 @@ class _EditPageState extends State<CreatePeoplePage> {
                           ),
                         ),
                         Container(
-                            height: MediaQuery.of(context).size.height * 1.1,
+                            height: MediaQuery.of(context).size.height * 1.2,
                             child: const VerticalDivider(
                               color: Color(0xff94A3B8),
                               thickness: 0.2,

@@ -66,6 +66,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
       fullName;
   List<String> abc = [];
   List<String> roadblock = [];
+  List<String> dateCreated = [];
   @override
   void initState() {
     //callAllApi();
@@ -88,24 +89,32 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
         child: Theme(
           data: Theme.of(context).copyWith(
               scrollbarTheme: ScrollbarThemeData(
-            thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
-          )),
-          child: SingleChildScrollView(
-              child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                topView(),
-                tagAndCommentView(),
-                Container(
-                  color: Color(0xff424D5F),
-                  width: double.infinity,
-                  height: 0.8.h,
-                ),
-                phaseView()
-              ],
+                  // thumbColor: MaterialStateProperty.all(Color(0xff4b5563)),
+                  )),
+          child: RawScrollbar(
+            thumbColor: const Color(0xff4b5563),
+            crossAxisMargin: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
             ),
-          )),
+            thickness: 8,
+            child: SingleChildScrollView(
+                child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  topView(),
+                  tagAndCommentView(),
+                  Container(
+                    color: Color(0xff424D5F),
+                    width: double.infinity,
+                    height: 0.8.h,
+                  ),
+                  phaseView()
+                ],
+              ),
+            )),
+          ),
         ),
       ),
     );
@@ -725,7 +734,8 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          "$roadblockCreateDate1",
+                                          dateCreated[index],
+                                          // "$roadblockCreateDate1",
                                           // roadblockCreateDate[0],
                                           style: TextStyle(
                                               color: Color(0xffffffff),
@@ -807,7 +817,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                       )),
                                   itemBuilder: (context) => [
                                     PopupMenuItem(
-                                      padding: const EdgeInsets.all(0),
+                                      padding: EdgeInsets.zero,
                                       value: 1,
                                       child: GestureDetector(
                                         onTap: () {
@@ -863,6 +873,7 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                             },
                                             textFieldConfiguration:
                                                 TextFieldConfiguration(
+                                              scrollPadding: EdgeInsets.zero,
                                               controller: _typeAheadController,
                                               style: TextStyle(
                                                   color: Colors.white,
@@ -1571,6 +1582,9 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
             print(newStr);
             DateTime dt = DateTime.parse(newStr);
             roadblockCreateDate1 = DateFormat("d MMM").format(dt);
+            dateCreated.add(roadblockCreateDate1!);
+            print(
+                "roadblockCreateDate1-----------------------$roadblockCreateDate1");
           } else {
             roadblockCreateDate1 = 'N/A';
           }
