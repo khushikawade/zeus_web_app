@@ -824,8 +824,23 @@ class _EditPageState extends State<ProjectDetailsDialogView> {
                                             suggestionsBoxDecoration:
                                                 SuggestionsBoxDecoration(
                                                     borderRadius:
-                                                        new BorderRadius
-                                                            .circular(10.0),
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(0.0),
+                                                      topRight:
+                                                          Radius.circular(0.0),
+                                                      bottomRight:
+                                                          Radius.circular(10.0),
+                                                      bottomLeft:
+                                                          Radius.circular(10.0),
+                                                    ),
+                                                    // border: Border.all(
+                                                    //     color: Colors.green,
+                                                    //     width: 2.0
+                                                    // // )
+                                                    //                                     borderRadius:
+                                                    //                                         new BorderRadius
+                                                    //                                             .circular(10.0),
                                                     clipBehavior: Clip
                                                         .antiAliasWithSaveLayer,
                                                     color: Color(0xff0F172A)),

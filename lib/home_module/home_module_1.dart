@@ -326,23 +326,16 @@ class _NavigationRailState extends State<MyHomePage1>
               children: [
                 GestureDetector(
                   onTap: () {},
-                  child: Container(
-                    // width: 20.w,
-                    child: SvgPicture.asset(
-                      'images/hamburger.svg',
-                      height: 12.h,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 17.sp,
-                ),
-                Container(
                   child: SvgPicture.asset(
-                    'images/logo.svg',
-                    height: 50.h,
+                    'images/hamburger.svg',
+                    width: 18.w,
+                    height: 12.h,
                   ),
                 ),
+                SvgPicture.asset(
+                  'images/logo.svg',
+                ),
+
                 // SizedBox(
                 //   width: 25,
                 // ),
