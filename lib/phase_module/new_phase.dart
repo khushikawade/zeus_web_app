@@ -1635,6 +1635,7 @@ class _NewPhaseState extends State<NewPhase> {
                             items: removeDuplicate(),
                             onChange: ((value) {
                               dialogSetState(() {
+                                //here remove the resource id
                                 selectedSubTaskSource.clear();
                               });
                               dialogSetState(() {
@@ -2020,7 +2021,7 @@ class _NewPhaseState extends State<NewPhase> {
                         subtaskActionType = '';
                       }
 
-                      // selectedSubTaskSource.clear();
+                      selectedSubTaskSource.clear();
                       subTaskStartDate = "";
                       subTaskEndDate = "";
                       clickAddSubTask = false;

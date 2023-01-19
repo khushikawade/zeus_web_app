@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
   bool _submitted = false;
   String _name = '';
-  bool enableClickupLogin = false;
+  bool enableClickupLogin = true;
 
   var _formKey = GlobalKey<FormState>();
 
